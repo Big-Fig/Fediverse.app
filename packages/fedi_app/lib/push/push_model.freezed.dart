@@ -24,7 +24,7 @@ class _$PushMessageTearOff {
   _PushMessage call(
       {@HiveField(1) required PushNotification? notification,
       @HiveField(2) required Map<String, dynamic>? data,
-      @HiveField(3) required String typeString}) {
+      @JsonKey(name: 'typeString') @HiveField(3) required String typeString}) {
     return _PushMessage(
       notification: notification,
       data: data,
@@ -46,6 +46,7 @@ mixin _$PushMessage {
   PushNotification? get notification => throw _privateConstructorUsedError;
   @HiveField(2)
   Map<String, dynamic>? get data => throw _privateConstructorUsedError;
+  @JsonKey(name: 'typeString')
   @HiveField(3)
   String get typeString => throw _privateConstructorUsedError;
 
@@ -63,7 +64,7 @@ abstract class $PushMessageCopyWith<$Res> {
   $Res call(
       {@HiveField(1) PushNotification? notification,
       @HiveField(2) Map<String, dynamic>? data,
-      @HiveField(3) String typeString});
+      @JsonKey(name: 'typeString') @HiveField(3) String typeString});
 
   $PushNotificationCopyWith<$Res>? get notification;
 }
@@ -120,7 +121,7 @@ abstract class _$PushMessageCopyWith<$Res>
   $Res call(
       {@HiveField(1) PushNotification? notification,
       @HiveField(2) Map<String, dynamic>? data,
-      @HiveField(3) String typeString});
+      @JsonKey(name: 'typeString') @HiveField(3) String typeString});
 
   @override
   $PushNotificationCopyWith<$Res>? get notification;
@@ -165,7 +166,7 @@ class _$_PushMessage extends _PushMessage with DiagnosticableTreeMixin {
   const _$_PushMessage(
       {@HiveField(1) required this.notification,
       @HiveField(2) required this.data,
-      @HiveField(3) required this.typeString})
+      @JsonKey(name: 'typeString') @HiveField(3) required this.typeString})
       : super._();
 
   factory _$_PushMessage.fromJson(Map<String, dynamic> json) =>
@@ -178,6 +179,7 @@ class _$_PushMessage extends _PushMessage with DiagnosticableTreeMixin {
   @HiveField(2)
   final Map<String, dynamic>? data;
   @override
+  @JsonKey(name: 'typeString')
   @HiveField(3)
   final String typeString;
 
@@ -230,9 +232,13 @@ class _$_PushMessage extends _PushMessage with DiagnosticableTreeMixin {
 
 abstract class _PushMessage extends PushMessage {
   const factory _PushMessage(
-      {@HiveField(1) required PushNotification? notification,
-      @HiveField(2) required Map<String, dynamic>? data,
-      @HiveField(3) required String typeString}) = _$_PushMessage;
+      {@HiveField(1)
+          required PushNotification? notification,
+      @HiveField(2)
+          required Map<String, dynamic>? data,
+      @JsonKey(name: 'typeString')
+      @HiveField(3)
+          required String typeString}) = _$_PushMessage;
   const _PushMessage._() : super._();
 
   factory _PushMessage.fromJson(Map<String, dynamic> json) =
@@ -245,6 +251,7 @@ abstract class _PushMessage extends PushMessage {
   @HiveField(2)
   Map<String, dynamic>? get data => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'typeString')
   @HiveField(3)
   String get typeString => throw _privateConstructorUsedError;
   @override

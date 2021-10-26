@@ -20,8 +20,12 @@ class PushFilterSettings
   const PushFilterSettings._();
 
   const factory PushFilterSettings({
-    @HiveField(1) required bool? blockFromStrangers,
-    @HiveField(2) required bool? hideNotificationContents,
+    @JsonKey(name: 'blockFromStrangers')
+    @HiveField(1)
+        required bool? blockFromStrangers,
+    @JsonKey(name: 'hideNotificationContents')
+    @HiveField(2)
+        required bool? hideNotificationContents,
   }) = _PushFilterSettings;
 
   factory PushFilterSettings.fromJson(Map<String, dynamic> json) =>

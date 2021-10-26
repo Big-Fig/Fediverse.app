@@ -21,8 +21,8 @@ class PushSettings with _$PushSettings implements ISettings<PushSettings> {
     @HiveField(3) required bool? mention,
     @HiveField(4) required bool? reblog,
     @HiveField(5) required bool? poll,
-    @HiveField(6) required bool? chatMention,
-    @HiveField(7) required bool? emojiReaction,
+    @JsonKey(name: 'chatMention') @HiveField(6) required bool? chatMention,
+    @JsonKey(name: 'emojiReaction') @HiveField(7) required bool? emojiReaction,
   }) = _PushSettings;
 
   static PushSettings defaultAllEnabled() => const PushSettings(

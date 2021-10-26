@@ -21,7 +21,10 @@ AppAnalyticsData _$AppAnalyticsDataFromJson(Map<String, dynamic> json) {
 class _$AppAnalyticsDataTearOff {
   const _$AppAnalyticsDataTearOff();
 
-  _AppAnalyticsData call({@HiveField(0) required int appOpenedCount}) {
+  _AppAnalyticsData call(
+      {@JsonKey(name: 'appOpenedCount')
+      @HiveField(0)
+          required int appOpenedCount}) {
     return _AppAnalyticsData(
       appOpenedCount: appOpenedCount,
     );
@@ -37,6 +40,7 @@ const $AppAnalyticsData = _$AppAnalyticsDataTearOff();
 
 /// @nodoc
 mixin _$AppAnalyticsData {
+  @JsonKey(name: 'appOpenedCount')
   @HiveField(0)
   int get appOpenedCount => throw _privateConstructorUsedError;
 
@@ -51,7 +55,8 @@ abstract class $AppAnalyticsDataCopyWith<$Res> {
   factory $AppAnalyticsDataCopyWith(
           AppAnalyticsData value, $Res Function(AppAnalyticsData) then) =
       _$AppAnalyticsDataCopyWithImpl<$Res>;
-  $Res call({@HiveField(0) int appOpenedCount});
+  $Res call(
+      {@JsonKey(name: 'appOpenedCount') @HiveField(0) int appOpenedCount});
 }
 
 /// @nodoc
@@ -83,7 +88,8 @@ abstract class _$AppAnalyticsDataCopyWith<$Res>
           _AppAnalyticsData value, $Res Function(_AppAnalyticsData) then) =
       __$AppAnalyticsDataCopyWithImpl<$Res>;
   @override
-  $Res call({@HiveField(0) int appOpenedCount});
+  $Res call(
+      {@JsonKey(name: 'appOpenedCount') @HiveField(0) int appOpenedCount});
 }
 
 /// @nodoc
@@ -113,12 +119,16 @@ class __$AppAnalyticsDataCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_AppAnalyticsData implements _AppAnalyticsData {
-  const _$_AppAnalyticsData({@HiveField(0) required this.appOpenedCount});
+  const _$_AppAnalyticsData(
+      {@JsonKey(name: 'appOpenedCount')
+      @HiveField(0)
+          required this.appOpenedCount});
 
   factory _$_AppAnalyticsData.fromJson(Map<String, dynamic> json) =>
       _$$_AppAnalyticsDataFromJson(json);
 
   @override
+  @JsonKey(name: 'appOpenedCount')
   @HiveField(0)
   final int appOpenedCount;
 
@@ -153,13 +163,16 @@ class _$_AppAnalyticsData implements _AppAnalyticsData {
 }
 
 abstract class _AppAnalyticsData implements AppAnalyticsData {
-  const factory _AppAnalyticsData({@HiveField(0) required int appOpenedCount}) =
-      _$_AppAnalyticsData;
+  const factory _AppAnalyticsData(
+      {@JsonKey(name: 'appOpenedCount')
+      @HiveField(0)
+          required int appOpenedCount}) = _$_AppAnalyticsData;
 
   factory _AppAnalyticsData.fromJson(Map<String, dynamic> json) =
       _$_AppAnalyticsData.fromJson;
 
   @override
+  @JsonKey(name: 'appOpenedCount')
   @HiveField(0)
   int get appOpenedCount => throw _privateConstructorUsedError;
   @override

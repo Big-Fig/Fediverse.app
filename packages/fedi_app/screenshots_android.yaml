@@ -1,7 +1,7 @@
 # A list of screen capture tests
 tests:
   # Note: flutter driver expects a pair of files eg, main1.dart and main1_test.dart
-  - screnshots_test_driver/screenshots.dart
+  - test_driver/screenshots.dart
 
 # A list of locales supported by the app
 locales:

@@ -24,7 +24,9 @@ class _$PleromaApiFrontendConfigurationsSoapboxFeTearOff {
   const _$PleromaApiFrontendConfigurationsSoapboxFeTearOff();
 
   _PleromaApiFrontendConfigurationsSoapboxFe call(
-      {@HiveField(0) required String? brandColor}) {
+      {@JsonKey(name: 'brandColor')
+      @HiveField(0)
+          required String? brandColor}) {
     return _PleromaApiFrontendConfigurationsSoapboxFe(
       brandColor: brandColor,
     );
@@ -41,7 +43,7 @@ const $PleromaApiFrontendConfigurationsSoapboxFe =
 
 /// @nodoc
 mixin _$PleromaApiFrontendConfigurationsSoapboxFe {
-// @JsonKey(name: 'brand_color')
+  @JsonKey(name: 'brandColor')
   @HiveField(0)
   String? get brandColor => throw _privateConstructorUsedError;
 
@@ -58,7 +60,7 @@ abstract class $PleromaApiFrontendConfigurationsSoapboxFeCopyWith<$Res> {
           PleromaApiFrontendConfigurationsSoapboxFe value,
           $Res Function(PleromaApiFrontendConfigurationsSoapboxFe) then) =
       _$PleromaApiFrontendConfigurationsSoapboxFeCopyWithImpl<$Res>;
-  $Res call({@HiveField(0) String? brandColor});
+  $Res call({@JsonKey(name: 'brandColor') @HiveField(0) String? brandColor});
 }
 
 /// @nodoc
@@ -92,7 +94,7 @@ abstract class _$PleromaApiFrontendConfigurationsSoapboxFeCopyWith<$Res>
           $Res Function(_PleromaApiFrontendConfigurationsSoapboxFe) then) =
       __$PleromaApiFrontendConfigurationsSoapboxFeCopyWithImpl<$Res>;
   @override
-  $Res call({@HiveField(0) String? brandColor});
+  $Res call({@JsonKey(name: 'brandColor') @HiveField(0) String? brandColor});
 }
 
 /// @nodoc
@@ -127,13 +129,14 @@ class __$PleromaApiFrontendConfigurationsSoapboxFeCopyWithImpl<$Res>
 class _$_PleromaApiFrontendConfigurationsSoapboxFe
     implements _PleromaApiFrontendConfigurationsSoapboxFe {
   const _$_PleromaApiFrontendConfigurationsSoapboxFe(
-      {@HiveField(0) required this.brandColor});
+      {@JsonKey(name: 'brandColor') @HiveField(0) required this.brandColor});
 
   factory _$_PleromaApiFrontendConfigurationsSoapboxFe.fromJson(
           Map<String, dynamic> json) =>
       _$$_PleromaApiFrontendConfigurationsSoapboxFeFromJson(json);
 
-  @override // @JsonKey(name: 'brand_color')
+  @override
+  @JsonKey(name: 'brandColor')
   @HiveField(0)
   final String? brandColor;
 
@@ -171,14 +174,17 @@ class _$_PleromaApiFrontendConfigurationsSoapboxFe
 abstract class _PleromaApiFrontendConfigurationsSoapboxFe
     implements PleromaApiFrontendConfigurationsSoapboxFe {
   const factory _PleromaApiFrontendConfigurationsSoapboxFe(
-          {@HiveField(0) required String? brandColor}) =
+          {@JsonKey(name: 'brandColor')
+          @HiveField(0)
+              required String? brandColor}) =
       _$_PleromaApiFrontendConfigurationsSoapboxFe;
 
   factory _PleromaApiFrontendConfigurationsSoapboxFe.fromJson(
           Map<String, dynamic> json) =
       _$_PleromaApiFrontendConfigurationsSoapboxFe.fromJson;
 
-  @override // @JsonKey(name: 'brand_color')
+  @override
+  @JsonKey(name: 'brandColor')
   @HiveField(0)
   String? get brandColor => throw _privateConstructorUsedError;
   @override

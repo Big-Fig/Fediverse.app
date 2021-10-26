@@ -48,11 +48,11 @@ class UnifediApiFieldMastodonAdapterAdapter
 _$_UnifediApiFieldMastodonAdapter _$$_UnifediApiFieldMastodonAdapterFromJson(
         Map<String, dynamic> json) =>
     _$_UnifediApiFieldMastodonAdapter(
-      MastodonApiField.fromJson(json['valueField'] as Map<String, dynamic>),
+      MastodonApiField.fromJson(json['value_field'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_UnifediApiFieldMastodonAdapterToJson(
         _$_UnifediApiFieldMastodonAdapter instance) =>
     <String, dynamic>{
-      'valueField': instance.valueField.toJson(),
+      'value_field': instance.valueField.toJson(),
     };

@@ -214,7 +214,7 @@ _$_UnifediApiAccount _$$_UnifediApiAccountFromJson(Map<String, dynamic> json) =>
       acceptsChatMessages: json['accepts_chat_messages'] as bool?,
       isConfirmed: json['is_confirmed'] as bool?,
       favicon: json['favicon'] as String?,
-      apId: json['apId'] as String?,
+      apId: json['ap_id'] as String?,
       alsoKnownAs: UnifediApiAccount.fromJsonAlsoKnownAsListOrNullOnError(
           json['also_known_as']),
     );
@@ -269,7 +269,7 @@ Map<String, dynamic> _$$_UnifediApiAccountToJson(
   writeNotNull('accepts_chat_messages', instance.acceptsChatMessages);
   writeNotNull('is_confirmed', instance.isConfirmed);
   writeNotNull('favicon', instance.favicon);
-  writeNotNull('apId', instance.apId);
+  writeNotNull('ap_id', instance.apId);
   writeNotNull('also_known_as', instance.alsoKnownAs);
   return val;
 }

@@ -49,11 +49,11 @@ _$_FediverseApiAccessLevelRequirement
     _$$_FediverseApiAccessLevelRequirementFromJson(Map<String, dynamic> json) =>
         _$_FediverseApiAccessLevelRequirement(
           requiredLevel: FediverseApiAccessLevel.fromJson(
-              json['requiredLevel'] as Map<String, dynamic>),
+              json['required_level'] as Map<String, dynamic>),
         );
 
 Map<String, dynamic> _$$_FediverseApiAccessLevelRequirementToJson(
         _$_FediverseApiAccessLevelRequirement instance) =>
     <String, dynamic>{
-      'requiredLevel': instance.requiredLevel.toJson(),
+      'required_level': instance.requiredLevel.toJson(),
     };

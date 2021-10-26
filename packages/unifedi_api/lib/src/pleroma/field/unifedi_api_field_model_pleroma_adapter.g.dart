@@ -48,11 +48,11 @@ class UnifediApiFieldPleromaAdapterAdapter
 _$_UnifediApiFieldPleromaAdapter _$$_UnifediApiFieldPleromaAdapterFromJson(
         Map<String, dynamic> json) =>
     _$_UnifediApiFieldPleromaAdapter(
-      PleromaApiField.fromJson(json['valueField'] as Map<String, dynamic>),
+      PleromaApiField.fromJson(json['value_field'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_UnifediApiFieldPleromaAdapterToJson(
         _$_UnifediApiFieldPleromaAdapter instance) =>
     <String, dynamic>{
-      'valueField': instance.valueField.toJson(),
+      'value_field': instance.valueField.toJson(),
     };

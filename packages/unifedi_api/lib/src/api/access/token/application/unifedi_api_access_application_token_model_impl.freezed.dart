@@ -25,6 +25,7 @@ class _$UnifediApiAccessApplicationTokenTearOff {
   _UnifediApiAccessApplicationToken call(
       {@HiveField(1)
           required UnifediApiAccessScopes scopes,
+      @JsonKey(name: 'client_application')
       @HiveField(2)
           required UnifediApiClientApplication clientApplication,
       @HiveField(3)
@@ -50,6 +51,7 @@ const $UnifediApiAccessApplicationToken =
 mixin _$UnifediApiAccessApplicationToken {
   @HiveField(1)
   UnifediApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  @JsonKey(name: 'client_application')
   @HiveField(2)
   UnifediApiClientApplication get clientApplication =>
       throw _privateConstructorUsedError;
@@ -72,6 +74,7 @@ abstract class $UnifediApiAccessApplicationTokenCopyWith<$Res> {
   $Res call(
       {@HiveField(1)
           UnifediApiAccessScopes scopes,
+      @JsonKey(name: 'client_application')
       @HiveField(2)
           UnifediApiClientApplication clientApplication,
       @HiveField(3)
@@ -148,6 +151,7 @@ abstract class _$UnifediApiAccessApplicationTokenCopyWith<$Res>
   $Res call(
       {@HiveField(1)
           UnifediApiAccessScopes scopes,
+      @JsonKey(name: 'client_application')
       @HiveField(2)
           UnifediApiClientApplication clientApplication,
       @HiveField(3)
@@ -203,9 +207,14 @@ class __$UnifediApiAccessApplicationTokenCopyWithImpl<$Res>
 class _$_UnifediApiAccessApplicationToken
     extends _UnifediApiAccessApplicationToken {
   const _$_UnifediApiAccessApplicationToken(
-      {@HiveField(1) required this.scopes,
-      @HiveField(2) required this.clientApplication,
-      @HiveField(3) @JsonKey(name: 'oauth_token') required this.oauthToken})
+      {@HiveField(1)
+          required this.scopes,
+      @JsonKey(name: 'client_application')
+      @HiveField(2)
+          required this.clientApplication,
+      @HiveField(3)
+      @JsonKey(name: 'oauth_token')
+          required this.oauthToken})
       : super._();
 
   factory _$_UnifediApiAccessApplicationToken.fromJson(
@@ -216,6 +225,7 @@ class _$_UnifediApiAccessApplicationToken
   @HiveField(1)
   final UnifediApiAccessScopes scopes;
   @override
+  @JsonKey(name: 'client_application')
   @HiveField(2)
   final UnifediApiClientApplication clientApplication;
   @override
@@ -266,6 +276,7 @@ abstract class _UnifediApiAccessApplicationToken
   const factory _UnifediApiAccessApplicationToken(
           {@HiveField(1)
               required UnifediApiAccessScopes scopes,
+          @JsonKey(name: 'client_application')
           @HiveField(2)
               required UnifediApiClientApplication clientApplication,
           @HiveField(3)
@@ -281,6 +292,7 @@ abstract class _UnifediApiAccessApplicationToken
   @HiveField(1)
   UnifediApiAccessScopes get scopes => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'client_application')
   @HiveField(2)
   UnifediApiClientApplication get clientApplication =>
       throw _privateConstructorUsedError;

@@ -23,7 +23,9 @@ class _$RecentSelectAccountListTearOff {
   const _$RecentSelectAccountListTearOff();
 
   _RecentSelectAccountList call(
-      {@HiveField(0) required List<UnifediApiAccount>? recentItems}) {
+      {@JsonKey(name: 'recentItems')
+      @HiveField(0)
+          required List<UnifediApiAccount>? recentItems}) {
     return _RecentSelectAccountList(
       recentItems: recentItems,
     );
@@ -39,6 +41,7 @@ const $RecentSelectAccountList = _$RecentSelectAccountListTearOff();
 
 /// @nodoc
 mixin _$RecentSelectAccountList {
+  @JsonKey(name: 'recentItems')
   @HiveField(0)
   List<UnifediApiAccount>? get recentItems =>
       throw _privateConstructorUsedError;
@@ -54,7 +57,10 @@ abstract class $RecentSelectAccountListCopyWith<$Res> {
   factory $RecentSelectAccountListCopyWith(RecentSelectAccountList value,
           $Res Function(RecentSelectAccountList) then) =
       _$RecentSelectAccountListCopyWithImpl<$Res>;
-  $Res call({@HiveField(0) List<UnifediApiAccount>? recentItems});
+  $Res call(
+      {@JsonKey(name: 'recentItems')
+      @HiveField(0)
+          List<UnifediApiAccount>? recentItems});
 }
 
 /// @nodoc
@@ -86,7 +92,10 @@ abstract class _$RecentSelectAccountListCopyWith<$Res>
           $Res Function(_RecentSelectAccountList) then) =
       __$RecentSelectAccountListCopyWithImpl<$Res>;
   @override
-  $Res call({@HiveField(0) List<UnifediApiAccount>? recentItems});
+  $Res call(
+      {@JsonKey(name: 'recentItems')
+      @HiveField(0)
+          List<UnifediApiAccount>? recentItems});
 }
 
 /// @nodoc
@@ -117,12 +126,14 @@ class __$RecentSelectAccountListCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_RecentSelectAccountList implements _RecentSelectAccountList {
-  const _$_RecentSelectAccountList({@HiveField(0) required this.recentItems});
+  const _$_RecentSelectAccountList(
+      {@JsonKey(name: 'recentItems') @HiveField(0) required this.recentItems});
 
   factory _$_RecentSelectAccountList.fromJson(Map<String, dynamic> json) =>
       _$$_RecentSelectAccountListFromJson(json);
 
   @override
+  @JsonKey(name: 'recentItems')
   @HiveField(0)
   final List<UnifediApiAccount>? recentItems;
 
@@ -158,13 +169,16 @@ class _$_RecentSelectAccountList implements _RecentSelectAccountList {
 
 abstract class _RecentSelectAccountList implements RecentSelectAccountList {
   const factory _RecentSelectAccountList(
-          {@HiveField(0) required List<UnifediApiAccount>? recentItems}) =
+          {@JsonKey(name: 'recentItems')
+          @HiveField(0)
+              required List<UnifediApiAccount>? recentItems}) =
       _$_RecentSelectAccountList;
 
   factory _RecentSelectAccountList.fromJson(Map<String, dynamic> json) =
       _$_RecentSelectAccountList.fromJson;
 
   @override
+  @JsonKey(name: 'recentItems')
   @HiveField(0)
   List<UnifediApiAccount>? get recentItems =>
       throw _privateConstructorUsedError;

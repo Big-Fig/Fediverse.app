@@ -18,7 +18,7 @@ part 'unifedi_api_instance_type_model.freezed.dart';
 
 @freezed
 class UnifediApiInstanceType with _$UnifediApiInstanceType {
-  static const pleromaStringValue = 'unifedi';
+  static const pleromaStringValue = 'pleroma';
   static const mastodonStringValue = 'mastodon';
 
   static const pleromaValue = UnifediApiInstanceType.pleroma();

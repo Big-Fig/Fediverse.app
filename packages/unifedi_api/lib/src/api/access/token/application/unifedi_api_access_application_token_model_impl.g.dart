@@ -57,7 +57,7 @@ _$_UnifediApiAccessApplicationToken
           scopes: UnifediApiAccessScopes.fromJson(
               json['scopes'] as Map<String, dynamic>),
           clientApplication: UnifediApiClientApplication.fromJson(
-              json['clientApplication'] as Map<String, dynamic>),
+              json['client_application'] as Map<String, dynamic>),
           oauthToken: UnifediApiOAuthToken.fromJson(
               json['oauth_token'] as Map<String, dynamic>),
         );
@@ -66,6 +66,6 @@ Map<String, dynamic> _$$_UnifediApiAccessApplicationTokenToJson(
         _$_UnifediApiAccessApplicationToken instance) =>
     <String, dynamic>{
       'scopes': instance.scopes.toJson(),
-      'clientApplication': instance.clientApplication.toJson(),
+      'client_application': instance.clientApplication.toJson(),
       'oauth_token': instance.oauthToken.toJson(),
     };

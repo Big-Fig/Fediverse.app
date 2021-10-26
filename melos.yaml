@@ -283,10 +283,11 @@ scripts:
   test:driver:screenshots:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast -- \
-      flutter driver --target=test_driver/screenshots.dart --flavor dev
+      flutter driver --no-pub --target=test_driver/screenshots.dart --flavor dev
     description: Run test driver to iterate over screens used for screenshots as test(dev purpose)
     select-package:
       dir-exists: test_driver
+      file-exist: test_driver/screenshots.dart
 
   screenshots:init:
     run: |
@@ -306,6 +307,7 @@ scripts:
         - test_driver
       file-exists:
         - screenshots_dev.yaml
+        - test_driver/screenshots.dart
 
   screenshots:
     run: |
@@ -329,6 +331,7 @@ scripts:
         - test_driver
       file-exists:
         - screenshots_android.yaml
+        - test_driver/screenshots.dart
 
   screenshots:make:ios:
     run: |
@@ -340,6 +343,7 @@ scripts:
         - test_driver
       file-exists:
         - screenshots_ios.yaml
+        - test_driver/screenshots.dart
 
   screenshots:cleanup:
     run: |
@@ -497,7 +501,7 @@ scripts:
     select-package:
       dir-exists: ios/fastlane
 
-  pub:packages:upgrade:
+  pub:packages:cache:upgrade:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast -- \
       flutter packages upgrade
@@ -509,9 +513,23 @@ scripts:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast -- \
       flutter pub get
-    description: Upload screenshots metadata to AppStore
-    select-package:
-      dir-exists: ios/fastlane
+    description: |
+      Usually you want to use melos bootstrap.
+      Workaround to run build_runner(requires pub get)
+
+  pub:upgrade:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter pub upgrade
+    description: |
+      Automatically upgrade package versions
+
+  pub:outdated:
+    run: |
+      flutter pub global run melos exec -c 1 --fail-fast -- \
+      flutter pub outdated
+    description: |
+      Checks new versions to update
 
   build:examples:ios:
     run: flutter pub global run melos exec -c 4 --fail-fast --scope="*example*,sample_app" -- \

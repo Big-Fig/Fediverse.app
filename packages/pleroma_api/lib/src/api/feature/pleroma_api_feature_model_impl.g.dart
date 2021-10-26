@@ -67,7 +67,7 @@ _$_PleromaApiFeature _$$_PleromaApiFeatureFromJson(Map<String, dynamic> json) =>
       instanceVersionRequirement:
           PleromaApiInstanceMetadataVersionRequirement.fromJson(
               json['instance_version_requirement'] as Map<String, dynamic>),
-      forceNotImplementedYet: json['forceNotImplementedYet'] as bool?,
+      forceNotImplementedYet: json['force_not_implemented_yet'] as bool?,
     );
 
 Map<String, dynamic> _$$_PleromaApiFeatureToJson(
@@ -85,6 +85,6 @@ Map<String, dynamic> _$$_PleromaApiFeatureToJson(
   val['access_scope_requirement'] = instance.accessScopesRequirement.toJson();
   val['instance_version_requirement'] =
       instance.instanceVersionRequirement.toJson();
-  writeNotNull('forceNotImplementedYet', instance.forceNotImplementedYet);
+  writeNotNull('force_not_implemented_yet', instance.forceNotImplementedYet);
   return val;
 }

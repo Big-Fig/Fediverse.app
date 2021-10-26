@@ -70,7 +70,7 @@ _$_PleromaApiStatusEmojiReaction _$$_PleromaApiStatusEmojiReactionFromJson(
           ?.map((e) => PleromaApiAccount.fromJson(e as Map<String, dynamic>))
           .toList(),
       url: json['url'] as String?,
-      staticUrl: json['staticUrl'] as String?,
+      staticUrl: json['static_url'] as String?,
     );
 
 Map<String, dynamic> _$$_PleromaApiStatusEmojiReactionToJson(
@@ -89,6 +89,6 @@ Map<String, dynamic> _$$_PleromaApiStatusEmojiReactionToJson(
 
   writeNotNull('accounts', instance.accounts?.map((e) => e.toJson()).toList());
   writeNotNull('url', instance.url);
-  writeNotNull('staticUrl', instance.staticUrl);
+  writeNotNull('static_url', instance.staticUrl);
   return val;
 }

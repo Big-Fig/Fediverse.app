@@ -51,10 +51,10 @@ class PleromaApiAccessScopesAdapter
 _$_PleromaApiAccessScopes _$$_PleromaApiAccessScopesFromJson(
         Map<String, dynamic> json) =>
     _$_PleromaApiAccessScopes(
-      globalPermissions: (json['globalPermissions'] as List<dynamic>)
+      globalPermissions: (json['global_permissions'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      targetPermissions: (json['targetPermissions'] as List<dynamic>)
+      targetPermissions: (json['target_permissions'] as List<dynamic>)
           .map((e) =>
               PleromaApiAccessScopesItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -63,7 +63,7 @@ _$_PleromaApiAccessScopes _$$_PleromaApiAccessScopesFromJson(
 Map<String, dynamic> _$$_PleromaApiAccessScopesToJson(
         _$_PleromaApiAccessScopes instance) =>
     <String, dynamic>{
-      'globalPermissions': instance.globalPermissions,
-      'targetPermissions':
+      'global_permissions': instance.globalPermissions,
+      'target_permissions':
           instance.targetPermissions.map((e) => e.toJson()).toList(),
     };

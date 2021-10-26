@@ -22,9 +22,15 @@ class _$LocalizationLocaleTearOff {
   const _$LocalizationLocaleTearOff();
 
   _LocalizationLocale call(
-      {@HiveField(0) required String languageCode,
-      @HiveField(1) required String? scriptCode,
-      @HiveField(2) required String? countryCode}) {
+      {@JsonKey(name: 'languageCode')
+      @HiveField(0)
+          required String languageCode,
+      @JsonKey(name: 'scriptCode')
+      @HiveField(1)
+          required String? scriptCode,
+      @JsonKey(name: 'countryCode')
+      @HiveField(2)
+          required String? countryCode}) {
     return _LocalizationLocale(
       languageCode: languageCode,
       scriptCode: scriptCode,
@@ -42,10 +48,13 @@ const $LocalizationLocale = _$LocalizationLocaleTearOff();
 
 /// @nodoc
 mixin _$LocalizationLocale {
+  @JsonKey(name: 'languageCode')
   @HiveField(0)
   String get languageCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'scriptCode')
   @HiveField(1)
   String? get scriptCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'countryCode')
   @HiveField(2)
   String? get countryCode => throw _privateConstructorUsedError;
 
@@ -61,9 +70,9 @@ abstract class $LocalizationLocaleCopyWith<$Res> {
           LocalizationLocale value, $Res Function(LocalizationLocale) then) =
       _$LocalizationLocaleCopyWithImpl<$Res>;
   $Res call(
-      {@HiveField(0) String languageCode,
-      @HiveField(1) String? scriptCode,
-      @HiveField(2) String? countryCode});
+      {@JsonKey(name: 'languageCode') @HiveField(0) String languageCode,
+      @JsonKey(name: 'scriptCode') @HiveField(1) String? scriptCode,
+      @JsonKey(name: 'countryCode') @HiveField(2) String? countryCode});
 }
 
 /// @nodoc
@@ -106,9 +115,9 @@ abstract class _$LocalizationLocaleCopyWith<$Res>
       __$LocalizationLocaleCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@HiveField(0) String languageCode,
-      @HiveField(1) String? scriptCode,
-      @HiveField(2) String? countryCode});
+      {@JsonKey(name: 'languageCode') @HiveField(0) String languageCode,
+      @JsonKey(name: 'scriptCode') @HiveField(1) String? scriptCode,
+      @JsonKey(name: 'countryCode') @HiveField(2) String? countryCode});
 }
 
 /// @nodoc
@@ -149,21 +158,24 @@ class __$LocalizationLocaleCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_LocalizationLocale extends _LocalizationLocale {
   const _$_LocalizationLocale(
-      {@HiveField(0) required this.languageCode,
-      @HiveField(1) required this.scriptCode,
-      @HiveField(2) required this.countryCode})
+      {@JsonKey(name: 'languageCode') @HiveField(0) required this.languageCode,
+      @JsonKey(name: 'scriptCode') @HiveField(1) required this.scriptCode,
+      @JsonKey(name: 'countryCode') @HiveField(2) required this.countryCode})
       : super._();
 
   factory _$_LocalizationLocale.fromJson(Map<String, dynamic> json) =>
       _$$_LocalizationLocaleFromJson(json);
 
   @override
+  @JsonKey(name: 'languageCode')
   @HiveField(0)
   final String languageCode;
   @override
+  @JsonKey(name: 'scriptCode')
   @HiveField(1)
   final String? scriptCode;
   @override
+  @JsonKey(name: 'countryCode')
   @HiveField(2)
   final String? countryCode;
 
@@ -207,21 +219,30 @@ class _$_LocalizationLocale extends _LocalizationLocale {
 
 abstract class _LocalizationLocale extends LocalizationLocale {
   const factory _LocalizationLocale(
-      {@HiveField(0) required String languageCode,
-      @HiveField(1) required String? scriptCode,
-      @HiveField(2) required String? countryCode}) = _$_LocalizationLocale;
+      {@JsonKey(name: 'languageCode')
+      @HiveField(0)
+          required String languageCode,
+      @JsonKey(name: 'scriptCode')
+      @HiveField(1)
+          required String? scriptCode,
+      @JsonKey(name: 'countryCode')
+      @HiveField(2)
+          required String? countryCode}) = _$_LocalizationLocale;
   const _LocalizationLocale._() : super._();
 
   factory _LocalizationLocale.fromJson(Map<String, dynamic> json) =
       _$_LocalizationLocale.fromJson;
 
   @override
+  @JsonKey(name: 'languageCode')
   @HiveField(0)
   String get languageCode => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'scriptCode')
   @HiveField(1)
   String? get scriptCode => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'countryCode')
   @HiveField(2)
   String? get countryCode => throw _privateConstructorUsedError;
   @override

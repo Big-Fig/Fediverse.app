@@ -23,7 +23,9 @@ class _$InstanceAnnouncementSettingsTearOff {
   const _$InstanceAnnouncementSettingsTearOff();
 
   _InstanceAnnouncementSettings call(
-      {@HiveField(1) required bool withDismissed}) {
+      {@JsonKey(name: 'withDismissed')
+      @HiveField(1)
+          required bool withDismissed}) {
     return _InstanceAnnouncementSettings(
       withDismissed: withDismissed,
     );
@@ -39,6 +41,7 @@ const $InstanceAnnouncementSettings = _$InstanceAnnouncementSettingsTearOff();
 
 /// @nodoc
 mixin _$InstanceAnnouncementSettings {
+  @JsonKey(name: 'withDismissed')
   @HiveField(1)
   bool get withDismissed => throw _privateConstructorUsedError;
 
@@ -54,7 +57,7 @@ abstract class $InstanceAnnouncementSettingsCopyWith<$Res> {
           InstanceAnnouncementSettings value,
           $Res Function(InstanceAnnouncementSettings) then) =
       _$InstanceAnnouncementSettingsCopyWithImpl<$Res>;
-  $Res call({@HiveField(1) bool withDismissed});
+  $Res call({@JsonKey(name: 'withDismissed') @HiveField(1) bool withDismissed});
 }
 
 /// @nodoc
@@ -87,7 +90,7 @@ abstract class _$InstanceAnnouncementSettingsCopyWith<$Res>
           $Res Function(_InstanceAnnouncementSettings) then) =
       __$InstanceAnnouncementSettingsCopyWithImpl<$Res>;
   @override
-  $Res call({@HiveField(1) bool withDismissed});
+  $Res call({@JsonKey(name: 'withDismissed') @HiveField(1) bool withDismissed});
 }
 
 /// @nodoc
@@ -120,13 +123,16 @@ class __$InstanceAnnouncementSettingsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_InstanceAnnouncementSettings extends _InstanceAnnouncementSettings {
   const _$_InstanceAnnouncementSettings(
-      {@HiveField(1) required this.withDismissed})
+      {@JsonKey(name: 'withDismissed')
+      @HiveField(1)
+          required this.withDismissed})
       : super._();
 
   factory _$_InstanceAnnouncementSettings.fromJson(Map<String, dynamic> json) =>
       _$$_InstanceAnnouncementSettingsFromJson(json);
 
   @override
+  @JsonKey(name: 'withDismissed')
   @HiveField(1)
   final bool withDismissed;
 
@@ -163,14 +169,16 @@ class _$_InstanceAnnouncementSettings extends _InstanceAnnouncementSettings {
 abstract class _InstanceAnnouncementSettings
     extends InstanceAnnouncementSettings {
   const factory _InstanceAnnouncementSettings(
-          {@HiveField(1) required bool withDismissed}) =
-      _$_InstanceAnnouncementSettings;
+      {@JsonKey(name: 'withDismissed')
+      @HiveField(1)
+          required bool withDismissed}) = _$_InstanceAnnouncementSettings;
   const _InstanceAnnouncementSettings._() : super._();
 
   factory _InstanceAnnouncementSettings.fromJson(Map<String, dynamic> json) =
       _$_InstanceAnnouncementSettings.fromJson;
 
   @override
+  @JsonKey(name: 'withDismissed')
   @HiveField(1)
   bool get withDismissed => throw _privateConstructorUsedError;
   @override

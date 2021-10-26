@@ -57,7 +57,7 @@ _$_MastodonApiAccessApplicationToken
           scopes: MastodonApiAccessScopes.fromJson(
               json['scopes'] as Map<String, dynamic>),
           clientApplication: MastodonApiClientApplication.fromJson(
-              json['clientApplication'] as Map<String, dynamic>),
+              json['client_application'] as Map<String, dynamic>),
           oauthToken: MastodonApiOAuthToken.fromJson(
               json['oauth_token'] as Map<String, dynamic>),
         );
@@ -66,6 +66,6 @@ Map<String, dynamic> _$$_MastodonApiAccessApplicationTokenToJson(
         _$_MastodonApiAccessApplicationToken instance) =>
     <String, dynamic>{
       'scopes': instance.scopes.toJson(),
-      'clientApplication': instance.clientApplication.toJson(),
+      'client_application': instance.clientApplication.toJson(),
       'oauth_token': instance.oauthToken.toJson(),
     };

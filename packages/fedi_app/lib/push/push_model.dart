@@ -29,7 +29,7 @@ class PushMessage with _$PushMessage implements IJsonObj {
   const factory PushMessage({
     @HiveField(1) required PushNotification? notification,
     @HiveField(2) required Map<String, dynamic>? data,
-    @HiveField(3) required String typeString,
+    @JsonKey(name: 'typeString') @HiveField(3) required String typeString,
   }) = _PushMessage;
 
   factory PushMessage.fromJson(Map<String, dynamic> json) =>
