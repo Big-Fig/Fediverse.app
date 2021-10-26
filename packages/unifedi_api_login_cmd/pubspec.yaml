@@ -1,5 +1,5 @@
 name: unifedi_api_login_cmd
-version: 1.0.8
+version: 1.0.9
 
 description: Unified API login from command line for Fediverse servers (Pleroma, Mastodon, etc)
 homepage: https://github.com/Big-Fig/Fediverse.app

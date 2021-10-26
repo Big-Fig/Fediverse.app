@@ -1,5 +1,5 @@
 name: fediverse_api_test_utils
-version: 1.0.8
+version: 1.0.9
 
 description: Common code for tests in fediverse_api extension packages
 homepage: https://github.com/Big-Fig/Fediverse.app

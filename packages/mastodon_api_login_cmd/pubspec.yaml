@@ -1,5 +1,5 @@
 name: mastodon_api_login_cmd
-version: 1.0.8
+version: 1.0.9
 
 description: Command line tool for Mastodon Login via Chrome emulation
 homepage: https://github.com/Big-Fig/Fediverse.app
