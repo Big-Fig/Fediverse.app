@@ -218,34 +218,29 @@ class _$_NotificationRepositoryFilters extends _NotificationRepositoryFilters {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotificationRepositoryFilters &&
+        (other.runtimeType == runtimeType &&
+            other is _NotificationRepositoryFilters &&
             (identical(other.onlyWithType, onlyWithType) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyWithType, onlyWithType)) &&
-            (identical(other.excludeTypes, excludeTypes) ||
-                const DeepCollectionEquality()
-                    .equals(other.excludeTypes, excludeTypes)) &&
+                other.onlyWithType == onlyWithType) &&
+            const DeepCollectionEquality()
+                .equals(other.excludeTypes, excludeTypes) &&
             (identical(other.onlyNotDismissed, onlyNotDismissed) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyNotDismissed, onlyNotDismissed)) &&
+                other.onlyNotDismissed == onlyNotDismissed) &&
             (identical(other.onlyUnread, onlyUnread) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyUnread, onlyUnread)) &&
-            (identical(other.excludeStatusTextConditions,
-                    excludeStatusTextConditions) ||
-                const DeepCollectionEquality().equals(
-                    other.excludeStatusTextConditions,
-                    excludeStatusTextConditions)));
+                other.onlyUnread == onlyUnread) &&
+            const DeepCollectionEquality().equals(
+                other.excludeStatusTextConditions,
+                excludeStatusTextConditions));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(onlyWithType) ^
-      const DeepCollectionEquality().hash(excludeTypes) ^
-      const DeepCollectionEquality().hash(onlyNotDismissed) ^
-      const DeepCollectionEquality().hash(onlyUnread) ^
-      const DeepCollectionEquality().hash(excludeStatusTextConditions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      onlyWithType,
+      const DeepCollectionEquality().hash(excludeTypes),
+      onlyNotDismissed,
+      onlyUnread,
+      const DeepCollectionEquality().hash(excludeStatusTextConditions));
 
   @JsonKey(ignore: true)
   @override
@@ -266,18 +261,15 @@ abstract class _NotificationRepositoryFilters
   const _NotificationRepositoryFilters._() : super._();
 
   @override
-  UnifediApiNotificationType? get onlyWithType =>
-      throw _privateConstructorUsedError;
+  UnifediApiNotificationType? get onlyWithType;
   @override
-  List<UnifediApiNotificationType>? get excludeTypes =>
-      throw _privateConstructorUsedError;
+  List<UnifediApiNotificationType>? get excludeTypes;
   @override
-  bool get onlyNotDismissed => throw _privateConstructorUsedError;
+  bool get onlyNotDismissed;
   @override
-  bool? get onlyUnread => throw _privateConstructorUsedError;
+  bool? get onlyUnread;
   @override
-  List<StatusTextCondition>? get excludeStatusTextConditions =>
-      throw _privateConstructorUsedError;
+  List<StatusTextCondition>? get excludeStatusTextConditions;
   @override
   @JsonKey(ignore: true)
   _$NotificationRepositoryFiltersCopyWith<_NotificationRepositoryFilters>
@@ -413,20 +405,16 @@ class _$_NotificationRepositoryOrderingTermData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotificationRepositoryOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _NotificationRepositoryOrderingTermData &&
             (identical(other.orderType, orderType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderType, orderType)) &&
+                other.orderType == orderType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -445,9 +433,9 @@ abstract class _NotificationRepositoryOrderingTermData
   const _NotificationRepositoryOrderingTermData._() : super._();
 
   @override
-  NotificationOrderType get orderType => throw _privateConstructorUsedError;
+  NotificationOrderType get orderType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$NotificationRepositoryOrderingTermDataCopyWith<
@@ -562,15 +550,14 @@ class _$_OnlyLocalNotificationFilter implements _OnlyLocalNotificationFilter {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _OnlyLocalNotificationFilter &&
+        (other.runtimeType == runtimeType &&
+            other is _OnlyLocalNotificationFilter &&
             (identical(other.localUrlHost, localUrlHost) ||
-                const DeepCollectionEquality()
-                    .equals(other.localUrlHost, localUrlHost)));
+                other.localUrlHost == localUrlHost));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(localUrlHost);
+  int get hashCode => Object.hash(runtimeType, localUrlHost);
 
   @JsonKey(ignore: true)
   @override
@@ -585,7 +572,7 @@ abstract class _OnlyLocalNotificationFilter
       _$_OnlyLocalNotificationFilter;
 
   @override
-  String get localUrlHost => throw _privateConstructorUsedError;
+  String get localUrlHost;
   @override
   @JsonKey(ignore: true)
   _$OnlyLocalNotificationFilterCopyWith<_OnlyLocalNotificationFilter>

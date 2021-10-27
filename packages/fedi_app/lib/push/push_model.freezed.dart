@@ -32,7 +32,7 @@ class _$PushMessageTearOff {
     );
   }
 
-  PushMessage fromJson(Map<String, Object> json) {
+  PushMessage fromJson(Map<String, Object?> json) {
     return PushMessage.fromJson(json);
   }
 }
@@ -201,23 +201,18 @@ class _$_PushMessage extends _PushMessage with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PushMessage &&
+        (other.runtimeType == runtimeType &&
+            other is _PushMessage &&
             (identical(other.notification, notification) ||
-                const DeepCollectionEquality()
-                    .equals(other.notification, notification)) &&
-            (identical(other.data, data) ||
-                const DeepCollectionEquality().equals(other.data, data)) &&
+                other.notification == notification) &&
+            const DeepCollectionEquality().equals(other.data, data) &&
             (identical(other.typeString, typeString) ||
-                const DeepCollectionEquality()
-                    .equals(other.typeString, typeString)));
+                other.typeString == typeString));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(notification) ^
-      const DeepCollectionEquality().hash(data) ^
-      const DeepCollectionEquality().hash(typeString);
+  int get hashCode => Object.hash(runtimeType, notification,
+      const DeepCollectionEquality().hash(data), typeString);
 
   @JsonKey(ignore: true)
   @override
@@ -246,14 +241,14 @@ abstract class _PushMessage extends PushMessage {
 
   @override
   @HiveField(1)
-  PushNotification? get notification => throw _privateConstructorUsedError;
+  PushNotification? get notification;
   @override
   @HiveField(2)
-  Map<String, dynamic>? get data => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get data;
   @override
   @JsonKey(name: 'typeString')
   @HiveField(3)
-  String get typeString => throw _privateConstructorUsedError;
+  String get typeString;
   @override
   @JsonKey(ignore: true)
   _$PushMessageCopyWith<_PushMessage> get copyWith =>
@@ -277,7 +272,7 @@ class _$PushNotificationTearOff {
     );
   }
 
-  PushNotification fromJson(Map<String, Object> json) {
+  PushNotification fromJson(Map<String, Object?> json) {
     return PushNotification.fromJson(json);
   }
 }
@@ -407,18 +402,14 @@ class _$_PushNotification
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PushNotification &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.body, body) ||
-                const DeepCollectionEquality().equals(other.body, body)));
+        (other.runtimeType == runtimeType &&
+            other is _PushNotification &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.body, body) || other.body == body));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(body);
+  int get hashCode => Object.hash(runtimeType, title, body);
 
   @JsonKey(ignore: true)
   @override
@@ -441,10 +432,10 @@ abstract class _PushNotification implements PushNotification {
 
   @override
   @HiveField(0)
-  String? get title => throw _privateConstructorUsedError;
+  String? get title;
   @override
   @HiveField(1)
-  String? get body => throw _privateConstructorUsedError;
+  String? get body;
   @override
   @JsonKey(ignore: true)
   _$PushNotificationCopyWith<_PushNotification> get copyWith =>

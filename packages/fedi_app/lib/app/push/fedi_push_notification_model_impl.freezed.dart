@@ -45,7 +45,7 @@ class _$FediPushNotificationTearOff {
     );
   }
 
-  FediPushNotification fromJson(Map<String, Object> json) {
+  FediPushNotification fromJson(Map<String, Object?> json) {
     return FediPushNotification.fromJson(json);
   }
 }
@@ -288,40 +288,33 @@ class _$_FediPushNotification implements _FediPushNotification {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediPushNotification &&
-            (identical(other.account, account) ||
-                const DeepCollectionEquality()
-                    .equals(other.account, account)) &&
+        (other.runtimeType == runtimeType &&
+            other is _FediPushNotification &&
+            (identical(other.account, account) || other.account == account) &&
             (identical(other.notificationAction, notificationAction) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationAction, notificationAction)) &&
+                other.notificationAction == notificationAction) &&
             (identical(
                     other.notificationActionInput, notificationActionInput) ||
-                const DeepCollectionEquality().equals(
-                    other.notificationActionInput, notificationActionInput)) &&
+                other.notificationActionInput == notificationActionInput) &&
             (identical(other.notificationId, notificationId) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationId, notificationId)) &&
+                other.notificationId == notificationId) &&
             (identical(other.notificationType, notificationType) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationType, notificationType)) &&
-            (identical(other.server, server) ||
-                const DeepCollectionEquality().equals(other.server, server)) &&
+                other.notificationType == notificationType) &&
+            (identical(other.server, server) || other.server == server) &&
             (identical(other.unifediApiNotification, unifediApiNotification) ||
-                const DeepCollectionEquality().equals(
-                    other.unifediApiNotification, unifediApiNotification)));
+                other.unifediApiNotification == unifediApiNotification));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(account) ^
-      const DeepCollectionEquality().hash(notificationAction) ^
-      const DeepCollectionEquality().hash(notificationActionInput) ^
-      const DeepCollectionEquality().hash(notificationId) ^
-      const DeepCollectionEquality().hash(notificationType) ^
-      const DeepCollectionEquality().hash(server) ^
-      const DeepCollectionEquality().hash(unifediApiNotification);
+  int get hashCode => Object.hash(
+      runtimeType,
+      account,
+      notificationAction,
+      notificationActionInput,
+      notificationId,
+      notificationType,
+      server,
+      unifediApiNotification);
 
   @JsonKey(ignore: true)
   @override
@@ -355,25 +348,24 @@ abstract class _FediPushNotification implements FediPushNotification {
       _$_FediPushNotification.fromJson;
 
   @override
-  String get account => throw _privateConstructorUsedError;
+  String get account;
   @override
   @JsonKey(name: 'notification_action')
-  String? get notificationAction => throw _privateConstructorUsedError;
+  String? get notificationAction;
   @override
   @JsonKey(name: 'notification_action_input')
-  String? get notificationActionInput => throw _privateConstructorUsedError;
+  String? get notificationActionInput;
   @override
   @JsonKey(name: 'notification_id')
-  String get notificationId => throw _privateConstructorUsedError;
+  String get notificationId;
   @override
   @JsonKey(name: 'notification_type')
-  String get notificationType => throw _privateConstructorUsedError;
+  String get notificationType;
   @override
-  String get server => throw _privateConstructorUsedError;
+  String get server;
   @override
   @JsonKey(name: 'notification')
-  UnifediApiNotification? get unifediApiNotification =>
-      throw _privateConstructorUsedError;
+  UnifediApiNotification? get unifediApiNotification;
   @override
   @JsonKey(ignore: true)
   _$FediPushNotificationCopyWith<_FediPushNotification> get copyWith =>

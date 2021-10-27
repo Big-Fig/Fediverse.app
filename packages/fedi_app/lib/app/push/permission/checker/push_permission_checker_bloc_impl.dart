@@ -1,6 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/push/permission/ask/local_preferences/ask_push_permission_local_preference_bloc.dart';
 import 'package:fedi_app/app/push/permission/checker/push_permission_checker_bloc.dart';
@@ -59,7 +58,6 @@ class PushPermissionCheckerBloc extends DisposableOwner
 
   @override
   bool get isNeedCheckPermission =>
-      configService.appLaunchType == AppLaunchType.normal &&
       !askPushPermissionLocalPreferenceBloc.value &&
       !pushSettingsBloc.isHaveSubscription;
 

@@ -31,7 +31,7 @@ class _$InstanceAnnouncementSettingsTearOff {
     );
   }
 
-  InstanceAnnouncementSettings fromJson(Map<String, Object> json) {
+  InstanceAnnouncementSettings fromJson(Map<String, Object?> json) {
     return InstanceAnnouncementSettings.fromJson(json);
   }
 }
@@ -144,15 +144,14 @@ class _$_InstanceAnnouncementSettings extends _InstanceAnnouncementSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _InstanceAnnouncementSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _InstanceAnnouncementSettings &&
             (identical(other.withDismissed, withDismissed) ||
-                const DeepCollectionEquality()
-                    .equals(other.withDismissed, withDismissed)));
+                other.withDismissed == withDismissed));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(withDismissed);
+  int get hashCode => Object.hash(runtimeType, withDismissed);
 
   @JsonKey(ignore: true)
   @override
@@ -180,7 +179,7 @@ abstract class _InstanceAnnouncementSettings
   @override
   @JsonKey(name: 'withDismissed')
   @HiveField(1)
-  bool get withDismissed => throw _privateConstructorUsedError;
+  bool get withDismissed;
   @override
   @JsonKey(ignore: true)
   _$InstanceAnnouncementSettingsCopyWith<_InstanceAnnouncementSettings>

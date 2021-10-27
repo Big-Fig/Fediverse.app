@@ -177,24 +177,22 @@ class _$_CalculateNewItemsInputData<TItem extends IEqualComparableObj<TItem>>
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CalculateNewItemsInputData<TItem> &&
-            (identical(other.superItems, superItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.superItems, superItems)) &&
-            (identical(other.mergedNewItems, mergedNewItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.mergedNewItems, mergedNewItems)) &&
-            (identical(other.updatedItems, updatedItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedItems, updatedItems)));
+        (other.runtimeType == runtimeType &&
+            other is _CalculateNewItemsInputData<TItem> &&
+            const DeepCollectionEquality()
+                .equals(other.superItems, superItems) &&
+            const DeepCollectionEquality()
+                .equals(other.mergedNewItems, mergedNewItems) &&
+            const DeepCollectionEquality()
+                .equals(other.updatedItems, updatedItems));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(superItems) ^
-      const DeepCollectionEquality().hash(mergedNewItems) ^
-      const DeepCollectionEquality().hash(updatedItems);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(superItems),
+      const DeepCollectionEquality().hash(mergedNewItems),
+      const DeepCollectionEquality().hash(updatedItems));
 
   @JsonKey(ignore: true)
   @override
@@ -214,11 +212,11 @@ abstract class _CalculateNewItemsInputData<
       _$_CalculateNewItemsInputData<TItem>;
 
   @override
-  List<TItem>? get superItems => throw _privateConstructorUsedError;
+  List<TItem>? get superItems;
   @override
-  List<TItem>? get mergedNewItems => throw _privateConstructorUsedError;
+  List<TItem>? get mergedNewItems;
   @override
-  List<TItem> get updatedItems => throw _privateConstructorUsedError;
+  List<TItem> get updatedItems;
   @override
   @JsonKey(ignore: true)
   _$CalculateNewItemsInputDataCopyWith<TItem,
@@ -380,24 +378,20 @@ class _$_CalculateActuallyNewRequest<TItem>
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CalculateActuallyNewRequest<TItem> &&
-            (identical(other.newerItem, newerItem) ||
-                const DeepCollectionEquality()
-                    .equals(other.newerItem, newerItem)) &&
-            (identical(other.newItems, newItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.newItems, newItems)) &&
-            (identical(other.currentItems, currentItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentItems, currentItems)));
+        (other.runtimeType == runtimeType &&
+            other is _CalculateActuallyNewRequest<TItem> &&
+            const DeepCollectionEquality().equals(other.newerItem, newerItem) &&
+            const DeepCollectionEquality().equals(other.newItems, newItems) &&
+            const DeepCollectionEquality()
+                .equals(other.currentItems, currentItems));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(newerItem) ^
-      const DeepCollectionEquality().hash(newItems) ^
-      const DeepCollectionEquality().hash(currentItems);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(newerItem),
+      const DeepCollectionEquality().hash(newItems),
+      const DeepCollectionEquality().hash(currentItems));
 
   @JsonKey(ignore: true)
   @override
@@ -416,11 +410,11 @@ abstract class _CalculateActuallyNewRequest<TItem>
       _$_CalculateActuallyNewRequest<TItem>;
 
   @override
-  TItem? get newerItem => throw _privateConstructorUsedError;
+  TItem? get newerItem;
   @override
-  List<TItem> get newItems => throw _privateConstructorUsedError;
+  List<TItem> get newItems;
   @override
-  List<TItem> get currentItems => throw _privateConstructorUsedError;
+  List<TItem> get currentItems;
   @override
   @JsonKey(ignore: true)
   _$CalculateActuallyNewRequestCopyWith<TItem,

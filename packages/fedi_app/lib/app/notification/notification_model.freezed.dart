@@ -130,19 +130,15 @@ class _$_NotificationState implements _NotificationState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotificationState &&
+        (other.runtimeType == runtimeType &&
+            other is _NotificationState &&
             (identical(other.dismissed, dismissed) ||
-                const DeepCollectionEquality()
-                    .equals(other.dismissed, dismissed)) &&
-            (identical(other.unread, unread) ||
-                const DeepCollectionEquality().equals(other.unread, unread)));
+                other.dismissed == dismissed) &&
+            (identical(other.unread, unread) || other.unread == unread));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dismissed) ^
-      const DeepCollectionEquality().hash(unread);
+  int get hashCode => Object.hash(runtimeType, dismissed, unread);
 
   @JsonKey(ignore: true)
   @override
@@ -155,9 +151,9 @@ abstract class _NotificationState implements NotificationState {
       {required bool? dismissed, required bool? unread}) = _$_NotificationState;
 
   @override
-  bool? get dismissed => throw _privateConstructorUsedError;
+  bool? get dismissed;
   @override
-  bool? get unread => throw _privateConstructorUsedError;
+  bool? get unread;
   @override
   @JsonKey(ignore: true)
   _$NotificationStateCopyWith<_NotificationState> get copyWith =>
@@ -290,17 +286,15 @@ class _$_DbNotificationPopulatedWrapper
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbNotificationPopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbNotificationPopulatedWrapper &&
             (identical(
                     other.dbNotificationPopulated, dbNotificationPopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbNotificationPopulated, dbNotificationPopulated)));
+                other.dbNotificationPopulated == dbNotificationPopulated));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbNotificationPopulated);
+  int get hashCode => Object.hash(runtimeType, dbNotificationPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -317,8 +311,7 @@ abstract class _DbNotificationPopulatedWrapper
   const _DbNotificationPopulatedWrapper._() : super._();
 
   @override
-  DbNotificationPopulated get dbNotificationPopulated =>
-      throw _privateConstructorUsedError;
+  DbNotificationPopulated get dbNotificationPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbNotificationPopulatedWrapperCopyWith<_DbNotificationPopulatedWrapper>
@@ -597,54 +590,41 @@ class _$_DbNotificationPopulated extends _DbNotificationPopulated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbNotificationPopulated &&
-            (identical(other.dbNotification, dbNotification) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbNotification, dbNotification)) &&
-            (identical(other.dbAccount, dbAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbAccount, dbAccount)) &&
-            (identical(other.dbStatus, dbStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbStatus, dbStatus)) &&
-            (identical(other.dbStatusAccount, dbStatusAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbStatusAccount, dbStatusAccount)) &&
-            (identical(other.reblogDbStatus, reblogDbStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.reblogDbStatus, reblogDbStatus)) &&
-            (identical(other.reblogDbStatusAccount, reblogDbStatusAccount) ||
-                const DeepCollectionEquality().equals(
-                    other.reblogDbStatusAccount, reblogDbStatusAccount)) &&
-            (identical(other.replyDbStatus, replyDbStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.replyDbStatus, replyDbStatus)) &&
-            (identical(other.replyDbStatusAccount, replyDbStatusAccount) ||
-                const DeepCollectionEquality().equals(
-                    other.replyDbStatusAccount, replyDbStatusAccount)) &&
-            (identical(other.replyReblogDbStatus, replyReblogDbStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.replyReblogDbStatus, replyReblogDbStatus)) &&
-            (identical(other.replyReblogDbStatusAccount,
-                    replyReblogDbStatusAccount) ||
-                const DeepCollectionEquality().equals(
-                    other.replyReblogDbStatusAccount,
-                    replyReblogDbStatusAccount)));
+        (other.runtimeType == runtimeType &&
+            other is _DbNotificationPopulated &&
+            const DeepCollectionEquality()
+                .equals(other.dbNotification, dbNotification) &&
+            const DeepCollectionEquality().equals(other.dbAccount, dbAccount) &&
+            const DeepCollectionEquality().equals(other.dbStatus, dbStatus) &&
+            const DeepCollectionEquality()
+                .equals(other.dbStatusAccount, dbStatusAccount) &&
+            const DeepCollectionEquality()
+                .equals(other.reblogDbStatus, reblogDbStatus) &&
+            const DeepCollectionEquality()
+                .equals(other.reblogDbStatusAccount, reblogDbStatusAccount) &&
+            const DeepCollectionEquality()
+                .equals(other.replyDbStatus, replyDbStatus) &&
+            const DeepCollectionEquality()
+                .equals(other.replyDbStatusAccount, replyDbStatusAccount) &&
+            const DeepCollectionEquality()
+                .equals(other.replyReblogDbStatus, replyReblogDbStatus) &&
+            const DeepCollectionEquality().equals(
+                other.replyReblogDbStatusAccount, replyReblogDbStatusAccount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbNotification) ^
-      const DeepCollectionEquality().hash(dbAccount) ^
-      const DeepCollectionEquality().hash(dbStatus) ^
-      const DeepCollectionEquality().hash(dbStatusAccount) ^
-      const DeepCollectionEquality().hash(reblogDbStatus) ^
-      const DeepCollectionEquality().hash(reblogDbStatusAccount) ^
-      const DeepCollectionEquality().hash(replyDbStatus) ^
-      const DeepCollectionEquality().hash(replyDbStatusAccount) ^
-      const DeepCollectionEquality().hash(replyReblogDbStatus) ^
-      const DeepCollectionEquality().hash(replyReblogDbStatusAccount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(dbNotification),
+      const DeepCollectionEquality().hash(dbAccount),
+      const DeepCollectionEquality().hash(dbStatus),
+      const DeepCollectionEquality().hash(dbStatusAccount),
+      const DeepCollectionEquality().hash(reblogDbStatus),
+      const DeepCollectionEquality().hash(reblogDbStatusAccount),
+      const DeepCollectionEquality().hash(replyDbStatus),
+      const DeepCollectionEquality().hash(replyDbStatusAccount),
+      const DeepCollectionEquality().hash(replyReblogDbStatus),
+      const DeepCollectionEquality().hash(replyReblogDbStatusAccount));
 
   @JsonKey(ignore: true)
   @override
@@ -669,26 +649,25 @@ abstract class _DbNotificationPopulated extends DbNotificationPopulated {
   const _DbNotificationPopulated._() : super._();
 
   @override
-  DbNotification get dbNotification => throw _privateConstructorUsedError;
+  DbNotification get dbNotification;
   @override
-  DbAccount? get dbAccount => throw _privateConstructorUsedError;
+  DbAccount? get dbAccount;
   @override
-  DbStatus? get dbStatus => throw _privateConstructorUsedError;
+  DbStatus? get dbStatus;
   @override
-  DbAccount? get dbStatusAccount => throw _privateConstructorUsedError;
+  DbAccount? get dbStatusAccount;
   @override
-  DbStatus? get reblogDbStatus => throw _privateConstructorUsedError;
+  DbStatus? get reblogDbStatus;
   @override
-  DbAccount? get reblogDbStatusAccount => throw _privateConstructorUsedError;
+  DbAccount? get reblogDbStatusAccount;
   @override
-  DbStatus? get replyDbStatus => throw _privateConstructorUsedError;
+  DbStatus? get replyDbStatus;
   @override
-  DbAccount? get replyDbStatusAccount => throw _privateConstructorUsedError;
+  DbAccount? get replyDbStatusAccount;
   @override
-  DbStatus? get replyReblogDbStatus => throw _privateConstructorUsedError;
+  DbStatus? get replyReblogDbStatus;
   @override
-  DbAccount? get replyReblogDbStatusAccount =>
-      throw _privateConstructorUsedError;
+  DbAccount? get replyReblogDbStatusAccount;
   @override
   @JsonKey(ignore: true)
   _$DbNotificationPopulatedCopyWith<_DbNotificationPopulated> get copyWith =>

@@ -159,23 +159,18 @@ class _$_NotificationPayloadData extends _NotificationPayloadData {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotificationPayloadData &&
-            (identical(other.acct, acct) ||
-                const DeepCollectionEquality().equals(other.acct, acct)) &&
+        (other.runtimeType == runtimeType &&
+            other is _NotificationPayloadData &&
+            (identical(other.acct, acct) || other.acct == acct) &&
             (identical(other.serverHost, serverHost) ||
-                const DeepCollectionEquality()
-                    .equals(other.serverHost, serverHost)) &&
+                other.serverHost == serverHost) &&
             (identical(other.unifediApiNotification, unifediApiNotification) ||
-                const DeepCollectionEquality().equals(
-                    other.unifediApiNotification, unifediApiNotification)));
+                other.unifediApiNotification == unifediApiNotification));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(acct) ^
-      const DeepCollectionEquality().hash(serverHost) ^
-      const DeepCollectionEquality().hash(unifediApiNotification);
+      Object.hash(runtimeType, acct, serverHost, unifediApiNotification);
 
   @JsonKey(ignore: true)
   @override
@@ -193,12 +188,11 @@ abstract class _NotificationPayloadData extends NotificationPayloadData {
   const _NotificationPayloadData._() : super._();
 
   @override
-  String get acct => throw _privateConstructorUsedError;
+  String get acct;
   @override
-  String get serverHost => throw _privateConstructorUsedError;
+  String get serverHost;
   @override
-  IUnifediApiNotification get unifediApiNotification =>
-      throw _privateConstructorUsedError;
+  IUnifediApiNotification get unifediApiNotification;
   @override
   @JsonKey(ignore: true)
   _$NotificationPayloadDataCopyWith<_NotificationPayloadData> get copyWith =>

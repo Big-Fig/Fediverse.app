@@ -34,7 +34,7 @@ class _$UiSettingsTearOff {
     );
   }
 
-  UiSettings fromJson(Map<String, Object> json) {
+  UiSettings fromJson(Map<String, Object?> json) {
     return UiSettings.fromJson(json);
   }
 }
@@ -172,20 +172,15 @@ class _$_UiSettings extends _UiSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UiSettings &&
-            (identical(other.themeId, themeId) ||
-                const DeepCollectionEquality()
-                    .equals(other.themeId, themeId)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UiSettings &&
+            (identical(other.themeId, themeId) || other.themeId == themeId) &&
             (identical(other.statusFontSizeString, statusFontSizeString) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusFontSizeString, statusFontSizeString)));
+                other.statusFontSizeString == statusFontSizeString));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(themeId) ^
-      const DeepCollectionEquality().hash(statusFontSizeString);
+  int get hashCode => Object.hash(runtimeType, themeId, statusFontSizeString);
 
   @JsonKey(ignore: true)
   @override
@@ -214,11 +209,11 @@ abstract class _UiSettings extends UiSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'theme_id')
-  String? get themeId => throw _privateConstructorUsedError;
+  String? get themeId;
   @override
   @HiveField(1)
   @JsonKey(name: 'status_font_size')
-  String get statusFontSizeString => throw _privateConstructorUsedError;
+  String get statusFontSizeString;
   @override
   @JsonKey(ignore: true)
   _$UiSettingsCopyWith<_UiSettings> get copyWith =>

@@ -31,7 +31,7 @@ class _$PleromaMyAccountWrapperOldTearOff {
     );
   }
 
-  PleromaMyAccountWrapperOld fromJson(Map<String, Object> json) {
+  PleromaMyAccountWrapperOld fromJson(Map<String, Object?> json) {
     return PleromaMyAccountWrapperOld.fromJson(json);
   }
 }
@@ -159,16 +159,14 @@ class _$_PleromaMyAccountWrapperOld implements _PleromaMyAccountWrapperOld {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaMyAccountWrapperOld &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaMyAccountWrapperOld &&
             (identical(other.pleromaAccount, pleromaAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.pleromaAccount, pleromaAccount)));
+                other.pleromaAccount == pleromaAccount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(pleromaAccount);
+  int get hashCode => Object.hash(runtimeType, pleromaAccount);
 
   @JsonKey(ignore: true)
   @override
@@ -196,7 +194,7 @@ abstract class _PleromaMyAccountWrapperOld
   @override
   @HiveField(0)
   @JsonKey(name: 'remote_account')
-  PleromaApiMyAccount get pleromaAccount => throw _privateConstructorUsedError;
+  PleromaApiMyAccount get pleromaAccount;
   @override
   @JsonKey(ignore: true)
   _$PleromaMyAccountWrapperOldCopyWith<_PleromaMyAccountWrapperOld>

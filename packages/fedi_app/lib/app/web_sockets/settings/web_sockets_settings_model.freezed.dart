@@ -30,7 +30,7 @@ class _$WebSocketsSettingsTearOff {
     );
   }
 
-  WebSocketsSettings fromJson(Map<String, Object> json) {
+  WebSocketsSettings fromJson(Map<String, Object?> json) {
     return WebSocketsSettings.fromJson(json);
   }
 }
@@ -141,16 +141,14 @@ class _$_WebSocketsSettings extends _WebSocketsSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _WebSocketsSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _WebSocketsSettings &&
             (identical(other.handlingTypeString, handlingTypeString) ||
-                const DeepCollectionEquality()
-                    .equals(other.handlingTypeString, handlingTypeString)));
+                other.handlingTypeString == handlingTypeString));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(handlingTypeString);
+  int get hashCode => Object.hash(runtimeType, handlingTypeString);
 
   @JsonKey(ignore: true)
   @override
@@ -176,7 +174,7 @@ abstract class _WebSocketsSettings extends WebSocketsSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'type_string')
-  String get handlingTypeString => throw _privateConstructorUsedError;
+  String get handlingTypeString;
   @override
   @JsonKey(ignore: true)
   _$WebSocketsSettingsCopyWith<_WebSocketsSettings> get copyWith =>

@@ -34,7 +34,7 @@ class _$PostStatusPollTearOff {
     );
   }
 
-  PostStatusPoll fromJson(Map<String, Object> json) {
+  PostStatusPoll fromJson(Map<String, Object?> json) {
     return PostStatusPoll.fromJson(json);
   }
 }
@@ -203,27 +203,20 @@ class _$_PostStatusPoll
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PostStatusPoll &&
+        (other.runtimeType == runtimeType &&
+            other is _PostStatusPoll &&
             (identical(other.durationLength, durationLength) ||
-                const DeepCollectionEquality()
-                    .equals(other.durationLength, durationLength)) &&
+                other.durationLength == durationLength) &&
             (identical(other.hideTotals, hideTotals) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideTotals, hideTotals)) &&
+                other.hideTotals == hideTotals) &&
             (identical(other.multiple, multiple) ||
-                const DeepCollectionEquality()
-                    .equals(other.multiple, multiple)) &&
-            (identical(other.options, options) ||
-                const DeepCollectionEquality().equals(other.options, options)));
+                other.multiple == multiple) &&
+            const DeepCollectionEquality().equals(other.options, options));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(durationLength) ^
-      const DeepCollectionEquality().hash(hideTotals) ^
-      const DeepCollectionEquality().hash(multiple) ^
-      const DeepCollectionEquality().hash(options);
+  int get hashCode => Object.hash(runtimeType, durationLength, hideTotals,
+      multiple, const DeepCollectionEquality().hash(options));
 
   @JsonKey(ignore: true)
   @override
@@ -248,14 +241,14 @@ abstract class _PostStatusPoll implements PostStatusPoll {
 
   @override
   @JsonKey(name: 'duration_length')
-  Duration? get durationLength => throw _privateConstructorUsedError;
+  Duration? get durationLength;
   @override
   @JsonKey(name: 'hide_totals')
-  bool get hideTotals => throw _privateConstructorUsedError;
+  bool get hideTotals;
   @override
-  bool get multiple => throw _privateConstructorUsedError;
+  bool get multiple;
   @override
-  List<String> get options => throw _privateConstructorUsedError;
+  List<String> get options;
   @override
   @JsonKey(ignore: true)
   _$PostStatusPollCopyWith<_PostStatusPoll> get copyWith =>

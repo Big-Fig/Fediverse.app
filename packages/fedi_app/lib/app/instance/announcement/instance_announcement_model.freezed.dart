@@ -125,16 +125,15 @@ class _$_DbInstanceAnnouncementPopulated
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbInstanceAnnouncementPopulated &&
-            (identical(other.dbInstanceAnnouncement, dbInstanceAnnouncement) ||
-                const DeepCollectionEquality().equals(
-                    other.dbInstanceAnnouncement, dbInstanceAnnouncement)));
+        (other.runtimeType == runtimeType &&
+            other is _DbInstanceAnnouncementPopulated &&
+            const DeepCollectionEquality()
+                .equals(other.dbInstanceAnnouncement, dbInstanceAnnouncement));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbInstanceAnnouncement);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(dbInstanceAnnouncement));
 
   @JsonKey(ignore: true)
   @override
@@ -150,8 +149,7 @@ abstract class _DbInstanceAnnouncementPopulated
       _$_DbInstanceAnnouncementPopulated;
 
   @override
-  DbInstanceAnnouncement get dbInstanceAnnouncement =>
-      throw _privateConstructorUsedError;
+  DbInstanceAnnouncement get dbInstanceAnnouncement;
   @override
   @JsonKey(ignore: true)
   _$DbInstanceAnnouncementPopulatedCopyWith<_DbInstanceAnnouncementPopulated>
@@ -292,18 +290,16 @@ class _$_DbInstanceAnnouncementPopulatedWrapper
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbInstanceAnnouncementPopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbInstanceAnnouncementPopulatedWrapper &&
             (identical(other.dbInstanceAnnouncementPopulated,
                     dbInstanceAnnouncementPopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbInstanceAnnouncementPopulated,
-                    dbInstanceAnnouncementPopulated)));
+                other.dbInstanceAnnouncementPopulated ==
+                    dbInstanceAnnouncementPopulated));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbInstanceAnnouncementPopulated);
+  int get hashCode => Object.hash(runtimeType, dbInstanceAnnouncementPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -322,8 +318,7 @@ abstract class _DbInstanceAnnouncementPopulatedWrapper
   const _DbInstanceAnnouncementPopulatedWrapper._() : super._();
 
   @override
-  DbInstanceAnnouncementPopulated get dbInstanceAnnouncementPopulated =>
-      throw _privateConstructorUsedError;
+  DbInstanceAnnouncementPopulated get dbInstanceAnnouncementPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbInstanceAnnouncementPopulatedWrapperCopyWith<

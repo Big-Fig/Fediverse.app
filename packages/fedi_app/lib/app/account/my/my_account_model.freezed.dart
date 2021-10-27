@@ -31,7 +31,7 @@ class _$UnifediApiMyAccountWrapperTearOff {
     );
   }
 
-  UnifediApiMyAccountWrapper fromJson(Map<String, Object> json) {
+  UnifediApiMyAccountWrapper fromJson(Map<String, Object?> json) {
     return UnifediApiMyAccountWrapper.fromJson(json);
   }
 }
@@ -162,16 +162,14 @@ class _$_UnifediApiMyAccountWrapper extends _UnifediApiMyAccountWrapper {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiMyAccountWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiMyAccountWrapper &&
             (identical(other.unifediApiAccount, unifediApiAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.unifediApiAccount, unifediApiAccount)));
+                other.unifediApiAccount == unifediApiAccount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(unifediApiAccount);
+  int get hashCode => Object.hash(runtimeType, unifediApiAccount);
 
   @JsonKey(ignore: true)
   @override
@@ -199,8 +197,7 @@ abstract class _UnifediApiMyAccountWrapper extends UnifediApiMyAccountWrapper {
   @override
   @HiveField(0)
   @JsonKey(name: 'remote_account')
-  UnifediApiMyAccount get unifediApiAccount =>
-      throw _privateConstructorUsedError;
+  UnifediApiMyAccount get unifediApiAccount;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiMyAccountWrapperCopyWith<_UnifediApiMyAccountWrapper>

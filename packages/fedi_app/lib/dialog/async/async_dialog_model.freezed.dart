@@ -166,27 +166,23 @@ class _$_AsyncDialogResult<T> implements _AsyncDialogResult<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AsyncDialogResult<T> &&
-            (identical(other.result, result) ||
-                const DeepCollectionEquality().equals(other.result, result)) &&
-            (identical(other.success, success) ||
-                const DeepCollectionEquality()
-                    .equals(other.success, success)) &&
+        (other.runtimeType == runtimeType &&
+            other is _AsyncDialogResult<T> &&
+            const DeepCollectionEquality().equals(other.result, result) &&
+            (identical(other.success, success) || other.success == success) &&
             (identical(other.canceled, canceled) ||
-                const DeepCollectionEquality()
-                    .equals(other.canceled, canceled)) &&
-            (identical(other.handledError, handledError) ||
-                const DeepCollectionEquality()
-                    .equals(other.handledError, handledError)));
+                other.canceled == canceled) &&
+            const DeepCollectionEquality()
+                .equals(other.handledError, handledError));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(result) ^
-      const DeepCollectionEquality().hash(success) ^
-      const DeepCollectionEquality().hash(canceled) ^
-      const DeepCollectionEquality().hash(handledError);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(result),
+      success,
+      canceled,
+      const DeepCollectionEquality().hash(handledError));
 
   @JsonKey(ignore: true)
   @override
@@ -203,13 +199,13 @@ abstract class _AsyncDialogResult<T> implements AsyncDialogResult<T> {
       required dynamic handledError}) = _$_AsyncDialogResult<T>;
 
   @override
-  T? get result => throw _privateConstructorUsedError;
+  T? get result;
   @override
-  bool get success => throw _privateConstructorUsedError;
+  bool get success;
   @override
-  bool get canceled => throw _privateConstructorUsedError;
+  bool get canceled;
   @override
-  dynamic get handledError => throw _privateConstructorUsedError;
+  dynamic get handledError;
   @override
   @JsonKey(ignore: true)
   _$AsyncDialogResultCopyWith<T, _AsyncDialogResult<T>> get copyWith =>

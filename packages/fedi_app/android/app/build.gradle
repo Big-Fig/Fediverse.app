@@ -27,8 +27,10 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 // flutter_config
 project.ext.envConfigFiles = [
-        dev: "env_dev.env",
-        prod: "env_prod.env",
+    prod: "env_prod.env",
+    dev: "env_dev.env",
+    nightly: "env_nightly.env",
+    fluttertest: "env_fluttertest.env"
 ]
 
 
@@ -92,7 +94,13 @@ android {
         dev {
 
         }
+        nightly {
+
+        }
         prod {
+
+        }
+        fluttertest {
 
         }
     }

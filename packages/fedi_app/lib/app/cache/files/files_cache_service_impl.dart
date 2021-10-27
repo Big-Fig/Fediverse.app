@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi_app/app/cache/files/files_cache_service.dart';
+import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/connection/connection_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -12,10 +13,12 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
 
   final IConnectionService connectionService;
   final CacheManager cacheManager;
+  final IConfigService configService;
 
   FilesCacheService({
     required this.key,
     required this.connectionService,
+    required this.configService,
     required Duration? stalePeriod,
     required int? maxNrOfCacheObjects,
   }) : cacheManager = CacheManager(
@@ -35,7 +38,7 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
   // ignore: long-parameter-list
   Widget createCachedNetworkImageWidget({
     String? stringKey,
-    required String? imageUrl,
+    required String imageUrl,
     Map<String, String>? httpHeaders,
     ImageWidgetBuilder? imageBuilder,
     PlaceholderWidgetBuilder? placeholder,
@@ -62,21 +65,8 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
     int? maxWidthDiskCache,
     int? maxHeightDiskCache,
   }) {
-    var actualImageUrl = imageUrl;
-    // todo: apply only for mock launch type
-    if (Platform.isAndroid) {
-      actualImageUrl = actualImageUrl!.replaceAll('localhost', '10.0.2.2');
-      actualImageUrl = actualImageUrl.replaceAll(
-        'https://ops.unifedi.social',
-        'http://10.0.2.2:4000',
-      );
-    } else if (Platform.isIOS) {
-      actualImageUrl = actualImageUrl!.replaceAll('10.0.2.2', 'localhost');
-      actualImageUrl = actualImageUrl.replaceAll(
-        'https://ops.unifedi.social',
-        'http://localhost:4000',
-      );
-    }
+    var actualImageUrl =
+        configService.processUrlOnInstanceForRequest(urlOnInstance: imageUrl);
 
     stringKey ??= actualImageUrl;
 
@@ -87,7 +77,7 @@ class FilesCacheService extends DisposableOwner implements IFilesCacheService {
 
         return CachedNetworkImage(
           key: ValueKey(stringKey! + '+' + isConnected.toString()),
-          imageUrl: actualImageUrl!,
+          imageUrl: actualImageUrl,
           httpHeaders: httpHeaders,
           imageBuilder: imageBuilder,
           placeholder: placeholder,

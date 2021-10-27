@@ -9,7 +9,6 @@ import 'package:fedi_app/app/account/my/my_account_bloc.dart';
 import 'package:fedi_app/app/account/my/my_account_bloc_impl.dart';
 import 'package:fedi_app/app/account/repository/account_repository.dart';
 import 'package:fedi_app/app/account/repository/account_repository_impl.dart';
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/cache/database/limit/age/database_cache_age_limit_model.dart';
 import 'package:fedi_app/app/cache/database/limit/entries_count/database_cache_entries_count_limit_model.dart';
 import 'package:fedi_app/app/cache/database/settings/database_cache_settings_bloc.dart';
@@ -204,7 +203,7 @@ class CurrentAccessContextBloc extends ProviderContextBloc
 
     await moorDatabaseService.performAsyncInit();
 
-    if (configService.appLaunchType == AppLaunchType.mock) {
+    if (configService.clearDatabaseOnLaunch == true) {
       await moorDatabaseService.clearAll();
     }
 
@@ -312,6 +311,7 @@ class CurrentAccessContextBloc extends ProviderContextBloc
     );
 
     var localPreferencesUnifediApiAccessBloc = LocalPreferencesAccessBloc(
+      configService: configService,
       accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
     );
 
@@ -939,6 +939,7 @@ class CurrentAccessContextBloc extends ProviderContextBloc
 
     var filesCacheService = FilesCacheService(
       connectionService: connectionService,
+      configService: configService,
       key: userAtHost,
       stalePeriod: filesCacheSettingsBloc.ageLimitType.toDurationOrNull(),
       maxNrOfCacheObjects:

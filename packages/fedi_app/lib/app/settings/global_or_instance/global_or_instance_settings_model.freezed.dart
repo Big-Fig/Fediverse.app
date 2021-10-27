@@ -134,19 +134,15 @@ class _$_GlobalOrInstanceSettings<T> extends _GlobalOrInstanceSettings<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _GlobalOrInstanceSettings<T> &&
-            (identical(other.settings, settings) ||
-                const DeepCollectionEquality()
-                    .equals(other.settings, settings)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)));
+        (other.runtimeType == runtimeType &&
+            other is _GlobalOrInstanceSettings<T> &&
+            const DeepCollectionEquality().equals(other.settings, settings) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(settings) ^
-      const DeepCollectionEquality().hash(type);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(settings), type);
 
   @JsonKey(ignore: true)
   @override
@@ -163,9 +159,9 @@ abstract class _GlobalOrInstanceSettings<T>
   const _GlobalOrInstanceSettings._() : super._();
 
   @override
-  T get settings => throw _privateConstructorUsedError;
+  T get settings;
   @override
-  GlobalOrInstanceSettingsType get type => throw _privateConstructorUsedError;
+  GlobalOrInstanceSettingsType get type;
   @override
   @JsonKey(ignore: true)
   _$GlobalOrInstanceSettingsCopyWith<T, _GlobalOrInstanceSettings<T>>

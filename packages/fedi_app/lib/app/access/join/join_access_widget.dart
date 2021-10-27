@@ -1,12 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:fedi_app/app/about/about_page.dart';
 import 'package:fedi_app/app/access/current/current_access_bloc.dart';
 import 'package:fedi_app/app/access/join/join_access_bloc.dart';
 import 'package:fedi_app/app/access/join/join_access_widget_keys.dart';
 import 'package:fedi_app/app/access/register/register_access_page.dart';
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi_app/app/auth/host/auth_host_bloc_impl.dart';
 import 'package:fedi_app/app/config/config_service.dart';
@@ -508,8 +504,10 @@ Future<void> logInToInstance(BuildContext context) async {
 
   var configService = IConfigService.of(context, listen: false);
 
-  var appLaunchType = configService.appLaunchType;
-  _logger.finest(() => 'logInToInstance $appLaunchType');
+  var hostUri = joinInstanceBloc.extractCurrentUri();
+
+  var preDefinedApiAccess =
+      configService.tryFindPreDefinedApiAccessForHost(hostUri: hostUri);
 
   var dialogResult = await UnifediAsyncOperationHelper
       .performUnifediAsyncOperation<UnifediApiAccess?>(
@@ -518,38 +516,22 @@ Future<void> logInToInstance(BuildContext context) async {
         S.of(context).app_auth_instance_join_progress_dialog_content,
     cancelable: true,
     asyncCode: () async {
-      switch (appLaunchType) {
-        case AppLaunchType.normal:
-          var hostUri = joinInstanceBloc.extractCurrentUri();
-          AuthHostBloc? bloc;
-          try {
-            bloc = AuthHostBloc.createFromContext(
-              context,
-              instanceBaseUri: hostUri,
-            );
-            await bloc.performAsyncInit();
-            var instance = await bloc.launchLoginToAccount();
+      if (preDefinedApiAccess == null) {
+        AuthHostBloc? bloc;
+        try {
+          bloc = AuthHostBloc.createFromContext(
+            context,
+            instanceBaseUri: hostUri,
+          );
+          await bloc.performAsyncInit();
+          var instance = await bloc.launchLoginToAccount();
 
-            return instance;
-          } finally {
-            await bloc?.dispose();
-          }
-
-        case AppLaunchType.mock:
-          String testUnifediApiAccessJsonString;
-          if (Platform.isAndroid) {
-            testUnifediApiAccessJsonString =
-                configService.androidTestUnifediApiAccessJson!;
-          } else {
-            testUnifediApiAccessJsonString =
-                configService.iosTestUnifediApiAccessJson!;
-          }
-
-          var testUnifediApiAccessJson =
-              jsonDecode(testUnifediApiAccessJsonString)
-                  as Map<String, dynamic>;
-
-          return UnifediApiAccess.fromJson(testUnifediApiAccessJson);
+          return instance;
+        } finally {
+          await bloc?.dispose();
+        }
+      } else {
+        return preDefinedApiAccess;
       }
     },
   );

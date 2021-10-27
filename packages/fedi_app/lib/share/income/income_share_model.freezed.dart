@@ -131,18 +131,15 @@ class _$_IncomeShareEvent implements _IncomeShareEvent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _IncomeShareEvent &&
-            (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)) &&
-            (identical(other.medias, medias) ||
-                const DeepCollectionEquality().equals(other.medias, medias)));
+        (other.runtimeType == runtimeType &&
+            other is _IncomeShareEvent &&
+            (identical(other.text, text) || other.text == text) &&
+            const DeepCollectionEquality().equals(other.medias, medias));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(medias);
+  int get hashCode => Object.hash(
+      runtimeType, text, const DeepCollectionEquality().hash(medias));
 
   @JsonKey(ignore: true)
   @override
@@ -156,9 +153,9 @@ abstract class _IncomeShareEvent implements IncomeShareEvent {
       required List<IncomeShareEventMedia>? medias}) = _$_IncomeShareEvent;
 
   @override
-  String? get text => throw _privateConstructorUsedError;
+  String? get text;
   @override
-  List<IncomeShareEventMedia>? get medias => throw _privateConstructorUsedError;
+  List<IncomeShareEventMedia>? get medias;
   @override
   @JsonKey(ignore: true)
   _$IncomeShareEventCopyWith<_IncomeShareEvent> get copyWith =>
@@ -326,26 +323,18 @@ class _$_IncomeShareEventMedia implements _IncomeShareEventMedia {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _IncomeShareEventMedia &&
-            (identical(other.path, path) ||
-                const DeepCollectionEquality().equals(other.path, path)) &&
+        (other.runtimeType == runtimeType &&
+            other is _IncomeShareEventMedia &&
+            (identical(other.path, path) || other.path == path) &&
             (identical(other.thumbnail, thumbnail) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnail, thumbnail)) &&
+                other.thumbnail == thumbnail) &&
             (identical(other.duration, duration) ||
-                const DeepCollectionEquality()
-                    .equals(other.duration, duration)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)));
+                other.duration == duration) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(path) ^
-      const DeepCollectionEquality().hash(thumbnail) ^
-      const DeepCollectionEquality().hash(duration) ^
-      const DeepCollectionEquality().hash(type);
+  int get hashCode => Object.hash(runtimeType, path, thumbnail, duration, type);
 
   @JsonKey(ignore: true)
   @override
@@ -362,13 +351,13 @@ abstract class _IncomeShareEventMedia implements IncomeShareEventMedia {
       required IncomeShareEventMediaType type}) = _$_IncomeShareEventMedia;
 
   @override
-  String get path => throw _privateConstructorUsedError;
+  String get path;
   @override
-  String? get thumbnail => throw _privateConstructorUsedError;
+  String? get thumbnail;
   @override
-  int? get duration => throw _privateConstructorUsedError;
+  int? get duration;
   @override
-  IncomeShareEventMediaType get type => throw _privateConstructorUsedError;
+  IncomeShareEventMediaType get type;
   @override
   @JsonKey(ignore: true)
   _$IncomeShareEventMediaCopyWith<_IncomeShareEventMedia> get copyWith =>

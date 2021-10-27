@@ -231,43 +231,36 @@ class _$_AccountRepositoryFilters extends _AccountRepositoryFilters {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AccountRepositoryFilters &&
+        (other.runtimeType == runtimeType &&
+            other is _AccountRepositoryFilters &&
             (identical(other.onlyInConversation, onlyInConversation) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyInConversation, onlyInConversation)) &&
+                other.onlyInConversation == onlyInConversation) &&
             (identical(other.onlyInChat, onlyInChat) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyInChat, onlyInChat)) &&
+                other.onlyInChat == onlyInChat) &&
             (identical(
                     other.onlyInStatusRebloggedBy, onlyInStatusRebloggedBy) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyInStatusRebloggedBy, onlyInStatusRebloggedBy)) &&
+                other.onlyInStatusRebloggedBy == onlyInStatusRebloggedBy) &&
             (identical(
                     other.onlyInStatusFavouritedBy, onlyInStatusFavouritedBy) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyInStatusFavouritedBy,
-                    onlyInStatusFavouritedBy)) &&
+                other.onlyInStatusFavouritedBy == onlyInStatusFavouritedBy) &&
             (identical(other.onlyInAccountFollowers, onlyInAccountFollowers) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyInAccountFollowers, onlyInAccountFollowers)) &&
+                other.onlyInAccountFollowers == onlyInAccountFollowers) &&
             (identical(other.onlyInAccountFollowing, onlyInAccountFollowing) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyInAccountFollowing, onlyInAccountFollowing)) &&
+                other.onlyInAccountFollowing == onlyInAccountFollowing) &&
             (identical(other.searchQuery, searchQuery) ||
-                const DeepCollectionEquality()
-                    .equals(other.searchQuery, searchQuery)));
+                other.searchQuery == searchQuery));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(onlyInConversation) ^
-      const DeepCollectionEquality().hash(onlyInChat) ^
-      const DeepCollectionEquality().hash(onlyInStatusRebloggedBy) ^
-      const DeepCollectionEquality().hash(onlyInStatusFavouritedBy) ^
-      const DeepCollectionEquality().hash(onlyInAccountFollowers) ^
-      const DeepCollectionEquality().hash(onlyInAccountFollowing) ^
-      const DeepCollectionEquality().hash(searchQuery);
+  int get hashCode => Object.hash(
+      runtimeType,
+      onlyInConversation,
+      onlyInChat,
+      onlyInStatusRebloggedBy,
+      onlyInStatusFavouritedBy,
+      onlyInAccountFollowers,
+      onlyInAccountFollowing,
+      searchQuery);
 
   @JsonKey(ignore: true)
   @override
@@ -288,20 +281,19 @@ abstract class _AccountRepositoryFilters extends AccountRepositoryFilters {
   const _AccountRepositoryFilters._() : super._();
 
   @override
-  IConversationChat? get onlyInConversation =>
-      throw _privateConstructorUsedError;
+  IConversationChat? get onlyInConversation;
   @override
-  IUnifediChat? get onlyInChat => throw _privateConstructorUsedError;
+  IUnifediChat? get onlyInChat;
   @override
-  IStatus? get onlyInStatusRebloggedBy => throw _privateConstructorUsedError;
+  IStatus? get onlyInStatusRebloggedBy;
   @override
-  IStatus? get onlyInStatusFavouritedBy => throw _privateConstructorUsedError;
+  IStatus? get onlyInStatusFavouritedBy;
   @override
-  IAccount? get onlyInAccountFollowers => throw _privateConstructorUsedError;
+  IAccount? get onlyInAccountFollowers;
   @override
-  IAccount? get onlyInAccountFollowing => throw _privateConstructorUsedError;
+  IAccount? get onlyInAccountFollowing;
   @override
-  String? get searchQuery => throw _privateConstructorUsedError;
+  String? get searchQuery;
   @override
   @JsonKey(ignore: true)
   _$AccountRepositoryFiltersCopyWith<_AccountRepositoryFilters> get copyWith =>
@@ -435,20 +427,16 @@ class _$_AccountRepositoryOrderingTermData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AccountRepositoryOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _AccountRepositoryOrderingTermData &&
             (identical(other.orderType, orderType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderType, orderType)) &&
+                other.orderType == orderType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -467,9 +455,9 @@ abstract class _AccountRepositoryOrderingTermData
   const _AccountRepositoryOrderingTermData._() : super._();
 
   @override
-  AccountOrderType get orderType => throw _privateConstructorUsedError;
+  AccountOrderType get orderType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$AccountRepositoryOrderingTermDataCopyWith<

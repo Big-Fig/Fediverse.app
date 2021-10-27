@@ -34,7 +34,7 @@ class _$NotificationsPushHandlerMessageTearOff {
     );
   }
 
-  NotificationsPushHandlerMessage fromJson(Map<String, Object> json) {
+  NotificationsPushHandlerMessage fromJson(Map<String, Object?> json) {
     return NotificationsPushHandlerMessage.fromJson(json);
   }
 }
@@ -189,19 +189,15 @@ class _$_NotificationsPushHandlerMessage
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotificationsPushHandlerMessage &&
-            (identical(other.body, body) ||
-                const DeepCollectionEquality().equals(other.body, body)) &&
+        (other.runtimeType == runtimeType &&
+            other is _NotificationsPushHandlerMessage &&
+            (identical(other.body, body) || other.body == body) &&
             (identical(other.pushMessage, pushMessage) ||
-                const DeepCollectionEquality()
-                    .equals(other.pushMessage, pushMessage)));
+                other.pushMessage == pushMessage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(body) ^
-      const DeepCollectionEquality().hash(pushMessage);
+  int get hashCode => Object.hash(runtimeType, body, pushMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -230,11 +226,11 @@ abstract class _NotificationsPushHandlerMessage
 
   @override
   @HiveField(0)
-  FediPushNotification get body => throw _privateConstructorUsedError;
+  FediPushNotification get body;
   @override
   @HiveField(1)
   @JsonKey(name: 'push_message')
-  PushMessage get pushMessage => throw _privateConstructorUsedError;
+  PushMessage get pushMessage;
   @override
   @JsonKey(ignore: true)
   _$NotificationsPushHandlerMessageCopyWith<_NotificationsPushHandlerMessage>

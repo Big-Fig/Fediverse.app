@@ -166,23 +166,18 @@ class _$_EditMyAccountCustomFieldsItemFieldData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _EditMyAccountCustomFieldsItemFieldData &&
+        (other.runtimeType == runtimeType &&
+            other is _EditMyAccountCustomFieldsItemFieldData &&
             (identical(other.customField, customField) ||
-                const DeepCollectionEquality()
-                    .equals(other.customField, customField)) &&
+                other.customField == customField) &&
             (identical(other.nextCustomField, nextCustomField) ||
-                const DeepCollectionEquality()
-                    .equals(other.nextCustomField, nextCustomField)) &&
-            (identical(other.index, index) ||
-                const DeepCollectionEquality().equals(other.index, index)));
+                other.nextCustomField == nextCustomField) &&
+            (identical(other.index, index) || other.index == index));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(customField) ^
-      const DeepCollectionEquality().hash(nextCustomField) ^
-      const DeepCollectionEquality().hash(index);
+      Object.hash(runtimeType, customField, nextCustomField, index);
 
   @JsonKey(ignore: true)
   @override
@@ -201,12 +196,11 @@ abstract class _EditMyAccountCustomFieldsItemFieldData
   const _EditMyAccountCustomFieldsItemFieldData._() : super._();
 
   @override
-  ILinkPairFormGroupBloc get customField => throw _privateConstructorUsedError;
+  ILinkPairFormGroupBloc get customField;
   @override
-  ILinkPairFormGroupBloc? get nextCustomField =>
-      throw _privateConstructorUsedError;
+  ILinkPairFormGroupBloc? get nextCustomField;
   @override
-  int get index => throw _privateConstructorUsedError;
+  int get index;
   @override
   @JsonKey(ignore: true)
   _$EditMyAccountCustomFieldsItemFieldDataCopyWith<

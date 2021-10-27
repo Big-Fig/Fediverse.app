@@ -122,16 +122,14 @@ class _$_PhotoManagerMediaDeviceFolder extends _PhotoManagerMediaDeviceFolder {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PhotoManagerMediaDeviceFolder &&
+        (other.runtimeType == runtimeType &&
+            other is _PhotoManagerMediaDeviceFolder &&
             (identical(other.assetPathEntity, assetPathEntity) ||
-                const DeepCollectionEquality()
-                    .equals(other.assetPathEntity, assetPathEntity)));
+                other.assetPathEntity == assetPathEntity));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(assetPathEntity);
+  int get hashCode => Object.hash(runtimeType, assetPathEntity);
 
   @JsonKey(ignore: true)
   @override
@@ -148,7 +146,7 @@ abstract class _PhotoManagerMediaDeviceFolder
   const _PhotoManagerMediaDeviceFolder._() : super._();
 
   @override
-  AssetPathEntity get assetPathEntity => throw _privateConstructorUsedError;
+  AssetPathEntity get assetPathEntity;
   @override
   @JsonKey(ignore: true)
   _$PhotoManagerMediaDeviceFolderCopyWith<_PhotoManagerMediaDeviceFolder>

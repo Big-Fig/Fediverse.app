@@ -34,7 +34,7 @@ class _$FilesCacheSettingsTearOff {
     );
   }
 
-  FilesCacheSettings fromJson(Map<String, Object> json) {
+  FilesCacheSettings fromJson(Map<String, Object?> json) {
     return FilesCacheSettings.fromJson(json);
   }
 }
@@ -175,22 +175,18 @@ class _$_FilesCacheSettings extends _FilesCacheSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FilesCacheSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _FilesCacheSettings &&
             (identical(
                     other.sizeLimitCountTypeString, sizeLimitCountTypeString) ||
-                const DeepCollectionEquality().equals(
-                    other.sizeLimitCountTypeString,
-                    sizeLimitCountTypeString)) &&
+                other.sizeLimitCountTypeString == sizeLimitCountTypeString) &&
             (identical(other.ageLimitTypeString, ageLimitTypeString) ||
-                const DeepCollectionEquality()
-                    .equals(other.ageLimitTypeString, ageLimitTypeString)));
+                other.ageLimitTypeString == ageLimitTypeString));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(sizeLimitCountTypeString) ^
-      const DeepCollectionEquality().hash(ageLimitTypeString);
+      Object.hash(runtimeType, sizeLimitCountTypeString, ageLimitTypeString);
 
   @JsonKey(ignore: true)
   @override
@@ -219,11 +215,11 @@ abstract class _FilesCacheSettings extends FilesCacheSettings {
   @override
   @HiveField(2)
   @JsonKey(name: 'files_cache_size_limit_count_type_string')
-  String get sizeLimitCountTypeString => throw _privateConstructorUsedError;
+  String get sizeLimitCountTypeString;
   @override
   @HiveField(3)
   @JsonKey(name: 'files_cache_ageL_limit_type_string')
-  String get ageLimitTypeString => throw _privateConstructorUsedError;
+  String get ageLimitTypeString;
   @override
   @JsonKey(ignore: true)
   _$FilesCacheSettingsCopyWith<_FilesCacheSettings> get copyWith =>

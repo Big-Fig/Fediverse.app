@@ -122,14 +122,21 @@ flutter_sdk
 # config which excluded from source control
 /env_dev.env
 /env_prod.env
+/env_nightly.env
 /android/app/src/dev/google-services.json
 /android/app/src/prod/
 /android/app/src/prod/google-services.json
+/android/app/src/nightly/
+/android/app/src/nightly/google-services.json
 /ios/config/
 /ios/config/dev/
 /ios/config/dev/GoogleService-Info.plist
 /ios/config/prod/
 /ios/config/prod/GoogleService-Info.plist
+/ios/config/nightly/
+/ios/config/nightly/GoogleService-Info.plist
+/ios/config/fluttertest/
+/ios/config/fluttertest/GoogleService-Info.plist
 
 # CD fastlane android
 /android/fastlane/play-store-credentials.json

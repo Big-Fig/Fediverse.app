@@ -122,14 +122,14 @@ class _$_ShareEntity extends _ShareEntity with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ShareEntity &&
-            (identical(other.items, items) ||
-                const DeepCollectionEquality().equals(other.items, items)));
+        (other.runtimeType == runtimeType &&
+            other is _ShareEntity &&
+            const DeepCollectionEquality().equals(other.items, items));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(items);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(items));
 
   @JsonKey(ignore: true)
   @override
@@ -143,7 +143,7 @@ abstract class _ShareEntity extends ShareEntity {
   const _ShareEntity._() : super._();
 
   @override
-  List<ShareEntityItem> get items => throw _privateConstructorUsedError;
+  List<ShareEntityItem> get items;
   @override
   @JsonKey(ignore: true)
   _$ShareEntityCopyWith<_ShareEntity> get copyWith =>
@@ -383,41 +383,35 @@ class _$_ShareEntityItem extends _ShareEntityItem with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ShareEntityItem &&
+        (other.runtimeType == runtimeType &&
+            other is _ShareEntityItem &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
+                other.createdAt == createdAt) &&
             (identical(other.fromAccount, fromAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.fromAccount, fromAccount)) &&
-            (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)) &&
+                other.fromAccount == fromAccount) &&
+            (identical(other.text, text) || other.text == text) &&
             (identical(other.linkToOriginal, linkToOriginal) ||
-                const DeepCollectionEquality()
-                    .equals(other.linkToOriginal, linkToOriginal)) &&
-            (identical(other.mediaAttachments, mediaAttachments) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaAttachments, mediaAttachments)) &&
-            (identical(other.mediaLocalFiles, mediaLocalFiles) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaLocalFiles, mediaLocalFiles)) &&
+                other.linkToOriginal == linkToOriginal) &&
+            const DeepCollectionEquality()
+                .equals(other.mediaAttachments, mediaAttachments) &&
+            const DeepCollectionEquality()
+                .equals(other.mediaLocalFiles, mediaLocalFiles) &&
             (identical(other.isNeedReUploadMediaAttachments,
                     isNeedReUploadMediaAttachments) ||
-                const DeepCollectionEquality().equals(
-                    other.isNeedReUploadMediaAttachments,
-                    isNeedReUploadMediaAttachments)));
+                other.isNeedReUploadMediaAttachments ==
+                    isNeedReUploadMediaAttachments));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(fromAccount) ^
-      const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(linkToOriginal) ^
-      const DeepCollectionEquality().hash(mediaAttachments) ^
-      const DeepCollectionEquality().hash(mediaLocalFiles) ^
-      const DeepCollectionEquality().hash(isNeedReUploadMediaAttachments);
+  int get hashCode => Object.hash(
+      runtimeType,
+      createdAt,
+      fromAccount,
+      text,
+      linkToOriginal,
+      const DeepCollectionEquality().hash(mediaAttachments),
+      const DeepCollectionEquality().hash(mediaLocalFiles),
+      isNeedReUploadMediaAttachments);
 
   @JsonKey(ignore: true)
   @override
@@ -437,21 +431,19 @@ abstract class _ShareEntityItem extends ShareEntityItem {
   const _ShareEntityItem._() : super._();
 
   @override
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt;
   @override
-  IAccount? get fromAccount => throw _privateConstructorUsedError;
+  IAccount? get fromAccount;
   @override
-  String? get text => throw _privateConstructorUsedError;
+  String? get text;
   @override
-  String? get linkToOriginal => throw _privateConstructorUsedError;
+  String? get linkToOriginal;
   @override
-  List<IUnifediApiMediaAttachment>? get mediaAttachments =>
-      throw _privateConstructorUsedError;
+  List<IUnifediApiMediaAttachment>? get mediaAttachments;
   @override
-  List<ShareEntityItemLocalMediaFile>? get mediaLocalFiles =>
-      throw _privateConstructorUsedError;
+  List<ShareEntityItemLocalMediaFile>? get mediaLocalFiles;
   @override
-  bool get isNeedReUploadMediaAttachments => throw _privateConstructorUsedError;
+  bool get isNeedReUploadMediaAttachments;
   @override
   @JsonKey(ignore: true)
   _$ShareEntityItemCopyWith<_ShareEntityItem> get copyWith =>
@@ -593,19 +585,15 @@ class _$_ShareEntityItemLocalMediaFile
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ShareEntityItemLocalMediaFile &&
-            (identical(other.file, file) ||
-                const DeepCollectionEquality().equals(other.file, file)) &&
+        (other.runtimeType == runtimeType &&
+            other is _ShareEntityItemLocalMediaFile &&
+            (identical(other.file, file) || other.file == file) &&
             (identical(other.isNeedDeleteAfterUsage, isNeedDeleteAfterUsage) ||
-                const DeepCollectionEquality().equals(
-                    other.isNeedDeleteAfterUsage, isNeedDeleteAfterUsage)));
+                other.isNeedDeleteAfterUsage == isNeedDeleteAfterUsage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(file) ^
-      const DeepCollectionEquality().hash(isNeedDeleteAfterUsage);
+  int get hashCode => Object.hash(runtimeType, file, isNeedDeleteAfterUsage);
 
   @JsonKey(ignore: true)
   @override
@@ -621,9 +609,9 @@ abstract class _ShareEntityItemLocalMediaFile
       required bool isNeedDeleteAfterUsage}) = _$_ShareEntityItemLocalMediaFile;
 
   @override
-  File get file => throw _privateConstructorUsedError;
+  File get file;
   @override
-  bool get isNeedDeleteAfterUsage => throw _privateConstructorUsedError;
+  bool get isNeedDeleteAfterUsage;
   @override
   @JsonKey(ignore: true)
   _$ShareEntityItemLocalMediaFileCopyWith<_ShareEntityItemLocalMediaFile>

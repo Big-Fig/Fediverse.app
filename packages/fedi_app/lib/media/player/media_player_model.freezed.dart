@@ -210,34 +210,23 @@ class _$_MediaPlayerSource implements _MediaPlayerSource {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MediaPlayerSource &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MediaPlayerSource &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.assetPath, assetPath) ||
-                const DeepCollectionEquality()
-                    .equals(other.assetPath, assetPath)) &&
+                other.assetPath == assetPath) &&
             (identical(other.assetPackage, assetPackage) ||
-                const DeepCollectionEquality()
-                    .equals(other.assetPackage, assetPackage)) &&
-            (identical(other.file, file) ||
-                const DeepCollectionEquality().equals(other.file, file)) &&
+                other.assetPackage == assetPackage) &&
+            (identical(other.file, file) || other.file == file) &&
             (identical(other.networkUrl, networkUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.networkUrl, networkUrl)) &&
+                other.networkUrl == networkUrl) &&
             (identical(other.networkFormatHint, networkFormatHint) ||
-                const DeepCollectionEquality()
-                    .equals(other.networkFormatHint, networkFormatHint)));
+                other.networkFormatHint == networkFormatHint));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(assetPath) ^
-      const DeepCollectionEquality().hash(assetPackage) ^
-      const DeepCollectionEquality().hash(file) ^
-      const DeepCollectionEquality().hash(networkUrl) ^
-      const DeepCollectionEquality().hash(networkFormatHint);
+  int get hashCode => Object.hash(runtimeType, type, assetPath, assetPackage,
+      file, networkUrl, networkFormatHint);
 
   @JsonKey(ignore: true)
   @override
@@ -255,17 +244,17 @@ abstract class _MediaPlayerSource implements MediaPlayerSource {
       required String? networkFormatHint}) = _$_MediaPlayerSource;
 
   @override
-  MediaPlayerSourceType get type => throw _privateConstructorUsedError;
+  MediaPlayerSourceType get type;
   @override
-  String? get assetPath => throw _privateConstructorUsedError;
+  String? get assetPath;
   @override
-  String? get assetPackage => throw _privateConstructorUsedError;
+  String? get assetPackage;
   @override
-  File? get file => throw _privateConstructorUsedError;
+  File? get file;
   @override
-  String? get networkUrl => throw _privateConstructorUsedError;
+  String? get networkUrl;
   @override
-  String? get networkFormatHint => throw _privateConstructorUsedError;
+  String? get networkFormatHint;
   @override
   @JsonKey(ignore: true)
   _$MediaPlayerSourceCopyWith<_MediaPlayerSource> get copyWith =>

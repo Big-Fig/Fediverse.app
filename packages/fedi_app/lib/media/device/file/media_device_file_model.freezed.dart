@@ -161,23 +161,18 @@ class _$_FileMediaDeviceFileMetadata extends _FileMediaDeviceFileMetadata {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FileMediaDeviceFileMetadata &&
+        (other.runtimeType == runtimeType &&
+            other is _FileMediaDeviceFileMetadata &&
             (identical(other.originalFile, originalFile) ||
-                const DeepCollectionEquality()
-                    .equals(other.originalFile, originalFile)) &&
+                other.originalFile == originalFile) &&
             (identical(other.isNeedDeleteAfterUsage, isNeedDeleteAfterUsage) ||
-                const DeepCollectionEquality().equals(
-                    other.isNeedDeleteAfterUsage, isNeedDeleteAfterUsage)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)));
+                other.isNeedDeleteAfterUsage == isNeedDeleteAfterUsage) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(originalFile) ^
-      const DeepCollectionEquality().hash(isNeedDeleteAfterUsage) ^
-      const DeepCollectionEquality().hash(type);
+      Object.hash(runtimeType, originalFile, isNeedDeleteAfterUsage, type);
 
   @JsonKey(ignore: true)
   @override
@@ -195,11 +190,11 @@ abstract class _FileMediaDeviceFileMetadata
   const _FileMediaDeviceFileMetadata._() : super._();
 
   @override
-  File get originalFile => throw _privateConstructorUsedError;
+  File get originalFile;
   @override
-  bool get isNeedDeleteAfterUsage => throw _privateConstructorUsedError;
+  bool get isNeedDeleteAfterUsage;
   @override
-  MediaDeviceFileType get type => throw _privateConstructorUsedError;
+  MediaDeviceFileType get type;
   @override
   @JsonKey(ignore: true)
   _$FileMediaDeviceFileMetadataCopyWith<_FileMediaDeviceFileMetadata>
@@ -350,24 +345,19 @@ class _$_FileMediaDeviceFile extends _FileMediaDeviceFile {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FileMediaDeviceFile &&
+        (other.runtimeType == runtimeType &&
+            other is _FileMediaDeviceFile &&
             (identical(other.originalFile, originalFile) ||
-                const DeepCollectionEquality()
-                    .equals(other.originalFile, originalFile)) &&
+                other.originalFile == originalFile) &&
             (identical(other.isNeedDeleteAfterUsage, isNeedDeleteAfterUsage) ||
-                const DeepCollectionEquality().equals(
-                    other.isNeedDeleteAfterUsage, isNeedDeleteAfterUsage)) &&
+                other.isNeedDeleteAfterUsage == isNeedDeleteAfterUsage) &&
             (identical(other.metadata, metadata) ||
-                const DeepCollectionEquality()
-                    .equals(other.metadata, metadata)));
+                other.metadata == metadata));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(originalFile) ^
-      const DeepCollectionEquality().hash(isNeedDeleteAfterUsage) ^
-      const DeepCollectionEquality().hash(metadata);
+      Object.hash(runtimeType, originalFile, isNeedDeleteAfterUsage, metadata);
 
   @JsonKey(ignore: true)
   @override
@@ -384,11 +374,11 @@ abstract class _FileMediaDeviceFile extends FileMediaDeviceFile {
   const _FileMediaDeviceFile._() : super._();
 
   @override
-  File get originalFile => throw _privateConstructorUsedError;
+  File get originalFile;
   @override
-  bool get isNeedDeleteAfterUsage => throw _privateConstructorUsedError;
+  bool get isNeedDeleteAfterUsage;
   @override
-  IMediaDeviceFileMetadata get metadata => throw _privateConstructorUsedError;
+  IMediaDeviceFileMetadata get metadata;
   @override
   @JsonKey(ignore: true)
   _$FileMediaDeviceFileCopyWith<_FileMediaDeviceFile> get copyWith =>

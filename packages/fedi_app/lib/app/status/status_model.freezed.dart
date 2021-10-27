@@ -131,16 +131,14 @@ class _$_DbStatusPopulatedWrapper extends _DbStatusPopulatedWrapper {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbStatusPopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbStatusPopulatedWrapper &&
             (identical(other.dbStatusPopulated, dbStatusPopulated) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbStatusPopulated, dbStatusPopulated)));
+                other.dbStatusPopulated == dbStatusPopulated));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbStatusPopulated);
+  int get hashCode => Object.hash(runtimeType, dbStatusPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -156,7 +154,7 @@ abstract class _DbStatusPopulatedWrapper extends DbStatusPopulatedWrapper {
   const _DbStatusPopulatedWrapper._() : super._();
 
   @override
-  DbStatusPopulated get dbStatusPopulated => throw _privateConstructorUsedError;
+  DbStatusPopulated get dbStatusPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbStatusPopulatedWrapperCopyWith<_DbStatusPopulatedWrapper> get copyWith =>
@@ -398,46 +396,35 @@ class _$_DbStatusPopulated extends _DbStatusPopulated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbStatusPopulated &&
-            (identical(other.dbStatus, dbStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbStatus, dbStatus)) &&
-            (identical(other.dbAccount, dbAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbAccount, dbAccount)) &&
-            (identical(other.reblogDbStatus, reblogDbStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.reblogDbStatus, reblogDbStatus)) &&
-            (identical(other.reblogDbStatusAccount, reblogDbStatusAccount) ||
-                const DeepCollectionEquality().equals(
-                    other.reblogDbStatusAccount, reblogDbStatusAccount)) &&
-            (identical(other.replyDbStatus, replyDbStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.replyDbStatus, replyDbStatus)) &&
-            (identical(other.replyDbStatusAccount, replyDbStatusAccount) ||
-                const DeepCollectionEquality().equals(
-                    other.replyDbStatusAccount, replyDbStatusAccount)) &&
-            (identical(other.replyReblogDbStatus, replyReblogDbStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.replyReblogDbStatus, replyReblogDbStatus)) &&
-            (identical(other.replyReblogDbStatusAccount,
-                    replyReblogDbStatusAccount) ||
-                const DeepCollectionEquality().equals(
-                    other.replyReblogDbStatusAccount,
-                    replyReblogDbStatusAccount)));
+        (other.runtimeType == runtimeType &&
+            other is _DbStatusPopulated &&
+            const DeepCollectionEquality().equals(other.dbStatus, dbStatus) &&
+            const DeepCollectionEquality().equals(other.dbAccount, dbAccount) &&
+            const DeepCollectionEquality()
+                .equals(other.reblogDbStatus, reblogDbStatus) &&
+            const DeepCollectionEquality()
+                .equals(other.reblogDbStatusAccount, reblogDbStatusAccount) &&
+            const DeepCollectionEquality()
+                .equals(other.replyDbStatus, replyDbStatus) &&
+            const DeepCollectionEquality()
+                .equals(other.replyDbStatusAccount, replyDbStatusAccount) &&
+            const DeepCollectionEquality()
+                .equals(other.replyReblogDbStatus, replyReblogDbStatus) &&
+            const DeepCollectionEquality().equals(
+                other.replyReblogDbStatusAccount, replyReblogDbStatusAccount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbStatus) ^
-      const DeepCollectionEquality().hash(dbAccount) ^
-      const DeepCollectionEquality().hash(reblogDbStatus) ^
-      const DeepCollectionEquality().hash(reblogDbStatusAccount) ^
-      const DeepCollectionEquality().hash(replyDbStatus) ^
-      const DeepCollectionEquality().hash(replyDbStatusAccount) ^
-      const DeepCollectionEquality().hash(replyReblogDbStatus) ^
-      const DeepCollectionEquality().hash(replyReblogDbStatusAccount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(dbStatus),
+      const DeepCollectionEquality().hash(dbAccount),
+      const DeepCollectionEquality().hash(reblogDbStatus),
+      const DeepCollectionEquality().hash(reblogDbStatusAccount),
+      const DeepCollectionEquality().hash(replyDbStatus),
+      const DeepCollectionEquality().hash(replyDbStatusAccount),
+      const DeepCollectionEquality().hash(replyReblogDbStatus),
+      const DeepCollectionEquality().hash(replyReblogDbStatusAccount));
 
   @JsonKey(ignore: true)
   @override
@@ -458,22 +445,21 @@ abstract class _DbStatusPopulated extends DbStatusPopulated {
   const _DbStatusPopulated._() : super._();
 
   @override
-  DbStatus get dbStatus => throw _privateConstructorUsedError;
+  DbStatus get dbStatus;
   @override
-  DbAccount get dbAccount => throw _privateConstructorUsedError;
+  DbAccount get dbAccount;
   @override
-  DbStatus? get reblogDbStatus => throw _privateConstructorUsedError;
+  DbStatus? get reblogDbStatus;
   @override
-  DbAccount? get reblogDbStatusAccount => throw _privateConstructorUsedError;
+  DbAccount? get reblogDbStatusAccount;
   @override
-  DbStatus? get replyDbStatus => throw _privateConstructorUsedError;
+  DbStatus? get replyDbStatus;
   @override
-  DbAccount? get replyDbStatusAccount => throw _privateConstructorUsedError;
+  DbAccount? get replyDbStatusAccount;
   @override
-  DbStatus? get replyReblogDbStatus => throw _privateConstructorUsedError;
+  DbStatus? get replyReblogDbStatus;
   @override
-  DbAccount? get replyReblogDbStatusAccount =>
-      throw _privateConstructorUsedError;
+  DbAccount? get replyReblogDbStatusAccount;
   @override
   @JsonKey(ignore: true)
   _$DbStatusPopulatedCopyWith<_DbStatusPopulated> get copyWith =>

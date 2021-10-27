@@ -80,7 +80,9 @@ class _$_DraftStatusRepositoryFilters implements _DraftStatusRepositoryFilters {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _DraftStatusRepositoryFilters);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _DraftStatusRepositoryFilters);
   }
 
   @override
@@ -227,20 +229,16 @@ class _$_DraftStatusRepositoryOrderingTermData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DraftStatusRepositoryOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _DraftStatusRepositoryOrderingTermData &&
             (identical(other.orderType, orderType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderType, orderType)) &&
+                other.orderType == orderType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -259,10 +257,9 @@ abstract class _DraftStatusRepositoryOrderingTermData
   const _DraftStatusRepositoryOrderingTermData._() : super._();
 
   @override
-  DraftStatusRepositoryOrderType get orderType =>
-      throw _privateConstructorUsedError;
+  DraftStatusRepositoryOrderType get orderType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$DraftStatusRepositoryOrderingTermDataCopyWith<

@@ -129,17 +129,15 @@ class _$_InstanceAnnouncementEmojiReactionAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _InstanceAnnouncementEmojiReactionAdapter &&
+        (other.runtimeType == runtimeType &&
+            other is _InstanceAnnouncementEmojiReactionAdapter &&
             (identical(
                     other.unifediApiEmojiReaction, unifediApiEmojiReaction) ||
-                const DeepCollectionEquality().equals(
-                    other.unifediApiEmojiReaction, unifediApiEmojiReaction)));
+                other.unifediApiEmojiReaction == unifediApiEmojiReaction));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(unifediApiEmojiReaction);
+  int get hashCode => Object.hash(runtimeType, unifediApiEmojiReaction);
 
   @JsonKey(ignore: true)
   @override
@@ -157,8 +155,7 @@ abstract class _InstanceAnnouncementEmojiReactionAdapter
   const _InstanceAnnouncementEmojiReactionAdapter._() : super._();
 
   @override
-  IUnifediApiEmojiReaction get unifediApiEmojiReaction =>
-      throw _privateConstructorUsedError;
+  IUnifediApiEmojiReaction get unifediApiEmojiReaction;
   @override
   @JsonKey(ignore: true)
   _$InstanceAnnouncementEmojiReactionAdapterCopyWith<

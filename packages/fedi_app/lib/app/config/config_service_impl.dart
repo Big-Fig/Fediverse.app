@@ -1,9 +1,12 @@
-import 'package:fedi_app/app/app_model.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('config_service_impl.dart');
 
@@ -92,20 +95,31 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
   @override
   late String? helpTranslateUrl;
   @override
-  late String? joinBetaIosUrl;
+  late String? joinBetaUrlIos;
   @override
-  late String? joinBetaAndroidUrl;
-  @override
-  late String? iosTestUnifediApiAccessJson;
-  @override
-  late String? androidTestUnifediApiAccessJson;
+  late String? joinBetaUrlAndroid;
+
+  late String? predefinedAccessListJsonString;
+
+  late Map<String, dynamic>? predefinedAccessListJson;
 
   @override
-  final AppLaunchType appLaunchType;
+  late String? displayInstanceUrl;
 
-  ConfigService({
-    required this.appLaunchType,
-  });
+  @override
+  late bool? disableSmartRefresher;
+
+  @override
+  late bool? clearDatabaseOnLaunch;
+
+  @override
+  late bool? clearLocalPreferencesOnLaunch;
+
+  @override
+  late String? actualInstanceUrlAndroid;
+
+  @override
+  late String? actualInstanceUrlIos;
 
   @override
   // ignore: long-method
@@ -288,21 +302,49 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
       isRequired: false,
     );
 
-    joinBetaIosUrl = _getString(
+    joinBetaUrlIos = _getString(
       'JOIN_BETA_IOS_URL',
       isRequired: false,
     );
-    joinBetaAndroidUrl = _getString(
+    joinBetaUrlAndroid = _getString(
       'JOIN_BETA_ANDROID_URL',
       isRequired: false,
     );
 
-    androidTestUnifediApiAccessJson = _getString(
-      'ANDROID_TEST_AUTH_ISNTANCE_JSON',
+    predefinedAccessListJsonString = _getString(
+      'PREDEFINED_ACCESS_LIST_JSON',
       isRequired: false,
     );
-    iosTestUnifediApiAccessJson = _getString(
-      'IOS_TEST_AUTH_ISNTANCE_JSON',
+
+    if (predefinedAccessListJsonString != null) {
+      predefinedAccessListJson =
+          jsonDecode(predefinedAccessListJsonString!) as Map<String, dynamic>;
+    }
+
+    displayInstanceUrl = _getString(
+      'DISPLAY_INSTANCE_URL',
+      isRequired: false,
+    );
+    actualInstanceUrlIos = _getString(
+      'ACTUAL_INSTANCE_URL_IOS',
+      isRequired: false,
+    );
+    actualInstanceUrlAndroid = _getString(
+      'ACTUAL_INSTANCE_URL_ANDROID',
+      isRequired: false,
+    );
+
+    clearDatabaseOnLaunch = _getBool(
+      'CLEAR_DATABASE_ON_LAUNCH',
+      isRequired: false,
+    );
+
+    clearLocalPreferencesOnLaunch = _getBool(
+      'CLEAR_LOCAL_PREFERENCES_ON_LAUNCH',
+      isRequired: false,
+    );
+    disableSmartRefresher = _getBool(
+      'DISABLE_SMART_REFRESHER',
       isRequired: false,
     );
   }
@@ -318,6 +360,89 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
           )}',
     );
   }
+
+  @override
+  String processUrlOnInstanceForDisplay({
+    required String urlOnInstance,
+  }) {
+    String resultUrl;
+
+    if (displayInstanceUrl != null) {
+      // ignore: parameter_assignments
+      urlOnInstance = urlOnInstance.replaceAll('http://', '');
+      // ignore: parameter_assignments
+      urlOnInstance = urlOnInstance.replaceAll('https://', '');
+      var indexOf = urlOnInstance.indexOf('/');
+
+      String part;
+      if (indexOf >= 0) {
+        part = urlOnInstance.substring(indexOf);
+      } else {
+        part = '';
+      }
+      resultUrl = '$displayInstanceUrl$part';
+    } else {
+      resultUrl = urlOnInstance;
+    }
+
+    return resultUrl;
+  }
+
+  @override
+  String processUrlOnInstanceForRequest({
+    required String urlOnInstance,
+  }) {
+    String resultUrl;
+
+    if (isActualInstanceUrlExist) {
+      var isAndroid = Platform.isAndroid;
+      urlOnInstance = urlOnInstance.replaceAll('http://', '');
+      // ignore: parameter_assignments
+      urlOnInstance = urlOnInstance.replaceAll('https://', '');
+      var indexOf = urlOnInstance.indexOf('/');
+      var actualInstanceUrl =
+          isAndroid ? actualInstanceUrlAndroid : actualInstanceUrlIos;
+
+      String part;
+      if (indexOf >= 0) {
+        part = urlOnInstance.substring(indexOf);
+      } else {
+        part = '';
+      }
+      resultUrl = '$actualInstanceUrl$part';
+    } else {
+      resultUrl = urlOnInstance;
+    }
+
+    return resultUrl;
+  }
+
+  @override
+  UnifediApiAccess? tryFindPreDefinedApiAccessForHost({
+    required Uri hostUri,
+  }) {
+    UnifediApiAccess? result;
+    if (predefinedAccessListJson?.isNotEmpty == true) {
+      var host = hostUri.host;
+
+      var accessJson = predefinedAccessListJson?[host] as Map<String, dynamic>?;
+
+      if (accessJson != null) {
+        result = UnifediApiAccess.fromJson(accessJson);
+      } else {
+        result = null;
+      }
+    } else {
+      result = null;
+    }
+
+    return result;
+  }
+
+  @override
+  bool get isActualInstanceUrlExist =>
+      (actualInstanceUrlIos != null && Platform.isIOS) ||
+      (actualInstanceUrlAndroid != null && Platform.isAndroid);
 }
 
 void _checkRequiredKey({

@@ -117,16 +117,15 @@ class _$_DbConversationPopulated implements _DbConversationPopulated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbConversationPopulated &&
-            (identical(other.dbConversation, dbConversation) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbConversation, dbConversation)));
+        (other.runtimeType == runtimeType &&
+            other is _DbConversationPopulated &&
+            const DeepCollectionEquality()
+                .equals(other.dbConversation, dbConversation));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbConversation);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(dbConversation));
 
   @JsonKey(ignore: true)
   @override
@@ -140,7 +139,7 @@ abstract class _DbConversationPopulated implements DbConversationPopulated {
       {required DbConversation dbConversation}) = _$_DbConversationPopulated;
 
   @override
-  DbConversation get dbConversation => throw _privateConstructorUsedError;
+  DbConversation get dbConversation;
   @override
   @JsonKey(ignore: true)
   _$DbConversationPopulatedCopyWith<_DbConversationPopulated> get copyWith =>
@@ -274,17 +273,15 @@ class _$_DbConversationChatPopulatedWrapper
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbConversationChatPopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbConversationChatPopulatedWrapper &&
             (identical(
                     other.dbConversationPopulated, dbConversationPopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbConversationPopulated, dbConversationPopulated)));
+                other.dbConversationPopulated == dbConversationPopulated));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbConversationPopulated);
+  int get hashCode => Object.hash(runtimeType, dbConversationPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -302,8 +299,7 @@ abstract class _DbConversationChatPopulatedWrapper
   const _DbConversationChatPopulatedWrapper._() : super._();
 
   @override
-  DbConversationPopulated get dbConversationPopulated =>
-      throw _privateConstructorUsedError;
+  DbConversationPopulated get dbConversationPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbConversationChatPopulatedWrapperCopyWith<
@@ -473,21 +469,18 @@ class _$_DbConversationChatWithLastMessagePopulated
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbConversationChatWithLastMessagePopulated &&
+        (other.runtimeType == runtimeType &&
+            other is _DbConversationChatWithLastMessagePopulated &&
             (identical(
                     other.dbConversationPopulated, dbConversationPopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbConversationPopulated, dbConversationPopulated)) &&
+                other.dbConversationPopulated == dbConversationPopulated) &&
             (identical(other.dbStatusPopulated, dbStatusPopulated) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbStatusPopulated, dbStatusPopulated)));
+                other.dbStatusPopulated == dbStatusPopulated));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbConversationPopulated) ^
-      const DeepCollectionEquality().hash(dbStatusPopulated);
+      Object.hash(runtimeType, dbConversationPopulated, dbStatusPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -505,11 +498,9 @@ abstract class _DbConversationChatWithLastMessagePopulated
       _$_DbConversationChatWithLastMessagePopulated;
 
   @override
-  DbConversationPopulated get dbConversationPopulated =>
-      throw _privateConstructorUsedError;
+  DbConversationPopulated get dbConversationPopulated;
   @override
-  DbStatusPopulated? get dbStatusPopulated =>
-      throw _privateConstructorUsedError;
+  DbStatusPopulated? get dbStatusPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbConversationChatWithLastMessagePopulatedCopyWith<
@@ -669,19 +660,17 @@ class _$_DbConversationChatWithLastMessagePopulatedWrapper
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbConversationChatWithLastMessagePopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbConversationChatWithLastMessagePopulatedWrapper &&
             (identical(other.dbConversationChatWithLastMessagePopulated,
                     dbConversationChatWithLastMessagePopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbConversationChatWithLastMessagePopulated,
-                    dbConversationChatWithLastMessagePopulated)));
+                other.dbConversationChatWithLastMessagePopulated ==
+                    dbConversationChatWithLastMessagePopulated));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality()
-          .hash(dbConversationChatWithLastMessagePopulated);
+      Object.hash(runtimeType, dbConversationChatWithLastMessagePopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -703,8 +692,7 @@ abstract class _DbConversationChatWithLastMessagePopulatedWrapper
 
   @override
   DbConversationChatWithLastMessagePopulated
-      get dbConversationChatWithLastMessagePopulated =>
-          throw _privateConstructorUsedError;
+      get dbConversationChatWithLastMessagePopulated;
   @override
   @JsonKey(ignore: true)
   _$DbConversationChatWithLastMessagePopulatedWrapperCopyWith<

@@ -92,6 +92,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     )..disposeWith(this);
 
     memoryUnifediApiAccessBloc = MemoryAccessBloc(
+      configService: configService,
       access: UnifediApiAccess(
         url: instanceBaseUri.toString(),
         instance: null,

@@ -26,10 +26,17 @@ class RegisterAccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var registerUnifediApiAccessBloc = IRegisterAccessBloc.of(context);
 
+    var instanceBaseUri = registerUnifediApiAccessBloc.instanceBaseUri;
+
+    var urlOnInstanceForDisplay =
+        IConfigService.of(context).processUrlOnInstanceForDisplay(
+      urlOnInstance: instanceBaseUri.toString(),
+    );
+
     return Scaffold(
       appBar: FediPageTitleAppBar(
         title: S.of(context).app_auth_instance_register_title(
-              registerUnifediApiAccessBloc.instanceBaseUri.host,
+              Uri.parse(urlOnInstanceForDisplay).host,
             ),
         leading: const FediDismissIconButton(),
       ),

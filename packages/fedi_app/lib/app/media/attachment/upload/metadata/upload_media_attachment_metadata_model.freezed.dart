@@ -121,15 +121,14 @@ class _$_UploadMediaAttachmentMetadata extends _UploadMediaAttachmentMetadata {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UploadMediaAttachmentMetadata &&
+        (other.runtimeType == runtimeType &&
+            other is _UploadMediaAttachmentMetadata &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)));
+                other.description == description));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(description);
+  int get hashCode => Object.hash(runtimeType, description);
 
   @JsonKey(ignore: true)
   @override
@@ -145,7 +144,7 @@ abstract class _UploadMediaAttachmentMetadata
   const _UploadMediaAttachmentMetadata._() : super._();
 
   @override
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
   @JsonKey(ignore: true)
   _$UploadMediaAttachmentMetadataCopyWith<_UploadMediaAttachmentMetadata>

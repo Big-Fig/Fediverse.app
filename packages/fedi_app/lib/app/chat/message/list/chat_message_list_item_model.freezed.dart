@@ -193,32 +193,27 @@ class _$_ChatMessageListItem<T extends IChatMessage>
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ChatMessageListItem<T> &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
+        (other.runtimeType == runtimeType &&
+            other is _ChatMessageListItem<T> &&
+            const DeepCollectionEquality().equals(other.message, message) &&
             (identical(other.isFirstInMinuteGroup, isFirstInMinuteGroup) ||
-                const DeepCollectionEquality().equals(
-                    other.isFirstInMinuteGroup, isFirstInMinuteGroup)) &&
+                other.isFirstInMinuteGroup == isFirstInMinuteGroup) &&
             (identical(other.isLastInMinuteGroup, isLastInMinuteGroup) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLastInMinuteGroup, isLastInMinuteGroup)) &&
+                other.isLastInMinuteGroup == isLastInMinuteGroup) &&
             (identical(other.isFirstInDayGroup, isFirstInDayGroup) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFirstInDayGroup, isFirstInDayGroup)) &&
+                other.isFirstInDayGroup == isFirstInDayGroup) &&
             (identical(other.isLastInDayGroup, isLastInDayGroup) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLastInDayGroup, isLastInDayGroup)));
+                other.isLastInDayGroup == isLastInDayGroup));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(isFirstInMinuteGroup) ^
-      const DeepCollectionEquality().hash(isLastInMinuteGroup) ^
-      const DeepCollectionEquality().hash(isFirstInDayGroup) ^
-      const DeepCollectionEquality().hash(isLastInDayGroup);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(message),
+      isFirstInMinuteGroup,
+      isLastInMinuteGroup,
+      isFirstInDayGroup,
+      isLastInDayGroup);
 
   @JsonKey(ignore: true)
   @override
@@ -237,15 +232,15 @@ abstract class _ChatMessageListItem<T extends IChatMessage>
       required bool isLastInDayGroup}) = _$_ChatMessageListItem<T>;
 
   @override
-  T get message => throw _privateConstructorUsedError;
+  T get message;
   @override
-  bool get isFirstInMinuteGroup => throw _privateConstructorUsedError;
+  bool get isFirstInMinuteGroup;
   @override
-  bool get isLastInMinuteGroup => throw _privateConstructorUsedError;
+  bool get isLastInMinuteGroup;
   @override
-  bool get isFirstInDayGroup => throw _privateConstructorUsedError;
+  bool get isFirstInDayGroup;
   @override
-  bool get isLastInDayGroup => throw _privateConstructorUsedError;
+  bool get isLastInDayGroup;
   @override
   @JsonKey(ignore: true)
   _$ChatMessageListItemCopyWith<T, _ChatMessageListItem<T>> get copyWith =>

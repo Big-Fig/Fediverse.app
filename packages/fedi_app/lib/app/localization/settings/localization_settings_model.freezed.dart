@@ -30,7 +30,7 @@ class _$LocalizationSettingsTearOff {
     );
   }
 
-  LocalizationSettings fromJson(Map<String, Object> json) {
+  LocalizationSettings fromJson(Map<String, Object?> json) {
     return LocalizationSettings.fromJson(json);
   }
 }
@@ -163,16 +163,14 @@ class _$_LocalizationSettings extends _LocalizationSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _LocalizationSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _LocalizationSettings &&
             (identical(other.localizationLocale, localizationLocale) ||
-                const DeepCollectionEquality()
-                    .equals(other.localizationLocale, localizationLocale)));
+                other.localizationLocale == localizationLocale));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(localizationLocale);
+  int get hashCode => Object.hash(runtimeType, localizationLocale);
 
   @JsonKey(ignore: true)
   @override
@@ -200,8 +198,7 @@ abstract class _LocalizationSettings extends LocalizationSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'localization_locale')
-  LocalizationLocale? get localizationLocale =>
-      throw _privateConstructorUsedError;
+  LocalizationLocale? get localizationLocale;
   @override
   @JsonKey(ignore: true)
   _$LocalizationSettingsCopyWith<_LocalizationSettings> get copyWith =>

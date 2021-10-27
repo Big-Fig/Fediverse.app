@@ -148,23 +148,17 @@ class _$_DurationPickerResult implements _DurationPickerResult {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DurationPickerResult &&
+        (other.runtimeType == runtimeType &&
+            other is _DurationPickerResult &&
             (identical(other.duration, duration) ||
-                const DeepCollectionEquality()
-                    .equals(other.duration, duration)) &&
+                other.duration == duration) &&
             (identical(other.canceled, canceled) ||
-                const DeepCollectionEquality()
-                    .equals(other.canceled, canceled)) &&
-            (identical(other.deleted, deleted) ||
-                const DeepCollectionEquality().equals(other.deleted, deleted)));
+                other.canceled == canceled) &&
+            (identical(other.deleted, deleted) || other.deleted == deleted));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(duration) ^
-      const DeepCollectionEquality().hash(canceled) ^
-      const DeepCollectionEquality().hash(deleted);
+  int get hashCode => Object.hash(runtimeType, duration, canceled, deleted);
 
   @JsonKey(ignore: true)
   @override
@@ -180,11 +174,11 @@ abstract class _DurationPickerResult implements DurationPickerResult {
       required bool deleted}) = _$_DurationPickerResult;
 
   @override
-  Duration? get duration => throw _privateConstructorUsedError;
+  Duration? get duration;
   @override
-  bool get canceled => throw _privateConstructorUsedError;
+  bool get canceled;
   @override
-  bool get deleted => throw _privateConstructorUsedError;
+  bool get deleted;
   @override
   @JsonKey(ignore: true)
   _$DurationPickerResultCopyWith<_DurationPickerResult> get copyWith =>

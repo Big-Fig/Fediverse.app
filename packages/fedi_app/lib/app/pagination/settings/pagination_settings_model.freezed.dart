@@ -30,7 +30,7 @@ class _$PaginationSettingsTearOff {
     );
   }
 
-  PaginationSettings fromJson(Map<String, Object> json) {
+  PaginationSettings fromJson(Map<String, Object?> json) {
     return PaginationSettings.fromJson(json);
   }
 }
@@ -137,16 +137,14 @@ class _$_PaginationSettings extends _PaginationSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PaginationSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _PaginationSettings &&
             (identical(other.pageSizeString, pageSizeString) ||
-                const DeepCollectionEquality()
-                    .equals(other.pageSizeString, pageSizeString)));
+                other.pageSizeString == pageSizeString));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(pageSizeString);
+  int get hashCode => Object.hash(runtimeType, pageSizeString);
 
   @JsonKey(ignore: true)
   @override
@@ -172,7 +170,7 @@ abstract class _PaginationSettings extends PaginationSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'page_size')
-  String get pageSizeString => throw _privateConstructorUsedError;
+  String get pageSizeString;
   @override
   @JsonKey(ignore: true)
   _$PaginationSettingsCopyWith<_PaginationSettings> get copyWith =>

@@ -131,20 +131,16 @@ class _$_DurationDateTime implements _DurationDateTime {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DurationDateTime &&
+        (other.runtimeType == runtimeType &&
+            other is _DurationDateTime &&
             (identical(other.duration, duration) ||
-                const DeepCollectionEquality()
-                    .equals(other.duration, duration)) &&
+                other.duration == duration) &&
             (identical(other.dateTime, dateTime) ||
-                const DeepCollectionEquality()
-                    .equals(other.dateTime, dateTime)));
+                other.dateTime == dateTime));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(duration) ^
-      const DeepCollectionEquality().hash(dateTime);
+  int get hashCode => Object.hash(runtimeType, duration, dateTime);
 
   @JsonKey(ignore: true)
   @override
@@ -158,9 +154,9 @@ abstract class _DurationDateTime implements DurationDateTime {
       required DateTime? dateTime}) = _$_DurationDateTime;
 
   @override
-  Duration? get duration => throw _privateConstructorUsedError;
+  Duration? get duration;
   @override
-  DateTime? get dateTime => throw _privateConstructorUsedError;
+  DateTime? get dateTime;
   @override
   @JsonKey(ignore: true)
   _$DurationDateTimeCopyWith<_DurationDateTime> get copyWith =>

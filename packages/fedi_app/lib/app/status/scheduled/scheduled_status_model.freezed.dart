@@ -119,16 +119,15 @@ class _$_DbScheduledStatusPopulated implements _DbScheduledStatusPopulated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbScheduledStatusPopulated &&
-            (identical(other.dbScheduledStatus, dbScheduledStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbScheduledStatus, dbScheduledStatus)));
+        (other.runtimeType == runtimeType &&
+            other is _DbScheduledStatusPopulated &&
+            const DeepCollectionEquality()
+                .equals(other.dbScheduledStatus, dbScheduledStatus));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbScheduledStatus);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(dbScheduledStatus));
 
   @JsonKey(ignore: true)
   @override
@@ -144,7 +143,7 @@ abstract class _DbScheduledStatusPopulated
       _$_DbScheduledStatusPopulated;
 
   @override
-  DbScheduledStatus get dbScheduledStatus => throw _privateConstructorUsedError;
+  DbScheduledStatus get dbScheduledStatus;
   @override
   @JsonKey(ignore: true)
   _$DbScheduledStatusPopulatedCopyWith<_DbScheduledStatusPopulated>
@@ -277,18 +276,16 @@ class _$_DbScheduledStatusPopulatedWrapper
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbScheduledStatusPopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbScheduledStatusPopulatedWrapper &&
             (identical(other.dbScheduledStatusPopulated,
                     dbScheduledStatusPopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbScheduledStatusPopulated,
-                    dbScheduledStatusPopulated)));
+                other.dbScheduledStatusPopulated ==
+                    dbScheduledStatusPopulated));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbScheduledStatusPopulated);
+  int get hashCode => Object.hash(runtimeType, dbScheduledStatusPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -306,8 +303,7 @@ abstract class _DbScheduledStatusPopulatedWrapper
   const _DbScheduledStatusPopulatedWrapper._() : super._();
 
   @override
-  DbScheduledStatusPopulated get dbScheduledStatusPopulated =>
-      throw _privateConstructorUsedError;
+  DbScheduledStatusPopulated get dbScheduledStatusPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbScheduledStatusPopulatedWrapperCopyWith<

@@ -160,19 +160,15 @@ class _$_TimelinesHomeTabStorageListItem
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TimelinesHomeTabStorageListItem &&
+        (other.runtimeType == runtimeType &&
+            other is _TimelinesHomeTabStorageListItem &&
             (identical(other.timeline, timeline) ||
-                const DeepCollectionEquality()
-                    .equals(other.timeline, timeline)) &&
-            (identical(other.key, key) ||
-                const DeepCollectionEquality().equals(other.key, key)));
+                other.timeline == timeline) &&
+            (identical(other.key, key) || other.key == key));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(timeline) ^
-      const DeepCollectionEquality().hash(key);
+  int get hashCode => Object.hash(runtimeType, timeline, key);
 
   @JsonKey(ignore: true)
   @override
@@ -188,9 +184,9 @@ abstract class _TimelinesHomeTabStorageListItem
       required Key key}) = _$_TimelinesHomeTabStorageListItem;
 
   @override
-  Timeline get timeline => throw _privateConstructorUsedError;
+  Timeline get timeline;
   @override
-  Key get key => throw _privateConstructorUsedError;
+  Key get key;
   @override
   @JsonKey(ignore: true)
   _$TimelinesHomeTabStorageListItemCopyWith<_TimelinesHomeTabStorageListItem>
@@ -215,7 +211,7 @@ class _$TimelinesHomeTabStorageTearOff {
     );
   }
 
-  TimelinesHomeTabStorage fromJson(Map<String, Object> json) {
+  TimelinesHomeTabStorage fromJson(Map<String, Object?> json) {
     return TimelinesHomeTabStorage.fromJson(json);
   }
 }
@@ -334,15 +330,15 @@ class _$_TimelinesHomeTabStorage
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TimelinesHomeTabStorage &&
-            (identical(other.timelineIds, timelineIds) ||
-                const DeepCollectionEquality()
-                    .equals(other.timelineIds, timelineIds)));
+        (other.runtimeType == runtimeType &&
+            other is _TimelinesHomeTabStorage &&
+            const DeepCollectionEquality()
+                .equals(other.timelineIds, timelineIds));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(timelineIds);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(timelineIds));
 
   @JsonKey(ignore: true)
   @override
@@ -368,7 +364,7 @@ abstract class _TimelinesHomeTabStorage implements TimelinesHomeTabStorage {
   @override
   @HiveField(0)
   @JsonKey(name: 'timeline_ids')
-  List<String> get timelineIds => throw _privateConstructorUsedError;
+  List<String> get timelineIds;
   @override
   @JsonKey(ignore: true)
   _$TimelinesHomeTabStorageCopyWith<_TimelinesHomeTabStorage> get copyWith =>

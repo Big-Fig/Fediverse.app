@@ -9,6 +9,7 @@ import 'package:fedi_app/app/account/details/account_details_bloc_impl.dart';
 import 'package:fedi_app/app/account/details/account_details_page.dart';
 import 'package:fedi_app/app/account/remote_account_bloc_impl.dart';
 import 'package:fedi_app/app/async/unifedi/unifedi_async_operation_helper.dart';
+import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi_app/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi_app/app/instance/remote/remote_instance_error_data.dart';
@@ -83,6 +84,10 @@ Future<void> goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
 
         remoteInstanceBloc = RemoteInstanceBloc(
           instanceUri: instanceUri,
+          configService: IConfigService.of(
+            context,
+            listen: false,
+          ),
           connectionService: Provider.of(
             context,
             listen: false,
@@ -199,6 +204,10 @@ MaterialPageRoute<void> createRemoteAccountDetailsPageRoute({
 
           return RemoteInstanceBloc(
             instanceUri: instanceUri,
+            configService: IConfigService.of(
+              context,
+              listen: false,
+            ),
             connectionService: Provider.of<IConnectionService>(
               context,
               listen: false,

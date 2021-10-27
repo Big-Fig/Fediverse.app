@@ -57,7 +57,7 @@ class _$PostStatusDataTearOff {
     );
   }
 
-  PostStatusData fromJson(Map<String, Object> json) {
+  PostStatusData fromJson(Map<String, Object?> json) {
     return PostStatusData.fromJson(json);
   }
 }
@@ -406,60 +406,47 @@ class _$_PostStatusData extends _PostStatusData {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PostStatusData &&
-            (identical(other.subject, subject) ||
-                const DeepCollectionEquality()
-                    .equals(other.subject, subject)) &&
-            (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PostStatusData &&
+            (identical(other.subject, subject) || other.subject == subject) &&
+            (identical(other.text, text) || other.text == text) &&
             (identical(other.scheduledAt, scheduledAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.scheduledAt, scheduledAt)) &&
+                other.scheduledAt == scheduledAt) &&
             (identical(other.visibilityString, visibilityString) ||
-                const DeepCollectionEquality()
-                    .equals(other.visibilityString, visibilityString)) &&
-            (identical(other.to, to) ||
-                const DeepCollectionEquality().equals(other.to, to)) &&
-            (identical(other.mediaAttachments, mediaAttachments) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaAttachments, mediaAttachments)) &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)) &&
+                other.visibilityString == visibilityString) &&
+            const DeepCollectionEquality().equals(other.to, to) &&
+            const DeepCollectionEquality()
+                .equals(other.mediaAttachments, mediaAttachments) &&
+            (identical(other.poll, poll) || other.poll == poll) &&
             (identical(other.inReplyToUnifediApiStatus,
                     inReplyToUnifediApiStatus) ||
-                const DeepCollectionEquality().equals(
-                    other.inReplyToUnifediApiStatus,
-                    inReplyToUnifediApiStatus)) &&
+                other.inReplyToUnifediApiStatus == inReplyToUnifediApiStatus) &&
             (identical(
                     other.inReplyToConversationId, inReplyToConversationId) ||
-                const DeepCollectionEquality().equals(
-                    other.inReplyToConversationId, inReplyToConversationId)) &&
+                other.inReplyToConversationId == inReplyToConversationId) &&
             (identical(other.isNsfwSensitiveEnabled, isNsfwSensitiveEnabled) ||
-                const DeepCollectionEquality().equals(
-                    other.isNsfwSensitiveEnabled, isNsfwSensitiveEnabled)) &&
+                other.isNsfwSensitiveEnabled == isNsfwSensitiveEnabled) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality()
-                    .equals(other.language, language)) &&
+                other.language == language) &&
             (identical(other.expiresInSeconds, expiresInSeconds) ||
-                const DeepCollectionEquality()
-                    .equals(other.expiresInSeconds, expiresInSeconds)));
+                other.expiresInSeconds == expiresInSeconds));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(subject) ^
-      const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(scheduledAt) ^
-      const DeepCollectionEquality().hash(visibilityString) ^
-      const DeepCollectionEquality().hash(to) ^
-      const DeepCollectionEquality().hash(mediaAttachments) ^
-      const DeepCollectionEquality().hash(poll) ^
-      const DeepCollectionEquality().hash(inReplyToUnifediApiStatus) ^
-      const DeepCollectionEquality().hash(inReplyToConversationId) ^
-      const DeepCollectionEquality().hash(isNsfwSensitiveEnabled) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(expiresInSeconds);
+  int get hashCode => Object.hash(
+      runtimeType,
+      subject,
+      text,
+      scheduledAt,
+      visibilityString,
+      const DeepCollectionEquality().hash(to),
+      const DeepCollectionEquality().hash(mediaAttachments),
+      poll,
+      inReplyToUnifediApiStatus,
+      inReplyToConversationId,
+      isNsfwSensitiveEnabled,
+      language,
+      expiresInSeconds);
 
   @JsonKey(ignore: true)
   @override
@@ -499,38 +486,36 @@ abstract class _PostStatusData extends PostStatusData {
       _$_PostStatusData.fromJson;
 
   @override
-  String? get subject => throw _privateConstructorUsedError;
+  String? get subject;
   @override
-  String? get text => throw _privateConstructorUsedError;
+  String? get text;
   @override
   @JsonKey(name: 'scheduled_at')
-  DateTime? get scheduledAt => throw _privateConstructorUsedError;
+  DateTime? get scheduledAt;
   @override
   @JsonKey(name: 'visibility')
-  String get visibilityString => throw _privateConstructorUsedError;
+  String get visibilityString;
   @override
-  List<String>? get to => throw _privateConstructorUsedError;
+  List<String>? get to;
   @override
   @JsonKey(name: 'media_attachments')
-  List<UnifediApiMediaAttachment>? get mediaAttachments =>
-      throw _privateConstructorUsedError;
+  List<UnifediApiMediaAttachment>? get mediaAttachments;
   @override
-  PostStatusPoll? get poll => throw _privateConstructorUsedError;
+  PostStatusPoll? get poll;
   @override
   @JsonKey(name: 'in_reply_to_status')
-  UnifediApiStatus? get inReplyToUnifediApiStatus =>
-      throw _privateConstructorUsedError;
+  UnifediApiStatus? get inReplyToUnifediApiStatus;
   @override
   @JsonKey(name: 'in_reply_to_conversation_id')
-  String? get inReplyToConversationId => throw _privateConstructorUsedError;
+  String? get inReplyToConversationId;
   @override
   @JsonKey(name: 'is_nsfw_sensitive_enabled')
-  bool get isNsfwSensitiveEnabled => throw _privateConstructorUsedError;
+  bool get isNsfwSensitiveEnabled;
   @override
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @JsonKey(name: 'expires_in_seconds')
-  int? get expiresInSeconds => throw _privateConstructorUsedError;
+  int? get expiresInSeconds;
   @override
   @JsonKey(ignore: true)
   _$PostStatusDataCopyWith<_PostStatusData> get copyWith =>

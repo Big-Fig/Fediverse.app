@@ -14,7 +14,6 @@ import 'package:fedi_app/app/access/list/access_list_bloc_impl.dart';
 import 'package:fedi_app/app/access/list/local_preferences/access_list_local_preference_bloc.dart';
 import 'package:fedi_app/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/account/my/my_account_bloc.dart';
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/cache/database/settings/database_cache_settings_bloc.dart';
@@ -164,11 +163,7 @@ import 'package:logging/logging.dart';
 var _logger = Logger('app_context_bloc_impl.dart');
 
 class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
-  final AppLaunchType appLaunchType;
-
-  AppContextBloc({
-    required this.appLaunchType,
-  });
+  AppContextBloc();
 
   @override
   // todo:divide into small methods
@@ -178,9 +173,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
 
     var globalProviderService = this;
 
-    var configService = ConfigService(
-      appLaunchType: appLaunchType,
-    )..disposeWith(this);
+    var configService = ConfigService()..disposeWith(this);
     await globalProviderService
         .asyncInitAndRegister<IConfigService>(configService);
 
@@ -225,7 +218,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         HiveLocalPreferencesService.withLastVersionBoxName()..disposeWith(this);
     await hiveLocalPreferencesService.performAsyncInit();
 
-    if (configService.appLaunchType == AppLaunchType.mock) {
+    if (configService.clearDatabaseOnLaunch == true) {
       await hiveLocalPreferencesService.clearAllValues();
     }
 
@@ -677,6 +670,7 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
       maxNrOfCacheObjects: globalFilesCacheSettingsLocalPreferencesBloc
           .value.sizeLimitCountType
           .toCountOrNull(),
+      configService: configService,
     )..disposeWith(this);
 
     await globalProviderService

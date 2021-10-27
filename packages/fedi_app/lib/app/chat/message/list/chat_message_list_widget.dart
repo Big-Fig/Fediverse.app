@@ -1,6 +1,5 @@
 import 'package:easy_dispose/easy_dispose.dart';
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/async/smart_refresher/async_smart_refresher_helper.dart';
 import 'package:fedi_app/app/chat/message/chat_message_bloc.dart';
 import 'package:fedi_app/app/chat/message/chat_message_model.dart';
@@ -129,7 +128,7 @@ class ChatMessageListWidget<T extends IChatMessage>
     bool reverse;
 
     var configService = IConfigService.of(context);
-    if (configService.appLaunchType == AppLaunchType.mock) {
+    if (configService.disableSmartRefresher == true) {
       // todo: remove hack
       reverse = true;
     } else {

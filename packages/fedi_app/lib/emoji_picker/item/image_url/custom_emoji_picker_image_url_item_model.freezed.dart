@@ -31,7 +31,7 @@ class _$CustomEmojiPickerImageUrlItemTearOff {
     );
   }
 
-  CustomEmojiPickerImageUrlItem fromJson(Map<String, Object> json) {
+  CustomEmojiPickerImageUrlItem fromJson(Map<String, Object?> json) {
     return CustomEmojiPickerImageUrlItem.fromJson(json);
   }
 }
@@ -163,19 +163,15 @@ class _$_CustomEmojiPickerImageUrlItem extends _CustomEmojiPickerImageUrlItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CustomEmojiPickerImageUrlItem &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is _CustomEmojiPickerImageUrlItem &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.imageUrl, imageUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageUrl, imageUrl)));
+                other.imageUrl == imageUrl));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(imageUrl);
+  int get hashCode => Object.hash(runtimeType, name, imageUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -202,11 +198,11 @@ abstract class _CustomEmojiPickerImageUrlItem
 
   @override
   @HiveField(0)
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @HiveField(1)
   @JsonKey(name: 'image_url')
-  String get imageUrl => throw _privateConstructorUsedError;
+  String get imageUrl;
   @override
   @JsonKey(ignore: true)
   _$CustomEmojiPickerImageUrlItemCopyWith<_CustomEmojiPickerImageUrlItem>

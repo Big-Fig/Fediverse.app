@@ -29,7 +29,7 @@ class _$NotificationsPushHandlerUnhandledListTearOff {
     );
   }
 
-  NotificationsPushHandlerUnhandledList fromJson(Map<String, Object> json) {
+  NotificationsPushHandlerUnhandledList fromJson(Map<String, Object?> json) {
     return NotificationsPushHandlerUnhandledList.fromJson(json);
   }
 }
@@ -143,15 +143,14 @@ class _$_NotificationsPushHandlerUnhandledList
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotificationsPushHandlerUnhandledList &&
-            (identical(other.messages, messages) ||
-                const DeepCollectionEquality()
-                    .equals(other.messages, messages)));
+        (other.runtimeType == runtimeType &&
+            other is _NotificationsPushHandlerUnhandledList &&
+            const DeepCollectionEquality().equals(other.messages, messages));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(messages);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(messages));
 
   @JsonKey(ignore: true)
   @override
@@ -179,8 +178,7 @@ abstract class _NotificationsPushHandlerUnhandledList
 
   @override
   @HiveField(0)
-  List<NotificationsPushHandlerMessage> get messages =>
-      throw _privateConstructorUsedError;
+  List<NotificationsPushHandlerMessage> get messages;
   @override
   @JsonKey(ignore: true)
   _$NotificationsPushHandlerUnhandledListCopyWith<

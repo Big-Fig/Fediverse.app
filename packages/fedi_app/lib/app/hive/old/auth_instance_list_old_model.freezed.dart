@@ -28,7 +28,7 @@ class _$AuthInstanceListOldTearOff {
     );
   }
 
-  AuthInstanceListOld fromJson(Map<String, Object> json) {
+  AuthInstanceListOld fromJson(Map<String, Object?> json) {
     return AuthInstanceListOld.fromJson(json);
   }
 }
@@ -141,15 +141,14 @@ class _$_AuthInstanceListOld
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AuthInstanceListOld &&
-            (identical(other.instances, instances) ||
-                const DeepCollectionEquality()
-                    .equals(other.instances, instances)));
+        (other.runtimeType == runtimeType &&
+            other is _AuthInstanceListOld &&
+            const DeepCollectionEquality().equals(other.instances, instances));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(instances);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(instances));
 
   @JsonKey(ignore: true)
   @override
@@ -173,7 +172,7 @@ abstract class _AuthInstanceListOld implements AuthInstanceListOld {
 
   @override
   @HiveField(0)
-  List<AuthInstanceOld> get instances => throw _privateConstructorUsedError;
+  List<AuthInstanceOld> get instances;
   @override
   @JsonKey(ignore: true)
   _$AuthInstanceListOldCopyWith<_AuthInstanceListOld> get copyWith =>
