@@ -34,7 +34,7 @@ class _$UnifediApiMentionTearOff {
     );
   }
 
-  UnifediApiMention fromJson(Map<String, Object> json) {
+  UnifediApiMention fromJson(Map<String, Object?> json) {
     return UnifediApiMention.fromJson(json);
   }
 }
@@ -194,25 +194,17 @@ class _$_UnifediApiMention implements _UnifediApiMention {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiMention &&
-            (identical(other.acct, acct) ||
-                const DeepCollectionEquality().equals(other.acct, acct)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiMention &&
+            (identical(other.acct, acct) || other.acct == acct) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.username, username) ||
-                const DeepCollectionEquality()
-                    .equals(other.username, username)));
+                other.username == username));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(acct) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(username);
+  int get hashCode => Object.hash(runtimeType, acct, id, url, username);
 
   @JsonKey(ignore: true)
   @override
@@ -237,16 +229,16 @@ abstract class _UnifediApiMention implements UnifediApiMention {
 
   @override
   @HiveField(0)
-  String get acct => throw _privateConstructorUsedError;
+  String get acct;
   @override
   @HiveField(1)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(2)
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @override
   @HiveField(3)
-  String? get username => throw _privateConstructorUsedError;
+  String? get username;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiMentionCopyWith<_UnifediApiMention> get copyWith =>

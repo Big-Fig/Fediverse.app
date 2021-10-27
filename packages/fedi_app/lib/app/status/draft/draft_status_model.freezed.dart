@@ -116,15 +116,15 @@ class _$_DbDraftStatusPopulated extends _DbDraftStatusPopulated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbDraftStatusPopulated &&
-            (identical(other.dbDraftStatus, dbDraftStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbDraftStatus, dbDraftStatus)));
+        (other.runtimeType == runtimeType &&
+            other is _DbDraftStatusPopulated &&
+            const DeepCollectionEquality()
+                .equals(other.dbDraftStatus, dbDraftStatus));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(dbDraftStatus);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(dbDraftStatus));
 
   @JsonKey(ignore: true)
   @override
@@ -139,7 +139,7 @@ abstract class _DbDraftStatusPopulated extends DbDraftStatusPopulated {
   const _DbDraftStatusPopulated._() : super._();
 
   @override
-  DbDraftStatus get dbDraftStatus => throw _privateConstructorUsedError;
+  DbDraftStatus get dbDraftStatus;
   @override
   @JsonKey(ignore: true)
   _$DbDraftStatusPopulatedCopyWith<_DbDraftStatusPopulated> get copyWith =>
@@ -269,16 +269,14 @@ class _$_DbDraftStatusPopulatedWrapper extends _DbDraftStatusPopulatedWrapper {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbDraftStatusPopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbDraftStatusPopulatedWrapper &&
             (identical(other.dbDraftStatusPopulated, dbDraftStatusPopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbDraftStatusPopulated, dbDraftStatusPopulated)));
+                other.dbDraftStatusPopulated == dbDraftStatusPopulated));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbDraftStatusPopulated);
+  int get hashCode => Object.hash(runtimeType, dbDraftStatusPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -295,8 +293,7 @@ abstract class _DbDraftStatusPopulatedWrapper
   const _DbDraftStatusPopulatedWrapper._() : super._();
 
   @override
-  DbDraftStatusPopulated get dbDraftStatusPopulated =>
-      throw _privateConstructorUsedError;
+  DbDraftStatusPopulated get dbDraftStatusPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbDraftStatusPopulatedWrapperCopyWith<_DbDraftStatusPopulatedWrapper>

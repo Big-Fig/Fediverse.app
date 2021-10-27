@@ -28,7 +28,7 @@ class _$UnifediApiTagHistoryTearOff {
     );
   }
 
-  UnifediApiTagHistory fromJson(Map<String, Object> json) {
+  UnifediApiTagHistory fromJson(Map<String, Object?> json) {
     return UnifediApiTagHistory.fromJson(json);
   }
 }
@@ -132,14 +132,14 @@ class _$_UnifediApiTagHistory implements _UnifediApiTagHistory {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiTagHistory &&
-            (identical(other.items, items) ||
-                const DeepCollectionEquality().equals(other.items, items)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTagHistory &&
+            const DeepCollectionEquality().equals(other.items, items));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(items);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(items));
 
   @JsonKey(ignore: true)
   @override
@@ -163,8 +163,7 @@ abstract class _UnifediApiTagHistory implements UnifediApiTagHistory {
 
   @override
   @HiveField(0)
-  List<UnifediApiTagHistoryItem> get items =>
-      throw _privateConstructorUsedError;
+  List<UnifediApiTagHistoryItem> get items;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiTagHistoryCopyWith<_UnifediApiTagHistory> get copyWith =>

@@ -39,7 +39,7 @@ class _$UnifediApiTagHistoryItemTearOff {
     );
   }
 
-  UnifediApiTagHistoryItem fromJson(Map<String, Object> json) {
+  UnifediApiTagHistoryItem fromJson(Map<String, Object?> json) {
     return UnifediApiTagHistoryItem.fromJson(json);
   }
 }
@@ -220,23 +220,18 @@ class _$_UnifediApiTagHistoryItem implements _UnifediApiTagHistoryItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiTagHistoryItem &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTagHistoryItem &&
             (identical(other.accounts, accounts) ||
-                const DeepCollectionEquality()
-                    .equals(other.accounts, accounts)) &&
+                other.accounts == accounts) &&
             (identical(other.dayInUnixTimestamp, dayInUnixTimestamp) ||
-                const DeepCollectionEquality()
-                    .equals(other.dayInUnixTimestamp, dayInUnixTimestamp)) &&
-            (identical(other.uses, uses) ||
-                const DeepCollectionEquality().equals(other.uses, uses)));
+                other.dayInUnixTimestamp == dayInUnixTimestamp) &&
+            (identical(other.uses, uses) || other.uses == uses));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(accounts) ^
-      const DeepCollectionEquality().hash(dayInUnixTimestamp) ^
-      const DeepCollectionEquality().hash(uses);
+      Object.hash(runtimeType, accounts, dayInUnixTimestamp, uses);
 
   @JsonKey(ignore: true)
   @override
@@ -270,20 +265,20 @@ abstract class _UnifediApiTagHistoryItem implements UnifediApiTagHistoryItem {
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
-  int get accounts => throw _privateConstructorUsedError;
+  int get accounts;
   @override
   @HiveField(1)
   @JsonKey(
       name: 'day',
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
-  int get dayInUnixTimestamp => throw _privateConstructorUsedError;
+  int get dayInUnixTimestamp;
   @override
   @HiveField(2)
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
-  int get uses => throw _privateConstructorUsedError;
+  int get uses;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiTagHistoryItemCopyWith<_UnifediApiTagHistoryItem> get copyWith =>

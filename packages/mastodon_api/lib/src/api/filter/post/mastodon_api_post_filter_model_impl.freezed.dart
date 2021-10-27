@@ -37,7 +37,7 @@ class _$MastodonApiPostFilterTearOff {
     );
   }
 
-  MastodonApiPostFilter fromJson(Map<String, Object> json) {
+  MastodonApiPostFilter fromJson(Map<String, Object?> json) {
     return MastodonApiPostFilter.fromJson(json);
   }
 }
@@ -219,31 +219,26 @@ class _$_MastodonApiPostFilter implements _MastodonApiPostFilter {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiPostFilter &&
-            (identical(other.context, context) ||
-                const DeepCollectionEquality()
-                    .equals(other.context, context)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiPostFilter &&
+            const DeepCollectionEquality().equals(other.context, context) &&
             (identical(other.expiresIn, expiresIn) ||
-                const DeepCollectionEquality()
-                    .equals(other.expiresIn, expiresIn)) &&
+                other.expiresIn == expiresIn) &&
             (identical(other.irreversible, irreversible) ||
-                const DeepCollectionEquality()
-                    .equals(other.irreversible, irreversible)) &&
-            (identical(other.phrase, phrase) ||
-                const DeepCollectionEquality().equals(other.phrase, phrase)) &&
+                other.irreversible == irreversible) &&
+            (identical(other.phrase, phrase) || other.phrase == phrase) &&
             (identical(other.wholeWord, wholeWord) ||
-                const DeepCollectionEquality()
-                    .equals(other.wholeWord, wholeWord)));
+                other.wholeWord == wholeWord));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(context) ^
-      const DeepCollectionEquality().hash(expiresIn) ^
-      const DeepCollectionEquality().hash(irreversible) ^
-      const DeepCollectionEquality().hash(phrase) ^
-      const DeepCollectionEquality().hash(wholeWord);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(context),
+      expiresIn,
+      irreversible,
+      phrase,
+      wholeWord);
 
   @JsonKey(ignore: true)
   @override
@@ -277,21 +272,21 @@ abstract class _MastodonApiPostFilter implements MastodonApiPostFilter {
 
   @override
   @HiveField(0)
-  List<String> get context => throw _privateConstructorUsedError;
+  List<String> get context;
   @override
   @HiveField(1)
   @JsonKey(name: 'expires_in')
-  Duration? get expiresIn => throw _privateConstructorUsedError;
+  Duration? get expiresIn;
   @override
   @HiveField(3)
-  bool get irreversible => throw _privateConstructorUsedError;
+  bool get irreversible;
   @override
   @HiveField(4)
-  String get phrase => throw _privateConstructorUsedError;
+  String get phrase;
   @override
   @HiveField(5)
   @JsonKey(name: 'whole_word')
-  bool get wholeWord => throw _privateConstructorUsedError;
+  bool get wholeWord;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiPostFilterCopyWith<_MastodonApiPostFilter> get copyWith =>

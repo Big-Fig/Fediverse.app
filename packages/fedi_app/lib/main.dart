@@ -14,7 +14,6 @@ import 'package:fedi_app/app/access/join/join_access_bloc_impl.dart';
 import 'package:fedi_app/app/access/join/join_access_bloc_proxy_provider.dart';
 import 'package:fedi_app/app/account/account_model_adapter.dart';
 import 'package:fedi_app/app/account/details/local_account_details_page.dart';
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/chat/unifedi/repository/unifedi_chat_repository.dart';
 import 'package:fedi_app/app/chat/unifedi/unifedi_chat_page.dart';
 import 'package:fedi_app/app/config/config_service.dart';
@@ -75,19 +74,17 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // ignore: long-method
 Future<void> main() async {
-  await launchApp(appLaunchType: AppLaunchType.normal);
+  await launchApp();
 }
 
-Future<void> launchApp({
-  required AppLaunchType appLaunchType,
-}) async {
+Future<void> launchApp() async {
   // debugRepaintRainbowEnabled = true;
   // ignore: avoid-ignoring-return-values
   WidgetsFlutterBinding.ensureInitialized();
 
   runNotInitializedSplashApp();
 
-  IInitBloc initBloc = InitBloc(appLaunchType: appLaunchType);
+  IInitBloc initBloc = InitBloc();
   initBloc
     // ignore: unawaited_futures
     ..performAsyncInit()

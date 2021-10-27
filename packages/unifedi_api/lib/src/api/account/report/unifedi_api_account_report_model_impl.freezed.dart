@@ -33,7 +33,7 @@ class _$UnifediApiAccountReportTearOff {
     );
   }
 
-  UnifediApiAccountReport fromJson(Map<String, Object> json) {
+  UnifediApiAccountReport fromJson(Map<String, Object?> json) {
     return UnifediApiAccountReport.fromJson(json);
   }
 }
@@ -206,23 +206,16 @@ class _$_UnifediApiAccountReport implements _UnifediApiAccountReport {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccountReport &&
-            (identical(other.account, account) ||
-                const DeepCollectionEquality()
-                    .equals(other.account, account)) &&
-            (identical(other.statuses, statuses) ||
-                const DeepCollectionEquality()
-                    .equals(other.statuses, statuses)) &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiAccountReport &&
+            (identical(other.account, account) || other.account == account) &&
+            const DeepCollectionEquality().equals(other.statuses, statuses) &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(account) ^
-      const DeepCollectionEquality().hash(statuses) ^
-      const DeepCollectionEquality().hash(user);
+  int get hashCode => Object.hash(runtimeType, account,
+      const DeepCollectionEquality().hash(statuses), user);
 
   @JsonKey(ignore: true)
   @override
@@ -248,13 +241,13 @@ abstract class _UnifediApiAccountReport implements UnifediApiAccountReport {
 
   @override
   @HiveField(0)
-  UnifediApiAccount? get account => throw _privateConstructorUsedError;
+  UnifediApiAccount? get account;
   @override
   @HiveField(1)
-  List<UnifediApiStatus>? get statuses => throw _privateConstructorUsedError;
+  List<UnifediApiStatus>? get statuses;
   @override
   @HiveField(2)
-  UnifediApiAccount? get user => throw _privateConstructorUsedError;
+  UnifediApiAccount? get user;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiAccountReportCopyWith<_UnifediApiAccountReport> get copyWith =>

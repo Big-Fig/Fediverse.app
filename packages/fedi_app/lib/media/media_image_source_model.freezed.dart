@@ -138,18 +138,14 @@ class _$_MediaImageSource implements _MediaImageSource {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MediaImageSource &&
-            (identical(other.file, file) ||
-                const DeepCollectionEquality().equals(other.file, file)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)));
+        (other.runtimeType == runtimeType &&
+            other is _MediaImageSource &&
+            (identical(other.file, file) || other.file == file) &&
+            (identical(other.url, url) || other.url == url));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(file) ^
-      const DeepCollectionEquality().hash(url);
+  int get hashCode => Object.hash(runtimeType, file, url);
 
   @JsonKey(ignore: true)
   @override
@@ -162,9 +158,9 @@ abstract class _MediaImageSource implements MediaImageSource {
       _$_MediaImageSource;
 
   @override
-  File? get file => throw _privateConstructorUsedError;
+  File? get file;
   @override
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @JsonKey(ignore: true)
   _$MediaImageSourceCopyWith<_MediaImageSource> get copyWith =>

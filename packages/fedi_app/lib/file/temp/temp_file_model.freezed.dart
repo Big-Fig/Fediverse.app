@@ -133,19 +133,15 @@ class _$_DownloadTempFileRequest implements _DownloadTempFileRequest {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DownloadTempFileRequest &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+        (other.runtimeType == runtimeType &&
+            other is _DownloadTempFileRequest &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.filenameWithExtension, filenameWithExtension) ||
-                const DeepCollectionEquality().equals(
-                    other.filenameWithExtension, filenameWithExtension)));
+                other.filenameWithExtension == filenameWithExtension));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(filenameWithExtension);
+  int get hashCode => Object.hash(runtimeType, url, filenameWithExtension);
 
   @JsonKey(ignore: true)
   @override
@@ -160,9 +156,9 @@ abstract class _DownloadTempFileRequest implements DownloadTempFileRequest {
       required String filenameWithExtension}) = _$_DownloadTempFileRequest;
 
   @override
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @override
-  String get filenameWithExtension => throw _privateConstructorUsedError;
+  String get filenameWithExtension;
   @override
   @JsonKey(ignore: true)
   _$DownloadTempFileRequestCopyWith<_DownloadTempFileRequest> get copyWith =>

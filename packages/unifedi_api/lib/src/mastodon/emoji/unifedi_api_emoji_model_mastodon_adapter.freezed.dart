@@ -28,7 +28,7 @@ class _$UnifediApiEmojiMastodonAdapterTearOff {
     );
   }
 
-  UnifediApiEmojiMastodonAdapter fromJson(Map<String, Object> json) {
+  UnifediApiEmojiMastodonAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiEmojiMastodonAdapter.fromJson(json);
   }
 }
@@ -150,14 +150,13 @@ class _$_UnifediApiEmojiMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiEmojiMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiEmojiMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -182,7 +181,7 @@ abstract class _UnifediApiEmojiMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiEmoji get value => throw _privateConstructorUsedError;
+  MastodonApiEmoji get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiEmojiMastodonAdapterCopyWith<_UnifediApiEmojiMastodonAdapter>

@@ -45,7 +45,7 @@ class _$MastodonApiMediaAttachmentTearOff {
     );
   }
 
-  MastodonApiMediaAttachment fromJson(Map<String, Object> json) {
+  MastodonApiMediaAttachment fromJson(Map<String, Object?> json) {
     return MastodonApiMediaAttachment.fromJson(json);
   }
 }
@@ -322,44 +322,26 @@ class _$_MastodonApiMediaAttachment implements _MastodonApiMediaAttachment {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiMediaAttachment &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiMediaAttachment &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+                other.description == description) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.previewUrl, previewUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.previewUrl, previewUrl)) &&
+                other.previewUrl == previewUrl) &&
             (identical(other.remoteUrl, remoteUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.remoteUrl, remoteUrl)) &&
-            (identical(other.textUrl, textUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.textUrl, textUrl)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+                other.remoteUrl == remoteUrl) &&
+            (identical(other.textUrl, textUrl) || other.textUrl == textUrl) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.blurhash, blurhash) ||
-                const DeepCollectionEquality()
-                    .equals(other.blurhash, blurhash)) &&
-            (identical(other.meta, meta) ||
-                const DeepCollectionEquality().equals(other.meta, meta)));
+                other.blurhash == blurhash) &&
+            (identical(other.meta, meta) || other.meta == meta));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(previewUrl) ^
-      const DeepCollectionEquality().hash(remoteUrl) ^
-      const DeepCollectionEquality().hash(textUrl) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(blurhash) ^
-      const DeepCollectionEquality().hash(meta);
+  int get hashCode => Object.hash(runtimeType, description, id, previewUrl,
+      remoteUrl, textUrl, type, url, blurhash, meta);
 
   @JsonKey(ignore: true)
   @override
@@ -405,36 +387,35 @@ abstract class _MastodonApiMediaAttachment
 
   @override
   @HiveField(0)
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
   @HiveField(1)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(2)
   @JsonKey(name: 'preview_url')
-  String? get previewUrl => throw _privateConstructorUsedError;
+  String? get previewUrl;
   @override
   @HiveField(3)
   @JsonKey(name: 'remote_url')
-  String? get remoteUrl => throw _privateConstructorUsedError;
+  String? get remoteUrl;
   @override
   @HiveField(5)
   @JsonKey(name: 'text_url')
-  String? get textUrl => throw _privateConstructorUsedError;
+  String? get textUrl;
   @override
   @HiveField(6)
   @JsonKey(name: 'type')
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(7)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @HiveField(8)
-  String? get blurhash => throw _privateConstructorUsedError;
+  String? get blurhash;
   @override
   @HiveField(9)
-  MastodonApiMediaAttachmentMeta? get meta =>
-      throw _privateConstructorUsedError;
+  MastodonApiMediaAttachmentMeta? get meta;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiMediaAttachmentCopyWith<_MastodonApiMediaAttachment>

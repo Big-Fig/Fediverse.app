@@ -682,49 +682,51 @@ class DbStatus extends DataClass implements Insertable<DbStatus> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          remoteId.hashCode,
-          $mrjc(
-              createdAt.hashCode,
-              $mrjc(
-                  inReplyToRemoteId.hashCode,
-                  $mrjc(
-                      inReplyToAccountRemoteId.hashCode,
-                      $mrjc(
-                          sensitive.hashCode,
-                          $mrjc(
-                              spoilerText.hashCode,
-                              $mrjc(
-                                  visibility.hashCode,
-                                  $mrjc(
-                                      uri.hashCode,
-                                      $mrjc(
-                                          url.hashCode,
-                                          $mrjc(
-                                              repliesCount.hashCode,
-                                              $mrjc(
-                                                  reblogsCount.hashCode,
-                                                  $mrjc(
-                                                      favouritesCount.hashCode,
-                                                      $mrjc(
-                                                          favourited.hashCode,
-                                                          $mrjc(
-                                                              reblogged
-                                                                  .hashCode,
-                                                              $mrjc(
-                                                                  muted
-                                                                      .hashCode,
-                                                                  $mrjc(
-                                                                      bookmarked
-                                                                          .hashCode,
-                                                                      $mrjc(
-                                                                          pinned
-                                                                              .hashCode,
-                                                                          $mrjc(
-                                                                              content.hashCode,
-                                                                              $mrjc(reblogStatusRemoteId.hashCode, $mrjc(application.hashCode, $mrjc(accountRemoteId.hashCode, $mrjc(mediaAttachments.hashCode, $mrjc(mentions.hashCode, $mrjc(tags.hashCode, $mrjc(emojis.hashCode, $mrjc(poll.hashCode, $mrjc(card.hashCode, $mrjc(language.hashCode, $mrjc(contentVariants.hashCode, $mrjc(conversationId.hashCode, $mrjc(directConversationId.hashCode, $mrjc(inReplyToAccountAcct.hashCode, $mrjc(local.hashCode, $mrjc(spoilerTextVariants.hashCode, $mrjc(expiresAt.hashCode, $mrjc(threadMuted.hashCode, $mrjc(emojiReactions.hashCode, $mrjc(deleted.hashCode, $mrjc(hiddenLocallyOnDevice.hashCode, $mrjc(pendingState.hashCode, $mrjc(oldPendingRemoteId.hashCode, wasSentWithIdempotencyKey.hashCode)))))))))))))))))))))))))))))))))))))))))));
+  int get hashCode => Object.hashAll([
+        id,
+        remoteId,
+        createdAt,
+        inReplyToRemoteId,
+        inReplyToAccountRemoteId,
+        sensitive,
+        spoilerText,
+        visibility,
+        uri,
+        url,
+        repliesCount,
+        reblogsCount,
+        favouritesCount,
+        favourited,
+        reblogged,
+        muted,
+        bookmarked,
+        pinned,
+        content,
+        reblogStatusRemoteId,
+        application,
+        accountRemoteId,
+        mediaAttachments,
+        mentions,
+        tags,
+        emojis,
+        poll,
+        card,
+        language,
+        contentVariants,
+        conversationId,
+        directConversationId,
+        inReplyToAccountAcct,
+        local,
+        spoilerTextVariants,
+        expiresAt,
+        threadMuted,
+        emojiReactions,
+        deleted,
+        hiddenLocallyOnDevice,
+        pendingState,
+        oldPendingRemoteId,
+        wasSentWithIdempotencyKey
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2504,49 +2506,50 @@ class DbAccount extends DataClass implements Insertable<DbAccount> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          remoteId.hashCode,
-          $mrjc(
-              username.hashCode,
-              $mrjc(
-                  url.hashCode,
-                  $mrjc(
-                      note.hashCode,
-                      $mrjc(
-                          locked.hashCode,
-                          $mrjc(
-                              headerStatic.hashCode,
-                              $mrjc(
-                                  header.hashCode,
-                                  $mrjc(
-                                      followingCount.hashCode,
-                                      $mrjc(
-                                          followersCount.hashCode,
-                                          $mrjc(
-                                              statusesCount.hashCode,
-                                              $mrjc(
-                                                  displayName.hashCode,
-                                                  $mrjc(
-                                                      createdAt.hashCode,
-                                                      $mrjc(
-                                                          bot.hashCode,
-                                                          $mrjc(
-                                                              avatarStatic
-                                                                  .hashCode,
-                                                              $mrjc(
-                                                                  avatar
-                                                                      .hashCode,
-                                                                  $mrjc(
-                                                                      acct
-                                                                          .hashCode,
-                                                                      $mrjc(
-                                                                          lastStatusAt
-                                                                              .hashCode,
-                                                                          $mrjc(
-                                                                              fields.hashCode,
-                                                                              $mrjc(emojis.hashCode, $mrjc(backgroundImage.hashCode, $mrjc(tags.hashCode, $mrjc(relationship.hashCode, $mrjc(isAdmin.hashCode, $mrjc(isModerator.hashCode, $mrjc(confirmationPending.hashCode, $mrjc(hideFavorites.hashCode, $mrjc(hideFollowers.hashCode, $mrjc(hideFollows.hashCode, $mrjc(hideFollowersCount.hashCode, $mrjc(hideFollowsCount.hashCode, $mrjc(deactivated.hashCode, $mrjc(allowFollowingMove.hashCode, $mrjc(skipThreadContainment.hashCode, $mrjc(acceptsChatMessages.hashCode, $mrjc(suspended.hashCode, $mrjc(isConfirmed.hashCode, $mrjc(muteExpiresAt.hashCode, $mrjc(fqn.hashCode, $mrjc(favicon.hashCode, $mrjc(apId.hashCode, alsoKnownAs.hashCode))))))))))))))))))))))))))))))))))))))))));
+  int get hashCode => Object.hashAll([
+        id,
+        remoteId,
+        username,
+        url,
+        note,
+        locked,
+        headerStatic,
+        header,
+        followingCount,
+        followersCount,
+        statusesCount,
+        displayName,
+        createdAt,
+        bot,
+        avatarStatic,
+        avatar,
+        acct,
+        lastStatusAt,
+        fields,
+        emojis,
+        backgroundImage,
+        tags,
+        relationship,
+        isAdmin,
+        isModerator,
+        confirmationPending,
+        hideFavorites,
+        hideFollowers,
+        hideFollows,
+        hideFollowersCount,
+        hideFollowsCount,
+        deactivated,
+        allowFollowingMove,
+        skipThreadContainment,
+        acceptsChatMessages,
+        suspended,
+        isConfirmed,
+        muteExpiresAt,
+        fqn,
+        favicon,
+        apId,
+        alsoKnownAs
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3738,8 +3741,7 @@ class DbConversation extends DataClass implements Insertable<DbConversation> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(remoteId.hashCode, $mrjc(unread.hashCode, updatedAt.hashCode))));
+  int get hashCode => Object.hash(id, remoteId, unread, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4140,34 +4142,21 @@ class DbNotification extends DataClass implements Insertable<DbNotification> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          remoteId.hashCode,
-          $mrjc(
-              accountRemoteId.hashCode,
-              $mrjc(
-                  statusRemoteId.hashCode,
-                  $mrjc(
-                      chatRemoteId.hashCode,
-                      $mrjc(
-                          chatMessageRemoteId.hashCode,
-                          $mrjc(
-                              emoji.hashCode,
-                              $mrjc(
-                                  report.hashCode,
-                                  $mrjc(
-                                      chatMessage.hashCode,
-                                      $mrjc(
-                                          target.hashCode,
-                                          $mrjc(
-                                              unread.hashCode,
-                                              $mrjc(
-                                                  type.hashCode,
-                                                  $mrjc(
-                                                      createdAt.hashCode,
-                                                      dismissed
-                                                          .hashCode))))))))))))));
+  int get hashCode => Object.hash(
+      id,
+      remoteId,
+      accountRemoteId,
+      statusRemoteId,
+      chatRemoteId,
+      chatMessageRemoteId,
+      emoji,
+      report,
+      chatMessage,
+      target,
+      unread,
+      type,
+      createdAt,
+      dismissed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4647,8 +4636,7 @@ class DbConversationStatus extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(conversationRemoteId.hashCode, statusRemoteId.hashCode)));
+  int get hashCode => Object.hash(id, conversationRemoteId, statusRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4869,8 +4857,7 @@ class DbStatusHashtag extends DataClass implements Insertable<DbStatusHashtag> {
   }
 
   @override
-  int get hashCode => $mrjf(
-      $mrjc(id.hashCode, $mrjc(statusRemoteId.hashCode, hashtag.hashCode)));
+  int get hashCode => Object.hash(id, statusRemoteId, hashtag);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5082,8 +5069,7 @@ class DbStatusList extends DataClass implements Insertable<DbStatusList> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode, $mrjc(statusRemoteId.hashCode, listRemoteId.hashCode)));
+  int get hashCode => Object.hash(id, statusRemoteId, listRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5300,8 +5286,7 @@ class DbStatusFavouritedAccount extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode, $mrjc(statusRemoteId.hashCode, accountRemoteId.hashCode)));
+  int get hashCode => Object.hash(id, statusRemoteId, accountRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5522,8 +5507,7 @@ class DbStatusRebloggedAccount extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode, $mrjc(statusRemoteId.hashCode, accountRemoteId.hashCode)));
+  int get hashCode => Object.hash(id, statusRemoteId, accountRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5751,8 +5735,8 @@ class DbAccountFollowing extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(accountRemoteId.hashCode, followingAccountRemoteId.hashCode)));
+  int get hashCode =>
+      Object.hash(id, accountRemoteId, followingAccountRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5983,8 +5967,7 @@ class DbAccountFollower extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(accountRemoteId.hashCode, followerAccountRemoteId.hashCode)));
+  int get hashCode => Object.hash(id, accountRemoteId, followerAccountRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6209,8 +6192,7 @@ class DbConversationAccount extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(conversationRemoteId.hashCode, accountRemoteId.hashCode)));
+  int get hashCode => Object.hash(id, conversationRemoteId, accountRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6482,14 +6464,8 @@ class DbScheduledStatus extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          remoteId.hashCode,
-          $mrjc(
-              scheduledAt.hashCode,
-              $mrjc(canceled.hashCode,
-                  $mrjc(params.hashCode, mediaAttachments.hashCode))))));
+  int get hashCode => Object.hash(
+      id, remoteId, scheduledAt, canceled, params, mediaAttachments);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -6808,12 +6784,8 @@ class DbChat extends DataClass implements Insertable<DbChat> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          remoteId.hashCode,
-          $mrjc(unread.hashCode,
-              $mrjc(updatedAt.hashCode, accountRemoteId.hashCode)))));
+  int get hashCode =>
+      Object.hash(id, remoteId, unread, updatedAt, accountRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7247,36 +7219,21 @@ class DbChatMessage extends DataClass implements Insertable<DbChatMessage> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          remoteId.hashCode,
-          $mrjc(
-              chatRemoteId.hashCode,
-              $mrjc(
-                  accountRemoteId.hashCode,
-                  $mrjc(
-                      content.hashCode,
-                      $mrjc(
-                          createdAt.hashCode,
-                          $mrjc(
-                              emojis.hashCode,
-                              $mrjc(
-                                  mediaAttachment.hashCode,
-                                  $mrjc(
-                                      card.hashCode,
-                                      $mrjc(
-                                          pendingState.hashCode,
-                                          $mrjc(
-                                              deleted.hashCode,
-                                              $mrjc(
-                                                  hiddenLocallyOnDevice
-                                                      .hashCode,
-                                                  $mrjc(
-                                                      oldPendingRemoteId
-                                                          .hashCode,
-                                                      wasSentWithIdempotencyKey
-                                                          .hashCode))))))))))))));
+  int get hashCode => Object.hash(
+      id,
+      remoteId,
+      chatRemoteId,
+      accountRemoteId,
+      content,
+      createdAt,
+      emojis,
+      mediaAttachment,
+      card,
+      pendingState,
+      deleted,
+      hiddenLocallyOnDevice,
+      oldPendingRemoteId,
+      wasSentWithIdempotencyKey);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -7771,8 +7728,7 @@ class DbChatAccount extends DataClass implements Insertable<DbChatAccount> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode, $mrjc(chatRemoteId.hashCode, accountRemoteId.hashCode)));
+  int get hashCode => Object.hash(id, chatRemoteId, accountRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8042,16 +7998,8 @@ class DbFilter extends DataClass implements Insertable<DbFilter> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          remoteId.hashCode,
-          $mrjc(
-              phrase.hashCode,
-              $mrjc(
-                  context.hashCode,
-                  $mrjc(irreversible.hashCode,
-                      $mrjc(wholeWord.hashCode, expiresAt.hashCode)))))));
+  int get hashCode => Object.hash(
+      id, remoteId, phrase, context, irreversible, wholeWord, expiresAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -8520,34 +8468,21 @@ class DbInstanceAnnouncement extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          remoteId.hashCode,
-          $mrjc(
-              allDay.hashCode,
-              $mrjc(
-                  publishedAt.hashCode,
-                  $mrjc(
-                      updatedAt.hashCode,
-                      $mrjc(
-                          read.hashCode,
-                          $mrjc(
-                              content.hashCode,
-                              $mrjc(
-                                  reactions.hashCode,
-                                  $mrjc(
-                                      mentions.hashCode,
-                                      $mrjc(
-                                          tags.hashCode,
-                                          $mrjc(
-                                              statuses.hashCode,
-                                              $mrjc(
-                                                  scheduledAt.hashCode,
-                                                  $mrjc(
-                                                      startsAt.hashCode,
-                                                      endsAt
-                                                          .hashCode))))))))))))));
+  int get hashCode => Object.hash(
+      id,
+      remoteId,
+      allDay,
+      publishedAt,
+      updatedAt,
+      read,
+      content,
+      reactions,
+      mentions,
+      tags,
+      statuses,
+      scheduledAt,
+      startsAt,
+      endsAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -9029,8 +8964,7 @@ class DbHomeTimelineStatus extends DataClass
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode, $mrjc(accountRemoteId.hashCode, statusRemoteId.hashCode)));
+  int get hashCode => Object.hash(id, accountRemoteId, statusRemoteId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -9254,8 +9188,7 @@ class DbDraftStatus extends DataClass implements Insertable<DbDraftStatus> {
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(updatedAt.hashCode, data.hashCode)));
+  int get hashCode => Object.hash(id, updatedAt, data);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

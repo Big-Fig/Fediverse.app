@@ -167,26 +167,19 @@ class _$_MastodonLoginCredentials implements _MastodonLoginCredentials {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonLoginCredentials &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonLoginCredentials &&
             (identical(other.instance, instance) ||
-                const DeepCollectionEquality()
-                    .equals(other.instance, instance)) &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)) &&
+                other.instance == instance) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality()
-                    .equals(other.password, password)) &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)));
+                other.password == password) &&
+            (identical(other.scopes, scopes) || other.scopes == scopes));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(instance) ^
-      const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(password) ^
-      const DeepCollectionEquality().hash(scopes);
+      Object.hash(runtimeType, instance, user, password, scopes);
 
   @JsonKey(ignore: true)
   @override
@@ -203,13 +196,13 @@ abstract class _MastodonLoginCredentials implements MastodonLoginCredentials {
       required String scopes}) = _$_MastodonLoginCredentials;
 
   @override
-  String get instance => throw _privateConstructorUsedError;
+  String get instance;
   @override
-  String get user => throw _privateConstructorUsedError;
+  String get user;
   @override
-  String get password => throw _privateConstructorUsedError;
+  String get password;
   @override
-  String get scopes => throw _privateConstructorUsedError;
+  String get scopes;
   @override
   @JsonKey(ignore: true)
   _$MastodonLoginCredentialsCopyWith<_MastodonLoginCredentials> get copyWith =>

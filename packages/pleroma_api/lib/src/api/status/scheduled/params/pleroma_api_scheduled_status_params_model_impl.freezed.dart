@@ -70,7 +70,7 @@ class _$PleromaApiScheduledStatusParamsTearOff {
     );
   }
 
-  PleromaApiScheduledStatusParams fromJson(Map<String, Object> json) {
+  PleromaApiScheduledStatusParams fromJson(Map<String, Object?> json) {
     return PleromaApiScheduledStatusParams.fromJson(json);
   }
 }
@@ -468,58 +468,46 @@ class _$_PleromaApiScheduledStatusParams
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiScheduledStatusParams &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiScheduledStatusParams &&
             (identical(other.expiresInSeconds, expiresInSeconds) ||
-                const DeepCollectionEquality()
-                    .equals(other.expiresInSeconds, expiresInSeconds)) &&
-            (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)) &&
-            (identical(other.mediaIds, mediaIds) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaIds, mediaIds)) &&
+                other.expiresInSeconds == expiresInSeconds) &&
+            (identical(other.text, text) || other.text == text) &&
+            const DeepCollectionEquality().equals(other.mediaIds, mediaIds) &&
             (identical(other.sensitive, sensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.sensitive, sensitive)) &&
+                other.sensitive == sensitive) &&
             (identical(other.spoilerText, spoilerText) ||
-                const DeepCollectionEquality()
-                    .equals(other.spoilerText, spoilerText)) &&
+                other.spoilerText == spoilerText) &&
             (identical(other.visibility, visibility) ||
-                const DeepCollectionEquality()
-                    .equals(other.visibility, visibility)) &&
+                other.visibility == visibility) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality()
-                    .equals(other.language, language)) &&
+                other.language == language) &&
             (identical(other.scheduledAt, scheduledAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.scheduledAt, scheduledAt)) &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)) &&
+                other.scheduledAt == scheduledAt) &&
+            (identical(other.poll, poll) || other.poll == poll) &&
             (identical(other.inReplyToId, inReplyToId) ||
-                const DeepCollectionEquality()
-                    .equals(other.inReplyToId, inReplyToId)) &&
+                other.inReplyToId == inReplyToId) &&
             (identical(
                     other.inReplyToConversationId, inReplyToConversationId) ||
-                const DeepCollectionEquality().equals(
-                    other.inReplyToConversationId, inReplyToConversationId)) &&
-            (identical(other.to, to) ||
-                const DeepCollectionEquality().equals(other.to, to)));
+                other.inReplyToConversationId == inReplyToConversationId) &&
+            const DeepCollectionEquality().equals(other.to, to));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(expiresInSeconds) ^
-      const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(mediaIds) ^
-      const DeepCollectionEquality().hash(sensitive) ^
-      const DeepCollectionEquality().hash(spoilerText) ^
-      const DeepCollectionEquality().hash(visibility) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(scheduledAt) ^
-      const DeepCollectionEquality().hash(poll) ^
-      const DeepCollectionEquality().hash(inReplyToId) ^
-      const DeepCollectionEquality().hash(inReplyToConversationId) ^
-      const DeepCollectionEquality().hash(to);
+  int get hashCode => Object.hash(
+      runtimeType,
+      expiresInSeconds,
+      text,
+      const DeepCollectionEquality().hash(mediaIds),
+      sensitive,
+      spoilerText,
+      visibility,
+      language,
+      scheduledAt,
+      poll,
+      inReplyToId,
+      inReplyToConversationId,
+      const DeepCollectionEquality().hash(to));
 
   @JsonKey(ignore: true)
   @override
@@ -574,46 +562,46 @@ abstract class _PleromaApiScheduledStatusParams
   @override
   @JsonKey(name: 'expires_in')
   @HiveField(0)
-  int? get expiresInSeconds => throw _privateConstructorUsedError;
+  int? get expiresInSeconds;
   @override
   @HiveField(1)
-  String? get text => throw _privateConstructorUsedError;
+  String? get text;
   @override
   @JsonKey(name: 'media_ids')
   @HiveField(2)
-  List<String>? get mediaIds => throw _privateConstructorUsedError;
+  List<String>? get mediaIds;
   @override
   @HiveField(3)
-  bool get sensitive => throw _privateConstructorUsedError;
+  bool get sensitive;
   @override
   @JsonKey(name: 'spoiler_text')
   @HiveField(4)
-  String? get spoilerText => throw _privateConstructorUsedError;
+  String? get spoilerText;
   @override
   @HiveField(5)
-  String get visibility => throw _privateConstructorUsedError;
+  String get visibility;
   @override
   @HiveField(6)
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @JsonKey(name: 'scheduled_at')
   @HiveField(7)
-  DateTime get scheduledAt => throw _privateConstructorUsedError;
+  DateTime get scheduledAt;
   @override
   @HiveField(8)
-  PleromaApiPostStatusPoll? get poll => throw _privateConstructorUsedError;
+  PleromaApiPostStatusPoll? get poll;
   @override
   @JsonKey(name: 'in_reply_to_id')
   @HiveField(10)
-  String? get inReplyToId => throw _privateConstructorUsedError;
+  String? get inReplyToId;
   @override
   @JsonKey(name: 'in_reply_to_conversation_id')
   @HiveField(12)
-  String? get inReplyToConversationId => throw _privateConstructorUsedError;
+  String? get inReplyToConversationId;
   @override
   @JsonKey(name: 'to')
   @HiveField(13)
-  List<String>? get to => throw _privateConstructorUsedError;
+  List<String>? get to;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiScheduledStatusParamsCopyWith<_PleromaApiScheduledStatusParams>

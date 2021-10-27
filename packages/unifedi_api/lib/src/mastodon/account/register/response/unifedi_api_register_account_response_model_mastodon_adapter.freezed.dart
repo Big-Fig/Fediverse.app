@@ -31,7 +31,7 @@ class _$UnifediApiRegisterAccountResponseMastodonAdapterTearOff {
   }
 
   UnifediApiRegisterAccountResponseMastodonAdapter fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return UnifediApiRegisterAccountResponseMastodonAdapter.fromJson(json);
   }
 }
@@ -165,14 +165,13 @@ class _$_UnifediApiRegisterAccountResponseMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiRegisterAccountResponseMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiRegisterAccountResponseMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -202,8 +201,7 @@ abstract class _UnifediApiRegisterAccountResponseMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiRegisterAccountResponse get value =>
-      throw _privateConstructorUsedError;
+  MastodonApiRegisterAccountResponse get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiRegisterAccountResponseMastodonAdapterCopyWith<

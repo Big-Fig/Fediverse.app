@@ -72,7 +72,7 @@ class _$MastodonApiAccountRelationshipTearOff {
     );
   }
 
-  MastodonApiAccountRelationship fromJson(Map<String, Object> json) {
+  MastodonApiAccountRelationship fromJson(Map<String, Object?> json) {
     return MastodonApiAccountRelationship.fromJson(json);
   }
 }
@@ -470,61 +470,49 @@ class _$_MastodonApiAccountRelationship
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiAccountRelationship &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiAccountRelationship &&
             (identical(other.blocking, blocking) ||
-                const DeepCollectionEquality()
-                    .equals(other.blocking, blocking)) &&
+                other.blocking == blocking) &&
             (identical(other.domainBlocking, domainBlocking) ||
-                const DeepCollectionEquality()
-                    .equals(other.domainBlocking, domainBlocking)) &&
+                other.domainBlocking == domainBlocking) &&
             (identical(other.endorsed, endorsed) ||
-                const DeepCollectionEquality()
-                    .equals(other.endorsed, endorsed)) &&
+                other.endorsed == endorsed) &&
             (identical(other.followedBy, followedBy) ||
-                const DeepCollectionEquality()
-                    .equals(other.followedBy, followedBy)) &&
+                other.followedBy == followedBy) &&
             (identical(other.following, following) ||
-                const DeepCollectionEquality()
-                    .equals(other.following, following)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.muting, muting) ||
-                const DeepCollectionEquality().equals(other.muting, muting)) &&
+                other.following == following) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.muting, muting) || other.muting == muting) &&
             (identical(other.mutingNotifications, mutingNotifications) ||
-                const DeepCollectionEquality()
-                    .equals(other.mutingNotifications, mutingNotifications)) &&
+                other.mutingNotifications == mutingNotifications) &&
             (identical(other.requested, requested) ||
-                const DeepCollectionEquality()
-                    .equals(other.requested, requested)) &&
+                other.requested == requested) &&
             (identical(other.showingReblogs, showingReblogs) ||
-                const DeepCollectionEquality()
-                    .equals(other.showingReblogs, showingReblogs)) &&
+                other.showingReblogs == showingReblogs) &&
             (identical(other.blockedBy, blockedBy) ||
-                const DeepCollectionEquality()
-                    .equals(other.blockedBy, blockedBy)) &&
-            (identical(other.note, note) ||
-                const DeepCollectionEquality().equals(other.note, note)) &&
+                other.blockedBy == blockedBy) &&
+            (identical(other.note, note) || other.note == note) &&
             (identical(other.notifying, notifying) ||
-                const DeepCollectionEquality()
-                    .equals(other.notifying, notifying)));
+                other.notifying == notifying));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(blocking) ^
-      const DeepCollectionEquality().hash(domainBlocking) ^
-      const DeepCollectionEquality().hash(endorsed) ^
-      const DeepCollectionEquality().hash(followedBy) ^
-      const DeepCollectionEquality().hash(following) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(muting) ^
-      const DeepCollectionEquality().hash(mutingNotifications) ^
-      const DeepCollectionEquality().hash(requested) ^
-      const DeepCollectionEquality().hash(showingReblogs) ^
-      const DeepCollectionEquality().hash(blockedBy) ^
-      const DeepCollectionEquality().hash(note) ^
-      const DeepCollectionEquality().hash(notifying);
+  int get hashCode => Object.hash(
+      runtimeType,
+      blocking,
+      domainBlocking,
+      endorsed,
+      followedBy,
+      following,
+      id,
+      muting,
+      mutingNotifications,
+      requested,
+      showingReblogs,
+      blockedBy,
+      note,
+      notifying);
 
   @JsonKey(ignore: true)
   @override
@@ -579,49 +567,49 @@ abstract class _MastodonApiAccountRelationship
 
   @override
   @HiveField(1)
-  bool? get blocking => throw _privateConstructorUsedError;
+  bool? get blocking;
   @override
   @JsonKey(name: 'domain_blocking')
   @HiveField(2)
-  bool? get domainBlocking => throw _privateConstructorUsedError;
+  bool? get domainBlocking;
   @override
   @HiveField(3)
-  bool? get endorsed => throw _privateConstructorUsedError;
+  bool? get endorsed;
   @override
   @HiveField(4)
   @JsonKey(name: 'followed_by')
-  bool? get followedBy => throw _privateConstructorUsedError;
+  bool? get followedBy;
   @override
   @HiveField(5)
-  bool? get following => throw _privateConstructorUsedError;
+  bool? get following;
   @override
   @HiveField(6)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @HiveField(7)
-  bool? get muting => throw _privateConstructorUsedError;
+  bool? get muting;
   @override
   @HiveField(8)
   @JsonKey(name: 'muting_notifications')
   @HiveField(9)
-  bool? get mutingNotifications => throw _privateConstructorUsedError;
+  bool? get mutingNotifications;
   @override
   @HiveField(10)
-  bool? get requested => throw _privateConstructorUsedError;
+  bool? get requested;
   @override
   @JsonKey(name: 'showing_reblogs')
   @HiveField(11)
-  bool? get showingReblogs => throw _privateConstructorUsedError;
+  bool? get showingReblogs;
   @override
   @HiveField(13)
   @JsonKey(name: 'blocked_by')
-  bool? get blockedBy => throw _privateConstructorUsedError;
+  bool? get blockedBy;
   @override
   @HiveField(14)
-  String? get note => throw _privateConstructorUsedError;
+  String? get note;
   @override
   @HiveField(15)
-  bool? get notifying => throw _privateConstructorUsedError;
+  bool? get notifying;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiAccountRelationshipCopyWith<_MastodonApiAccountRelationship>

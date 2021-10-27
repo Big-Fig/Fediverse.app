@@ -31,7 +31,7 @@ class _$UnifediApiAccessLevelTearOff {
     );
   }
 
-  UnifediApiAccessLevel fromJson(Map<String, Object> json) {
+  UnifediApiAccessLevel fromJson(Map<String, Object?> json) {
     return UnifediApiAccessLevel.fromJson(json);
   }
 }
@@ -137,15 +137,14 @@ class _$_UnifediApiAccessLevel implements _UnifediApiAccessLevel {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccessLevel &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiAccessLevel &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -171,7 +170,7 @@ abstract class _UnifediApiAccessLevel implements UnifediApiAccessLevel {
   @override
   @HiveField(1)
   @JsonKey(name: 'string_value')
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiAccessLevelCopyWith<_UnifediApiAccessLevel> get copyWith =>

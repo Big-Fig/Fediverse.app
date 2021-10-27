@@ -31,7 +31,7 @@ class _$UnifediApiInstanceChatLimitsTearOff {
     );
   }
 
-  UnifediApiInstanceChatLimits fromJson(Map<String, Object> json) {
+  UnifediApiInstanceChatLimits fromJson(Map<String, Object?> json) {
     return UnifediApiInstanceChatLimits.fromJson(json);
   }
 }
@@ -143,15 +143,14 @@ class _$_UnifediApiInstanceChatLimits implements _UnifediApiInstanceChatLimits {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceChatLimits &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceChatLimits &&
             (identical(other.messageLimit, messageLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.messageLimit, messageLimit)));
+                other.messageLimit == messageLimit));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(messageLimit);
+  int get hashCode => Object.hash(runtimeType, messageLimit);
 
   @JsonKey(ignore: true)
   @override
@@ -178,7 +177,7 @@ abstract class _UnifediApiInstanceChatLimits
   @override
   @HiveField(0)
   @JsonKey(name: 'message_limit')
-  int? get messageLimit => throw _privateConstructorUsedError;
+  int? get messageLimit;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceChatLimitsCopyWith<_UnifediApiInstanceChatLimits>

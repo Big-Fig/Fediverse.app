@@ -36,7 +36,7 @@ class _$FediverseApiVersionTearOff {
     );
   }
 
-  FediverseApiVersion fromJson(Map<String, Object> json) {
+  FediverseApiVersion fromJson(Map<String, Object?> json) {
     return FediverseApiVersion.fromJson(json);
   }
 }
@@ -216,28 +216,19 @@ class _$_FediverseApiVersion implements _FediverseApiVersion {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiVersion &&
-            (identical(other.major, major) ||
-                const DeepCollectionEquality().equals(other.major, major)) &&
-            (identical(other.minor, minor) ||
-                const DeepCollectionEquality().equals(other.minor, minor)) &&
-            (identical(other.patch, patch) ||
-                const DeepCollectionEquality().equals(other.patch, patch)) &&
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiVersion &&
+            (identical(other.major, major) || other.major == major) &&
+            (identical(other.minor, minor) || other.minor == minor) &&
+            (identical(other.patch, patch) || other.patch == patch) &&
             (identical(other.buildNumber, buildNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.buildNumber, buildNumber)) &&
-            (identical(other.commit, commit) ||
-                const DeepCollectionEquality().equals(other.commit, commit)));
+                other.buildNumber == buildNumber) &&
+            (identical(other.commit, commit) || other.commit == commit));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(major) ^
-      const DeepCollectionEquality().hash(minor) ^
-      const DeepCollectionEquality().hash(patch) ^
-      const DeepCollectionEquality().hash(buildNumber) ^
-      const DeepCollectionEquality().hash(commit);
+      Object.hash(runtimeType, major, minor, patch, buildNumber, commit);
 
   @JsonKey(ignore: true)
   @override
@@ -264,20 +255,20 @@ abstract class _FediverseApiVersion implements FediverseApiVersion {
 
   @override
   @HiveField(0)
-  int get major => throw _privateConstructorUsedError;
+  int get major;
   @override
   @HiveField(1)
-  int? get minor => throw _privateConstructorUsedError;
+  int? get minor;
   @override
   @HiveField(2)
-  int? get patch => throw _privateConstructorUsedError;
+  int? get patch;
   @override
   @HiveField(3)
   @JsonKey(name: 'buildNumber')
-  int? get buildNumber => throw _privateConstructorUsedError;
+  int? get buildNumber;
   @override
   @HiveField(4)
-  String? get commit => throw _privateConstructorUsedError;
+  String? get commit;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiVersionCopyWith<_FediverseApiVersion> get copyWith =>

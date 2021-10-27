@@ -124,16 +124,14 @@ class _$_ConversationChatRepositoryFilters
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ConversationChatRepositoryFilters &&
+        (other.runtimeType == runtimeType &&
+            other is _ConversationChatRepositoryFilters &&
             (identical(other.withLastMessage, withLastMessage) ||
-                const DeepCollectionEquality()
-                    .equals(other.withLastMessage, withLastMessage)));
+                other.withLastMessage == withLastMessage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(withLastMessage);
+  int get hashCode => Object.hash(runtimeType, withLastMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -150,7 +148,7 @@ abstract class _ConversationChatRepositoryFilters
   const _ConversationChatRepositoryFilters._() : super._();
 
   @override
-  bool get withLastMessage => throw _privateConstructorUsedError;
+  bool get withLastMessage;
   @override
   @JsonKey(ignore: true)
   _$ConversationChatRepositoryFiltersCopyWith<
@@ -289,20 +287,16 @@ class _$_ConversationRepositoryChatOrderingTermData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ConversationRepositoryChatOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _ConversationRepositoryChatOrderingTermData &&
             (identical(other.orderType, orderType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderType, orderType)) &&
+                other.orderType == orderType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -320,9 +314,9 @@ abstract class _ConversationRepositoryChatOrderingTermData
       _$_ConversationRepositoryChatOrderingTermData;
 
   @override
-  ConversationChatOrderType get orderType => throw _privateConstructorUsedError;
+  ConversationChatOrderType get orderType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$ConversationRepositoryChatOrderingTermDataCopyWith<

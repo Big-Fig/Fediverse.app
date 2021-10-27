@@ -34,7 +34,7 @@ class _$UnifediApiOAuthTokenTearOff {
     );
   }
 
-  UnifediApiOAuthToken fromJson(Map<String, Object> json) {
+  UnifediApiOAuthToken fromJson(Map<String, Object?> json) {
     return UnifediApiOAuthToken.fromJson(json);
   }
 }
@@ -198,26 +198,18 @@ class _$_UnifediApiOAuthToken implements _UnifediApiOAuthToken {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiOAuthToken &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiOAuthToken &&
             (identical(other.accessToken, accessToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.accessToken, accessToken)) &&
+                other.accessToken == accessToken) &&
             (identical(other.tokenType, tokenType) ||
-                const DeepCollectionEquality()
-                    .equals(other.tokenType, tokenType)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.me, me) ||
-                const DeepCollectionEquality().equals(other.me, me)));
+                other.tokenType == tokenType) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.me, me) || other.me == me));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(accessToken) ^
-      const DeepCollectionEquality().hash(tokenType) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(me);
+  int get hashCode => Object.hash(runtimeType, accessToken, tokenType, id, me);
 
   @JsonKey(ignore: true)
   @override
@@ -244,17 +236,17 @@ abstract class _UnifediApiOAuthToken implements UnifediApiOAuthToken {
   @override
   @HiveField(0)
   @JsonKey(name: 'access_token')
-  String get accessToken => throw _privateConstructorUsedError;
+  String get accessToken;
   @override
   @HiveField(1)
   @JsonKey(name: 'token_type')
-  String get tokenType => throw _privateConstructorUsedError;
+  String get tokenType;
   @override
   @HiveField(2)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @HiveField(3)
-  String? get me => throw _privateConstructorUsedError;
+  String? get me;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiOAuthTokenCopyWith<_UnifediApiOAuthToken> get copyWith =>

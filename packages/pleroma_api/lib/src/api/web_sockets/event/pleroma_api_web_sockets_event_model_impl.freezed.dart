@@ -58,7 +58,7 @@ class _$PleromaApiWebSocketsEventTearOff {
     );
   }
 
-  PleromaApiWebSocketsEvent fromJson(Map<String, Object> json) {
+  PleromaApiWebSocketsEvent fromJson(Map<String, Object?> json) {
     return PleromaApiWebSocketsEvent.fromJson(json);
   }
 }
@@ -430,47 +430,37 @@ class _$_PleromaApiWebSocketsEvent implements _PleromaApiWebSocketsEvent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiWebSocketsEvent &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.channel, channel) ||
-                const DeepCollectionEquality()
-                    .equals(other.channel, channel)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiWebSocketsEvent &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.channel, channel) || other.channel == channel) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.notification, notification) ||
-                const DeepCollectionEquality()
-                    .equals(other.notification, notification)) &&
+                other.notification == notification) &&
             (identical(other.announcement, announcement) ||
-                const DeepCollectionEquality()
-                    .equals(other.announcement, announcement)) &&
-            (identical(other.chat, chat) ||
-                const DeepCollectionEquality().equals(other.chat, chat)) &&
+                other.announcement == announcement) &&
+            (identical(other.chat, chat) || other.chat == chat) &&
             (identical(other.conversation, conversation) ||
-                const DeepCollectionEquality()
-                    .equals(other.conversation, conversation)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+                other.conversation == conversation) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.followUpdate, followUpdate) ||
-                const DeepCollectionEquality()
-                    .equals(other.followUpdate, followUpdate)) &&
-            (identical(other.payload, payload) ||
-                const DeepCollectionEquality().equals(other.payload, payload)));
+                other.followUpdate == followUpdate) &&
+            (identical(other.payload, payload) || other.payload == payload));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(channel) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(notification) ^
-      const DeepCollectionEquality().hash(announcement) ^
-      const DeepCollectionEquality().hash(chat) ^
-      const DeepCollectionEquality().hash(conversation) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(followUpdate) ^
-      const DeepCollectionEquality().hash(payload);
+  int get hashCode => Object.hash(
+      runtimeType,
+      type,
+      channel,
+      status,
+      notification,
+      announcement,
+      chat,
+      conversation,
+      id,
+      followUpdate,
+      payload);
 
   @JsonKey(ignore: true)
   @override
@@ -515,38 +505,34 @@ abstract class _PleromaApiWebSocketsEvent implements PleromaApiWebSocketsEvent {
   @override
   @JsonKey(name: 'event')
   @HiveField(0)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(2)
-  PleromaApiWebSocketsChannel get channel => throw _privateConstructorUsedError;
+  PleromaApiWebSocketsChannel get channel;
   @override
   @HiveField(3)
-  PleromaApiStatus? get status => throw _privateConstructorUsedError;
+  PleromaApiStatus? get status;
   @override
   @HiveField(4)
-  PleromaApiNotification? get notification =>
-      throw _privateConstructorUsedError;
+  PleromaApiNotification? get notification;
   @override
   @HiveField(5)
-  PleromaApiAnnouncement? get announcement =>
-      throw _privateConstructorUsedError;
+  PleromaApiAnnouncement? get announcement;
   @override
   @HiveField(6)
-  PleromaApiChat? get chat => throw _privateConstructorUsedError;
+  PleromaApiChat? get chat;
   @override
   @HiveField(7)
-  PleromaApiConversation? get conversation =>
-      throw _privateConstructorUsedError;
+  PleromaApiConversation? get conversation;
   @override
   @HiveField(8)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @HiveField(9)
-  PleromaApiAccountRelationshipFollowUpdate? get followUpdate =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccountRelationshipFollowUpdate? get followUpdate;
   @override
   @HiveField(10)
-  String? get payload => throw _privateConstructorUsedError;
+  String? get payload;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiWebSocketsEventCopyWith<_PleromaApiWebSocketsEvent>
@@ -571,7 +557,7 @@ class _$PleromaApiWebSocketsRawEventTearOff {
     );
   }
 
-  PleromaApiWebSocketsRawEvent fromJson(Map<String, Object> json) {
+  PleromaApiWebSocketsRawEvent fromJson(Map<String, Object?> json) {
     return PleromaApiWebSocketsRawEvent.fromJson(json);
   }
 }
@@ -703,18 +689,14 @@ class _$_PleromaApiWebSocketsRawEvent implements _PleromaApiWebSocketsRawEvent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiWebSocketsRawEvent &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.payload, payload) ||
-                const DeepCollectionEquality().equals(other.payload, payload)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiWebSocketsRawEvent &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.payload, payload) || other.payload == payload));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(payload);
+  int get hashCode => Object.hash(runtimeType, type, payload);
 
   @JsonKey(ignore: true)
   @override
@@ -741,11 +723,11 @@ abstract class _PleromaApiWebSocketsRawEvent
   @override
   @JsonKey(name: 'event')
   @HiveField(0)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @JsonKey(name: 'payload')
   @HiveField(10)
-  String? get payload => throw _privateConstructorUsedError;
+  String? get payload;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiWebSocketsRawEventCopyWith<_PleromaApiWebSocketsRawEvent>

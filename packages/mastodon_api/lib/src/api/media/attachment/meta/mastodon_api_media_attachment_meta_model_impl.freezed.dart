@@ -33,7 +33,7 @@ class _$MastodonApiMediaAttachmentMetaTearOff {
     );
   }
 
-  MastodonApiMediaAttachmentMeta fromJson(Map<String, Object> json) {
+  MastodonApiMediaAttachmentMeta fromJson(Map<String, Object?> json) {
     return MastodonApiMediaAttachmentMeta.fromJson(json);
   }
 }
@@ -232,22 +232,16 @@ class _$_MastodonApiMediaAttachmentMeta
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiMediaAttachmentMeta &&
-            (identical(other.focus, focus) ||
-                const DeepCollectionEquality().equals(other.focus, focus)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiMediaAttachmentMeta &&
+            (identical(other.focus, focus) || other.focus == focus) &&
             (identical(other.original, original) ||
-                const DeepCollectionEquality()
-                    .equals(other.original, original)) &&
-            (identical(other.small, small) ||
-                const DeepCollectionEquality().equals(other.small, small)));
+                other.original == original) &&
+            (identical(other.small, small) || other.small == small));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(focus) ^
-      const DeepCollectionEquality().hash(original) ^
-      const DeepCollectionEquality().hash(small);
+  int get hashCode => Object.hash(runtimeType, focus, original, small);
 
   @JsonKey(ignore: true)
   @override
@@ -274,16 +268,13 @@ abstract class _MastodonApiMediaAttachmentMeta
 
   @override
   @HiveField(0)
-  MastodonApiMediaAttachmentFocus? get focus =>
-      throw _privateConstructorUsedError;
+  MastodonApiMediaAttachmentFocus? get focus;
   @override
   @HiveField(1)
-  MastodonApiMediaAttachmentSize? get original =>
-      throw _privateConstructorUsedError;
+  MastodonApiMediaAttachmentSize? get original;
   @override
   @HiveField(2)
-  MastodonApiMediaAttachmentSize? get small =>
-      throw _privateConstructorUsedError;
+  MastodonApiMediaAttachmentSize? get small;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiMediaAttachmentMetaCopyWith<_MastodonApiMediaAttachmentMeta>

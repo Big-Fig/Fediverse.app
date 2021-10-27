@@ -155,24 +155,19 @@ class _$_StatusSensitiveWarningState extends _StatusSensitiveWarningState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StatusSensitiveWarningState &&
+        (other.runtimeType == runtimeType &&
+            other is _StatusSensitiveWarningState &&
             (identical(other.nsfwSensitive, nsfwSensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.nsfwSensitive, nsfwSensitive)) &&
+                other.nsfwSensitive == nsfwSensitive) &&
             (identical(other.containsSpoiler, containsSpoiler) ||
-                const DeepCollectionEquality()
-                    .equals(other.containsSpoiler, containsSpoiler)) &&
+                other.containsSpoiler == containsSpoiler) &&
             (identical(other.displayEnabled, displayEnabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.displayEnabled, displayEnabled)));
+                other.displayEnabled == displayEnabled));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(nsfwSensitive) ^
-      const DeepCollectionEquality().hash(containsSpoiler) ^
-      const DeepCollectionEquality().hash(displayEnabled);
+      Object.hash(runtimeType, nsfwSensitive, containsSpoiler, displayEnabled);
 
   @JsonKey(ignore: true)
   @override
@@ -190,11 +185,11 @@ abstract class _StatusSensitiveWarningState
   const _StatusSensitiveWarningState._() : super._();
 
   @override
-  bool get nsfwSensitive => throw _privateConstructorUsedError;
+  bool get nsfwSensitive;
   @override
-  bool get containsSpoiler => throw _privateConstructorUsedError;
+  bool get containsSpoiler;
   @override
-  bool get displayEnabled => throw _privateConstructorUsedError;
+  bool get displayEnabled;
   @override
   @JsonKey(ignore: true)
   _$StatusSensitiveWarningStateCopyWith<_StatusSensitiveWarningState>

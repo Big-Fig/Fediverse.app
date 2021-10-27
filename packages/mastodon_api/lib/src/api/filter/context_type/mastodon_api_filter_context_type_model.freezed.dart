@@ -216,15 +216,14 @@ class _$_Home implements _Home {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Home &&
+        (other.runtimeType == runtimeType &&
+            other is _Home &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -322,7 +321,7 @@ abstract class _Home implements MastodonApiFilterContextType {
   const factory _Home({String stringValue}) = _$_Home;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$HomeCopyWith<_Home> get copyWith => throw _privateConstructorUsedError;
@@ -381,15 +380,14 @@ class _$_Notifications implements _Notifications {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Notifications &&
+        (other.runtimeType == runtimeType &&
+            other is _Notifications &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -487,7 +485,7 @@ abstract class _Notifications implements MastodonApiFilterContextType {
   const factory _Notifications({String stringValue}) = _$_Notifications;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$NotificationsCopyWith<_Notifications> get copyWith =>
@@ -544,15 +542,14 @@ class _$_Public implements _Public {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Public &&
+        (other.runtimeType == runtimeType &&
+            other is _Public &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -650,7 +647,7 @@ abstract class _Public implements MastodonApiFilterContextType {
   const factory _Public({String stringValue}) = _$_Public;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PublicCopyWith<_Public> get copyWith => throw _privateConstructorUsedError;
@@ -706,15 +703,14 @@ class _$_Thread implements _Thread {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Thread &&
+        (other.runtimeType == runtimeType &&
+            other is _Thread &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -812,7 +808,7 @@ abstract class _Thread implements MastodonApiFilterContextType {
   const factory _Thread({String stringValue}) = _$_Thread;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ThreadCopyWith<_Thread> get copyWith => throw _privateConstructorUsedError;
@@ -868,15 +864,14 @@ class _$_Account implements _Account {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Account &&
+        (other.runtimeType == runtimeType &&
+            other is _Account &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -974,7 +969,7 @@ abstract class _Account implements MastodonApiFilterContextType {
   const factory _Account({String stringValue}) = _$_Account;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$AccountCopyWith<_Account> get copyWith =>
@@ -1029,15 +1024,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1135,7 +1129,7 @@ abstract class _Unknown implements MastodonApiFilterContextType {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

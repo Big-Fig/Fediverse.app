@@ -29,7 +29,7 @@ class _$UnifediApiVersionMastodonAdapterTearOff {
     );
   }
 
-  UnifediApiVersionMastodonAdapter fromJson(Map<String, Object> json) {
+  UnifediApiVersionMastodonAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiVersionMastodonAdapter.fromJson(json);
   }
 }
@@ -152,14 +152,13 @@ class _$_UnifediApiVersionMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiVersionMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiVersionMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -185,7 +184,7 @@ abstract class _UnifediApiVersionMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiVersion get value => throw _privateConstructorUsedError;
+  MastodonApiVersion get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiVersionMastodonAdapterCopyWith<_UnifediApiVersionMastodonAdapter>

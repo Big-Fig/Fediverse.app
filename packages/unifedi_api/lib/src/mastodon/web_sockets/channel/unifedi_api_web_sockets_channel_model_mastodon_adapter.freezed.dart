@@ -31,7 +31,7 @@ class _$UnifediApiWebSocketsChannelMastodonAdapterTearOff {
   }
 
   UnifediApiWebSocketsChannelMastodonAdapter fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return UnifediApiWebSocketsChannelMastodonAdapter.fromJson(json);
   }
 }
@@ -157,14 +157,13 @@ class _$_UnifediApiWebSocketsChannelMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiWebSocketsChannelMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiWebSocketsChannelMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -192,7 +191,7 @@ abstract class _UnifediApiWebSocketsChannelMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiWebSocketsChannel get value => throw _privateConstructorUsedError;
+  MastodonApiWebSocketsChannel get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiWebSocketsChannelMastodonAdapterCopyWith<

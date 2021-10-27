@@ -33,7 +33,7 @@ class _$PleromaApiApplicationTearOff {
     );
   }
 
-  PleromaApiApplication fromJson(Map<String, Object> json) {
+  PleromaApiApplication fromJson(Map<String, Object?> json) {
     return PleromaApiApplication.fromJson(json);
   }
 }
@@ -177,23 +177,16 @@ class _$_PleromaApiApplication implements _PleromaApiApplication {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiApplication &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.website, website) ||
-                const DeepCollectionEquality()
-                    .equals(other.website, website)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiApplication &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.website, website) || other.website == website) &&
             (identical(other.vapidKey, vapidKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.vapidKey, vapidKey)));
+                other.vapidKey == vapidKey));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(website) ^
-      const DeepCollectionEquality().hash(vapidKey);
+  int get hashCode => Object.hash(runtimeType, name, website, vapidKey);
 
   @JsonKey(ignore: true)
   @override
@@ -222,14 +215,14 @@ abstract class _PleromaApiApplication implements PleromaApiApplication {
 
   @override
   @HiveField(3)
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
   @HiveField(4)
-  String? get website => throw _privateConstructorUsedError;
+  String? get website;
   @override
   @JsonKey(name: 'vapid_key')
   @HiveField(2)
-  String? get vapidKey => throw _privateConstructorUsedError;
+  String? get vapidKey;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiApplicationCopyWith<_PleromaApiApplication> get copyWith =>

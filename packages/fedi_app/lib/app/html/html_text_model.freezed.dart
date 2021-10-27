@@ -132,20 +132,16 @@ class _$_HtmlTextResultData implements _HtmlTextResultData {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _HtmlTextResultData &&
-            (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)) &&
+        (other.runtimeType == runtimeType &&
+            other is _HtmlTextResultData &&
+            (identical(other.text, text) || other.text == text) &&
             (identical(
                     other.isActuallyHaveHtmlInData, isActuallyHaveHtmlInData) ||
-                const DeepCollectionEquality().equals(
-                    other.isActuallyHaveHtmlInData, isActuallyHaveHtmlInData)));
+                other.isActuallyHaveHtmlInData == isActuallyHaveHtmlInData));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(isActuallyHaveHtmlInData);
+  int get hashCode => Object.hash(runtimeType, text, isActuallyHaveHtmlInData);
 
   @JsonKey(ignore: true)
   @override
@@ -159,9 +155,9 @@ abstract class _HtmlTextResultData implements HtmlTextResultData {
       required bool isActuallyHaveHtmlInData}) = _$_HtmlTextResultData;
 
   @override
-  String? get text => throw _privateConstructorUsedError;
+  String? get text;
   @override
-  bool get isActuallyHaveHtmlInData => throw _privateConstructorUsedError;
+  bool get isActuallyHaveHtmlInData;
   @override
   @JsonKey(ignore: true)
   _$HtmlTextResultDataCopyWith<_HtmlTextResultData> get copyWith =>
@@ -287,18 +283,15 @@ class _$_HtmlTextInputData extends _HtmlTextInputData {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _HtmlTextInputData &&
-            (identical(other.input, input) ||
-                const DeepCollectionEquality().equals(other.input, input)) &&
-            (identical(other.emojis, emojis) ||
-                const DeepCollectionEquality().equals(other.emojis, emojis)));
+        (other.runtimeType == runtimeType &&
+            other is _HtmlTextInputData &&
+            (identical(other.input, input) || other.input == input) &&
+            const DeepCollectionEquality().equals(other.emojis, emojis));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(input) ^
-      const DeepCollectionEquality().hash(emojis);
+  int get hashCode => Object.hash(
+      runtimeType, input, const DeepCollectionEquality().hash(emojis));
 
   @JsonKey(ignore: true)
   @override
@@ -313,9 +306,9 @@ abstract class _HtmlTextInputData extends HtmlTextInputData {
   const _HtmlTextInputData._() : super._();
 
   @override
-  String? get input => throw _privateConstructorUsedError;
+  String? get input;
   @override
-  List<IUnifediApiEmoji>? get emojis => throw _privateConstructorUsedError;
+  List<IUnifediApiEmoji>? get emojis;
   @override
   @JsonKey(ignore: true)
   _$HtmlTextInputDataCopyWith<_HtmlTextInputData> get copyWith =>
@@ -670,67 +663,54 @@ class _$_HtmlTextSettings implements _HtmlTextSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _HtmlTextSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _HtmlTextSettings &&
             (identical(other.fontSize, fontSize) ||
-                const DeepCollectionEquality()
-                    .equals(other.fontSize, fontSize)) &&
+                other.fontSize == fontSize) &&
             (identical(other.fontWeight, fontWeight) ||
-                const DeepCollectionEquality()
-                    .equals(other.fontWeight, fontWeight)) &&
+                other.fontWeight == fontWeight) &&
             (identical(other.lineHeight, lineHeight) ||
-                const DeepCollectionEquality()
-                    .equals(other.lineHeight, lineHeight)) &&
-            (identical(other.color, color) ||
-                const DeepCollectionEquality().equals(other.color, color)) &&
+                other.lineHeight == lineHeight) &&
+            (identical(other.color, color) || other.color == color) &&
             (identical(other.linkColor, linkColor) ||
-                const DeepCollectionEquality()
-                    .equals(other.linkColor, linkColor)) &&
+                other.linkColor == linkColor) &&
             (identical(other.textMaxLines, textMaxLines) ||
-                const DeepCollectionEquality()
-                    .equals(other.textMaxLines, textMaxLines)) &&
+                other.textMaxLines == textMaxLines) &&
             (identical(other.textOverflow, textOverflow) ||
-                const DeepCollectionEquality()
-                    .equals(other.textOverflow, textOverflow)) &&
+                other.textOverflow == textOverflow) &&
             (identical(other.shrinkWrap, shrinkWrap) ||
-                const DeepCollectionEquality()
-                    .equals(other.shrinkWrap, shrinkWrap)) &&
+                other.shrinkWrap == shrinkWrap) &&
             (identical(other.drawNewLines, drawNewLines) ||
-                const DeepCollectionEquality()
-                    .equals(other.drawNewLines, drawNewLines)) &&
+                other.drawNewLines == drawNewLines) &&
             (identical(other.textAlign, textAlign) ||
-                const DeepCollectionEquality()
-                    .equals(other.textAlign, textAlign)) &&
+                other.textAlign == textAlign) &&
             (identical(other.customEmojiImageSize, customEmojiImageSize) ||
-                const DeepCollectionEquality().equals(
-                    other.customEmojiImageSize, customEmojiImageSize)) &&
+                other.customEmojiImageSize == customEmojiImageSize) &&
             (identical(other.imageSize, imageSize) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageSize, imageSize)) &&
+                other.imageSize == imageSize) &&
             (identical(other.paragraphDisplay, paragraphDisplay) ||
-                const DeepCollectionEquality()
-                    .equals(other.paragraphDisplay, paragraphDisplay)) &&
+                other.paragraphDisplay == paragraphDisplay) &&
             (identical(other.textScaleFactor, textScaleFactor) ||
-                const DeepCollectionEquality()
-                    .equals(other.textScaleFactor, textScaleFactor)));
+                other.textScaleFactor == textScaleFactor));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(fontSize) ^
-      const DeepCollectionEquality().hash(fontWeight) ^
-      const DeepCollectionEquality().hash(lineHeight) ^
-      const DeepCollectionEquality().hash(color) ^
-      const DeepCollectionEquality().hash(linkColor) ^
-      const DeepCollectionEquality().hash(textMaxLines) ^
-      const DeepCollectionEquality().hash(textOverflow) ^
-      const DeepCollectionEquality().hash(shrinkWrap) ^
-      const DeepCollectionEquality().hash(drawNewLines) ^
-      const DeepCollectionEquality().hash(textAlign) ^
-      const DeepCollectionEquality().hash(customEmojiImageSize) ^
-      const DeepCollectionEquality().hash(imageSize) ^
-      const DeepCollectionEquality().hash(paragraphDisplay) ^
-      const DeepCollectionEquality().hash(textScaleFactor);
+  int get hashCode => Object.hash(
+      runtimeType,
+      fontSize,
+      fontWeight,
+      lineHeight,
+      color,
+      linkColor,
+      textMaxLines,
+      textOverflow,
+      shrinkWrap,
+      drawNewLines,
+      textAlign,
+      customEmojiImageSize,
+      imageSize,
+      paragraphDisplay,
+      textScaleFactor);
 
   @JsonKey(ignore: true)
   @override
@@ -756,33 +736,33 @@ abstract class _HtmlTextSettings implements HtmlTextSettings {
       required double textScaleFactor}) = _$_HtmlTextSettings;
 
   @override
-  double? get fontSize => throw _privateConstructorUsedError;
+  double? get fontSize;
   @override
-  FontWeight? get fontWeight => throw _privateConstructorUsedError;
+  FontWeight? get fontWeight;
   @override
-  double? get lineHeight => throw _privateConstructorUsedError;
+  double? get lineHeight;
   @override
-  Color? get color => throw _privateConstructorUsedError;
+  Color? get color;
   @override
-  Color get linkColor => throw _privateConstructorUsedError;
+  Color get linkColor;
   @override
-  int? get textMaxLines => throw _privateConstructorUsedError;
+  int? get textMaxLines;
   @override
-  TextOverflow? get textOverflow => throw _privateConstructorUsedError;
+  TextOverflow? get textOverflow;
   @override
-  bool get shrinkWrap => throw _privateConstructorUsedError;
+  bool get shrinkWrap;
   @override
-  bool get drawNewLines => throw _privateConstructorUsedError;
+  bool get drawNewLines;
   @override
-  TextAlign get textAlign => throw _privateConstructorUsedError;
+  TextAlign get textAlign;
   @override // ignore: no-magic-number
-  double get customEmojiImageSize => throw _privateConstructorUsedError;
+  double get customEmojiImageSize;
   @override // ignore: no-magic-number
-  double get imageSize => throw _privateConstructorUsedError;
+  double get imageSize;
   @override
-  Display get paragraphDisplay => throw _privateConstructorUsedError;
+  Display get paragraphDisplay;
   @override
-  double get textScaleFactor => throw _privateConstructorUsedError;
+  double get textScaleFactor;
   @override
   @JsonKey(ignore: true)
   _$HtmlTextSettingsCopyWith<_HtmlTextSettings> get copyWith =>

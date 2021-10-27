@@ -72,7 +72,7 @@ class _$MastodonApiEditMyAccountTearOff {
     );
   }
 
-  MastodonApiEditMyAccount fromJson(Map<String, Object> json) {
+  MastodonApiEditMyAccount fromJson(Map<String, Object?> json) {
     return MastodonApiEditMyAccount.fromJson(json);
   }
 }
@@ -465,61 +465,48 @@ class _$_MastodonApiEditMyAccount implements _MastodonApiEditMyAccount {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiEditMyAccount &&
-            (identical(other.fieldsAttributes, fieldsAttributes) ||
-                const DeepCollectionEquality()
-                    .equals(other.fieldsAttributes, fieldsAttributes)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiEditMyAccount &&
+            const DeepCollectionEquality()
+                .equals(other.fieldsAttributes, fieldsAttributes) &&
             (identical(other.discoverable, discoverable) ||
-                const DeepCollectionEquality()
-                    .equals(other.discoverable, discoverable)) &&
-            (identical(other.bot, bot) ||
-                const DeepCollectionEquality().equals(other.bot, bot)) &&
+                other.discoverable == discoverable) &&
+            (identical(other.bot, bot) || other.bot == bot) &&
             (identical(other.displayName, displayName) ||
-                const DeepCollectionEquality()
-                    .equals(other.displayName, displayName)) &&
-            (identical(other.note, note) ||
-                const DeepCollectionEquality().equals(other.note, note)) &&
-            (identical(other.locked, locked) ||
-                const DeepCollectionEquality().equals(other.locked, locked)) &&
-            (identical(other.privacy, privacy) ||
-                const DeepCollectionEquality()
-                    .equals(other.privacy, privacy)) &&
+                other.displayName == displayName) &&
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.locked, locked) || other.locked == locked) &&
+            (identical(other.privacy, privacy) || other.privacy == privacy) &&
             (identical(other.sensitive, sensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.sensitive, sensitive)) &&
+                other.sensitive == sensitive) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality()
-                    .equals(other.language, language)) &&
+                other.language == language) &&
             (identical(other.avatarLocalFilePath, avatarLocalFilePath) ||
-                const DeepCollectionEquality()
-                    .equals(other.avatarLocalFilePath, avatarLocalFilePath)) &&
+                other.avatarLocalFilePath == avatarLocalFilePath) &&
             (identical(other.deleteAvatar, deleteAvatar) ||
-                const DeepCollectionEquality()
-                    .equals(other.deleteAvatar, deleteAvatar)) &&
+                other.deleteAvatar == deleteAvatar) &&
             (identical(other.headerLocalFilePath, headerLocalFilePath) ||
-                const DeepCollectionEquality()
-                    .equals(other.headerLocalFilePath, headerLocalFilePath)) &&
+                other.headerLocalFilePath == headerLocalFilePath) &&
             (identical(other.deleteHeader, deleteHeader) ||
-                const DeepCollectionEquality()
-                    .equals(other.deleteHeader, deleteHeader)));
+                other.deleteHeader == deleteHeader));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(fieldsAttributes) ^
-      const DeepCollectionEquality().hash(discoverable) ^
-      const DeepCollectionEquality().hash(bot) ^
-      const DeepCollectionEquality().hash(displayName) ^
-      const DeepCollectionEquality().hash(note) ^
-      const DeepCollectionEquality().hash(locked) ^
-      const DeepCollectionEquality().hash(privacy) ^
-      const DeepCollectionEquality().hash(sensitive) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(avatarLocalFilePath) ^
-      const DeepCollectionEquality().hash(deleteAvatar) ^
-      const DeepCollectionEquality().hash(headerLocalFilePath) ^
-      const DeepCollectionEquality().hash(deleteHeader);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(fieldsAttributes),
+      discoverable,
+      bot,
+      displayName,
+      note,
+      locked,
+      privacy,
+      sensitive,
+      language,
+      avatarLocalFilePath,
+      deleteAvatar,
+      headerLocalFilePath,
+      deleteHeader);
 
   @JsonKey(ignore: true)
   @override
@@ -574,49 +561,48 @@ abstract class _MastodonApiEditMyAccount implements MastodonApiEditMyAccount {
   @override
   @JsonKey(name: 'fields_attributes')
   @HiveField(1)
-  List<MastodonApiField>? get fieldsAttributes =>
-      throw _privateConstructorUsedError;
+  List<MastodonApiField>? get fieldsAttributes;
   @override
   @HiveField(2)
-  bool? get discoverable => throw _privateConstructorUsedError;
+  bool? get discoverable;
   @override
   @HiveField(3)
-  bool? get bot => throw _privateConstructorUsedError;
+  bool? get bot;
   @override
   @JsonKey(name: 'display_name')
   @HiveField(4)
-  String? get displayName => throw _privateConstructorUsedError;
+  String? get displayName;
   @override
   @HiveField(5)
-  String? get note => throw _privateConstructorUsedError;
+  String? get note;
   @override
   @HiveField(6)
-  bool? get locked => throw _privateConstructorUsedError;
+  bool? get locked;
   @override
   @HiveField(7)
-  String? get privacy => throw _privateConstructorUsedError;
+  String? get privacy;
   @override
   @HiveField(8)
-  bool? get sensitive => throw _privateConstructorUsedError;
+  bool? get sensitive;
   @override
   @HiveField(9)
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @JsonKey(name: 'avatar_local_file_path')
   @HiveField(10)
-  String? get avatarLocalFilePath => throw _privateConstructorUsedError;
+  String? get avatarLocalFilePath;
   @override
   @JsonKey(name: 'delete_avatar')
   @HiveField(11)
-  bool? get deleteAvatar => throw _privateConstructorUsedError;
+  bool? get deleteAvatar;
   @override
   @JsonKey(name: 'header_local_file_path')
   @HiveField(12)
-  String? get headerLocalFilePath => throw _privateConstructorUsedError;
+  String? get headerLocalFilePath;
   @override
   @JsonKey(name: 'delete_header')
   @HiveField(13)
-  bool? get deleteHeader => throw _privateConstructorUsedError;
+  bool? get deleteHeader;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiEditMyAccountCopyWith<_MastodonApiEditMyAccount> get copyWith =>

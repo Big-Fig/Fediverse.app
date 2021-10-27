@@ -33,7 +33,7 @@ class _$MastodonApiRestErrorDetailsTearOff {
     );
   }
 
-  MastodonApiRestErrorDetails fromJson(Map<String, Object> json) {
+  MastodonApiRestErrorDetails fromJson(Map<String, Object?> json) {
     return MastodonApiRestErrorDetails.fromJson(json);
   }
 }
@@ -172,22 +172,17 @@ class _$_MastodonApiRestErrorDetails implements _MastodonApiRestErrorDetails {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiRestErrorDetails &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiRestErrorDetails &&
+            (identical(other.error, error) || other.error == error) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality().equals(other.details, details)));
+                other.description == description) &&
+            const DeepCollectionEquality().equals(other.details, details));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(details);
+  int get hashCode => Object.hash(runtimeType, error, description,
+      const DeepCollectionEquality().hash(details));
 
   @JsonKey(ignore: true)
   @override
@@ -213,12 +208,11 @@ abstract class _MastodonApiRestErrorDetails
       _$_MastodonApiRestErrorDetails.fromJson;
 
   @override
-  String get error => throw _privateConstructorUsedError;
+  String get error;
   @override
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
-  Map<String, List<MastodonApiRestErrorDetails>>? get details =>
-      throw _privateConstructorUsedError;
+  Map<String, List<MastodonApiRestErrorDetails>>? get details;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiRestErrorDetailsCopyWith<_MastodonApiRestErrorDetails>

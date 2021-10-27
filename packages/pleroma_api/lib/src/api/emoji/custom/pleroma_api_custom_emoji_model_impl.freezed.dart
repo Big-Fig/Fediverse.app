@@ -33,7 +33,7 @@ class _$PleromaApiCustomEmojiTearOff {
     );
   }
 
-  PleromaApiCustomEmoji fromJson(Map<String, Object> json) {
+  PleromaApiCustomEmoji fromJson(Map<String, Object?> json) {
     return PleromaApiCustomEmoji.fromJson(json);
   }
 }
@@ -177,22 +177,17 @@ class _$_PleromaApiCustomEmoji implements _PleromaApiCustomEmoji {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiCustomEmoji &&
-            (identical(other.tags, tags) ||
-                const DeepCollectionEquality().equals(other.tags, tags)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiCustomEmoji &&
+            const DeepCollectionEquality().equals(other.tags, tags) &&
             (identical(other.imageUrl, imageUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageUrl, imageUrl)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+                other.imageUrl == imageUrl) &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(tags) ^
-      const DeepCollectionEquality().hash(imageUrl) ^
-      const DeepCollectionEquality().hash(name);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(tags), imageUrl, name);
 
   @JsonKey(ignore: true)
   @override
@@ -217,14 +212,14 @@ abstract class _PleromaApiCustomEmoji implements PleromaApiCustomEmoji {
 
   @override
   @HiveField(0)
-  List<String>? get tags => throw _privateConstructorUsedError;
+  List<String>? get tags;
   @override
   @HiveField(1)
   @JsonKey(name: 'image_url')
-  String get imageUrl => throw _privateConstructorUsedError;
+  String get imageUrl;
   @override
   @HiveField(2)
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiCustomEmojiCopyWith<_PleromaApiCustomEmoji> get copyWith =>

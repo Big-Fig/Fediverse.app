@@ -191,15 +191,14 @@ class _$_ContinueOk implements _ContinueOk {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ContinueOk &&
+        (other.runtimeType == runtimeType &&
+            other is _ContinueOk &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -285,7 +284,7 @@ abstract class _ContinueOk implements RestResponseInfoCodeType {
   const factory _ContinueOk({int intValue}) = _$_ContinueOk;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$ContinueOkCopyWith<_ContinueOk> get copyWith =>
@@ -344,15 +343,14 @@ class _$_SwitchingProtocol implements _SwitchingProtocol {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _SwitchingProtocol &&
+        (other.runtimeType == runtimeType &&
+            other is _SwitchingProtocol &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -438,7 +436,7 @@ abstract class _SwitchingProtocol implements RestResponseInfoCodeType {
   const factory _SwitchingProtocol({int intValue}) = _$_SwitchingProtocol;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$SwitchingProtocolCopyWith<_SwitchingProtocol> get copyWith =>
@@ -497,15 +495,14 @@ class _$_Processing implements _Processing {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Processing &&
+        (other.runtimeType == runtimeType &&
+            other is _Processing &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -591,7 +588,7 @@ abstract class _Processing implements RestResponseInfoCodeType {
   const factory _Processing({int intValue}) = _$_Processing;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$ProcessingCopyWith<_Processing> get copyWith =>
@@ -650,15 +647,14 @@ class _$_EarlyHints implements _EarlyHints {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _EarlyHints &&
+        (other.runtimeType == runtimeType &&
+            other is _EarlyHints &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -744,7 +740,7 @@ abstract class _EarlyHints implements RestResponseInfoCodeType {
   const factory _EarlyHints({int intValue}) = _$_EarlyHints;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$EarlyHintsCopyWith<_EarlyHints> get copyWith =>

@@ -37,7 +37,7 @@ class _$MastodonApiAccessApplicationTokenTearOff {
     );
   }
 
-  MastodonApiAccessApplicationToken fromJson(Map<String, Object> json) {
+  MastodonApiAccessApplicationToken fromJson(Map<String, Object?> json) {
     return MastodonApiAccessApplicationToken.fromJson(json);
   }
 }
@@ -231,23 +231,18 @@ class _$_MastodonApiAccessApplicationToken
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiAccessApplicationToken &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiAccessApplicationToken &&
+            (identical(other.scopes, scopes) || other.scopes == scopes) &&
             (identical(other.clientApplication, clientApplication) ||
-                const DeepCollectionEquality()
-                    .equals(other.clientApplication, clientApplication)) &&
+                other.clientApplication == clientApplication) &&
             (identical(other.oauthToken, oauthToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.oauthToken, oauthToken)));
+                other.oauthToken == oauthToken));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(scopes) ^
-      const DeepCollectionEquality().hash(clientApplication) ^
-      const DeepCollectionEquality().hash(oauthToken);
+      Object.hash(runtimeType, scopes, clientApplication, oauthToken);
 
   @JsonKey(ignore: true)
   @override
@@ -281,15 +276,14 @@ abstract class _MastodonApiAccessApplicationToken
 
   @override
   @HiveField(1)
-  MastodonApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  MastodonApiAccessScopes get scopes;
   @override
   @HiveField(2)
-  MastodonApiClientApplication get clientApplication =>
-      throw _privateConstructorUsedError;
+  MastodonApiClientApplication get clientApplication;
   @override
   @HiveField(3)
   @JsonKey(name: 'oauth_token')
-  MastodonApiOAuthToken get oauthToken => throw _privateConstructorUsedError;
+  MastodonApiOAuthToken get oauthToken;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiAccessApplicationTokenCopyWith<

@@ -43,7 +43,7 @@ class _$PleromaApiInstancePollLimitsTearOff {
     );
   }
 
-  PleromaApiInstancePollLimits fromJson(Map<String, Object> json) {
+  PleromaApiInstancePollLimits fromJson(Map<String, Object?> json) {
     return PleromaApiInstancePollLimits.fromJson(json);
   }
 }
@@ -223,28 +223,21 @@ class _$_PleromaApiInstancePollLimits implements _PleromaApiInstancePollLimits {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstancePollLimits &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstancePollLimits &&
             (identical(other.maxExpiration, maxExpiration) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxExpiration, maxExpiration)) &&
+                other.maxExpiration == maxExpiration) &&
             (identical(other.maxOptionChars, maxOptionChars) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxOptionChars, maxOptionChars)) &&
+                other.maxOptionChars == maxOptionChars) &&
             (identical(other.maxOptions, maxOptions) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxOptions, maxOptions)) &&
+                other.maxOptions == maxOptions) &&
             (identical(other.minExpiration, minExpiration) ||
-                const DeepCollectionEquality()
-                    .equals(other.minExpiration, minExpiration)));
+                other.minExpiration == minExpiration));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(maxExpiration) ^
-      const DeepCollectionEquality().hash(maxOptionChars) ^
-      const DeepCollectionEquality().hash(maxOptions) ^
-      const DeepCollectionEquality().hash(minExpiration);
+  int get hashCode => Object.hash(
+      runtimeType, maxExpiration, maxOptionChars, maxOptions, minExpiration);
 
   @JsonKey(ignore: true)
   @override
@@ -280,19 +273,19 @@ abstract class _PleromaApiInstancePollLimits
   @override
   @HiveField(0)
   @JsonKey(name: 'max_expiration')
-  int? get maxExpiration => throw _privateConstructorUsedError;
+  int? get maxExpiration;
   @override
   @HiveField(1)
   @JsonKey(name: 'max_option_chars')
-  int? get maxOptionChars => throw _privateConstructorUsedError;
+  int? get maxOptionChars;
   @override
   @HiveField(2)
   @JsonKey(name: 'max_options')
-  int? get maxOptions => throw _privateConstructorUsedError;
+  int? get maxOptions;
   @override
   @HiveField(3)
   @JsonKey(name: 'min_expiration')
-  int? get minExpiration => throw _privateConstructorUsedError;
+  int? get minExpiration;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstancePollLimitsCopyWith<_PleromaApiInstancePollLimits>

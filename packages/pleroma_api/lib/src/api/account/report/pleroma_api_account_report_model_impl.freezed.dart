@@ -33,7 +33,7 @@ class _$PleromaApiAccountReportTearOff {
     );
   }
 
-  PleromaApiAccountReport fromJson(Map<String, Object> json) {
+  PleromaApiAccountReport fromJson(Map<String, Object?> json) {
     return PleromaApiAccountReport.fromJson(json);
   }
 }
@@ -206,23 +206,16 @@ class _$_PleromaApiAccountReport implements _PleromaApiAccountReport {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccountReport &&
-            (identical(other.account, account) ||
-                const DeepCollectionEquality()
-                    .equals(other.account, account)) &&
-            (identical(other.statuses, statuses) ||
-                const DeepCollectionEquality()
-                    .equals(other.statuses, statuses)) &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccountReport &&
+            (identical(other.account, account) || other.account == account) &&
+            const DeepCollectionEquality().equals(other.statuses, statuses) &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(account) ^
-      const DeepCollectionEquality().hash(statuses) ^
-      const DeepCollectionEquality().hash(user);
+  int get hashCode => Object.hash(runtimeType, account,
+      const DeepCollectionEquality().hash(statuses), user);
 
   @JsonKey(ignore: true)
   @override
@@ -248,13 +241,13 @@ abstract class _PleromaApiAccountReport implements PleromaApiAccountReport {
 
   @override
   @HiveField(0)
-  PleromaApiAccount? get account => throw _privateConstructorUsedError;
+  PleromaApiAccount? get account;
   @override
   @HiveField(1)
-  List<PleromaApiStatus>? get statuses => throw _privateConstructorUsedError;
+  List<PleromaApiStatus>? get statuses;
   @override
   @HiveField(2)
-  PleromaApiAccount? get user => throw _privateConstructorUsedError;
+  PleromaApiAccount? get user;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccountReportCopyWith<_PleromaApiAccountReport> get copyWith =>

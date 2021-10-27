@@ -127,19 +127,15 @@ class _$_CustomList implements _CustomList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CustomList &&
+        (other.runtimeType == runtimeType &&
+            other is _CustomList &&
             (identical(other.remoteId, remoteId) ||
-                const DeepCollectionEquality()
-                    .equals(other.remoteId, remoteId)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)));
+                other.remoteId == remoteId) &&
+            (identical(other.title, title) || other.title == title));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(remoteId) ^
-      const DeepCollectionEquality().hash(title);
+  int get hashCode => Object.hash(runtimeType, remoteId, title);
 
   @JsonKey(ignore: true)
   @override
@@ -152,9 +148,9 @@ abstract class _CustomList implements CustomList {
       _$_CustomList;
 
   @override
-  String get remoteId => throw _privateConstructorUsedError;
+  String get remoteId;
   @override
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @JsonKey(ignore: true)
   _$CustomListCopyWith<_CustomList> get copyWith =>

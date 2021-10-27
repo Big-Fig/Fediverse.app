@@ -36,7 +36,7 @@ class _$PleromaApiFieldTearOff {
     );
   }
 
-  PleromaApiField fromJson(Map<String, Object> json) {
+  PleromaApiField fromJson(Map<String, Object?> json) {
     return PleromaApiField.fromJson(json);
   }
 }
@@ -180,22 +180,16 @@ class _$_PleromaApiField implements _PleromaApiField {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiField &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiField &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.value, value) || other.value == value) &&
             (identical(other.verifiedAt, verifiedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.verifiedAt, verifiedAt)));
+                other.verifiedAt == verifiedAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(value) ^
-      const DeepCollectionEquality().hash(verifiedAt);
+  int get hashCode => Object.hash(runtimeType, name, value, verifiedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -223,14 +217,14 @@ abstract class _PleromaApiField implements PleromaApiField {
 
   @override
   @HiveField(0)
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
   @HiveField(1)
-  String? get value => throw _privateConstructorUsedError;
+  String? get value;
   @override
   @HiveField(2)
   @JsonKey(name: 'verified_at')
-  DateTime? get verifiedAt => throw _privateConstructorUsedError;
+  DateTime? get verifiedAt;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiFieldCopyWith<_PleromaApiField> get copyWith =>

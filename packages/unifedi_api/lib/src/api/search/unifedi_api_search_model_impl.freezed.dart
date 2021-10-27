@@ -33,7 +33,7 @@ class _$UnifediApiSearchResultTearOff {
     );
   }
 
-  UnifediApiSearchResult fromJson(Map<String, Object> json) {
+  UnifediApiSearchResult fromJson(Map<String, Object?> json) {
     return UnifediApiSearchResult.fromJson(json);
   }
 }
@@ -175,24 +175,19 @@ class _$_UnifediApiSearchResult implements _UnifediApiSearchResult {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiSearchResult &&
-            (identical(other.accounts, accounts) ||
-                const DeepCollectionEquality()
-                    .equals(other.accounts, accounts)) &&
-            (identical(other.hashtags, hashtags) ||
-                const DeepCollectionEquality()
-                    .equals(other.hashtags, hashtags)) &&
-            (identical(other.statuses, statuses) ||
-                const DeepCollectionEquality()
-                    .equals(other.statuses, statuses)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiSearchResult &&
+            const DeepCollectionEquality().equals(other.accounts, accounts) &&
+            const DeepCollectionEquality().equals(other.hashtags, hashtags) &&
+            const DeepCollectionEquality().equals(other.statuses, statuses));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(accounts) ^
-      const DeepCollectionEquality().hash(hashtags) ^
-      const DeepCollectionEquality().hash(statuses);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(accounts),
+      const DeepCollectionEquality().hash(hashtags),
+      const DeepCollectionEquality().hash(statuses));
 
   @JsonKey(ignore: true)
   @override
@@ -218,13 +213,13 @@ abstract class _UnifediApiSearchResult implements UnifediApiSearchResult {
 
   @override
   @HiveField(0)
-  List<UnifediApiAccount> get accounts => throw _privateConstructorUsedError;
+  List<UnifediApiAccount> get accounts;
   @override
   @HiveField(1)
-  List<UnifediApiTag> get hashtags => throw _privateConstructorUsedError;
+  List<UnifediApiTag> get hashtags;
   @override
   @HiveField(2)
-  List<UnifediApiStatus> get statuses => throw _privateConstructorUsedError;
+  List<UnifediApiStatus> get statuses;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiSearchResultCopyWith<_UnifediApiSearchResult> get copyWith =>

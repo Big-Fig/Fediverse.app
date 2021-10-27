@@ -116,14 +116,13 @@ class _$_PaginationItemTest extends _PaginationItemTest {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PaginationItemTest &&
-            (identical(other.index, index) ||
-                const DeepCollectionEquality().equals(other.index, index)));
+        (other.runtimeType == runtimeType &&
+            other is _PaginationItemTest &&
+            (identical(other.index, index) || other.index == index));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(index);
+  int get hashCode => Object.hash(runtimeType, index);
 
   @JsonKey(ignore: true)
   @override
@@ -136,7 +135,7 @@ abstract class _PaginationItemTest extends PaginationItemTest {
   const _PaginationItemTest._() : super._();
 
   @override
-  int get index => throw _privateConstructorUsedError;
+  int get index;
   @override
   @JsonKey(ignore: true)
   _$PaginationItemTestCopyWith<_PaginationItemTest> get copyWith =>

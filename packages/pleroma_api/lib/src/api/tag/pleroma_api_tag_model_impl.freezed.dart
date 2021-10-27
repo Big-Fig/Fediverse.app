@@ -32,7 +32,7 @@ class _$PleromaApiTagTearOff {
     );
   }
 
-  PleromaApiTag fromJson(Map<String, Object> json) {
+  PleromaApiTag fromJson(Map<String, Object?> json) {
     return PleromaApiTag.fromJson(json);
   }
 }
@@ -175,21 +175,16 @@ class _$_PleromaApiTag implements _PleromaApiTag {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiTag &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
-            (identical(other.history, history) ||
-                const DeepCollectionEquality().equals(other.history, history)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiTag &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.url, url) || other.url == url) &&
+            const DeepCollectionEquality().equals(other.history, history));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(history);
+  int get hashCode => Object.hash(
+      runtimeType, name, url, const DeepCollectionEquality().hash(history));
 
   @JsonKey(ignore: true)
   @override
@@ -214,14 +209,13 @@ abstract class _PleromaApiTag implements PleromaApiTag {
 
   @override
   @HiveField(0)
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @HiveField(1)
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @override
   @HiveField(2)
-  List<PleromaApiTagHistoryItem>? get history =>
-      throw _privateConstructorUsedError;
+  List<PleromaApiTagHistoryItem>? get history;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiTagCopyWith<_PleromaApiTag> get copyWith =>

@@ -43,7 +43,7 @@ class _$TimelineTearOff {
     );
   }
 
-  Timeline fromJson(Map<String, Object> json) {
+  Timeline fromJson(Map<String, Object?> json) {
     return Timeline.fromJson(json);
   }
 }
@@ -253,30 +253,21 @@ class _$_Timeline extends _Timeline {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Timeline &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.label, label) ||
-                const DeepCollectionEquality().equals(other.label, label)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Timeline &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.label, label) || other.label == label) &&
             (identical(other.isPossibleToDelete, isPossibleToDelete) ||
-                const DeepCollectionEquality()
-                    .equals(other.isPossibleToDelete, isPossibleToDelete)) &&
+                other.isPossibleToDelete == isPossibleToDelete) &&
             (identical(other.typeString, typeString) ||
-                const DeepCollectionEquality()
-                    .equals(other.typeString, typeString)) &&
+                other.typeString == typeString) &&
             (identical(other.settings, settings) ||
-                const DeepCollectionEquality()
-                    .equals(other.settings, settings)));
+                other.settings == settings));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(isPossibleToDelete) ^
-      const DeepCollectionEquality().hash(typeString) ^
-      const DeepCollectionEquality().hash(settings);
+  int get hashCode => Object.hash(
+      runtimeType, id, label, isPossibleToDelete, typeString, settings);
 
   @JsonKey(ignore: true)
   @override
@@ -309,21 +300,21 @@ abstract class _Timeline extends Timeline {
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
-  String? get label => throw _privateConstructorUsedError;
+  String? get label;
   @override
   @HiveField(2)
   @JsonKey(name: 'is_possible_to_delete')
-  bool get isPossibleToDelete => throw _privateConstructorUsedError;
+  bool get isPossibleToDelete;
   @override
   @HiveField(3)
   @JsonKey(name: 'type_string')
-  String get typeString => throw _privateConstructorUsedError;
+  String get typeString;
   @override
   @HiveField(4)
-  TimelineSettings get settings => throw _privateConstructorUsedError;
+  TimelineSettings get settings;
   @override
   @JsonKey(ignore: true)
   _$TimelineCopyWith<_Timeline> get copyWith =>

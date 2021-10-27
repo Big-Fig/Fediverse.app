@@ -40,7 +40,7 @@ class _$MastodonApiConversationTearOff {
     );
   }
 
-  MastodonApiConversation fromJson(Map<String, Object> json) {
+  MastodonApiConversation fromJson(Map<String, Object?> json) {
     return MastodonApiConversation.fromJson(json);
   }
 }
@@ -219,26 +219,18 @@ class _$_MastodonApiConversation implements _MastodonApiConversation {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiConversation &&
-            (identical(other.unread, unread) ||
-                const DeepCollectionEquality().equals(other.unread, unread)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiConversation &&
+            (identical(other.unread, unread) || other.unread == unread) &&
             (identical(other.lastStatus, lastStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastStatus, lastStatus)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.accounts, accounts) ||
-                const DeepCollectionEquality()
-                    .equals(other.accounts, accounts)));
+                other.lastStatus == lastStatus) &&
+            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality().equals(other.accounts, accounts));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(unread) ^
-      const DeepCollectionEquality().hash(lastStatus) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(accounts);
+  int get hashCode => Object.hash(runtimeType, unread, lastStatus, id,
+      const DeepCollectionEquality().hash(accounts));
 
   @JsonKey(ignore: true)
   @override
@@ -270,17 +262,17 @@ abstract class _MastodonApiConversation implements MastodonApiConversation {
 
   @override
   @HiveField(0)
-  bool? get unread => throw _privateConstructorUsedError;
+  bool? get unread;
   @override
   @HiveField(1)
   @JsonKey(name: 'last_status')
-  MastodonApiStatus? get lastStatus => throw _privateConstructorUsedError;
+  MastodonApiStatus? get lastStatus;
   @override
   @HiveField(2)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(3)
-  List<MastodonApiAccount> get accounts => throw _privateConstructorUsedError;
+  List<MastodonApiAccount> get accounts;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiConversationCopyWith<_MastodonApiConversation> get copyWith =>

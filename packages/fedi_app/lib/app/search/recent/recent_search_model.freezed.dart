@@ -30,7 +30,7 @@ class _$RecentSearchListTearOff {
     );
   }
 
-  RecentSearchList fromJson(Map<String, Object> json) {
+  RecentSearchList fromJson(Map<String, Object?> json) {
     return RecentSearchList.fromJson(json);
   }
 }
@@ -148,15 +148,15 @@ class _$_RecentSearchList
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RecentSearchList &&
-            (identical(other.recentItems, recentItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.recentItems, recentItems)));
+        (other.runtimeType == runtimeType &&
+            other is _RecentSearchList &&
+            const DeepCollectionEquality()
+                .equals(other.recentItems, recentItems));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(recentItems);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(recentItems));
 
   @JsonKey(ignore: true)
   @override
@@ -181,7 +181,7 @@ abstract class _RecentSearchList implements RecentSearchList {
   @override
   @JsonKey(name: 'recentItems')
   @HiveField(0)
-  List<String> get recentItems => throw _privateConstructorUsedError;
+  List<String> get recentItems;
   @override
   @JsonKey(ignore: true)
   _$RecentSearchListCopyWith<_RecentSearchList> get copyWith =>

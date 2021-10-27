@@ -246,44 +246,29 @@ class _$_ShareEntitySettings implements _ShareEntitySettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ShareEntitySettings &&
+        (other.runtimeType == runtimeType &&
+            other is _ShareEntitySettings &&
             (identical(other.appendFromAccount, appendFromAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.appendFromAccount, appendFromAccount)) &&
+                other.appendFromAccount == appendFromAccount) &&
             (identical(other.withCreatedAt, withCreatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.withCreatedAt, withCreatedAt)) &&
+                other.withCreatedAt == withCreatedAt) &&
             (identical(other.withMedia, withMedia) ||
-                const DeepCollectionEquality()
-                    .equals(other.withMedia, withMedia)) &&
+                other.withMedia == withMedia) &&
             (identical(other.withText, withText) ||
-                const DeepCollectionEquality()
-                    .equals(other.withText, withText)) &&
+                other.withText == withText) &&
             (identical(other.withLink, withLink) ||
-                const DeepCollectionEquality()
-                    .equals(other.withLink, withLink)) &&
+                other.withLink == withLink) &&
             (identical(other.wholeAsLink, wholeAsLink) ||
-                const DeepCollectionEquality()
-                    .equals(other.wholeAsLink, wholeAsLink)) &&
+                other.wholeAsLink == wholeAsLink) &&
             (identical(other.mediaAsLink, mediaAsLink) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaAsLink, mediaAsLink)) &&
+                other.mediaAsLink == mediaAsLink) &&
             (identical(other.withMessage, withMessage) ||
-                const DeepCollectionEquality()
-                    .equals(other.withMessage, withMessage)));
+                other.withMessage == withMessage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(appendFromAccount) ^
-      const DeepCollectionEquality().hash(withCreatedAt) ^
-      const DeepCollectionEquality().hash(withMedia) ^
-      const DeepCollectionEquality().hash(withText) ^
-      const DeepCollectionEquality().hash(withLink) ^
-      const DeepCollectionEquality().hash(wholeAsLink) ^
-      const DeepCollectionEquality().hash(mediaAsLink) ^
-      const DeepCollectionEquality().hash(withMessage);
+  int get hashCode => Object.hash(runtimeType, appendFromAccount, withCreatedAt,
+      withMedia, withText, withLink, wholeAsLink, mediaAsLink, withMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -304,21 +289,21 @@ abstract class _ShareEntitySettings implements ShareEntitySettings {
       required String? withMessage}) = _$_ShareEntitySettings;
 
   @override
-  bool get appendFromAccount => throw _privateConstructorUsedError;
+  bool get appendFromAccount;
   @override
-  bool get withCreatedAt => throw _privateConstructorUsedError;
+  bool get withCreatedAt;
   @override
-  bool get withMedia => throw _privateConstructorUsedError;
+  bool get withMedia;
   @override
-  bool get withText => throw _privateConstructorUsedError;
+  bool get withText;
   @override
-  bool get withLink => throw _privateConstructorUsedError;
+  bool get withLink;
   @override
-  bool get wholeAsLink => throw _privateConstructorUsedError;
+  bool get wholeAsLink;
   @override
-  bool get mediaAsLink => throw _privateConstructorUsedError;
+  bool get mediaAsLink;
   @override
-  String? get withMessage => throw _privateConstructorUsedError;
+  String? get withMessage;
   @override
   @JsonKey(ignore: true)
   _$ShareEntitySettingsCopyWith<_ShareEntitySettings> get copyWith =>

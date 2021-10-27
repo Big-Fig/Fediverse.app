@@ -43,7 +43,7 @@ class _$UnifediApiEmojiTearOff {
     );
   }
 
-  UnifediApiEmoji fromJson(Map<String, Object> json) {
+  UnifediApiEmoji fromJson(Map<String, Object?> json) {
     return UnifediApiEmoji.fromJson(json);
   }
 }
@@ -232,29 +232,20 @@ class _$_UnifediApiEmoji implements _UnifediApiEmoji {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiEmoji &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiEmoji &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.staticUrl, staticUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.staticUrl, staticUrl)) &&
+                other.staticUrl == staticUrl) &&
             (identical(other.visibleInPicker, visibleInPicker) ||
-                const DeepCollectionEquality()
-                    .equals(other.visibleInPicker, visibleInPicker)) &&
-            (identical(other.tags, tags) ||
-                const DeepCollectionEquality().equals(other.tags, tags)));
+                other.visibleInPicker == visibleInPicker) &&
+            const DeepCollectionEquality().equals(other.tags, tags));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(staticUrl) ^
-      const DeepCollectionEquality().hash(visibleInPicker) ^
-      const DeepCollectionEquality().hash(tags);
+  int get hashCode => Object.hash(runtimeType, name, url, staticUrl,
+      visibleInPicker, const DeepCollectionEquality().hash(tags));
 
   @JsonKey(ignore: true)
   @override
@@ -287,21 +278,21 @@ abstract class _UnifediApiEmoji implements UnifediApiEmoji {
 
   @override
   @HiveField(0)
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @HiveField(1)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @HiveField(2)
   @JsonKey(name: 'static_url')
-  String? get staticUrl => throw _privateConstructorUsedError;
+  String? get staticUrl;
   @override
   @JsonKey(name: 'visible_in_picker')
   @HiveField(3)
-  bool? get visibleInPicker => throw _privateConstructorUsedError;
+  bool? get visibleInPicker;
   @override
   @HiveField(4)
-  List<String>? get tags => throw _privateConstructorUsedError;
+  List<String>? get tags;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiEmojiCopyWith<_UnifediApiEmoji> get copyWith =>

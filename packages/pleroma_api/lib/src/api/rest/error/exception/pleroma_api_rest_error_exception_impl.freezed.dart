@@ -134,15 +134,14 @@ class _$_PleromaApiRestErrorException extends _PleromaApiRestErrorException {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiRestErrorException &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiRestErrorException &&
             (identical(other.pleromaError, pleromaError) ||
-                const DeepCollectionEquality()
-                    .equals(other.pleromaError, pleromaError)));
+                other.pleromaError == pleromaError));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(pleromaError);
+  int get hashCode => Object.hash(runtimeType, pleromaError);
 
   @JsonKey(ignore: true)
   @override
@@ -159,7 +158,7 @@ abstract class _PleromaApiRestErrorException
   const _PleromaApiRestErrorException._() : super._();
 
   @override
-  PleromaApiRestError get pleromaError => throw _privateConstructorUsedError;
+  PleromaApiRestError get pleromaError;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiRestErrorExceptionCopyWith<_PleromaApiRestErrorException>

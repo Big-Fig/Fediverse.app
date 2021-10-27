@@ -86,7 +86,7 @@ class _$TimelineSettingsOldTearOff {
     );
   }
 
-  TimelineSettingsOld fromJson(Map<String, Object> json) {
+  TimelineSettingsOld fromJson(Map<String, Object?> json) {
     return TimelineSettingsOld.fromJson(json);
   }
 }
@@ -623,74 +623,60 @@ class _$_TimelineSettingsOld extends _TimelineSettingsOld
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TimelineSettingsOld &&
+        (other.runtimeType == runtimeType &&
+            other is _TimelineSettingsOld &&
             (identical(other.onlyWithMedia, onlyWithMedia) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyWithMedia, onlyWithMedia)) &&
+                other.onlyWithMedia == onlyWithMedia) &&
             (identical(other.excludeReplies, excludeReplies) ||
-                const DeepCollectionEquality()
-                    .equals(other.excludeReplies, excludeReplies)) &&
+                other.excludeReplies == excludeReplies) &&
             (identical(other.excludeNsfwSensitive, excludeNsfwSensitive) ||
-                const DeepCollectionEquality().equals(
-                    other.excludeNsfwSensitive, excludeNsfwSensitive)) &&
+                other.excludeNsfwSensitive == excludeNsfwSensitive) &&
             (identical(other.onlyRemote, onlyRemote) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyRemote, onlyRemote)) &&
+                other.onlyRemote == onlyRemote) &&
             (identical(other.onlyLocal, onlyLocal) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyLocal, onlyLocal)) &&
+                other.onlyLocal == onlyLocal) &&
             (identical(other.withMuted, withMuted) ||
-                const DeepCollectionEquality()
-                    .equals(other.withMuted, withMuted)) &&
-            (identical(other.excludeVisibilitiesStrings, excludeVisibilitiesStrings) ||
-                const DeepCollectionEquality().equals(
-                    other.excludeVisibilitiesStrings,
-                    excludeVisibilitiesStrings)) &&
+                other.withMuted == withMuted) &&
+            const DeepCollectionEquality().equals(
+                other.excludeVisibilitiesStrings, excludeVisibilitiesStrings) &&
             (identical(other.onlyInRemoteList, onlyInRemoteList) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyInRemoteList, onlyInRemoteList)) &&
+                other.onlyInRemoteList == onlyInRemoteList) &&
             (identical(other.withRemoteHashtag, withRemoteHashtag) ||
-                const DeepCollectionEquality()
-                    .equals(other.withRemoteHashtag, withRemoteHashtag)) &&
-            (identical(other.replyVisibilityFilterString, replyVisibilityFilterString) ||
-                const DeepCollectionEquality().equals(
-                    other.replyVisibilityFilterString,
-                    replyVisibilityFilterString)) &&
+                other.withRemoteHashtag == withRemoteHashtag) &&
+            (identical(other.replyVisibilityFilterString,
+                    replyVisibilityFilterString) ||
+                other.replyVisibilityFilterString ==
+                    replyVisibilityFilterString) &&
             (identical(other.onlyFromRemoteAccount, onlyFromRemoteAccount) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyFromRemoteAccount, onlyFromRemoteAccount)) &&
+                other.onlyFromRemoteAccount == onlyFromRemoteAccount) &&
             (identical(other.onlyPinned, onlyPinned) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyPinned, onlyPinned)) &&
+                other.onlyPinned == onlyPinned) &&
             (identical(other.excludeReblogs, excludeReblogs) ||
-                const DeepCollectionEquality()
-                    .equals(other.excludeReblogs, excludeReblogs)) &&
+                other.excludeReblogs == excludeReblogs) &&
             (identical(other.webSocketsUpdates, webSocketsUpdates) ||
-                const DeepCollectionEquality()
-                    .equals(other.webSocketsUpdates, webSocketsUpdates)) &&
+                other.webSocketsUpdates == webSocketsUpdates) &&
             (identical(other.onlyFromInstance, onlyFromInstance) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyFromInstance, onlyFromInstance)));
+                other.onlyFromInstance == onlyFromInstance));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(onlyWithMedia) ^
-      const DeepCollectionEquality().hash(excludeReplies) ^
-      const DeepCollectionEquality().hash(excludeNsfwSensitive) ^
-      const DeepCollectionEquality().hash(onlyRemote) ^
-      const DeepCollectionEquality().hash(onlyLocal) ^
-      const DeepCollectionEquality().hash(withMuted) ^
-      const DeepCollectionEquality().hash(excludeVisibilitiesStrings) ^
-      const DeepCollectionEquality().hash(onlyInRemoteList) ^
-      const DeepCollectionEquality().hash(withRemoteHashtag) ^
-      const DeepCollectionEquality().hash(replyVisibilityFilterString) ^
-      const DeepCollectionEquality().hash(onlyFromRemoteAccount) ^
-      const DeepCollectionEquality().hash(onlyPinned) ^
-      const DeepCollectionEquality().hash(excludeReblogs) ^
-      const DeepCollectionEquality().hash(webSocketsUpdates) ^
-      const DeepCollectionEquality().hash(onlyFromInstance);
+  int get hashCode => Object.hash(
+      runtimeType,
+      onlyWithMedia,
+      excludeReplies,
+      excludeNsfwSensitive,
+      onlyRemote,
+      onlyLocal,
+      withMuted,
+      const DeepCollectionEquality().hash(excludeVisibilitiesStrings),
+      onlyInRemoteList,
+      withRemoteHashtag,
+      replyVisibilityFilterString,
+      onlyFromRemoteAccount,
+      onlyPinned,
+      excludeReblogs,
+      webSocketsUpdates,
+      onlyFromInstance);
 
   @JsonKey(ignore: true)
   @override
@@ -759,65 +745,63 @@ abstract class _TimelineSettingsOld extends TimelineSettingsOld {
   @override
   @HiveField(1)
   @JsonKey(name: 'only_with_media')
-  bool? get onlyWithMedia => throw _privateConstructorUsedError;
+  bool? get onlyWithMedia;
   @override
   @HiveField(2)
   @JsonKey(name: 'exclude_replies')
-  bool? get excludeReplies => throw _privateConstructorUsedError;
+  bool? get excludeReplies;
   @override
   @HiveField(3)
   @JsonKey(name: 'exclude_nsfw_sensitive')
-  bool? get excludeNsfwSensitive => throw _privateConstructorUsedError;
+  bool? get excludeNsfwSensitive;
   @override
   @HiveField(4)
   @JsonKey(name: 'only_remote')
-  bool? get onlyRemote => throw _privateConstructorUsedError;
+  bool? get onlyRemote;
   @override
   @HiveField(5)
   @JsonKey(name: 'only_local')
-  bool? get onlyLocal => throw _privateConstructorUsedError;
+  bool? get onlyLocal;
   @override
   @HiveField(6)
   @JsonKey(name: 'with_muted')
-  bool? get withMuted => throw _privateConstructorUsedError;
+  bool? get withMuted;
   @override
   @HiveField(7)
   @JsonKey(name: 'exclude_visibilities_strings')
-  List<String>? get excludeVisibilitiesStrings =>
-      throw _privateConstructorUsedError;
+  List<String>? get excludeVisibilitiesStrings;
   @override
   @HiveField(9)
   @JsonKey(name: 'only_in_list')
-  PleromaApiList? get onlyInRemoteList => throw _privateConstructorUsedError;
+  PleromaApiList? get onlyInRemoteList;
   @override
   @HiveField(10)
   @JsonKey(name: 'with_remote_hashtag')
-  String? get withRemoteHashtag => throw _privateConstructorUsedError;
+  String? get withRemoteHashtag;
   @override
   @HiveField(11)
   @JsonKey(name: 'reply_visibility_filter_string')
-  String? get replyVisibilityFilterString => throw _privateConstructorUsedError;
+  String? get replyVisibilityFilterString;
   @override
   @HiveField(13)
   @JsonKey(name: 'only_from_remote_account')
-  PleromaApiAccount? get onlyFromRemoteAccount =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccount? get onlyFromRemoteAccount;
   @override
   @HiveField(14)
   @JsonKey(name: 'only_pinned')
-  bool? get onlyPinned => throw _privateConstructorUsedError;
+  bool? get onlyPinned;
   @override
   @HiveField(15)
   @JsonKey(name: 'exclude_reblogs')
-  bool? get excludeReblogs => throw _privateConstructorUsedError;
+  bool? get excludeReblogs;
   @override
   @HiveField(16)
   @JsonKey(name: 'web_sockets_updates')
-  bool? get webSocketsUpdates => throw _privateConstructorUsedError;
+  bool? get webSocketsUpdates;
   @override
   @HiveField(17)
   @JsonKey(name: 'instance')
-  String? get onlyFromInstance => throw _privateConstructorUsedError;
+  String? get onlyFromInstance;
   @override
   @JsonKey(ignore: true)
   _$TimelineSettingsOldCopyWith<_TimelineSettingsOld> get copyWith =>

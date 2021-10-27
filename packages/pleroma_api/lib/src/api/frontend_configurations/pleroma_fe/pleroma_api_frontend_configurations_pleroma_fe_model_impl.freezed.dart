@@ -128,7 +128,8 @@ class _$PleromaApiFrontendConfigurationsPleromaFeTearOff {
     );
   }
 
-  PleromaApiFrontendConfigurationsPleromaFe fromJson(Map<String, Object> json) {
+  PleromaApiFrontendConfigurationsPleromaFe fromJson(
+      Map<String, Object?> json) {
     return PleromaApiFrontendConfigurationsPleromaFe.fromJson(json);
   }
 }
@@ -882,98 +883,93 @@ class _$_PleromaApiFrontendConfigurationsPleromaFe
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiFrontendConfigurationsPleromaFe &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiFrontendConfigurationsPleromaFe &&
             (identical(other.alwaysShowSubjectInput, alwaysShowSubjectInput) ||
-                const DeepCollectionEquality().equals(
-                    other.alwaysShowSubjectInput, alwaysShowSubjectInput)) &&
+                other.alwaysShowSubjectInput == alwaysShowSubjectInput) &&
             (identical(other.background, background) ||
-                const DeepCollectionEquality()
-                    .equals(other.background, background)) &&
-            (identical(other.collapseMessageWithSubject, collapseMessageWithSubject) ||
-                const DeepCollectionEquality().equals(
-                    other.collapseMessageWithSubject,
-                    collapseMessageWithSubject)) &&
+                other.background == background) &&
+            (identical(other.collapseMessageWithSubject,
+                    collapseMessageWithSubject) ||
+                other.collapseMessageWithSubject ==
+                    collapseMessageWithSubject) &&
             (identical(other.disableChat, disableChat) ||
-                const DeepCollectionEquality()
-                    .equals(other.disableChat, disableChat)) &&
+                other.disableChat == disableChat) &&
             (identical(other.greentext, greentext) ||
-                const DeepCollectionEquality()
-                    .equals(other.greentext, greentext)) &&
+                other.greentext == greentext) &&
             (identical(other.hideFilteredStatuses, hideFilteredStatuses) ||
-                const DeepCollectionEquality().equals(
-                    other.hideFilteredStatuses, hideFilteredStatuses)) &&
+                other.hideFilteredStatuses == hideFilteredStatuses) &&
             (identical(other.hideMutedPosts, hideMutedPosts) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideMutedPosts, hideMutedPosts)) &&
+                other.hideMutedPosts == hideMutedPosts) &&
             (identical(other.hidePostStats, hidePostStats) ||
-                const DeepCollectionEquality()
-                    .equals(other.hidePostStats, hidePostStats)) &&
+                other.hidePostStats == hidePostStats) &&
             (identical(other.hideUserStats, hideUserStats) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideUserStats, hideUserStats)) &&
+                other.hideUserStats == hideUserStats) &&
             (identical(other.loginMethod, loginMethod) ||
-                const DeepCollectionEquality()
-                    .equals(other.loginMethod, loginMethod)) &&
-            (identical(other.logo, logo) ||
-                const DeepCollectionEquality().equals(other.logo, logo)) &&
+                other.loginMethod == loginMethod) &&
+            (identical(other.logo, logo) || other.logo == logo) &&
             (identical(other.logoMargin, logoMargin) ||
-                const DeepCollectionEquality()
-                    .equals(other.logoMargin, logoMargin)) &&
+                other.logoMargin == logoMargin) &&
             (identical(other.logoMask, logoMask) ||
-                const DeepCollectionEquality()
-                    .equals(other.logoMask, logoMask)) &&
+                other.logoMask == logoMask) &&
             (identical(other.minimalScopesMode, minimalScopesMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.minimalScopesMode, minimalScopesMode)) &&
+                other.minimalScopesMode == minimalScopesMode) &&
             (identical(other.noAttachmentLinks, noAttachmentLinks) ||
-                const DeepCollectionEquality()
-                    .equals(other.noAttachmentLinks, noAttachmentLinks)) &&
+                other.noAttachmentLinks == noAttachmentLinks) &&
             (identical(other.nsfwCensorImage, nsfwCensorImage) ||
-                const DeepCollectionEquality()
-                    .equals(other.nsfwCensorImage, nsfwCensorImage)) &&
+                other.nsfwCensorImage == nsfwCensorImage) &&
             (identical(other.postContentType, postContentType) ||
-                const DeepCollectionEquality()
-                    .equals(other.postContentType, postContentType)) &&
-            (identical(other.redirectRootLogin, redirectRootLogin) || const DeepCollectionEquality().equals(other.redirectRootLogin, redirectRootLogin)) &&
-            (identical(other.redirectRootNoLogin, redirectRootNoLogin) || const DeepCollectionEquality().equals(other.redirectRootNoLogin, redirectRootNoLogin)) &&
-            (identical(other.scopeCopy, scopeCopy) || const DeepCollectionEquality().equals(other.scopeCopy, scopeCopy)) &&
-            (identical(other.showFeaturesPanel, showFeaturesPanel) || const DeepCollectionEquality().equals(other.showFeaturesPanel, showFeaturesPanel)) &&
-            (identical(other.showInstanceSpecificPanel, showInstanceSpecificPanel) || const DeepCollectionEquality().equals(other.showInstanceSpecificPanel, showInstanceSpecificPanel)) &&
-            (identical(other.sidebarRight, sidebarRight) || const DeepCollectionEquality().equals(other.sidebarRight, sidebarRight)) &&
-            (identical(other.subjectLineBehavior, subjectLineBehavior) || const DeepCollectionEquality().equals(other.subjectLineBehavior, subjectLineBehavior)) &&
-            (identical(other.theme, theme) || const DeepCollectionEquality().equals(other.theme, theme)) &&
-            (identical(other.webPushNotifications, webPushNotifications) || const DeepCollectionEquality().equals(other.webPushNotifications, webPushNotifications)));
+                other.postContentType == postContentType) &&
+            (identical(other.redirectRootLogin, redirectRootLogin) ||
+                other.redirectRootLogin == redirectRootLogin) &&
+            (identical(other.redirectRootNoLogin, redirectRootNoLogin) ||
+                other.redirectRootNoLogin == redirectRootNoLogin) &&
+            (identical(other.scopeCopy, scopeCopy) ||
+                other.scopeCopy == scopeCopy) &&
+            (identical(other.showFeaturesPanel, showFeaturesPanel) ||
+                other.showFeaturesPanel == showFeaturesPanel) &&
+            (identical(other.showInstanceSpecificPanel,
+                    showInstanceSpecificPanel) ||
+                other.showInstanceSpecificPanel == showInstanceSpecificPanel) &&
+            (identical(other.sidebarRight, sidebarRight) ||
+                other.sidebarRight == sidebarRight) &&
+            (identical(other.subjectLineBehavior, subjectLineBehavior) ||
+                other.subjectLineBehavior == subjectLineBehavior) &&
+            (identical(other.theme, theme) || other.theme == theme) &&
+            (identical(other.webPushNotifications, webPushNotifications) ||
+                other.webPushNotifications == webPushNotifications));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(alwaysShowSubjectInput) ^
-      const DeepCollectionEquality().hash(background) ^
-      const DeepCollectionEquality().hash(collapseMessageWithSubject) ^
-      const DeepCollectionEquality().hash(disableChat) ^
-      const DeepCollectionEquality().hash(greentext) ^
-      const DeepCollectionEquality().hash(hideFilteredStatuses) ^
-      const DeepCollectionEquality().hash(hideMutedPosts) ^
-      const DeepCollectionEquality().hash(hidePostStats) ^
-      const DeepCollectionEquality().hash(hideUserStats) ^
-      const DeepCollectionEquality().hash(loginMethod) ^
-      const DeepCollectionEquality().hash(logo) ^
-      const DeepCollectionEquality().hash(logoMargin) ^
-      const DeepCollectionEquality().hash(logoMask) ^
-      const DeepCollectionEquality().hash(minimalScopesMode) ^
-      const DeepCollectionEquality().hash(noAttachmentLinks) ^
-      const DeepCollectionEquality().hash(nsfwCensorImage) ^
-      const DeepCollectionEquality().hash(postContentType) ^
-      const DeepCollectionEquality().hash(redirectRootLogin) ^
-      const DeepCollectionEquality().hash(redirectRootNoLogin) ^
-      const DeepCollectionEquality().hash(scopeCopy) ^
-      const DeepCollectionEquality().hash(showFeaturesPanel) ^
-      const DeepCollectionEquality().hash(showInstanceSpecificPanel) ^
-      const DeepCollectionEquality().hash(sidebarRight) ^
-      const DeepCollectionEquality().hash(subjectLineBehavior) ^
-      const DeepCollectionEquality().hash(theme) ^
-      const DeepCollectionEquality().hash(webPushNotifications);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        alwaysShowSubjectInput,
+        background,
+        collapseMessageWithSubject,
+        disableChat,
+        greentext,
+        hideFilteredStatuses,
+        hideMutedPosts,
+        hidePostStats,
+        hideUserStats,
+        loginMethod,
+        logo,
+        logoMargin,
+        logoMask,
+        minimalScopesMode,
+        noAttachmentLinks,
+        nsfwCensorImage,
+        postContentType,
+        redirectRootLogin,
+        redirectRootNoLogin,
+        scopeCopy,
+        showFeaturesPanel,
+        showInstanceSpecificPanel,
+        sidebarRight,
+        subjectLineBehavior,
+        theme,
+        webPushNotifications
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -1074,103 +1070,103 @@ abstract class _PleromaApiFrontendConfigurationsPleromaFe
   @override
   @JsonKey(name: 'alwaysShowSubjectInput')
   @HiveField(0)
-  bool? get alwaysShowSubjectInput => throw _privateConstructorUsedError;
+  bool? get alwaysShowSubjectInput;
   @override
   @HiveField(1)
-  String? get background => throw _privateConstructorUsedError;
+  String? get background;
   @override
   @JsonKey(name: 'collapseMessageWithSubject')
   @HiveField(2)
-  bool? get collapseMessageWithSubject => throw _privateConstructorUsedError;
+  bool? get collapseMessageWithSubject;
   @override
   @JsonKey(name: 'disableChat')
   @HiveField(3)
-  bool? get disableChat => throw _privateConstructorUsedError;
+  bool? get disableChat;
   @override
   @HiveField(4)
-  bool? get greentext => throw _privateConstructorUsedError;
+  bool? get greentext;
   @override
   @JsonKey(name: 'hideFilteredStatuses')
   @HiveField(5)
-  bool? get hideFilteredStatuses => throw _privateConstructorUsedError;
+  bool? get hideFilteredStatuses;
   @override
   @JsonKey(name: 'hideMutedPosts')
   @HiveField(6)
-  bool? get hideMutedPosts => throw _privateConstructorUsedError;
+  bool? get hideMutedPosts;
   @override
   @JsonKey(name: 'hidePostStats')
   @HiveField(7)
-  bool? get hidePostStats => throw _privateConstructorUsedError;
+  bool? get hidePostStats;
   @override
   @JsonKey(name: 'hideUserStats')
   @HiveField(8)
-  bool? get hideUserStats => throw _privateConstructorUsedError;
+  bool? get hideUserStats;
   @override
   @JsonKey(name: 'loginMethod')
   @HiveField(9)
-  String? get loginMethod => throw _privateConstructorUsedError;
+  String? get loginMethod;
   @override
   @HiveField(10)
-  String? get logo => throw _privateConstructorUsedError;
+  String? get logo;
   @override
   @JsonKey(name: 'logoMargin')
   @HiveField(11)
-  String? get logoMargin => throw _privateConstructorUsedError;
+  String? get logoMargin;
   @override
   @JsonKey(name: 'logoMask')
   @HiveField(12)
-  bool? get logoMask => throw _privateConstructorUsedError;
+  bool? get logoMask;
   @override
   @JsonKey(name: 'minimalScopesMode')
   @HiveField(13)
-  bool? get minimalScopesMode => throw _privateConstructorUsedError;
+  bool? get minimalScopesMode;
   @override
   @JsonKey(name: 'noAttachmentLinks')
   @HiveField(14)
-  bool? get noAttachmentLinks => throw _privateConstructorUsedError;
+  bool? get noAttachmentLinks;
   @override
   @JsonKey(name: 'nsfwCensorImage')
   @HiveField(15)
-  String? get nsfwCensorImage => throw _privateConstructorUsedError;
+  String? get nsfwCensorImage;
   @override
   @JsonKey(name: 'postContentType')
   @HiveField(16)
-  String? get postContentType => throw _privateConstructorUsedError;
+  String? get postContentType;
   @override
   @JsonKey(name: 'redirectRootLogin')
   @HiveField(17)
-  String? get redirectRootLogin => throw _privateConstructorUsedError;
+  String? get redirectRootLogin;
   @override
   @JsonKey(name: 'redirectRootNoLogin')
   @HiveField(18)
-  String? get redirectRootNoLogin => throw _privateConstructorUsedError;
+  String? get redirectRootNoLogin;
   @override
   @JsonKey(name: 'scopeCopy')
   @HiveField(19)
-  bool? get scopeCopy => throw _privateConstructorUsedError;
+  bool? get scopeCopy;
   @override
   @JsonKey(name: 'showFeaturesPanel')
   @HiveField(20)
-  bool? get showFeaturesPanel => throw _privateConstructorUsedError;
+  bool? get showFeaturesPanel;
   @override
   @JsonKey(name: 'showInstanceSpecificPanel')
   @HiveField(21)
-  bool? get showInstanceSpecificPanel => throw _privateConstructorUsedError;
+  bool? get showInstanceSpecificPanel;
   @override
   @JsonKey(name: 'sidebarRight')
   @HiveField(22)
-  bool? get sidebarRight => throw _privateConstructorUsedError;
+  bool? get sidebarRight;
   @override
   @JsonKey(name: 'subjectLineBehavior')
   @HiveField(23)
-  String? get subjectLineBehavior => throw _privateConstructorUsedError;
+  String? get subjectLineBehavior;
   @override
   @HiveField(24)
-  String? get theme => throw _privateConstructorUsedError;
+  String? get theme;
   @override
   @JsonKey(name: 'webPushNotifications')
   @HiveField(25)
-  bool? get webPushNotifications => throw _privateConstructorUsedError;
+  bool? get webPushNotifications;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiFrontendConfigurationsPleromaFeCopyWith<

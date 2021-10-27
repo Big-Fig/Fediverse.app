@@ -224,15 +224,14 @@ class _$_Public implements _Public {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Public &&
+        (other.runtimeType == runtimeType &&
+            other is _Public &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -336,7 +335,7 @@ abstract class _Public implements PleromaApiVisibility {
   const factory _Public({String stringValue}) = _$_Public;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PublicCopyWith<_Public> get copyWith => throw _privateConstructorUsedError;
@@ -392,15 +391,14 @@ class _$_Unlisted implements _Unlisted {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unlisted &&
+        (other.runtimeType == runtimeType &&
+            other is _Unlisted &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -504,7 +502,7 @@ abstract class _Unlisted implements PleromaApiVisibility {
   const factory _Unlisted({String stringValue}) = _$_Unlisted;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnlistedCopyWith<_Unlisted> get copyWith =>
@@ -560,15 +558,14 @@ class _$_Direct implements _Direct {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Direct &&
+        (other.runtimeType == runtimeType &&
+            other is _Direct &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -672,7 +669,7 @@ abstract class _Direct implements PleromaApiVisibility {
   const factory _Direct({String stringValue}) = _$_Direct;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$DirectCopyWith<_Direct> get copyWith => throw _privateConstructorUsedError;
@@ -728,15 +725,14 @@ class _$_Private implements _Private {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Private &&
+        (other.runtimeType == runtimeType &&
+            other is _Private &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -840,7 +836,7 @@ abstract class _Private implements PleromaApiVisibility {
   const factory _Private({String stringValue}) = _$_Private;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PrivateCopyWith<_Private> get copyWith =>
@@ -895,15 +891,14 @@ class _$_List implements _List {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _List &&
+        (other.runtimeType == runtimeType &&
+            other is _List &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1007,7 +1002,7 @@ abstract class _List implements PleromaApiVisibility {
   const factory _List({String stringValue}) = _$_List;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ListCopyWith<_List> get copyWith => throw _privateConstructorUsedError;
@@ -1062,15 +1057,14 @@ class _$_Local implements _Local {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Local &&
+        (other.runtimeType == runtimeType &&
+            other is _Local &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1174,7 +1168,7 @@ abstract class _Local implements PleromaApiVisibility {
   const factory _Local({String stringValue}) = _$_Local;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$LocalCopyWith<_Local> get copyWith => throw _privateConstructorUsedError;
@@ -1228,15 +1222,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1340,7 +1333,7 @@ abstract class _Unknown implements PleromaApiVisibility {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

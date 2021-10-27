@@ -28,7 +28,7 @@ class _$UnifediApiTypeNotSupportedRequirementTearOff {
     );
   }
 
-  UnifediApiTypeNotSupportedRequirement fromJson(Map<String, Object> json) {
+  UnifediApiTypeNotSupportedRequirement fromJson(Map<String, Object?> json) {
     return UnifediApiTypeNotSupportedRequirement.fromJson(json);
   }
 }
@@ -138,14 +138,13 @@ class _$_UnifediApiTypeNotSupportedRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiTypeNotSupportedRequirement &&
-            (identical(other.target, target) ||
-                const DeepCollectionEquality().equals(other.target, target)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTypeNotSupportedRequirement &&
+            (identical(other.target, target) || other.target == target));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(target);
+  int get hashCode => Object.hash(runtimeType, target);
 
   @JsonKey(ignore: true)
   @override
@@ -170,7 +169,7 @@ abstract class _UnifediApiTypeNotSupportedRequirement
       _$_UnifediApiTypeNotSupportedRequirement.fromJson;
 
   @override
-  String get target => throw _privateConstructorUsedError;
+  String get target;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiTypeNotSupportedRequirementCopyWith<

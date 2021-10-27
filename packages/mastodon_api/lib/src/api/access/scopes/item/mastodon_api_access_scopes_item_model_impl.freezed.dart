@@ -31,7 +31,7 @@ class _$MastodonApiAccessScopesItemTearOff {
     );
   }
 
-  MastodonApiAccessScopesItem fromJson(Map<String, Object> json) {
+  MastodonApiAccessScopesItem fromJson(Map<String, Object?> json) {
     return MastodonApiAccessScopesItem.fromJson(json);
   }
 }
@@ -155,19 +155,15 @@ class _$_MastodonApiAccessScopesItem implements _MastodonApiAccessScopesItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiAccessScopesItem &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiAccessScopesItem &&
             (identical(other.permission, permission) ||
-                const DeepCollectionEquality()
-                    .equals(other.permission, permission)) &&
-            (identical(other.target, target) ||
-                const DeepCollectionEquality().equals(other.target, target)));
+                other.permission == permission) &&
+            (identical(other.target, target) || other.target == target));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(permission) ^
-      const DeepCollectionEquality().hash(target);
+  int get hashCode => Object.hash(runtimeType, permission, target);
 
   @JsonKey(ignore: true)
   @override
@@ -192,10 +188,10 @@ abstract class _MastodonApiAccessScopesItem
 
   @override
   @HiveField(0)
-  String get permission => throw _privateConstructorUsedError;
+  String get permission;
   @override
   @HiveField(1)
-  String get target => throw _privateConstructorUsedError;
+  String get target;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiAccessScopesItemCopyWith<_MastodonApiAccessScopesItem>

@@ -28,7 +28,7 @@ class _$WebSocketsChannelConfigTearOff {
     );
   }
 
-  WebSocketsChannelConfig fromJson(Map<String, Object> json) {
+  WebSocketsChannelConfig fromJson(Map<String, Object?> json) {
     return WebSocketsChannelConfig.fromJson(json);
   }
 }
@@ -132,14 +132,13 @@ class _$_WebSocketsChannelConfig implements _WebSocketsChannelConfig {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _WebSocketsChannelConfig &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)));
+        (other.runtimeType == runtimeType &&
+            other is _WebSocketsChannelConfig &&
+            (identical(other.url, url) || other.url == url));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(url);
+  int get hashCode => Object.hash(runtimeType, url);
 
   @JsonKey(ignore: true)
   @override
@@ -162,7 +161,7 @@ abstract class _WebSocketsChannelConfig implements WebSocketsChannelConfig {
 
   @override
   @HiveField(0)
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @override
   @JsonKey(ignore: true)
   _$WebSocketsChannelConfigCopyWith<_WebSocketsChannelConfig> get copyWith =>

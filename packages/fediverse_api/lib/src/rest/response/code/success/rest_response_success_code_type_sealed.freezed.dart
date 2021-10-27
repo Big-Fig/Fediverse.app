@@ -269,15 +269,14 @@ class _$_Ok implements _Ok {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Ok &&
+        (other.runtimeType == runtimeType &&
+            other is _Ok &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -401,7 +400,7 @@ abstract class _Ok implements RestResponseSuccessCodeType {
   const factory _Ok({int intValue}) = _$_Ok;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$OkCopyWith<_Ok> get copyWith => throw _privateConstructorUsedError;
@@ -457,15 +456,14 @@ class _$_Created implements _Created {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Created &&
+        (other.runtimeType == runtimeType &&
+            other is _Created &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -590,7 +588,7 @@ abstract class _Created implements RestResponseSuccessCodeType {
   const factory _Created({int intValue}) = _$_Created;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$CreatedCopyWith<_Created> get copyWith =>
@@ -647,15 +645,14 @@ class _$_Accepted implements _Accepted {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Accepted &&
+        (other.runtimeType == runtimeType &&
+            other is _Accepted &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -780,7 +777,7 @@ abstract class _Accepted implements RestResponseSuccessCodeType {
   const factory _Accepted({int intValue}) = _$_Accepted;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$AcceptedCopyWith<_Accepted> get copyWith =>
@@ -845,15 +842,14 @@ class _$_NonAuthoritativeInformation implements _NonAuthoritativeInformation {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NonAuthoritativeInformation &&
+        (other.runtimeType == runtimeType &&
+            other is _NonAuthoritativeInformation &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -981,7 +977,7 @@ abstract class _NonAuthoritativeInformation
       _$_NonAuthoritativeInformation;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$NonAuthoritativeInformationCopyWith<_NonAuthoritativeInformation>
@@ -1039,15 +1035,14 @@ class _$_NoContent implements _NoContent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NoContent &&
+        (other.runtimeType == runtimeType &&
+            other is _NoContent &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1172,7 +1167,7 @@ abstract class _NoContent implements RestResponseSuccessCodeType {
   const factory _NoContent({int intValue}) = _$_NoContent;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$NoContentCopyWith<_NoContent> get copyWith =>
@@ -1231,15 +1226,14 @@ class _$_ResetContent implements _ResetContent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ResetContent &&
+        (other.runtimeType == runtimeType &&
+            other is _ResetContent &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1364,7 +1358,7 @@ abstract class _ResetContent implements RestResponseSuccessCodeType {
   const factory _ResetContent({int intValue}) = _$_ResetContent;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$ResetContentCopyWith<_ResetContent> get copyWith =>
@@ -1423,15 +1417,14 @@ class _$_PartialContent implements _PartialContent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PartialContent &&
+        (other.runtimeType == runtimeType &&
+            other is _PartialContent &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1556,7 +1549,7 @@ abstract class _PartialContent implements RestResponseSuccessCodeType {
   const factory _PartialContent({int intValue}) = _$_PartialContent;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$PartialContentCopyWith<_PartialContent> get copyWith =>
@@ -1615,15 +1608,14 @@ class _$_MultiStatus implements _MultiStatus {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MultiStatus &&
+        (other.runtimeType == runtimeType &&
+            other is _MultiStatus &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1748,7 +1740,7 @@ abstract class _MultiStatus implements RestResponseSuccessCodeType {
   const factory _MultiStatus({int intValue}) = _$_MultiStatus;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$MultiStatusCopyWith<_MultiStatus> get copyWith =>
@@ -1807,15 +1799,14 @@ class _$_AlreadyReported implements _AlreadyReported {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AlreadyReported &&
+        (other.runtimeType == runtimeType &&
+            other is _AlreadyReported &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1940,7 +1931,7 @@ abstract class _AlreadyReported implements RestResponseSuccessCodeType {
   const factory _AlreadyReported({int intValue}) = _$_AlreadyReported;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$AlreadyReportedCopyWith<_AlreadyReported> get copyWith =>
@@ -1996,15 +1987,14 @@ class _$_ImUsed implements _ImUsed {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ImUsed &&
+        (other.runtimeType == runtimeType &&
+            other is _ImUsed &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -2129,7 +2119,7 @@ abstract class _ImUsed implements RestResponseSuccessCodeType {
   const factory _ImUsed({int intValue}) = _$_ImUsed;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$ImUsedCopyWith<_ImUsed> get copyWith => throw _privateConstructorUsedError;

@@ -54,7 +54,7 @@ class _$MastodonApiPostStatusTearOff {
     );
   }
 
-  MastodonApiPostStatus fromJson(Map<String, Object> json) {
+  MastodonApiPostStatus fromJson(Map<String, Object?> json) {
     return MastodonApiPostStatus.fromJson(json);
   }
 }
@@ -341,42 +341,34 @@ class _$_MastodonApiPostStatus implements _MastodonApiPostStatus {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiPostStatus &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiPostStatus &&
             (identical(other.inReplyToId, inReplyToId) ||
-                const DeepCollectionEquality()
-                    .equals(other.inReplyToId, inReplyToId)) &&
+                other.inReplyToId == inReplyToId) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality()
-                    .equals(other.language, language)) &&
+                other.language == language) &&
             (identical(other.visibility, visibility) ||
-                const DeepCollectionEquality()
-                    .equals(other.visibility, visibility)) &&
-            (identical(other.mediaIds, mediaIds) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaIds, mediaIds)) &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)) &&
+                other.visibility == visibility) &&
+            const DeepCollectionEquality().equals(other.mediaIds, mediaIds) &&
+            (identical(other.poll, poll) || other.poll == poll) &&
             (identical(other.sensitive, sensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.sensitive, sensitive)) &&
+                other.sensitive == sensitive) &&
             (identical(other.spoilerText, spoilerText) ||
-                const DeepCollectionEquality()
-                    .equals(other.spoilerText, spoilerText)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)));
+                other.spoilerText == spoilerText) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(inReplyToId) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(visibility) ^
-      const DeepCollectionEquality().hash(mediaIds) ^
-      const DeepCollectionEquality().hash(poll) ^
-      const DeepCollectionEquality().hash(sensitive) ^
-      const DeepCollectionEquality().hash(spoilerText) ^
-      const DeepCollectionEquality().hash(status);
+  int get hashCode => Object.hash(
+      runtimeType,
+      inReplyToId,
+      language,
+      visibility,
+      const DeepCollectionEquality().hash(mediaIds),
+      poll,
+      sensitive,
+      spoilerText,
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -418,30 +410,30 @@ abstract class _MastodonApiPostStatus implements MastodonApiPostStatus {
   @override
   @HiveField(3)
   @JsonKey(name: 'in_reply_to_id', includeIfNull: false)
-  String? get inReplyToId => throw _privateConstructorUsedError;
+  String? get inReplyToId;
   @override
   @HiveField(4)
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @HiveField(5)
-  String get visibility => throw _privateConstructorUsedError;
+  String get visibility;
   @override
   @HiveField(6)
   @JsonKey(name: 'media_ids')
-  List<String>? get mediaIds => throw _privateConstructorUsedError;
+  List<String>? get mediaIds;
   @override
   @HiveField(7)
-  MastodonApiPostStatusPoll? get poll => throw _privateConstructorUsedError;
+  MastodonApiPostStatusPoll? get poll;
   @override
   @HiveField(9)
-  bool get sensitive => throw _privateConstructorUsedError;
+  bool get sensitive;
   @override
   @HiveField(10)
   @JsonKey(name: 'spoiler_text')
-  String? get spoilerText => throw _privateConstructorUsedError;
+  String? get spoilerText;
   @override
   @HiveField(11)
-  String? get status => throw _privateConstructorUsedError;
+  String? get status;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiPostStatusCopyWith<_MastodonApiPostStatus> get copyWith =>

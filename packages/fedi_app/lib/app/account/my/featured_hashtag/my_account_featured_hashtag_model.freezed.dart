@@ -175,27 +175,20 @@ class _$_MyAccountFeaturedHashtag implements _MyAccountFeaturedHashtag {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MyAccountFeaturedHashtag &&
+        (other.runtimeType == runtimeType &&
+            other is _MyAccountFeaturedHashtag &&
             (identical(other.remoteId, remoteId) ||
-                const DeepCollectionEquality()
-                    .equals(other.remoteId, remoteId)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+                other.remoteId == remoteId) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.statusesCount, statusesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusesCount, statusesCount)) &&
+                other.statusesCount == statusesCount) &&
             (identical(other.lastStatusAt, lastStatusAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastStatusAt, lastStatusAt)));
+                other.lastStatusAt == lastStatusAt));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(remoteId) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(statusesCount) ^
-      const DeepCollectionEquality().hash(lastStatusAt);
+      Object.hash(runtimeType, remoteId, name, statusesCount, lastStatusAt);
 
   @JsonKey(ignore: true)
   @override
@@ -212,13 +205,13 @@ abstract class _MyAccountFeaturedHashtag implements MyAccountFeaturedHashtag {
       required DateTime? lastStatusAt}) = _$_MyAccountFeaturedHashtag;
 
   @override
-  String? get remoteId => throw _privateConstructorUsedError;
+  String? get remoteId;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  int? get statusesCount => throw _privateConstructorUsedError;
+  int? get statusesCount;
   @override
-  DateTime? get lastStatusAt => throw _privateConstructorUsedError;
+  DateTime? get lastStatusAt;
   @override
   @JsonKey(ignore: true)
   _$MyAccountFeaturedHashtagCopyWith<_MyAccountFeaturedHashtag> get copyWith =>

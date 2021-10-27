@@ -29,7 +29,7 @@ class _$PleromaApiConversationPleromaPartTearOff {
     );
   }
 
-  PleromaApiConversationPleromaPart fromJson(Map<String, Object> json) {
+  PleromaApiConversationPleromaPart fromJson(Map<String, Object?> json) {
     return PleromaApiConversationPleromaPart.fromJson(json);
   }
 }
@@ -140,15 +140,15 @@ class _$_PleromaApiConversationPleromaPart
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiConversationPleromaPart &&
-            (identical(other.recipients, recipients) ||
-                const DeepCollectionEquality()
-                    .equals(other.recipients, recipients)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiConversationPleromaPart &&
+            const DeepCollectionEquality()
+                .equals(other.recipients, recipients));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(recipients);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(recipients));
 
   @JsonKey(ignore: true)
   @override
@@ -175,7 +175,7 @@ abstract class _PleromaApiConversationPleromaPart
 
   @override
   @HiveField(0)
-  List<PleromaApiAccount>? get recipients => throw _privateConstructorUsedError;
+  List<PleromaApiAccount>? get recipients;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiConversationPleromaPartCopyWith<
@@ -213,7 +213,7 @@ class _$PleromaApiConversationTearOff {
     );
   }
 
-  PleromaApiConversation fromJson(Map<String, Object> json) {
+  PleromaApiConversation fromJson(Map<String, Object?> json) {
     return PleromaApiConversation.fromJson(json);
   }
 }
@@ -425,29 +425,19 @@ class _$_PleromaApiConversation implements _PleromaApiConversation {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiConversation &&
-            (identical(other.unread, unread) ||
-                const DeepCollectionEquality().equals(other.unread, unread)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiConversation &&
+            (identical(other.unread, unread) || other.unread == unread) &&
             (identical(other.lastStatus, lastStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastStatus, lastStatus)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.accounts, accounts) ||
-                const DeepCollectionEquality()
-                    .equals(other.accounts, accounts)) &&
-            (identical(other.pleroma, pleroma) ||
-                const DeepCollectionEquality().equals(other.pleroma, pleroma)));
+                other.lastStatus == lastStatus) &&
+            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality().equals(other.accounts, accounts) &&
+            (identical(other.pleroma, pleroma) || other.pleroma == pleroma));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(unread) ^
-      const DeepCollectionEquality().hash(lastStatus) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(accounts) ^
-      const DeepCollectionEquality().hash(pleroma);
+  int get hashCode => Object.hash(runtimeType, unread, lastStatus, id,
+      const DeepCollectionEquality().hash(accounts), pleroma);
 
   @JsonKey(ignore: true)
   @override
@@ -481,21 +471,20 @@ abstract class _PleromaApiConversation implements PleromaApiConversation {
 
   @override
   @HiveField(0)
-  bool? get unread => throw _privateConstructorUsedError;
+  bool? get unread;
   @override
   @HiveField(1)
   @JsonKey(name: 'last_status')
-  PleromaApiStatus? get lastStatus => throw _privateConstructorUsedError;
+  PleromaApiStatus? get lastStatus;
   @override
   @HiveField(2)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(3)
-  List<PleromaApiAccount> get accounts => throw _privateConstructorUsedError;
+  List<PleromaApiAccount> get accounts;
   @override
   @HiveField(4)
-  PleromaApiConversationPleromaPart? get pleroma =>
-      throw _privateConstructorUsedError;
+  PleromaApiConversationPleromaPart? get pleroma;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiConversationCopyWith<_PleromaApiConversation> get copyWith =>

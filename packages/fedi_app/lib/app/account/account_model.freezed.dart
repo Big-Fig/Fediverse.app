@@ -116,15 +116,14 @@ class _$_DbAccountPopulated implements _DbAccountPopulated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbAccountPopulated &&
-            (identical(other.dbAccount, dbAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbAccount, dbAccount)));
+        (other.runtimeType == runtimeType &&
+            other is _DbAccountPopulated &&
+            const DeepCollectionEquality().equals(other.dbAccount, dbAccount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(dbAccount);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(dbAccount));
 
   @JsonKey(ignore: true)
   @override
@@ -137,7 +136,7 @@ abstract class _DbAccountPopulated implements DbAccountPopulated {
       _$_DbAccountPopulated;
 
   @override
-  DbAccount get dbAccount => throw _privateConstructorUsedError;
+  DbAccount get dbAccount;
   @override
   @JsonKey(ignore: true)
   _$DbAccountPopulatedCopyWith<_DbAccountPopulated> get copyWith =>

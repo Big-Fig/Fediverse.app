@@ -38,7 +38,7 @@ class _$LocalizationLocaleTearOff {
     );
   }
 
-  LocalizationLocale fromJson(Map<String, Object> json) {
+  LocalizationLocale fromJson(Map<String, Object?> json) {
     return LocalizationLocale.fromJson(json);
   }
 }
@@ -187,24 +187,19 @@ class _$_LocalizationLocale extends _LocalizationLocale {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _LocalizationLocale &&
+        (other.runtimeType == runtimeType &&
+            other is _LocalizationLocale &&
             (identical(other.languageCode, languageCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.languageCode, languageCode)) &&
+                other.languageCode == languageCode) &&
             (identical(other.scriptCode, scriptCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.scriptCode, scriptCode)) &&
+                other.scriptCode == scriptCode) &&
             (identical(other.countryCode, countryCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.countryCode, countryCode)));
+                other.countryCode == countryCode));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(languageCode) ^
-      const DeepCollectionEquality().hash(scriptCode) ^
-      const DeepCollectionEquality().hash(countryCode);
+      Object.hash(runtimeType, languageCode, scriptCode, countryCode);
 
   @JsonKey(ignore: true)
   @override
@@ -236,15 +231,15 @@ abstract class _LocalizationLocale extends LocalizationLocale {
   @override
   @JsonKey(name: 'languageCode')
   @HiveField(0)
-  String get languageCode => throw _privateConstructorUsedError;
+  String get languageCode;
   @override
   @JsonKey(name: 'scriptCode')
   @HiveField(1)
-  String? get scriptCode => throw _privateConstructorUsedError;
+  String? get scriptCode;
   @override
   @JsonKey(name: 'countryCode')
   @HiveField(2)
-  String? get countryCode => throw _privateConstructorUsedError;
+  String? get countryCode;
   @override
   @JsonKey(ignore: true)
   _$LocalizationLocaleCopyWith<_LocalizationLocale> get copyWith =>

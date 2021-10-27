@@ -35,7 +35,7 @@ class _$EmojiPickerRecentCategoryItemsListTearOff {
     );
   }
 
-  EmojiPickerRecentCategoryItemsList fromJson(Map<String, Object> json) {
+  EmojiPickerRecentCategoryItemsList fromJson(Map<String, Object?> json) {
     return EmojiPickerRecentCategoryItemsList.fromJson(json);
   }
 }
@@ -195,20 +195,19 @@ class _$_EmojiPickerRecentCategoryItemsList
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _EmojiPickerRecentCategoryItemsList &&
-            (identical(other.recentCodeItems, recentCodeItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.recentCodeItems, recentCodeItems)) &&
-            (identical(other.recentImageItems, recentImageItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.recentImageItems, recentImageItems)));
+        (other.runtimeType == runtimeType &&
+            other is _EmojiPickerRecentCategoryItemsList &&
+            const DeepCollectionEquality()
+                .equals(other.recentCodeItems, recentCodeItems) &&
+            const DeepCollectionEquality()
+                .equals(other.recentImageItems, recentImageItems));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(recentCodeItems) ^
-      const DeepCollectionEquality().hash(recentImageItems);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(recentCodeItems),
+      const DeepCollectionEquality().hash(recentImageItems));
 
   @JsonKey(ignore: true)
   @override
@@ -242,13 +241,11 @@ abstract class _EmojiPickerRecentCategoryItemsList
   @override
   @HiveField(2)
   @JsonKey(name: 'recent_code_items')
-  List<CustomEmojiPickerCodeItem> get recentCodeItems =>
-      throw _privateConstructorUsedError;
+  List<CustomEmojiPickerCodeItem> get recentCodeItems;
   @override
   @HiveField(3)
   @JsonKey(name: 'recent_image_items')
-  List<CustomEmojiPickerImageUrlItem> get recentImageItems =>
-      throw _privateConstructorUsedError;
+  List<CustomEmojiPickerImageUrlItem> get recentImageItems;
   @override
   @JsonKey(ignore: true)
   _$EmojiPickerRecentCategoryItemsListCopyWith<

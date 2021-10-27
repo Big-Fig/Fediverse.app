@@ -82,7 +82,9 @@ class _$_UnifediApiTypeSupportedFeature
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _UnifediApiTypeSupportedFeature);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTypeSupportedFeature);
   }
 
   @override

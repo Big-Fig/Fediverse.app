@@ -163,19 +163,15 @@ class _$_UnifediApiRestError implements _UnifediApiRestError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiRestError &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiRestError &&
             (identical(other.restResponseError, restResponseError) ||
-                const DeepCollectionEquality()
-                    .equals(other.restResponseError, restResponseError)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality().equals(other.details, details)));
+                other.restResponseError == restResponseError) &&
+            (identical(other.details, details) || other.details == details));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(restResponseError) ^
-      const DeepCollectionEquality().hash(details);
+  int get hashCode => Object.hash(runtimeType, restResponseError, details);
 
   @JsonKey(ignore: true)
   @override
@@ -190,9 +186,9 @@ abstract class _UnifediApiRestError implements UnifediApiRestError {
       required UnifediApiRestErrorDetails? details}) = _$_UnifediApiRestError;
 
   @override
-  RestResponseError get restResponseError => throw _privateConstructorUsedError;
+  RestResponseError get restResponseError;
   @override
-  UnifediApiRestErrorDetails? get details => throw _privateConstructorUsedError;
+  UnifediApiRestErrorDetails? get details;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiRestErrorCopyWith<_UnifediApiRestError> get copyWith =>

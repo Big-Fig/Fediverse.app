@@ -38,7 +38,7 @@ class _$UnifediApiFilterTearOff {
     );
   }
 
-  UnifediApiFilter fromJson(Map<String, Object> json) {
+  UnifediApiFilter fromJson(Map<String, Object?> json) {
     return UnifediApiFilter.fromJson(json);
   }
 }
@@ -238,34 +238,28 @@ class _$_UnifediApiFilter implements _UnifediApiFilter {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiFilter &&
-            (identical(other.context, context) ||
-                const DeepCollectionEquality()
-                    .equals(other.context, context)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiFilter &&
+            const DeepCollectionEquality().equals(other.context, context) &&
             (identical(other.expiresAt, expiresAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.expiresAt, expiresAt)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+                other.expiresAt == expiresAt) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.irreversible, irreversible) ||
-                const DeepCollectionEquality()
-                    .equals(other.irreversible, irreversible)) &&
-            (identical(other.phrase, phrase) ||
-                const DeepCollectionEquality().equals(other.phrase, phrase)) &&
+                other.irreversible == irreversible) &&
+            (identical(other.phrase, phrase) || other.phrase == phrase) &&
             (identical(other.wholeWord, wholeWord) ||
-                const DeepCollectionEquality()
-                    .equals(other.wholeWord, wholeWord)));
+                other.wholeWord == wholeWord));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(context) ^
-      const DeepCollectionEquality().hash(expiresAt) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(irreversible) ^
-      const DeepCollectionEquality().hash(phrase) ^
-      const DeepCollectionEquality().hash(wholeWord);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(context),
+      expiresAt,
+      id,
+      irreversible,
+      phrase,
+      wholeWord);
 
   @JsonKey(ignore: true)
   @override
@@ -300,24 +294,24 @@ abstract class _UnifediApiFilter implements UnifediApiFilter {
 
   @override
   @HiveField(0)
-  List<String> get context => throw _privateConstructorUsedError;
+  List<String> get context;
   @override
   @HiveField(1)
   @JsonKey(name: 'expires_at')
-  DateTime? get expiresAt => throw _privateConstructorUsedError;
+  DateTime? get expiresAt;
   @override
   @HiveField(2)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(3)
-  bool get irreversible => throw _privateConstructorUsedError;
+  bool get irreversible;
   @override
   @HiveField(4)
-  String get phrase => throw _privateConstructorUsedError;
+  String get phrase;
   @override
   @HiveField(5)
   @JsonKey(name: 'whole_word')
-  bool get wholeWord => throw _privateConstructorUsedError;
+  bool get wholeWord;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiFilterCopyWith<_UnifediApiFilter> get copyWith =>

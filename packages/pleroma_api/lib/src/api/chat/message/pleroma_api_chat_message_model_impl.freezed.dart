@@ -55,7 +55,7 @@ class _$PleromaApiChatMessageTearOff {
     );
   }
 
-  PleromaApiChatMessage fromJson(Map<String, Object> json) {
+  PleromaApiChatMessage fromJson(Map<String, Object?> json) {
     return PleromaApiChatMessage.fromJson(json);
   }
 }
@@ -351,40 +351,32 @@ class _$_PleromaApiChatMessage implements _PleromaApiChatMessage {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiChatMessage &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.chatId, chatId) ||
-                const DeepCollectionEquality().equals(other.chatId, chatId)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiChatMessage &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.chatId, chatId) || other.chatId == chatId) &&
             (identical(other.accountId, accountId) ||
-                const DeepCollectionEquality()
-                    .equals(other.accountId, accountId)) &&
-            (identical(other.content, content) ||
-                const DeepCollectionEquality()
-                    .equals(other.content, content)) &&
+                other.accountId == accountId) &&
+            (identical(other.content, content) || other.content == content) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.emojis, emojis) ||
-                const DeepCollectionEquality().equals(other.emojis, emojis)) &&
+                other.createdAt == createdAt) &&
+            const DeepCollectionEquality().equals(other.emojis, emojis) &&
             (identical(other.mediaAttachment, mediaAttachment) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaAttachment, mediaAttachment)) &&
-            (identical(other.card, card) ||
-                const DeepCollectionEquality().equals(other.card, card)));
+                other.mediaAttachment == mediaAttachment) &&
+            (identical(other.card, card) || other.card == card));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(chatId) ^
-      const DeepCollectionEquality().hash(accountId) ^
-      const DeepCollectionEquality().hash(content) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(emojis) ^
-      const DeepCollectionEquality().hash(mediaAttachment) ^
-      const DeepCollectionEquality().hash(card);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      chatId,
+      accountId,
+      content,
+      createdAt,
+      const DeepCollectionEquality().hash(emojis),
+      mediaAttachment,
+      card);
 
   @JsonKey(ignore: true)
   @override
@@ -426,33 +418,32 @@ abstract class _PleromaApiChatMessage implements PleromaApiChatMessage {
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
   @JsonKey(name: 'chat_id')
-  String get chatId => throw _privateConstructorUsedError;
+  String get chatId;
   @override
   @HiveField(2)
   @JsonKey(name: 'account_id')
-  String get accountId => throw _privateConstructorUsedError;
+  String get accountId;
   @override
   @HiveField(3)
-  String? get content => throw _privateConstructorUsedError;
+  String? get content;
   @override
   @HiveField(4)
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @HiveField(5)
-  List<PleromaApiEmoji>? get emojis => throw _privateConstructorUsedError;
+  List<PleromaApiEmoji>? get emojis;
   @override
   @HiveField(6)
   @JsonKey(name: 'attachment')
-  PleromaApiMediaAttachment? get mediaAttachment =>
-      throw _privateConstructorUsedError;
+  PleromaApiMediaAttachment? get mediaAttachment;
   @override
   @HiveField(7)
-  PleromaApiCard? get card => throw _privateConstructorUsedError;
+  PleromaApiCard? get card;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiChatMessageCopyWith<_PleromaApiChatMessage> get copyWith =>

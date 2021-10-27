@@ -37,7 +37,7 @@ class _$FediversePushTootRelayMessageTearOff {
     );
   }
 
-  FediversePushTootRelayMessage fromJson(Map<String, Object> json) {
+  FediversePushTootRelayMessage fromJson(Map<String, Object?> json) {
     return FediversePushTootRelayMessage.fromJson(json);
   }
 }
@@ -223,30 +223,19 @@ class _$_FediversePushTootRelayMessage
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediversePushTootRelayMessage &&
+        (other.runtimeType == runtimeType &&
+            other is _FediversePushTootRelayMessage &&
             (identical(other.cryptoKey, cryptoKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.cryptoKey, cryptoKey)) &&
-            (identical(other.salt, salt) ||
-                const DeepCollectionEquality().equals(other.salt, salt)) &&
-            (identical(other.payload, payload) ||
-                const DeepCollectionEquality()
-                    .equals(other.payload, payload)) &&
-            (identical(other.account, account) ||
-                const DeepCollectionEquality()
-                    .equals(other.account, account)) &&
-            (identical(other.server, server) ||
-                const DeepCollectionEquality().equals(other.server, server)));
+                other.cryptoKey == cryptoKey) &&
+            (identical(other.salt, salt) || other.salt == salt) &&
+            (identical(other.payload, payload) || other.payload == payload) &&
+            (identical(other.account, account) || other.account == account) &&
+            (identical(other.server, server) || other.server == server));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(cryptoKey) ^
-      const DeepCollectionEquality().hash(salt) ^
-      const DeepCollectionEquality().hash(payload) ^
-      const DeepCollectionEquality().hash(account) ^
-      const DeepCollectionEquality().hash(server);
+      Object.hash(runtimeType, cryptoKey, salt, payload, account, server);
 
   @JsonKey(ignore: true)
   @override
@@ -275,19 +264,19 @@ abstract class _FediversePushTootRelayMessage
   @override
   @HiveField(0)
   @JsonKey(name: 'crypto_key')
-  String get cryptoKey => throw _privateConstructorUsedError;
+  String get cryptoKey;
   @override
   @HiveField(1)
-  String get salt => throw _privateConstructorUsedError;
+  String get salt;
   @override
   @HiveField(2)
-  String get payload => throw _privateConstructorUsedError;
+  String get payload;
   @override
   @HiveField(3)
-  String get account => throw _privateConstructorUsedError;
+  String get account;
   @override
   @HiveField(4)
-  String get server => throw _privateConstructorUsedError;
+  String get server;
   @override
   @JsonKey(ignore: true)
   _$FediversePushTootRelayMessageCopyWith<_FediversePushTootRelayMessage>

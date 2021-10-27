@@ -36,7 +36,7 @@ class _$ChatSettingsTearOff {
     );
   }
 
-  ChatSettings fromJson(Map<String, Object> json) {
+  ChatSettings fromJson(Map<String, Object?> json) {
     return ChatSettings.fromJson(json);
   }
 }
@@ -181,26 +181,23 @@ class _$_ChatSettings extends _ChatSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ChatSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _ChatSettings &&
             (identical(other.replaceConversationsWithUnifediChats,
                     replaceConversationsWithUnifediChats) ||
-                const DeepCollectionEquality().equals(
-                    other.replaceConversationsWithUnifediChats,
-                    replaceConversationsWithUnifediChats)) &&
+                other.replaceConversationsWithUnifediChats ==
+                    replaceConversationsWithUnifediChats) &&
             (identical(other.countConversationsInChatsUnreadBadges,
                     countConversationsInChatsUnreadBadges) ||
-                const DeepCollectionEquality().equals(
-                    other.countConversationsInChatsUnreadBadges,
-                    countConversationsInChatsUnreadBadges)));
+                other.countConversationsInChatsUnreadBadges ==
+                    countConversationsInChatsUnreadBadges));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality()
-          .hash(replaceConversationsWithUnifediChats) ^
-      const DeepCollectionEquality()
-          .hash(countConversationsInChatsUnreadBadges);
+  int get hashCode => Object.hash(
+      runtimeType,
+      replaceConversationsWithUnifediChats,
+      countConversationsInChatsUnreadBadges);
 
   @JsonKey(ignore: true)
   @override
@@ -230,13 +227,11 @@ abstract class _ChatSettings extends ChatSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'replace_conversations_with_unifedi_chats')
-  bool get replaceConversationsWithUnifediChats =>
-      throw _privateConstructorUsedError;
+  bool get replaceConversationsWithUnifediChats;
   @override
   @HiveField(1)
   @JsonKey(name: 'count_conversations_in_chats_unread_badges')
-  bool get countConversationsInChatsUnreadBadges =>
-      throw _privateConstructorUsedError;
+  bool get countConversationsInChatsUnreadBadges;
   @override
   @JsonKey(ignore: true)
   _$ChatSettingsCopyWith<_ChatSettings> get copyWith =>

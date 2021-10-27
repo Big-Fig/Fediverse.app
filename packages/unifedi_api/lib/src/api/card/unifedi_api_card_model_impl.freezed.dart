@@ -72,7 +72,7 @@ class _$UnifediApiCardTearOff {
     );
   }
 
-  UnifediApiCard fromJson(Map<String, Object> json) {
+  UnifediApiCard fromJson(Map<String, Object?> json) {
     return UnifediApiCard.fromJson(json);
   }
 }
@@ -468,57 +468,45 @@ class _$_UnifediApiCard implements _UnifediApiCard {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiCard &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiCard &&
             (identical(other.authorName, authorName) ||
-                const DeepCollectionEquality()
-                    .equals(other.authorName, authorName)) &&
+                other.authorName == authorName) &&
             (identical(other.authorUrl, authorUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.authorUrl, authorUrl)) &&
+                other.authorUrl == authorUrl) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
+                other.description == description) &&
             (identical(other.embedUrl, embedUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.embedUrl, embedUrl)) &&
-            (identical(other.height, height) ||
-                const DeepCollectionEquality().equals(other.height, height)) &&
-            (identical(other.width, width) ||
-                const DeepCollectionEquality().equals(other.width, width)) &&
-            (identical(other.html, html) ||
-                const DeepCollectionEquality().equals(other.html, html)) &&
-            (identical(other.image, image) ||
-                const DeepCollectionEquality().equals(other.image, image)) &&
+                other.embedUrl == embedUrl) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.width, width) || other.width == width) &&
+            (identical(other.html, html) || other.html == html) &&
+            (identical(other.image, image) || other.image == image) &&
             (identical(other.providerName, providerName) ||
-                const DeepCollectionEquality()
-                    .equals(other.providerName, providerName)) &&
+                other.providerName == providerName) &&
             (identical(other.providerUrl, providerUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.providerUrl, providerUrl)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)));
+                other.providerUrl == providerUrl) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.url, url) || other.url == url));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(authorName) ^
-      const DeepCollectionEquality().hash(authorUrl) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(embedUrl) ^
-      const DeepCollectionEquality().hash(height) ^
-      const DeepCollectionEquality().hash(width) ^
-      const DeepCollectionEquality().hash(html) ^
-      const DeepCollectionEquality().hash(image) ^
-      const DeepCollectionEquality().hash(providerName) ^
-      const DeepCollectionEquality().hash(providerUrl) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(url);
+  int get hashCode => Object.hash(
+      runtimeType,
+      authorName,
+      authorUrl,
+      description,
+      embedUrl,
+      height,
+      width,
+      html,
+      image,
+      providerName,
+      providerUrl,
+      title,
+      type,
+      url);
 
   @JsonKey(ignore: true)
   @override
@@ -573,49 +561,49 @@ abstract class _UnifediApiCard implements UnifediApiCard {
   @override
   @HiveField(0)
   @JsonKey(name: 'author_name')
-  String? get authorName => throw _privateConstructorUsedError;
+  String? get authorName;
   @override
   @HiveField(1)
   @JsonKey(name: 'author_url')
-  String? get authorUrl => throw _privateConstructorUsedError;
+  String? get authorUrl;
   @override
   @HiveField(2)
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
   @HiveField(3)
   @JsonKey(name: 'embed_url')
-  String? get embedUrl => throw _privateConstructorUsedError;
+  String? get embedUrl;
   @override
   @HiveField(4)
   @JsonKey(fromJson: JsonParseHelper.intFromJsonOrNullOnError)
-  int? get height => throw _privateConstructorUsedError;
+  int? get height;
   @override
   @HiveField(5)
   @JsonKey(fromJson: JsonParseHelper.intFromJsonOrNullOnError)
-  int? get width => throw _privateConstructorUsedError;
+  int? get width;
   @override
   @HiveField(6)
-  String? get html => throw _privateConstructorUsedError;
+  String? get html;
   @override
   @HiveField(7)
-  String? get image => throw _privateConstructorUsedError;
+  String? get image;
   @override
   @HiveField(8)
   @JsonKey(name: 'provider_name')
-  String? get providerName => throw _privateConstructorUsedError;
+  String? get providerName;
   @override
   @HiveField(9)
   @JsonKey(name: 'provider_url')
-  String? get providerUrl => throw _privateConstructorUsedError;
+  String? get providerUrl;
   @override
   @HiveField(10)
-  String? get title => throw _privateConstructorUsedError;
+  String? get title;
   @override
   @HiveField(11)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(12)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiCardCopyWith<_UnifediApiCard> get copyWith =>

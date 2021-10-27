@@ -156,22 +156,15 @@ class _$_Hashtag extends _Hashtag {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Hashtag &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.history, history) ||
-                const DeepCollectionEquality()
-                    .equals(other.history, history)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)));
+        (other.runtimeType == runtimeType &&
+            other is _Hashtag &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.history, history) || other.history == history) &&
+            (identical(other.url, url) || other.url == url));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(history) ^
-      const DeepCollectionEquality().hash(url);
+  int get hashCode => Object.hash(runtimeType, name, history, url);
 
   @JsonKey(ignore: true)
   @override
@@ -188,13 +181,13 @@ abstract class _Hashtag extends Hashtag {
 
   @override
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @override
-  IUnifediApiTagHistory? get history => throw _privateConstructorUsedError;
+  IUnifediApiTagHistory? get history;
   @override
   @override
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @JsonKey(ignore: true)
   _$HashtagCopyWith<_Hashtag> get copyWith =>

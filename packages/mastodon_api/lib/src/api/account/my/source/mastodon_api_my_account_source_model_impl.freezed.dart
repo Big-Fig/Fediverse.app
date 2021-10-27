@@ -46,7 +46,7 @@ class _$MastodonApiMyAccountSourceTearOff {
     );
   }
 
-  MastodonApiMyAccountSource fromJson(Map<String, Object> json) {
+  MastodonApiMyAccountSource fromJson(Map<String, Object?> json) {
     return MastodonApiMyAccountSource.fromJson(json);
   }
 }
@@ -267,34 +267,22 @@ class _$_mastodonApiMyAccountSource implements _mastodonApiMyAccountSource {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _mastodonApiMyAccountSource &&
-            (identical(other.privacy, privacy) ||
-                const DeepCollectionEquality()
-                    .equals(other.privacy, privacy)) &&
+        (other.runtimeType == runtimeType &&
+            other is _mastodonApiMyAccountSource &&
+            (identical(other.privacy, privacy) || other.privacy == privacy) &&
             (identical(other.sensitive, sensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.sensitive, sensitive)) &&
+                other.sensitive == sensitive) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality()
-                    .equals(other.language, language)) &&
-            (identical(other.note, note) ||
-                const DeepCollectionEquality().equals(other.note, note)) &&
-            (identical(other.fields, fields) ||
-                const DeepCollectionEquality().equals(other.fields, fields)) &&
+                other.language == language) &&
+            (identical(other.note, note) || other.note == note) &&
+            const DeepCollectionEquality().equals(other.fields, fields) &&
             (identical(other.followRequestsCount, followRequestsCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followRequestsCount, followRequestsCount)));
+                other.followRequestsCount == followRequestsCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(privacy) ^
-      const DeepCollectionEquality().hash(sensitive) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(note) ^
-      const DeepCollectionEquality().hash(fields) ^
-      const DeepCollectionEquality().hash(followRequestsCount);
+  int get hashCode => Object.hash(runtimeType, privacy, sensitive, language,
+      note, const DeepCollectionEquality().hash(fields), followRequestsCount);
 
   @JsonKey(ignore: true)
   @override
@@ -330,23 +318,23 @@ abstract class _mastodonApiMyAccountSource
 
   @override
   @HiveField(1)
-  String? get privacy => throw _privateConstructorUsedError;
+  String? get privacy;
   @override
   @HiveField(2)
-  bool? get sensitive => throw _privateConstructorUsedError;
+  bool? get sensitive;
   @override
   @HiveField(3)
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @HiveField(4)
-  String? get note => throw _privateConstructorUsedError;
+  String? get note;
   @override
   @HiveField(5)
-  List<MastodonApiField>? get fields => throw _privateConstructorUsedError;
+  List<MastodonApiField>? get fields;
   @override
   @HiveField(6)
   @JsonKey(name: 'follow_requests_count')
-  int? get followRequestsCount => throw _privateConstructorUsedError;
+  int? get followRequestsCount;
   @override
   @JsonKey(ignore: true)
   _$mastodonApiMyAccountSourceCopyWith<_mastodonApiMyAccountSource>

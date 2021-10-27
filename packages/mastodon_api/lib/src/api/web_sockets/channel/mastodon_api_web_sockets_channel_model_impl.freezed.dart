@@ -53,7 +53,7 @@ class _$MastodonApiWebSocketsChannelTearOff {
     );
   }
 
-  MastodonApiWebSocketsChannel fromJson(Map<String, Object> json) {
+  MastodonApiWebSocketsChannel fromJson(Map<String, Object?> json) {
     return MastodonApiWebSocketsChannel.fromJson(json);
   }
 }
@@ -317,38 +317,25 @@ class _$_MastodonApiWebSocketsChannel implements _MastodonApiWebSocketsChannel {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiWebSocketsChannel &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiWebSocketsChannel &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.localOnly, localOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.localOnly, localOnly)) &&
+                other.localOnly == localOnly) &&
             (identical(other.mediaOnly, mediaOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaOnly, mediaOnly)) &&
+                other.mediaOnly == mediaOnly) &&
             (identical(other.fromAccountIdOnly, fromAccountIdOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.fromAccountIdOnly, fromAccountIdOnly)) &&
+                other.fromAccountIdOnly == fromAccountIdOnly) &&
             (identical(other.notificationOnly, notificationOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationOnly, notificationOnly)) &&
+                other.notificationOnly == notificationOnly) &&
             (identical(other.listIdOnly, listIdOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.listIdOnly, listIdOnly)) &&
-            (identical(other.tag, tag) ||
-                const DeepCollectionEquality().equals(other.tag, tag)));
+                other.listIdOnly == listIdOnly) &&
+            (identical(other.tag, tag) || other.tag == tag));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(localOnly) ^
-      const DeepCollectionEquality().hash(mediaOnly) ^
-      const DeepCollectionEquality().hash(fromAccountIdOnly) ^
-      const DeepCollectionEquality().hash(notificationOnly) ^
-      const DeepCollectionEquality().hash(listIdOnly) ^
-      const DeepCollectionEquality().hash(tag);
+  int get hashCode => Object.hash(runtimeType, type, localOnly, mediaOnly,
+      fromAccountIdOnly, notificationOnly, listIdOnly, tag);
 
   @JsonKey(ignore: true)
   @override
@@ -390,30 +377,30 @@ abstract class _MastodonApiWebSocketsChannel
 
   @override
   @HiveField(0)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(1)
   @JsonKey(name: 'local_only')
-  bool? get localOnly => throw _privateConstructorUsedError;
+  bool? get localOnly;
   @override
   @HiveField(2)
   @JsonKey(name: 'media_only')
-  bool? get mediaOnly => throw _privateConstructorUsedError;
+  bool? get mediaOnly;
   @override
   @HiveField(3)
   @JsonKey(name: 'from_account_id_only')
-  String? get fromAccountIdOnly => throw _privateConstructorUsedError;
+  String? get fromAccountIdOnly;
   @override
   @HiveField(4)
   @JsonKey(name: 'notification_only')
-  bool? get notificationOnly => throw _privateConstructorUsedError;
+  bool? get notificationOnly;
   @override
   @HiveField(5)
   @JsonKey(name: 'list_id_only')
-  String? get listIdOnly => throw _privateConstructorUsedError;
+  String? get listIdOnly;
   @override
   @HiveField(6)
-  String? get tag => throw _privateConstructorUsedError;
+  String? get tag;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiWebSocketsChannelCopyWith<_MastodonApiWebSocketsChannel>

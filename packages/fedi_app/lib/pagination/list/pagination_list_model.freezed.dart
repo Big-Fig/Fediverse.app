@@ -134,19 +134,16 @@ class _$_PaginationListLoadingError implements _PaginationListLoadingError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PaginationListLoadingError &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PaginationListLoadingError &&
+            const DeepCollectionEquality().equals(other.error, error) &&
             (identical(other.stackTrace, stackTrace) ||
-                const DeepCollectionEquality()
-                    .equals(other.stackTrace, stackTrace)));
+                other.stackTrace == stackTrace));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(stackTrace);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(error), stackTrace);
 
   @JsonKey(ignore: true)
   @override
@@ -162,9 +159,9 @@ abstract class _PaginationListLoadingError
       required StackTrace? stackTrace}) = _$_PaginationListLoadingError;
 
   @override
-  dynamic get error => throw _privateConstructorUsedError;
+  dynamic get error;
   @override
-  StackTrace? get stackTrace => throw _privateConstructorUsedError;
+  StackTrace? get stackTrace;
   @override
   @JsonKey(ignore: true)
   _$PaginationListLoadingErrorCopyWith<_PaginationListLoadingError>

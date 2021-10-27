@@ -29,7 +29,7 @@ class _$UnifediApiPaginationMastodonAdapterTearOff {
     );
   }
 
-  UnifediApiPaginationMastodonAdapter fromJson(Map<String, Object> json) {
+  UnifediApiPaginationMastodonAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiPaginationMastodonAdapter.fromJson(json);
   }
 }
@@ -156,16 +156,14 @@ class _$_UnifediApiPaginationMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPaginationMastodonAdapter &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPaginationMastodonAdapter &&
             (identical(other.valuePagination, valuePagination) ||
-                const DeepCollectionEquality()
-                    .equals(other.valuePagination, valuePagination)));
+                other.valuePagination == valuePagination));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(valuePagination);
+  int get hashCode => Object.hash(runtimeType, valuePagination);
 
   @JsonKey(ignore: true)
   @override
@@ -193,8 +191,7 @@ abstract class _UnifediApiPaginationMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiPagination get valuePagination =>
-      throw _privateConstructorUsedError;
+  MastodonApiPagination get valuePagination;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPaginationMastodonAdapterCopyWith<

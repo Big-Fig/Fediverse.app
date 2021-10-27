@@ -39,7 +39,7 @@ class _$UnifediApiRegisterAccountResponseTearOff {
     );
   }
 
-  UnifediApiRegisterAccountResponse fromJson(Map<String, Object> json) {
+  UnifediApiRegisterAccountResponse fromJson(Map<String, Object?> json) {
     return UnifediApiRegisterAccountResponse.fromJson(json);
   }
 }
@@ -228,26 +228,20 @@ class _$_UnifediApiRegisterAccountResponse
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiRegisterAccountResponse &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiRegisterAccountResponse &&
             (identical(other.approvalRequired, approvalRequired) ||
-                const DeepCollectionEquality()
-                    .equals(other.approvalRequired, approvalRequired)) &&
+                other.approvalRequired == approvalRequired) &&
             (identical(other.emailConformationRequired,
                     emailConformationRequired) ||
-                const DeepCollectionEquality().equals(
-                    other.emailConformationRequired,
-                    emailConformationRequired)) &&
+                other.emailConformationRequired == emailConformationRequired) &&
             (identical(other.authToken, authToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.authToken, authToken)));
+                other.authToken == authToken));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(approvalRequired) ^
-      const DeepCollectionEquality().hash(emailConformationRequired) ^
-      const DeepCollectionEquality().hash(authToken);
+  int get hashCode => Object.hash(
+      runtimeType, approvalRequired, emailConformationRequired, authToken);
 
   @JsonKey(ignore: true)
   @override
@@ -283,15 +277,15 @@ abstract class _UnifediApiRegisterAccountResponse
   @override
   @JsonKey(name: 'approval_required')
   @HiveField(0)
-  bool? get approvalRequired => throw _privateConstructorUsedError;
+  bool? get approvalRequired;
   @override
   @JsonKey(name: 'email_conformation_required')
   @HiveField(1)
-  bool? get emailConformationRequired => throw _privateConstructorUsedError;
+  bool? get emailConformationRequired;
   @override
   @JsonKey(name: 'auth_token')
   @HiveField(2)
-  UnifediApiOAuthToken? get authToken => throw _privateConstructorUsedError;
+  UnifediApiOAuthToken? get authToken;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiRegisterAccountResponseCopyWith<

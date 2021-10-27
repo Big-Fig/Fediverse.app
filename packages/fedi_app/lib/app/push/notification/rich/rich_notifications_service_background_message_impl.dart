@@ -6,7 +6,6 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi_app/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/access/local_preferences/access_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/access/local_preferences_access_bloc_impl.dart';
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/config/config_service_impl.dart';
 import 'package:fedi_app/app/hive/hive_service_impl.dart';
@@ -444,7 +443,7 @@ Future<IUnifediApiNotification?> loadLastNotificationForAcctOnHost({
   IUnifediApiNotification? notification;
 
   try {
-    var configService = ConfigService(appLaunchType: AppLaunchType.normal);
+    var configService = ConfigService();
     await configService.performAsyncInit();
     disposableOwner.addDisposable(configService);
     var loggingService = LoggingService(enabled: configService.logEnabled);
@@ -493,6 +492,7 @@ Future<IUnifediApiNotification?> _loadNotificationForInstance({
   required bool createPushNotification,
 }) async {
   var unifediApiNotification = await _loadLastNotificationForInstance(
+    configService: configService,
     localPreferencesService: localPreferencesService,
     authInstance: authInstance,
   );
@@ -516,6 +516,7 @@ Future<IUnifediApiNotification?> _loadNotificationForInstance({
 
 Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   required ILocalPreferencesService localPreferencesService,
+  required IConfigService configService,
   required UnifediApiAccess authInstance,
 }) async {
   var disposableOwner = DisposableOwner();
@@ -546,6 +547,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   disposableOwner.addDisposable(unifediApiAccessLocalPreferenceBloc);
 
   var localPreferencesUnifediApiAccessBloc = LocalPreferencesAccessBloc(
+    configService: configService,
     accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
   );
 

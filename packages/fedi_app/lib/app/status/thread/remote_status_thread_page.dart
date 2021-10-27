@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
 import 'package:fedi_app/app/async/unifedi/unifedi_async_operation_helper.dart';
+import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi_app/app/instance/remote/remote_instance_bloc_impl.dart';
 import 'package:fedi_app/app/instance/remote/remote_instance_error_data.dart';
@@ -55,6 +56,10 @@ Future<void> goToRemoteStatusThreadPageBasedOnLocalInstanceRemoteStatus(
 
         remoteInstanceBloc = RemoteInstanceBloc(
           instanceUri: instanceUri,
+          configService: IConfigService.of(
+            context,
+            listen: false,
+          ),
           connectionService: Provider.of<IConnectionService>(
             context,
             listen: false,
@@ -121,6 +126,10 @@ MaterialPageRoute<void>
 
               return RemoteInstanceBloc(
                 instanceUri: instanceUri,
+                configService: IConfigService.of(
+                  context,
+                  listen: false,
+                ),
                 connectionService: Provider.of<IConnectionService>(
                   context,
                   listen: false,

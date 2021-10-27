@@ -33,7 +33,7 @@ class _$PleromaApiInstanceMetadataVersionRequirementTearOff {
   }
 
   PleromaApiInstanceMetadataVersionRequirement fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return PleromaApiInstanceMetadataVersionRequirement.fromJson(json);
   }
 }
@@ -169,15 +169,14 @@ class _$_PleromaApiInstanceMetadataVersionRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstanceMetadataVersionRequirement &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstanceMetadataVersionRequirement &&
             (identical(other.versionRange, versionRange) ||
-                const DeepCollectionEquality()
-                    .equals(other.versionRange, versionRange)));
+                other.versionRange == versionRange));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(versionRange);
+  int get hashCode => Object.hash(runtimeType, versionRange);
 
   @JsonKey(ignore: true)
   @override
@@ -208,7 +207,7 @@ abstract class _PleromaApiInstanceMetadataVersionRequirement
   @override
   @HiveField(0)
   @JsonKey(name: 'versionRange')
-  PleromaApiVersionRange get versionRange => throw _privateConstructorUsedError;
+  PleromaApiVersionRange get versionRange;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstanceMetadataVersionRequirementCopyWith<

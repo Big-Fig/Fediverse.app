@@ -31,7 +31,7 @@ class _$UnifediApiInstanceActivityItemMastodonAdapterTearOff {
   }
 
   UnifediApiInstanceActivityItemMastodonAdapter fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return UnifediApiInstanceActivityItemMastodonAdapter.fromJson(json);
   }
 }
@@ -160,14 +160,13 @@ class _$_UnifediApiInstanceActivityItemMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceActivityItemMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceActivityItemMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -196,8 +195,7 @@ abstract class _UnifediApiInstanceActivityItemMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiInstanceActivityItem get value =>
-      throw _privateConstructorUsedError;
+  MastodonApiInstanceActivityItem get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceActivityItemMastodonAdapterCopyWith<

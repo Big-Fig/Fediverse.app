@@ -33,7 +33,7 @@ class _$FediverseApiInstanceMetadataVersionRequirementTearOff {
   }
 
   FediverseApiInstanceMetadataVersionRequirement fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return FediverseApiInstanceMetadataVersionRequirement.fromJson(json);
   }
 }
@@ -171,15 +171,14 @@ class _$_FediverseApiInstanceMetadataVersionRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiInstanceMetadataVersionRequirement &&
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiInstanceMetadataVersionRequirement &&
             (identical(other.versionRange, versionRange) ||
-                const DeepCollectionEquality()
-                    .equals(other.versionRange, versionRange)));
+                other.versionRange == versionRange));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(versionRange);
+  int get hashCode => Object.hash(runtimeType, versionRange);
 
   @JsonKey(ignore: true)
   @override
@@ -211,8 +210,7 @@ abstract class _FediverseApiInstanceMetadataVersionRequirement
   @override
   @HiveField(0)
   @JsonKey(name: 'version_range')
-  FediverseApiVersionRange get versionRange =>
-      throw _privateConstructorUsedError;
+  FediverseApiVersionRange get versionRange;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiInstanceMetadataVersionRequirementCopyWith<

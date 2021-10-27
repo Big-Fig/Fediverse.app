@@ -37,7 +37,7 @@ class _$UnifediApiInstanceLimitsTearOff {
     );
   }
 
-  UnifediApiInstanceLimits fromJson(Map<String, Object> json) {
+  UnifediApiInstanceLimits fromJson(Map<String, Object?> json) {
     return UnifediApiInstanceLimits.fromJson(json);
   }
 }
@@ -292,27 +292,18 @@ class _$_UnifediApiInstanceLimits implements _UnifediApiInstanceLimits {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceLimits &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)) &&
-            (identical(other.field, field) ||
-                const DeepCollectionEquality().equals(other.field, field)) &&
-            (identical(other.media, media) ||
-                const DeepCollectionEquality().equals(other.media, media)) &&
-            (identical(other.chat, chat) ||
-                const DeepCollectionEquality().equals(other.chat, chat)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceLimits &&
+            (identical(other.poll, poll) || other.poll == poll) &&
+            (identical(other.field, field) || other.field == field) &&
+            (identical(other.media, media) || other.media == media) &&
+            (identical(other.chat, chat) || other.chat == chat) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(poll) ^
-      const DeepCollectionEquality().hash(field) ^
-      const DeepCollectionEquality().hash(media) ^
-      const DeepCollectionEquality().hash(chat) ^
-      const DeepCollectionEquality().hash(status);
+      Object.hash(runtimeType, poll, field, media, chat, status);
 
   @JsonKey(ignore: true)
   @override
@@ -340,22 +331,19 @@ abstract class _UnifediApiInstanceLimits implements UnifediApiInstanceLimits {
 
   @override
   @HiveField(0)
-  UnifediApiInstancePollLimits? get poll => throw _privateConstructorUsedError;
+  UnifediApiInstancePollLimits? get poll;
   @override
   @HiveField(1)
-  UnifediApiInstanceFieldLimits? get field =>
-      throw _privateConstructorUsedError;
+  UnifediApiInstanceFieldLimits? get field;
   @override
   @HiveField(2)
-  UnifediApiInstanceMediaLimits? get media =>
-      throw _privateConstructorUsedError;
+  UnifediApiInstanceMediaLimits? get media;
   @override
   @HiveField(3)
-  UnifediApiInstanceChatLimits? get chat => throw _privateConstructorUsedError;
+  UnifediApiInstanceChatLimits? get chat;
   @override
   @HiveField(4)
-  UnifediApiInstanceStatusLimits? get status =>
-      throw _privateConstructorUsedError;
+  UnifediApiInstanceStatusLimits? get status;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceLimitsCopyWith<_UnifediApiInstanceLimits> get copyWith =>

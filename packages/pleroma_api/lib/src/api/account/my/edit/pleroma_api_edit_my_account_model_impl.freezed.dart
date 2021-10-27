@@ -132,7 +132,7 @@ class _$PleromaApiEditMyAccountTearOff {
     );
   }
 
-  PleromaApiEditMyAccount fromJson(Map<String, Object> json) {
+  PleromaApiEditMyAccount fromJson(Map<String, Object?> json) {
     return PleromaApiEditMyAccount.fromJson(json);
   }
 }
@@ -919,111 +919,98 @@ class _$_PleromaApiEditMyAccount implements _PleromaApiEditMyAccount {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiEditMyAccount &&
-            (identical(other.fieldsAttributes, fieldsAttributes) ||
-                const DeepCollectionEquality()
-                    .equals(other.fieldsAttributes, fieldsAttributes)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiEditMyAccount &&
+            const DeepCollectionEquality()
+                .equals(other.fieldsAttributes, fieldsAttributes) &&
             (identical(other.discoverable, discoverable) ||
-                const DeepCollectionEquality()
-                    .equals(other.discoverable, discoverable)) &&
-            (identical(other.bot, bot) ||
-                const DeepCollectionEquality().equals(other.bot, bot)) &&
+                other.discoverable == discoverable) &&
+            (identical(other.bot, bot) || other.bot == bot) &&
             (identical(other.displayName, displayName) ||
-                const DeepCollectionEquality()
-                    .equals(other.displayName, displayName)) &&
-            (identical(other.note, note) ||
-                const DeepCollectionEquality().equals(other.note, note)) &&
-            (identical(other.locked, locked) ||
-                const DeepCollectionEquality().equals(other.locked, locked)) &&
-            (identical(other.privacy, privacy) ||
-                const DeepCollectionEquality()
-                    .equals(other.privacy, privacy)) &&
+                other.displayName == displayName) &&
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.locked, locked) || other.locked == locked) &&
+            (identical(other.privacy, privacy) || other.privacy == privacy) &&
             (identical(other.sensitive, sensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.sensitive, sensitive)) &&
+                other.sensitive == sensitive) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality()
-                    .equals(other.language, language)) &&
+                other.language == language) &&
             (identical(other.avatarLocalFilePath, avatarLocalFilePath) ||
-                const DeepCollectionEquality()
-                    .equals(other.avatarLocalFilePath, avatarLocalFilePath)) &&
+                other.avatarLocalFilePath == avatarLocalFilePath) &&
             (identical(other.deleteAvatar, deleteAvatar) ||
-                const DeepCollectionEquality()
-                    .equals(other.deleteAvatar, deleteAvatar)) &&
+                other.deleteAvatar == deleteAvatar) &&
             (identical(other.headerLocalFilePath, headerLocalFilePath) ||
-                const DeepCollectionEquality()
-                    .equals(other.headerLocalFilePath, headerLocalFilePath)) &&
+                other.headerLocalFilePath == headerLocalFilePath) &&
             (identical(other.deleteHeader, deleteHeader) ||
-                const DeepCollectionEquality()
-                    .equals(other.deleteHeader, deleteHeader)) &&
+                other.deleteHeader == deleteHeader) &&
             (identical(other.noRichText, noRichText) ||
-                const DeepCollectionEquality()
-                    .equals(other.noRichText, noRichText)) &&
+                other.noRichText == noRichText) &&
             (identical(other.hideFollowers, hideFollowers) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFollowers, hideFollowers)) &&
+                other.hideFollowers == hideFollowers) &&
             (identical(other.hideFollows, hideFollows) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFollows, hideFollows)) &&
+                other.hideFollows == hideFollows) &&
             (identical(other.hideFollowersCount, hideFollowersCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFollowersCount, hideFollowersCount)) &&
+                other.hideFollowersCount == hideFollowersCount) &&
             (identical(other.hideFollowsCount, hideFollowsCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFollowsCount, hideFollowsCount)) &&
+                other.hideFollowsCount == hideFollowsCount) &&
             (identical(other.hideFavorites, hideFavorites) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFavorites, hideFavorites)) &&
+                other.hideFavorites == hideFavorites) &&
             (identical(other.showRole, showRole) ||
-                const DeepCollectionEquality()
-                    .equals(other.showRole, showRole)) &&
+                other.showRole == showRole) &&
             (identical(other.defaultScope, defaultScope) ||
-                const DeepCollectionEquality()
-                    .equals(other.defaultScope, defaultScope)) &&
-            (identical(other.pleromaSettingsStore, pleromaSettingsStore) ||
-                const DeepCollectionEquality().equals(
-                    other.pleromaSettingsStore, pleromaSettingsStore)) &&
+                other.defaultScope == defaultScope) &&
+            const DeepCollectionEquality()
+                .equals(other.pleromaSettingsStore, pleromaSettingsStore) &&
             (identical(other.skipThreadContainment, skipThreadContainment) ||
-                const DeepCollectionEquality()
-                    .equals(other.skipThreadContainment, skipThreadContainment)) &&
-            (identical(other.allowFollowingMove, allowFollowingMove) || const DeepCollectionEquality().equals(other.allowFollowingMove, allowFollowingMove)) &&
-            (identical(other.acceptsChatMessages, acceptsChatMessages) || const DeepCollectionEquality().equals(other.acceptsChatMessages, acceptsChatMessages)) &&
-            (identical(other.alsoKnownAs, alsoKnownAs) || const DeepCollectionEquality().equals(other.alsoKnownAs, alsoKnownAs)) &&
-            (identical(other.pleromaBackgroundImageLocalFilePath, pleromaBackgroundImageLocalFilePath) || const DeepCollectionEquality().equals(other.pleromaBackgroundImageLocalFilePath, pleromaBackgroundImageLocalFilePath)) &&
-            (identical(other.deletePleromaBackgroundImage, deletePleromaBackgroundImage) || const DeepCollectionEquality().equals(other.deletePleromaBackgroundImage, deletePleromaBackgroundImage)));
+                other.skipThreadContainment == skipThreadContainment) &&
+            (identical(other.allowFollowingMove, allowFollowingMove) ||
+                other.allowFollowingMove == allowFollowingMove) &&
+            (identical(other.acceptsChatMessages, acceptsChatMessages) ||
+                other.acceptsChatMessages == acceptsChatMessages) &&
+            const DeepCollectionEquality()
+                .equals(other.alsoKnownAs, alsoKnownAs) &&
+            (identical(other.pleromaBackgroundImageLocalFilePath,
+                    pleromaBackgroundImageLocalFilePath) ||
+                other.pleromaBackgroundImageLocalFilePath ==
+                    pleromaBackgroundImageLocalFilePath) &&
+            (identical(other.deletePleromaBackgroundImage,
+                    deletePleromaBackgroundImage) ||
+                other.deletePleromaBackgroundImage ==
+                    deletePleromaBackgroundImage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(fieldsAttributes) ^
-      const DeepCollectionEquality().hash(discoverable) ^
-      const DeepCollectionEquality().hash(bot) ^
-      const DeepCollectionEquality().hash(displayName) ^
-      const DeepCollectionEquality().hash(note) ^
-      const DeepCollectionEquality().hash(locked) ^
-      const DeepCollectionEquality().hash(privacy) ^
-      const DeepCollectionEquality().hash(sensitive) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(avatarLocalFilePath) ^
-      const DeepCollectionEquality().hash(deleteAvatar) ^
-      const DeepCollectionEquality().hash(headerLocalFilePath) ^
-      const DeepCollectionEquality().hash(deleteHeader) ^
-      const DeepCollectionEquality().hash(noRichText) ^
-      const DeepCollectionEquality().hash(hideFollowers) ^
-      const DeepCollectionEquality().hash(hideFollows) ^
-      const DeepCollectionEquality().hash(hideFollowersCount) ^
-      const DeepCollectionEquality().hash(hideFollowsCount) ^
-      const DeepCollectionEquality().hash(hideFavorites) ^
-      const DeepCollectionEquality().hash(showRole) ^
-      const DeepCollectionEquality().hash(defaultScope) ^
-      const DeepCollectionEquality().hash(pleromaSettingsStore) ^
-      const DeepCollectionEquality().hash(skipThreadContainment) ^
-      const DeepCollectionEquality().hash(allowFollowingMove) ^
-      const DeepCollectionEquality().hash(acceptsChatMessages) ^
-      const DeepCollectionEquality().hash(alsoKnownAs) ^
-      const DeepCollectionEquality().hash(pleromaBackgroundImageLocalFilePath) ^
-      const DeepCollectionEquality().hash(deletePleromaBackgroundImage);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(fieldsAttributes),
+        discoverable,
+        bot,
+        displayName,
+        note,
+        locked,
+        privacy,
+        sensitive,
+        language,
+        avatarLocalFilePath,
+        deleteAvatar,
+        headerLocalFilePath,
+        deleteHeader,
+        noRichText,
+        hideFollowers,
+        hideFollows,
+        hideFollowersCount,
+        hideFollowsCount,
+        hideFavorites,
+        showRole,
+        defaultScope,
+        const DeepCollectionEquality().hash(pleromaSettingsStore),
+        skipThreadContainment,
+        allowFollowingMove,
+        acceptsChatMessages,
+        const DeepCollectionEquality().hash(alsoKnownAs),
+        pleromaBackgroundImageLocalFilePath,
+        deletePleromaBackgroundImage
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -1124,111 +1111,108 @@ abstract class _PleromaApiEditMyAccount implements PleromaApiEditMyAccount {
   @override
   @JsonKey(name: 'fields_attributes')
   @HiveField(1)
-  List<PleromaApiField>? get fieldsAttributes =>
-      throw _privateConstructorUsedError;
+  List<PleromaApiField>? get fieldsAttributes;
   @override
   @HiveField(2)
-  bool? get discoverable => throw _privateConstructorUsedError;
+  bool? get discoverable;
   @override
   @HiveField(3)
-  bool? get bot => throw _privateConstructorUsedError;
+  bool? get bot;
   @override
   @JsonKey(name: 'display_name')
   @HiveField(4)
-  String? get displayName => throw _privateConstructorUsedError;
+  String? get displayName;
   @override
   @HiveField(5)
-  String? get note => throw _privateConstructorUsedError;
+  String? get note;
   @override
   @HiveField(6)
-  bool? get locked => throw _privateConstructorUsedError;
+  bool? get locked;
   @override
   @HiveField(7)
-  String? get privacy => throw _privateConstructorUsedError;
+  String? get privacy;
   @override
   @HiveField(8)
-  bool? get sensitive => throw _privateConstructorUsedError;
+  bool? get sensitive;
   @override
   @HiveField(9)
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @JsonKey(name: 'avatar_local_file_path')
   @HiveField(10)
-  String? get avatarLocalFilePath => throw _privateConstructorUsedError;
+  String? get avatarLocalFilePath;
   @override
   @JsonKey(name: 'delete_avatar')
   @HiveField(11)
-  bool? get deleteAvatar => throw _privateConstructorUsedError;
+  bool? get deleteAvatar;
   @override
   @JsonKey(name: 'header_local_file_path')
   @HiveField(12)
-  String? get headerLocalFilePath => throw _privateConstructorUsedError;
+  String? get headerLocalFilePath;
   @override
   @JsonKey(name: 'delete_header')
   @HiveField(13)
-  bool? get deleteHeader => throw _privateConstructorUsedError;
+  bool? get deleteHeader;
   @override
   @JsonKey(name: 'no_rich_text')
   @HiveField(14)
-  bool? get noRichText => throw _privateConstructorUsedError;
+  bool? get noRichText;
   @override
   @JsonKey(name: 'hide_followers')
   @HiveField(15)
-  bool? get hideFollowers => throw _privateConstructorUsedError;
+  bool? get hideFollowers;
   @override
   @JsonKey(name: 'hide_follows')
   @HiveField(16)
-  bool? get hideFollows => throw _privateConstructorUsedError;
+  bool? get hideFollows;
   @override
   @JsonKey(name: 'hide_followers_count')
   @HiveField(17)
-  bool? get hideFollowersCount => throw _privateConstructorUsedError;
+  bool? get hideFollowersCount;
   @override
   @JsonKey(name: 'hide_follows_count')
   @HiveField(18)
-  bool? get hideFollowsCount => throw _privateConstructorUsedError;
+  bool? get hideFollowsCount;
   @override
   @JsonKey(name: 'hide_favorites')
   @HiveField(19)
-  bool? get hideFavorites => throw _privateConstructorUsedError;
+  bool? get hideFavorites;
   @override
   @JsonKey(name: 'show_role')
   @HiveField(20)
-  bool? get showRole => throw _privateConstructorUsedError;
+  bool? get showRole;
   @override
   @JsonKey(name: 'default_scope')
   @HiveField(21)
-  String? get defaultScope => throw _privateConstructorUsedError;
+  String? get defaultScope;
   @override
   @JsonKey(name: 'pleroma_settings_store')
   @HiveField(22)
-  Map<String, dynamic>? get pleromaSettingsStore =>
-      throw _privateConstructorUsedError;
+  Map<String, dynamic>? get pleromaSettingsStore;
   @override
   @JsonKey(name: 'skip_thread_containment')
   @HiveField(23)
-  bool? get skipThreadContainment => throw _privateConstructorUsedError;
+  bool? get skipThreadContainment;
   @override
   @JsonKey(name: 'allow_following_move')
   @HiveField(24)
-  bool? get allowFollowingMove => throw _privateConstructorUsedError;
+  bool? get allowFollowingMove;
   @override
   @JsonKey(name: 'accepts_chat_messages')
   @HiveField(25)
-  bool? get acceptsChatMessages => throw _privateConstructorUsedError;
+  bool? get acceptsChatMessages;
   @override
   @JsonKey(name: 'also_known_as')
   @HiveField(26)
-  List<String>? get alsoKnownAs => throw _privateConstructorUsedError;
+  List<String>? get alsoKnownAs;
   @override
   @JsonKey(name: 'pleroma_background_image_local_file_path')
   @HiveField(27)
-  String? get pleromaBackgroundImageLocalFilePath =>
-      throw _privateConstructorUsedError;
+  String? get pleromaBackgroundImageLocalFilePath;
   @override
   @JsonKey(name: 'delete_pleroma_background_image')
   @HiveField(28)
-  bool? get deletePleromaBackgroundImage => throw _privateConstructorUsedError;
+  bool? get deletePleromaBackgroundImage;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiEditMyAccountCopyWith<_PleromaApiEditMyAccount> get copyWith =>

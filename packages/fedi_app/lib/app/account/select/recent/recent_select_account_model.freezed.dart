@@ -31,7 +31,7 @@ class _$RecentSelectAccountListTearOff {
     );
   }
 
-  RecentSelectAccountList fromJson(Map<String, Object> json) {
+  RecentSelectAccountList fromJson(Map<String, Object?> json) {
     return RecentSelectAccountList.fromJson(json);
   }
 }
@@ -145,15 +145,15 @@ class _$_RecentSelectAccountList implements _RecentSelectAccountList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RecentSelectAccountList &&
-            (identical(other.recentItems, recentItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.recentItems, recentItems)));
+        (other.runtimeType == runtimeType &&
+            other is _RecentSelectAccountList &&
+            const DeepCollectionEquality()
+                .equals(other.recentItems, recentItems));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(recentItems);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(recentItems));
 
   @JsonKey(ignore: true)
   @override
@@ -180,8 +180,7 @@ abstract class _RecentSelectAccountList implements RecentSelectAccountList {
   @override
   @JsonKey(name: 'recentItems')
   @HiveField(0)
-  List<UnifediApiAccount>? get recentItems =>
-      throw _privateConstructorUsedError;
+  List<UnifediApiAccount>? get recentItems;
   @override
   @JsonKey(ignore: true)
   _$RecentSelectAccountListCopyWith<_RecentSelectAccountList> get copyWith =>

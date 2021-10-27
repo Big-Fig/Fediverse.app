@@ -141,20 +141,17 @@ class _$_PhotoManagerMediaDeviceFileMetadata
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PhotoManagerMediaDeviceFileMetadata &&
+        (other.runtimeType == runtimeType &&
+            other is _PhotoManagerMediaDeviceFileMetadata &&
             (identical(other.assetEntity, assetEntity) ||
-                const DeepCollectionEquality()
-                    .equals(other.assetEntity, assetEntity)) &&
+                other.assetEntity == assetEntity) &&
             (identical(other.isNeedDeleteAfterUsage, isNeedDeleteAfterUsage) ||
-                const DeepCollectionEquality().equals(
-                    other.isNeedDeleteAfterUsage, isNeedDeleteAfterUsage)));
+                other.isNeedDeleteAfterUsage == isNeedDeleteAfterUsage));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(assetEntity) ^
-      const DeepCollectionEquality().hash(isNeedDeleteAfterUsage);
+      Object.hash(runtimeType, assetEntity, isNeedDeleteAfterUsage);
 
   @JsonKey(ignore: true)
   @override
@@ -173,9 +170,9 @@ abstract class _PhotoManagerMediaDeviceFileMetadata
   const _PhotoManagerMediaDeviceFileMetadata._() : super._();
 
   @override
-  AssetEntity get assetEntity => throw _privateConstructorUsedError;
+  AssetEntity get assetEntity;
   @override
-  bool get isNeedDeleteAfterUsage => throw _privateConstructorUsedError;
+  bool get isNeedDeleteAfterUsage;
   @override
   @JsonKey(ignore: true)
   _$PhotoManagerMediaDeviceFileMetadataCopyWith<
@@ -324,20 +321,16 @@ class _$_PhotoManagerMediaDeviceFile extends _PhotoManagerMediaDeviceFile {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PhotoManagerMediaDeviceFile &&
+        (other.runtimeType == runtimeType &&
+            other is _PhotoManagerMediaDeviceFile &&
             (identical(other.metadata, metadata) ||
-                const DeepCollectionEquality()
-                    .equals(other.metadata, metadata)) &&
+                other.metadata == metadata) &&
             (identical(other.reCompressedFile, reCompressedFile) ||
-                const DeepCollectionEquality()
-                    .equals(other.reCompressedFile, reCompressedFile)));
+                other.reCompressedFile == reCompressedFile));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(metadata) ^
-      const DeepCollectionEquality().hash(reCompressedFile);
+  int get hashCode => Object.hash(runtimeType, metadata, reCompressedFile);
 
   @JsonKey(ignore: true)
   @override
@@ -354,10 +347,9 @@ abstract class _PhotoManagerMediaDeviceFile
   const _PhotoManagerMediaDeviceFile._() : super._();
 
   @override
-  PhotoManagerMediaDeviceFileMetadata get metadata =>
-      throw _privateConstructorUsedError;
+  PhotoManagerMediaDeviceFileMetadata get metadata;
   @override
-  File? get reCompressedFile => throw _privateConstructorUsedError;
+  File? get reCompressedFile;
   @override
   @JsonKey(ignore: true)
   _$PhotoManagerMediaDeviceFileCopyWith<_PhotoManagerMediaDeviceFile>

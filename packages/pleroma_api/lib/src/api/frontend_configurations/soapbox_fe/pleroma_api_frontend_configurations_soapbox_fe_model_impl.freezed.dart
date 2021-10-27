@@ -32,7 +32,8 @@ class _$PleromaApiFrontendConfigurationsSoapboxFeTearOff {
     );
   }
 
-  PleromaApiFrontendConfigurationsSoapboxFe fromJson(Map<String, Object> json) {
+  PleromaApiFrontendConfigurationsSoapboxFe fromJson(
+      Map<String, Object?> json) {
     return PleromaApiFrontendConfigurationsSoapboxFe.fromJson(json);
   }
 }
@@ -148,15 +149,14 @@ class _$_PleromaApiFrontendConfigurationsSoapboxFe
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiFrontendConfigurationsSoapboxFe &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiFrontendConfigurationsSoapboxFe &&
             (identical(other.brandColor, brandColor) ||
-                const DeepCollectionEquality()
-                    .equals(other.brandColor, brandColor)));
+                other.brandColor == brandColor));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(brandColor);
+  int get hashCode => Object.hash(runtimeType, brandColor);
 
   @JsonKey(ignore: true)
   @override
@@ -186,7 +186,7 @@ abstract class _PleromaApiFrontendConfigurationsSoapboxFe
   @override
   @JsonKey(name: 'brandColor')
   @HiveField(0)
-  String? get brandColor => throw _privateConstructorUsedError;
+  String? get brandColor;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiFrontendConfigurationsSoapboxFeCopyWith<

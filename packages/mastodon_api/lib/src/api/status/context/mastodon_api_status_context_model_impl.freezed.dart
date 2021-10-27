@@ -31,7 +31,7 @@ class _$MastodonApiStatusContextTearOff {
     );
   }
 
-  MastodonApiStatusContext fromJson(Map<String, Object> json) {
+  MastodonApiStatusContext fromJson(Map<String, Object?> json) {
     return MastodonApiStatusContext.fromJson(json);
   }
 }
@@ -156,20 +156,18 @@ class _$_MastodonApiStatusContext implements _MastodonApiStatusContext {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiStatusContext &&
-            (identical(other.descendants, descendants) ||
-                const DeepCollectionEquality()
-                    .equals(other.descendants, descendants)) &&
-            (identical(other.ancestors, ancestors) ||
-                const DeepCollectionEquality()
-                    .equals(other.ancestors, ancestors)));
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiStatusContext &&
+            const DeepCollectionEquality()
+                .equals(other.descendants, descendants) &&
+            const DeepCollectionEquality().equals(other.ancestors, ancestors));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(descendants) ^
-      const DeepCollectionEquality().hash(ancestors);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(descendants),
+      const DeepCollectionEquality().hash(ancestors));
 
   @JsonKey(ignore: true)
   @override
@@ -194,10 +192,10 @@ abstract class _MastodonApiStatusContext implements MastodonApiStatusContext {
 
   @override
   @HiveField(0)
-  List<MastodonApiStatus> get descendants => throw _privateConstructorUsedError;
+  List<MastodonApiStatus> get descendants;
   @override
   @HiveField(1)
-  List<MastodonApiStatus> get ancestors => throw _privateConstructorUsedError;
+  List<MastodonApiStatus> get ancestors;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiStatusContextCopyWith<_MastodonApiStatusContext> get copyWith =>

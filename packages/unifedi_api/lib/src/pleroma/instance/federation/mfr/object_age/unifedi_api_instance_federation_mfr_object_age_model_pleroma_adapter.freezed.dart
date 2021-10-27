@@ -31,7 +31,7 @@ class _$UnifediApiInstanceFederationMfrObjectAgePleromaAdapterTearOff {
   }
 
   UnifediApiInstanceFederationMfrObjectAgePleromaAdapter fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return UnifediApiInstanceFederationMfrObjectAgePleromaAdapter.fromJson(
         json);
   }
@@ -176,14 +176,13 @@ class _$_UnifediApiInstanceFederationMfrObjectAgePleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceFederationMfrObjectAgePleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceFederationMfrObjectAgePleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -214,8 +213,7 @@ abstract class _UnifediApiInstanceFederationMfrObjectAgePleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiInstanceFederationMfrObjectAge get value =>
-      throw _privateConstructorUsedError;
+  PleromaApiInstanceFederationMfrObjectAge get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceFederationMfrObjectAgePleromaAdapterCopyWith<

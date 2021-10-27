@@ -206,15 +206,14 @@ class _$_Get implements _Get {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Get &&
+        (other.runtimeType == runtimeType &&
+            other is _Get &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -312,7 +311,7 @@ abstract class _Get implements RestRequestType {
   const factory _Get({String stringValue}) = _$_Get;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$GetCopyWith<_Get> get copyWith => throw _privateConstructorUsedError;
@@ -365,15 +364,14 @@ class _$_Post implements _Post {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Post &&
+        (other.runtimeType == runtimeType &&
+            other is _Post &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -471,7 +469,7 @@ abstract class _Post implements RestRequestType {
   const factory _Post({String stringValue}) = _$_Post;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PostCopyWith<_Post> get copyWith => throw _privateConstructorUsedError;
@@ -524,15 +522,14 @@ class _$_Head implements _Head {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Head &&
+        (other.runtimeType == runtimeType &&
+            other is _Head &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -630,7 +627,7 @@ abstract class _Head implements RestRequestType {
   const factory _Head({String stringValue}) = _$_Head;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$HeadCopyWith<_Head> get copyWith => throw _privateConstructorUsedError;
@@ -683,15 +680,14 @@ class _$_Put implements _Put {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Put &&
+        (other.runtimeType == runtimeType &&
+            other is _Put &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -789,7 +785,7 @@ abstract class _Put implements RestRequestType {
   const factory _Put({String stringValue}) = _$_Put;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PutCopyWith<_Put> get copyWith => throw _privateConstructorUsedError;
@@ -842,15 +838,14 @@ class _$_Patch implements _Patch {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Patch &&
+        (other.runtimeType == runtimeType &&
+            other is _Patch &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -948,7 +943,7 @@ abstract class _Patch implements RestRequestType {
   const factory _Patch({String stringValue}) = _$_Patch;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PatchCopyWith<_Patch> get copyWith => throw _privateConstructorUsedError;
@@ -1002,15 +997,14 @@ class _$_Delete implements _Delete {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Delete &&
+        (other.runtimeType == runtimeType &&
+            other is _Delete &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1108,7 +1102,7 @@ abstract class _Delete implements RestRequestType {
   const factory _Delete({String stringValue}) = _$_Delete;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$DeleteCopyWith<_Delete> get copyWith => throw _privateConstructorUsedError;

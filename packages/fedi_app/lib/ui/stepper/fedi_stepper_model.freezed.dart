@@ -143,19 +143,16 @@ class _$_FediStepperState<T extends IFediStepperItem>
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediStepperState<T> &&
-            (identical(other.steps, steps) ||
-                const DeepCollectionEquality().equals(other.steps, steps)) &&
+        (other.runtimeType == runtimeType &&
+            other is _FediStepperState<T> &&
+            const DeepCollectionEquality().equals(other.steps, steps) &&
             (identical(other.currentStepIndex, currentStepIndex) ||
-                const DeepCollectionEquality()
-                    .equals(other.currentStepIndex, currentStepIndex)));
+                other.currentStepIndex == currentStepIndex));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(steps) ^
-      const DeepCollectionEquality().hash(currentStepIndex);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(steps), currentStepIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -172,9 +169,9 @@ abstract class _FediStepperState<T extends IFediStepperItem>
   const _FediStepperState._() : super._();
 
   @override
-  List<T> get steps => throw _privateConstructorUsedError;
+  List<T> get steps;
   @override
-  int get currentStepIndex => throw _privateConstructorUsedError;
+  int get currentStepIndex;
   @override
   @JsonKey(ignore: true)
   _$FediStepperStateCopyWith<T, _FediStepperState<T>> get copyWith =>

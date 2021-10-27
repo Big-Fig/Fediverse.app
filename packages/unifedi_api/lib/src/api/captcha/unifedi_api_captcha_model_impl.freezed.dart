@@ -36,7 +36,7 @@ class _$UnifediApiCaptchaTearOff {
     );
   }
 
-  UnifediApiCaptcha fromJson(Map<String, Object> json) {
+  UnifediApiCaptcha fromJson(Map<String, Object?> json) {
     return UnifediApiCaptcha.fromJson(json);
   }
 }
@@ -216,29 +216,20 @@ class _$_UnifediApiCaptcha implements _UnifediApiCaptcha {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiCaptcha &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiCaptcha &&
             (identical(other.secondsValid, secondsValid) ||
-                const DeepCollectionEquality()
-                    .equals(other.secondsValid, secondsValid)) &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+                other.secondsValid == secondsValid) &&
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.answerData, answerData) ||
-                const DeepCollectionEquality()
-                    .equals(other.answerData, answerData)));
+                other.answerData == answerData));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(secondsValid) ^
-      const DeepCollectionEquality().hash(token) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(answerData);
+      Object.hash(runtimeType, secondsValid, token, type, url, answerData);
 
   @JsonKey(ignore: true)
   @override
@@ -265,19 +256,19 @@ abstract class _UnifediApiCaptcha implements UnifediApiCaptcha {
   @override
   @HiveField(1)
   @JsonKey(name: 'seconds_valid')
-  int? get secondsValid => throw _privateConstructorUsedError;
+  int? get secondsValid;
   @override
   @HiveField(2)
-  String? get token => throw _privateConstructorUsedError;
+  String? get token;
   @override
   @HiveField(3)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(4)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @HiveField(5)
-  String? get answerData => throw _privateConstructorUsedError;
+  String? get answerData;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiCaptchaCopyWith<_UnifediApiCaptcha> get copyWith =>

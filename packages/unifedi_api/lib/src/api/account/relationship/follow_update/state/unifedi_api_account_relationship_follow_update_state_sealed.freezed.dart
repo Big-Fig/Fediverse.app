@@ -200,15 +200,14 @@ class _$_FollowPending implements _FollowPending {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FollowPending &&
+        (other.runtimeType == runtimeType &&
+            other is _FollowPending &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -295,7 +294,7 @@ abstract class _FollowPending
   const factory _FollowPending({String stringValue}) = _$_FollowPending;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$FollowPendingCopyWith<_FollowPending> get copyWith =>
@@ -357,15 +356,14 @@ class _$_FollowAccept implements _FollowAccept {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FollowAccept &&
+        (other.runtimeType == runtimeType &&
+            other is _FollowAccept &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -452,7 +450,7 @@ abstract class _FollowAccept
   const factory _FollowAccept({String stringValue}) = _$_FollowAccept;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$FollowAcceptCopyWith<_FollowAccept> get copyWith =>
@@ -514,15 +512,14 @@ class _$_FollowReject implements _FollowReject {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FollowReject &&
+        (other.runtimeType == runtimeType &&
+            other is _FollowReject &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -609,7 +606,7 @@ abstract class _FollowReject
   const factory _FollowReject({String stringValue}) = _$_FollowReject;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$FollowRejectCopyWith<_FollowReject> get copyWith =>
@@ -664,15 +661,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -759,7 +755,7 @@ abstract class _Unknown
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

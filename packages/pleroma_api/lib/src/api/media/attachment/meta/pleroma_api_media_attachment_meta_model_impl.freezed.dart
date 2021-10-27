@@ -33,7 +33,7 @@ class _$PleromaApiMediaAttachmentMetaTearOff {
     );
   }
 
-  PleromaApiMediaAttachmentMeta fromJson(Map<String, Object> json) {
+  PleromaApiMediaAttachmentMeta fromJson(Map<String, Object?> json) {
     return PleromaApiMediaAttachmentMeta.fromJson(json);
   }
 }
@@ -230,22 +230,16 @@ class _$_PleromaApiMediaAttachmentMeta
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMediaAttachmentMeta &&
-            (identical(other.focus, focus) ||
-                const DeepCollectionEquality().equals(other.focus, focus)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMediaAttachmentMeta &&
+            (identical(other.focus, focus) || other.focus == focus) &&
             (identical(other.original, original) ||
-                const DeepCollectionEquality()
-                    .equals(other.original, original)) &&
-            (identical(other.small, small) ||
-                const DeepCollectionEquality().equals(other.small, small)));
+                other.original == original) &&
+            (identical(other.small, small) || other.small == small));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(focus) ^
-      const DeepCollectionEquality().hash(original) ^
-      const DeepCollectionEquality().hash(small);
+  int get hashCode => Object.hash(runtimeType, focus, original, small);
 
   @JsonKey(ignore: true)
   @override
@@ -272,16 +266,13 @@ abstract class _PleromaApiMediaAttachmentMeta
 
   @override
   @HiveField(0)
-  PleromaApiMediaAttachmentFocus? get focus =>
-      throw _privateConstructorUsedError;
+  PleromaApiMediaAttachmentFocus? get focus;
   @override
   @HiveField(1)
-  PleromaApiMediaAttachmentSize? get original =>
-      throw _privateConstructorUsedError;
+  PleromaApiMediaAttachmentSize? get original;
   @override
   @HiveField(2)
-  PleromaApiMediaAttachmentSize? get small =>
-      throw _privateConstructorUsedError;
+  PleromaApiMediaAttachmentSize? get small;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMediaAttachmentMetaCopyWith<_PleromaApiMediaAttachmentMeta>

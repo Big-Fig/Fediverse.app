@@ -54,7 +54,7 @@ class _$AuthInstanceOldTearOff {
     );
   }
 
-  AuthInstanceOld fromJson(Map<String, Object> json) {
+  AuthInstanceOld fromJson(Map<String, Object?> json) {
     return AuthInstanceOld.fromJson(json);
   }
 }
@@ -353,41 +353,25 @@ class _$_AuthInstanceOld extends _AuthInstanceOld {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AuthInstanceOld &&
+        (other.runtimeType == runtimeType &&
+            other is _AuthInstanceOld &&
             (identical(other.urlSchema, urlSchema) ||
-                const DeepCollectionEquality()
-                    .equals(other.urlSchema, urlSchema)) &&
-            (identical(other.urlHost, urlHost) ||
-                const DeepCollectionEquality()
-                    .equals(other.urlHost, urlHost)) &&
-            (identical(other.acct, acct) ||
-                const DeepCollectionEquality().equals(other.acct, acct)) &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)) &&
+                other.urlSchema == urlSchema) &&
+            (identical(other.urlHost, urlHost) || other.urlHost == urlHost) &&
+            (identical(other.acct, acct) || other.acct == acct) &&
+            (identical(other.token, token) || other.token == token) &&
             (identical(other.authCode, authCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.authCode, authCode)) &&
+                other.authCode == authCode) &&
             (identical(other.isPleroma, isPleroma) ||
-                const DeepCollectionEquality()
-                    .equals(other.isPleroma, isPleroma)) &&
+                other.isPleroma == isPleroma) &&
             (identical(other.application, application) ||
-                const DeepCollectionEquality()
-                    .equals(other.application, application)) &&
-            (identical(other.info, info) ||
-                const DeepCollectionEquality().equals(other.info, info)));
+                other.application == application) &&
+            (identical(other.info, info) || other.info == info));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(urlSchema) ^
-      const DeepCollectionEquality().hash(urlHost) ^
-      const DeepCollectionEquality().hash(acct) ^
-      const DeepCollectionEquality().hash(token) ^
-      const DeepCollectionEquality().hash(authCode) ^
-      const DeepCollectionEquality().hash(isPleroma) ^
-      const DeepCollectionEquality().hash(application) ^
-      const DeepCollectionEquality().hash(info);
+  int get hashCode => Object.hash(runtimeType, urlSchema, urlHost, acct, token,
+      authCode, isPleroma, application, info);
 
   @JsonKey(ignore: true)
   @override
@@ -430,32 +414,31 @@ abstract class _AuthInstanceOld extends AuthInstanceOld {
   @override
   @HiveField(0)
   @JsonKey(name: 'url_schema')
-  String? get urlSchema => throw _privateConstructorUsedError;
+  String? get urlSchema;
   @override
   @HiveField(1)
   @JsonKey(name: 'url_host')
-  String get urlHost => throw _privateConstructorUsedError;
+  String get urlHost;
   @override
   @HiveField(2)
-  String get acct => throw _privateConstructorUsedError;
+  String get acct;
   @override
   @HiveField(3)
-  PleromaApiOAuthToken? get token => throw _privateConstructorUsedError;
+  PleromaApiOAuthToken? get token;
   @override
   @HiveField(4)
   @JsonKey(name: 'auth_code')
-  String? get authCode => throw _privateConstructorUsedError;
+  String? get authCode;
   @override
   @HiveField(5)
   @JsonKey(name: 'is_pleroma_instance')
-  bool get isPleroma => throw _privateConstructorUsedError;
+  bool get isPleroma;
   @override
   @HiveField(6)
-  PleromaApiClientApplication? get application =>
-      throw _privateConstructorUsedError;
+  PleromaApiClientApplication? get application;
   @override
   @HiveField(7)
-  PleromaApiInstance? get info => throw _privateConstructorUsedError;
+  PleromaApiInstance? get info;
   @override
   @JsonKey(ignore: true)
   _$AuthInstanceOldCopyWith<_AuthInstanceOld> get copyWith =>

@@ -155,23 +155,17 @@ class _$_RegisterAccessResponse implements _RegisterAccessResponse {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RegisterAccessResponse &&
-            (identical(other.access, access) ||
-                const DeepCollectionEquality().equals(other.access, access)) &&
+        (other.runtimeType == runtimeType &&
+            other is _RegisterAccessResponse &&
+            (identical(other.access, access) || other.access == access) &&
             (identical(other.response, response) ||
-                const DeepCollectionEquality()
-                    .equals(other.response, response)) &&
+                other.response == response) &&
             (identical(other.myAccount, myAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.myAccount, myAccount)));
+                other.myAccount == myAccount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(access) ^
-      const DeepCollectionEquality().hash(response) ^
-      const DeepCollectionEquality().hash(myAccount);
+  int get hashCode => Object.hash(runtimeType, access, response, myAccount);
 
   @JsonKey(ignore: true)
   @override
@@ -187,12 +181,11 @@ abstract class _RegisterAccessResponse implements RegisterAccessResponse {
       required IUnifediApiMyAccount? myAccount}) = _$_RegisterAccessResponse;
 
   @override
-  IUnifediApiAccess? get access => throw _privateConstructorUsedError;
+  IUnifediApiAccess? get access;
   @override
-  IUnifediApiRegisterAccountResponse get response =>
-      throw _privateConstructorUsedError;
+  IUnifediApiRegisterAccountResponse get response;
   @override
-  IUnifediApiMyAccount? get myAccount => throw _privateConstructorUsedError;
+  IUnifediApiMyAccount? get myAccount;
   @override
   @JsonKey(ignore: true)
   _$RegisterAccessResponseCopyWith<_RegisterAccessResponse> get copyWith =>

@@ -32,7 +32,7 @@ class _$PleromaApiFrontendConfigurationsMastoFeTearOff {
     );
   }
 
-  PleromaApiFrontendConfigurationsMastoFe fromJson(Map<String, Object> json) {
+  PleromaApiFrontendConfigurationsMastoFe fromJson(Map<String, Object?> json) {
     return PleromaApiFrontendConfigurationsMastoFe.fromJson(json);
   }
 }
@@ -156,18 +156,15 @@ class _$_PleromaApiFrontendConfigurationsMastoFe
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiFrontendConfigurationsMastoFe &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiFrontendConfigurationsMastoFe &&
             (identical(other.showInstanceSpecificPanel,
                     showInstanceSpecificPanel) ||
-                const DeepCollectionEquality().equals(
-                    other.showInstanceSpecificPanel,
-                    showInstanceSpecificPanel)));
+                other.showInstanceSpecificPanel == showInstanceSpecificPanel));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(showInstanceSpecificPanel);
+  int get hashCode => Object.hash(runtimeType, showInstanceSpecificPanel);
 
   @JsonKey(ignore: true)
   @override
@@ -197,7 +194,7 @@ abstract class _PleromaApiFrontendConfigurationsMastoFe
   @override
   @JsonKey(name: 'show_instance_specific_panel')
   @HiveField(0)
-  bool? get showInstanceSpecificPanel => throw _privateConstructorUsedError;
+  bool? get showInstanceSpecificPanel;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiFrontendConfigurationsMastoFeCopyWith<

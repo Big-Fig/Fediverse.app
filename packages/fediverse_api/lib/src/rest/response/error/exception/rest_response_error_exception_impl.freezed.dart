@@ -131,16 +131,14 @@ class _$_RestResponseErrorException implements _RestResponseErrorException {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RestResponseErrorException &&
+        (other.runtimeType == runtimeType &&
+            other is _RestResponseErrorException &&
             (identical(other.restResponseError, restResponseError) ||
-                const DeepCollectionEquality()
-                    .equals(other.restResponseError, restResponseError)));
+                other.restResponseError == restResponseError));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(restResponseError);
+  int get hashCode => Object.hash(runtimeType, restResponseError);
 
   @JsonKey(ignore: true)
   @override
@@ -156,7 +154,7 @@ abstract class _RestResponseErrorException
       _$_RestResponseErrorException;
 
   @override
-  RestResponseError get restResponseError => throw _privateConstructorUsedError;
+  RestResponseError get restResponseError;
   @override
   @JsonKey(ignore: true)
   _$RestResponseErrorExceptionCopyWith<_RestResponseErrorException>

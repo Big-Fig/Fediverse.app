@@ -72,7 +72,7 @@ class _$PleromaApiAnnouncementTearOff {
     );
   }
 
-  PleromaApiAnnouncement fromJson(Map<String, Object> json) {
+  PleromaApiAnnouncement fromJson(Map<String, Object?> json) {
     return PleromaApiAnnouncement.fromJson(json);
   }
 }
@@ -407,59 +407,43 @@ class _$_PleromaApiAnnouncement implements _PleromaApiAnnouncement {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAnnouncement &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.content, content) ||
-                const DeepCollectionEquality()
-                    .equals(other.content, content)) &&
-            (identical(other.allDay, allDay) ||
-                const DeepCollectionEquality().equals(other.allDay, allDay)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAnnouncement &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.allDay, allDay) || other.allDay == allDay) &&
             (identical(other.publishedAt, publishedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.publishedAt, publishedAt)) &&
+                other.publishedAt == publishedAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)) &&
-            (identical(other.read, read) ||
-                const DeepCollectionEquality().equals(other.read, read)) &&
-            (identical(other.reactions, reactions) ||
-                const DeepCollectionEquality()
-                    .equals(other.reactions, reactions)) &&
-            (identical(other.mentions, mentions) ||
-                const DeepCollectionEquality()
-                    .equals(other.mentions, mentions)) &&
-            (identical(other.statuses, statuses) ||
-                const DeepCollectionEquality()
-                    .equals(other.statuses, statuses)) &&
-            (identical(other.tags, tags) ||
-                const DeepCollectionEquality().equals(other.tags, tags)) &&
+                other.updatedAt == updatedAt) &&
+            (identical(other.read, read) || other.read == read) &&
+            const DeepCollectionEquality().equals(other.reactions, reactions) &&
+            const DeepCollectionEquality().equals(other.mentions, mentions) &&
+            const DeepCollectionEquality().equals(other.statuses, statuses) &&
+            const DeepCollectionEquality().equals(other.tags, tags) &&
             (identical(other.scheduledAt, scheduledAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.scheduledAt, scheduledAt)) &&
+                other.scheduledAt == scheduledAt) &&
             (identical(other.startsAt, startsAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.startsAt, startsAt)) &&
-            (identical(other.endsAt, endsAt) ||
-                const DeepCollectionEquality().equals(other.endsAt, endsAt)));
+                other.startsAt == startsAt) &&
+            (identical(other.endsAt, endsAt) || other.endsAt == endsAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(content) ^
-      const DeepCollectionEquality().hash(allDay) ^
-      const DeepCollectionEquality().hash(publishedAt) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(read) ^
-      const DeepCollectionEquality().hash(reactions) ^
-      const DeepCollectionEquality().hash(mentions) ^
-      const DeepCollectionEquality().hash(statuses) ^
-      const DeepCollectionEquality().hash(tags) ^
-      const DeepCollectionEquality().hash(scheduledAt) ^
-      const DeepCollectionEquality().hash(startsAt) ^
-      const DeepCollectionEquality().hash(endsAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      content,
+      allDay,
+      publishedAt,
+      updatedAt,
+      read,
+      const DeepCollectionEquality().hash(reactions),
+      const DeepCollectionEquality().hash(mentions),
+      const DeepCollectionEquality().hash(statuses),
+      const DeepCollectionEquality().hash(tags),
+      scheduledAt,
+      startsAt,
+      endsAt);
 
   @JsonKey(ignore: true)
   @override
@@ -513,50 +497,49 @@ abstract class _PleromaApiAnnouncement implements PleromaApiAnnouncement {
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
-  String get content => throw _privateConstructorUsedError;
+  String get content;
   @override
   @HiveField(2)
   @JsonKey(name: 'all_day')
-  bool get allDay => throw _privateConstructorUsedError;
+  bool get allDay;
   @override
   @HiveField(3)
   @JsonKey(name: 'published_at')
-  DateTime get publishedAt => throw _privateConstructorUsedError;
+  DateTime get publishedAt;
   @override
   @HiveField(4)
   @JsonKey(name: 'updated_at')
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt;
   @override
   @HiveField(5)
-  bool? get read => throw _privateConstructorUsedError;
+  bool? get read;
   @override
   @HiveField(6)
-  List<PleromaApiAnnouncementEmojiReaction>? get reactions =>
-      throw _privateConstructorUsedError;
+  List<PleromaApiAnnouncementEmojiReaction>? get reactions;
   @override
   @HiveField(7)
-  List<PleromaApiMention>? get mentions => throw _privateConstructorUsedError;
+  List<PleromaApiMention>? get mentions;
   @override
   @HiveField(8)
-  List<PleromaApiStatus>? get statuses => throw _privateConstructorUsedError;
+  List<PleromaApiStatus>? get statuses;
   @override
   @HiveField(9)
-  List<PleromaApiTag>? get tags => throw _privateConstructorUsedError;
+  List<PleromaApiTag>? get tags;
   @override
   @HiveField(10)
   @JsonKey(name: 'scheduled_at')
-  DateTime? get scheduledAt => throw _privateConstructorUsedError;
+  DateTime? get scheduledAt;
   @override
   @HiveField(11)
   @JsonKey(name: 'starts_at')
-  DateTime? get startsAt => throw _privateConstructorUsedError;
+  DateTime? get startsAt;
   @override
   @HiveField(12)
   @JsonKey(name: 'ends_at')
-  DateTime? get endsAt => throw _privateConstructorUsedError;
+  DateTime? get endsAt;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAnnouncementCopyWith<_PleromaApiAnnouncement> get copyWith =>

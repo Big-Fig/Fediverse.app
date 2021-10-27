@@ -43,7 +43,7 @@ class _$MastodonApiWebSocketsEventTearOff {
     );
   }
 
-  MastodonApiWebSocketsEvent fromJson(Map<String, Object> json) {
+  MastodonApiWebSocketsEvent fromJson(Map<String, Object?> json) {
     return MastodonApiWebSocketsEvent.fromJson(json);
   }
 }
@@ -356,41 +356,24 @@ class _$_MastodonApiWebSocketsEvent implements _MastodonApiWebSocketsEvent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiWebSocketsEvent &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.payload, payload) ||
-                const DeepCollectionEquality()
-                    .equals(other.payload, payload)) &&
-            (identical(other.channel, channel) ||
-                const DeepCollectionEquality()
-                    .equals(other.channel, channel)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiWebSocketsEvent &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.payload, payload) || other.payload == payload) &&
+            (identical(other.channel, channel) || other.channel == channel) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.notification, notification) ||
-                const DeepCollectionEquality()
-                    .equals(other.notification, notification)) &&
+                other.notification == notification) &&
             (identical(other.announcement, announcement) ||
-                const DeepCollectionEquality()
-                    .equals(other.announcement, announcement)) &&
+                other.announcement == announcement) &&
             (identical(other.conversation, conversation) ||
-                const DeepCollectionEquality()
-                    .equals(other.conversation, conversation)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)));
+                other.conversation == conversation) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(payload) ^
-      const DeepCollectionEquality().hash(channel) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(notification) ^
-      const DeepCollectionEquality().hash(announcement) ^
-      const DeepCollectionEquality().hash(conversation) ^
-      const DeepCollectionEquality().hash(id);
+  int get hashCode => Object.hash(runtimeType, type, payload, channel, status,
+      notification, announcement, conversation, id);
 
   @JsonKey(ignore: true)
   @override
@@ -422,33 +405,29 @@ abstract class _MastodonApiWebSocketsEvent
   @override
   @JsonKey(name: 'event')
   @HiveField(0)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @JsonKey(name: 'payload')
   @HiveField(10)
-  String? get payload => throw _privateConstructorUsedError;
+  String? get payload;
   @override
   @HiveField(2)
-  MastodonApiWebSocketsChannel get channel =>
-      throw _privateConstructorUsedError;
+  MastodonApiWebSocketsChannel get channel;
   @override
   @HiveField(3)
-  MastodonApiStatus? get status => throw _privateConstructorUsedError;
+  MastodonApiStatus? get status;
   @override
   @HiveField(4)
-  MastodonApiNotification? get notification =>
-      throw _privateConstructorUsedError;
+  MastodonApiNotification? get notification;
   @override
   @HiveField(5)
-  MastodonApiAnnouncement? get announcement =>
-      throw _privateConstructorUsedError;
+  MastodonApiAnnouncement? get announcement;
   @override
   @HiveField(7)
-  MastodonApiConversation? get conversation =>
-      throw _privateConstructorUsedError;
+  MastodonApiConversation? get conversation;
   @override
   @HiveField(8)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiWebSocketsEventCopyWith<_MastodonApiWebSocketsEvent>
@@ -473,7 +452,7 @@ class _$MastodonApiWebSocketsRawEventTearOff {
     );
   }
 
-  MastodonApiWebSocketsRawEvent fromJson(Map<String, Object> json) {
+  MastodonApiWebSocketsRawEvent fromJson(Map<String, Object?> json) {
     return MastodonApiWebSocketsRawEvent.fromJson(json);
   }
 }
@@ -607,18 +586,14 @@ class _$_MastodonApiWebSocketsRawEvent
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiWebSocketsRawEvent &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.payload, payload) ||
-                const DeepCollectionEquality().equals(other.payload, payload)));
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiWebSocketsRawEvent &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.payload, payload) || other.payload == payload));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(payload);
+  int get hashCode => Object.hash(runtimeType, type, payload);
 
   @JsonKey(ignore: true)
   @override
@@ -645,11 +620,11 @@ abstract class _MastodonApiWebSocketsRawEvent
   @override
   @JsonKey(name: 'event')
   @HiveField(0)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @JsonKey(name: 'payload')
   @HiveField(10)
-  String? get payload => throw _privateConstructorUsedError;
+  String? get payload;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiWebSocketsRawEventCopyWith<_MastodonApiWebSocketsRawEvent>

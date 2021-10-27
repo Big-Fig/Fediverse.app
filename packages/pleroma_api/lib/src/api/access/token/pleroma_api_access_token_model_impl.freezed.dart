@@ -34,7 +34,7 @@ class _$PleromaApiAccessTokenTearOff {
     );
   }
 
-  PleromaApiAccessToken fromJson(Map<String, Object> json) {
+  PleromaApiAccessToken fromJson(Map<String, Object?> json) {
     return PleromaApiAccessToken.fromJson(json);
   }
 }
@@ -189,19 +189,15 @@ class _$_PleromaApiAccessToken extends _PleromaApiAccessToken {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccessToken &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccessToken &&
             (identical(other.oauthToken, oauthToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.oauthToken, oauthToken)) &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)));
+                other.oauthToken == oauthToken) &&
+            (identical(other.scopes, scopes) || other.scopes == scopes));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(oauthToken) ^
-      const DeepCollectionEquality().hash(scopes);
+  int get hashCode => Object.hash(runtimeType, oauthToken, scopes);
 
   @JsonKey(ignore: true)
   @override
@@ -230,10 +226,10 @@ abstract class _PleromaApiAccessToken extends PleromaApiAccessToken {
   @override
   @HiveField(0)
   @JsonKey(name: 'oauth_token')
-  PleromaApiOAuthToken get oauthToken => throw _privateConstructorUsedError;
+  PleromaApiOAuthToken get oauthToken;
   @override
   @HiveField(1)
-  PleromaApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  PleromaApiAccessScopes get scopes;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccessTokenCopyWith<_PleromaApiAccessToken> get copyWith =>

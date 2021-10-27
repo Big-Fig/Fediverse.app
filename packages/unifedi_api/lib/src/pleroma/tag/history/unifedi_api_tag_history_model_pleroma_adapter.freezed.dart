@@ -29,7 +29,7 @@ class _$UnifediApiTagHistoryPleromaAdapterTearOff {
     );
   }
 
-  UnifediApiTagHistoryPleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiTagHistoryPleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiTagHistoryPleromaAdapter.fromJson(json);
   }
 }
@@ -142,14 +142,14 @@ class _$_UnifediApiTagHistoryPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiTagHistoryPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTagHistoryPleromaAdapter &&
+            const DeepCollectionEquality().equals(other.value, value));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override
@@ -177,8 +177,7 @@ abstract class _UnifediApiTagHistoryPleromaAdapter
 
   @override
   @HiveField(0)
-  List<PleromaApiTagHistoryItem> get value =>
-      throw _privateConstructorUsedError;
+  List<PleromaApiTagHistoryItem> get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiTagHistoryPleromaAdapterCopyWith<
@@ -203,7 +202,7 @@ class _$UnifediApiTagHistoryItemPleromaAdapterTearOff {
     );
   }
 
-  UnifediApiTagHistoryItemPleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiTagHistoryItemPleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiTagHistoryItemPleromaAdapter.fromJson(json);
   }
 }
@@ -328,14 +327,13 @@ class _$_UnifediApiTagHistoryItemPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiTagHistoryItemPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTagHistoryItemPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -363,7 +361,7 @@ abstract class _UnifediApiTagHistoryItemPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiTagHistoryItem get value => throw _privateConstructorUsedError;
+  PleromaApiTagHistoryItem get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiTagHistoryItemPleromaAdapterCopyWith<

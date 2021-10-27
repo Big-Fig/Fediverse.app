@@ -29,7 +29,7 @@ class _$UnifediApiApplicationPleromaAdapterTearOff {
     );
   }
 
-  UnifediApiApplicationPleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiApplicationPleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiApplicationPleromaAdapter.fromJson(json);
   }
 }
@@ -153,14 +153,13 @@ class _$_UnifediApiApplicationPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiApplicationPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiApplicationPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +187,7 @@ abstract class _UnifediApiApplicationPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiApplication get value => throw _privateConstructorUsedError;
+  PleromaApiApplication get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiApplicationPleromaAdapterCopyWith<

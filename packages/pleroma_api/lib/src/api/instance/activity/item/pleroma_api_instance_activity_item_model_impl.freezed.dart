@@ -43,7 +43,7 @@ class _$PleromaApiInstanceActivityItemTearOff {
     );
   }
 
-  PleromaApiInstanceActivityItem fromJson(Map<String, Object> json) {
+  PleromaApiInstanceActivityItem fromJson(Map<String, Object?> json) {
     return PleromaApiInstanceActivityItem.fromJson(json);
   }
 }
@@ -258,26 +258,19 @@ class _$_PleromaApiInstanceActivityItem
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstanceActivityItem &&
-            (identical(other.logins, logins) ||
-                const DeepCollectionEquality().equals(other.logins, logins)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstanceActivityItem &&
+            (identical(other.logins, logins) || other.logins == logins) &&
             (identical(other.registrations, registrations) ||
-                const DeepCollectionEquality()
-                    .equals(other.registrations, registrations)) &&
+                other.registrations == registrations) &&
             (identical(other.statuses, statuses) ||
-                const DeepCollectionEquality()
-                    .equals(other.statuses, statuses)) &&
-            (identical(other.week, week) ||
-                const DeepCollectionEquality().equals(other.week, week)));
+                other.statuses == statuses) &&
+            (identical(other.week, week) || other.week == week));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(logins) ^
-      const DeepCollectionEquality().hash(registrations) ^
-      const DeepCollectionEquality().hash(statuses) ^
-      const DeepCollectionEquality().hash(week);
+      Object.hash(runtimeType, logins, registrations, statuses, week);
 
   @JsonKey(ignore: true)
   @override
@@ -315,25 +308,25 @@ abstract class _PleromaApiInstanceActivityItem
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
-  int get logins => throw _privateConstructorUsedError;
+  int get logins;
   @override
   @HiveField(1)
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
-  int get registrations => throw _privateConstructorUsedError;
+  int get registrations;
   @override
   @HiveField(2)
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
-  int get statuses => throw _privateConstructorUsedError;
+  int get statuses;
   @override
   @HiveField(3)
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
-  int get week => throw _privateConstructorUsedError;
+  int get week;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstanceActivityItemCopyWith<_PleromaApiInstanceActivityItem>

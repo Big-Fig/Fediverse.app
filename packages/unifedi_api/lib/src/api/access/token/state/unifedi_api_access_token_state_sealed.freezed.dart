@@ -136,7 +136,8 @@ class _$_NotExist<TToken extends IUnifediApiAccessToken>
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _NotExist<TToken>);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _NotExist<TToken>);
   }
 
   @override
@@ -265,14 +266,14 @@ class _$_Valid<TToken extends IUnifediApiAccessToken>
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Valid<TToken> &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)));
+        (other.runtimeType == runtimeType &&
+            other is _Valid<TToken> &&
+            const DeepCollectionEquality().equals(other.token, token));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(token);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(token));
 
   @JsonKey(ignore: true)
   @override
@@ -352,7 +353,7 @@ abstract class _Valid<TToken extends IUnifediApiAccessToken>
     implements UnifediApiAccessTokenState<TToken> {
   const factory _Valid({required TToken token}) = _$_Valid<TToken>;
 
-  TToken get token => throw _privateConstructorUsedError;
+  TToken get token;
   @JsonKey(ignore: true)
   _$ValidCopyWith<TToken, _Valid<TToken>> get copyWith =>
       throw _privateConstructorUsedError;
@@ -390,7 +391,8 @@ class _$_Error<TToken extends IUnifediApiAccessToken>
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _Error<TToken>);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Error<TToken>);
   }
 
   @override

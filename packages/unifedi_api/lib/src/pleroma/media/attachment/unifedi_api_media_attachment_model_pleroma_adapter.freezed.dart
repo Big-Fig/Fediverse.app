@@ -30,7 +30,7 @@ class _$UnifediApiMediaAttachmentPleromaAdapterTearOff {
     );
   }
 
-  UnifediApiMediaAttachmentPleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiMediaAttachmentPleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiMediaAttachmentPleromaAdapter.fromJson(json);
   }
 }
@@ -156,14 +156,13 @@ class _$_UnifediApiMediaAttachmentPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiMediaAttachmentPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiMediaAttachmentPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -191,7 +190,7 @@ abstract class _UnifediApiMediaAttachmentPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiMediaAttachment get value => throw _privateConstructorUsedError;
+  PleromaApiMediaAttachment get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiMediaAttachmentPleromaAdapterCopyWith<

@@ -124,14 +124,13 @@ class _$_ConversationChatMessageStatusAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ConversationChatMessageStatusAdapter &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)));
+        (other.runtimeType == runtimeType &&
+            other is _ConversationChatMessageStatusAdapter &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(status);
+  int get hashCode => Object.hash(runtimeType, status);
 
   @JsonKey(ignore: true)
   @override
@@ -148,7 +147,7 @@ abstract class _ConversationChatMessageStatusAdapter
   const _ConversationChatMessageStatusAdapter._() : super._();
 
   @override
-  IStatus get status => throw _privateConstructorUsedError;
+  IStatus get status;
   @override
   @JsonKey(ignore: true)
   _$ConversationChatMessageStatusAdapterCopyWith<

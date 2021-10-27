@@ -29,7 +29,7 @@ class _$UnifediApiFeaturedTagMastodonAdapterTearOff {
     );
   }
 
-  UnifediApiFeaturedTagMastodonAdapter fromJson(Map<String, Object> json) {
+  UnifediApiFeaturedTagMastodonAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiFeaturedTagMastodonAdapter.fromJson(json);
   }
 }
@@ -153,14 +153,13 @@ class _$_UnifediApiFeaturedTagMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiFeaturedTagMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiFeaturedTagMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +187,7 @@ abstract class _UnifediApiFeaturedTagMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiFeaturedTag get value => throw _privateConstructorUsedError;
+  MastodonApiFeaturedTag get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiFeaturedTagMastodonAdapterCopyWith<

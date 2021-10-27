@@ -118,7 +118,7 @@ class _$MastodonApiStatusTearOff {
     );
   }
 
-  MastodonApiStatus fromJson(Map<String, Object> json) {
+  MastodonApiStatus fromJson(Map<String, Object?> json) {
     return MastodonApiStatus.fromJson(json);
   }
 }
@@ -903,111 +903,85 @@ class _$_MastodonApiStatus implements _MastodonApiStatus {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiStatus &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiStatus &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
+                other.createdAt == createdAt) &&
             (identical(other.inReplyToId, inReplyToId) ||
-                const DeepCollectionEquality()
-                    .equals(other.inReplyToId, inReplyToId)) &&
+                other.inReplyToId == inReplyToId) &&
             (identical(other.inReplyToAccountId, inReplyToAccountId) ||
-                const DeepCollectionEquality()
-                    .equals(other.inReplyToAccountId, inReplyToAccountId)) &&
+                other.inReplyToAccountId == inReplyToAccountId) &&
             (identical(other.sensitive, sensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.sensitive, sensitive)) &&
+                other.sensitive == sensitive) &&
             (identical(other.spoilerText, spoilerText) ||
-                const DeepCollectionEquality()
-                    .equals(other.spoilerText, spoilerText)) &&
-            (identical(other.uri, uri) ||
-                const DeepCollectionEquality().equals(other.uri, uri)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+                other.spoilerText == spoilerText) &&
+            (identical(other.uri, uri) || other.uri == uri) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.repliesCount, repliesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.repliesCount, repliesCount)) &&
+                other.repliesCount == repliesCount) &&
             (identical(other.reblogsCount, reblogsCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.reblogsCount, reblogsCount)) &&
+                other.reblogsCount == reblogsCount) &&
             (identical(other.favouritesCount, favouritesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.favouritesCount, favouritesCount)) &&
+                other.favouritesCount == favouritesCount) &&
             (identical(other.favourited, favourited) ||
-                const DeepCollectionEquality()
-                    .equals(other.favourited, favourited)) &&
+                other.favourited == favourited) &&
             (identical(other.reblogged, reblogged) ||
-                const DeepCollectionEquality()
-                    .equals(other.reblogged, reblogged)) &&
-            (identical(other.muted, muted) ||
-                const DeepCollectionEquality().equals(other.muted, muted)) &&
+                other.reblogged == reblogged) &&
+            (identical(other.muted, muted) || other.muted == muted) &&
             (identical(other.bookmarked, bookmarked) ||
-                const DeepCollectionEquality()
-                    .equals(other.bookmarked, bookmarked)) &&
-            (identical(other.pinned, pinned) ||
-                const DeepCollectionEquality().equals(other.pinned, pinned)) &&
-            (identical(other.content, content) ||
-                const DeepCollectionEquality()
-                    .equals(other.content, content)) &&
-            (identical(other.reblog, reblog) ||
-                const DeepCollectionEquality().equals(other.reblog, reblog)) &&
+                other.bookmarked == bookmarked) &&
+            (identical(other.pinned, pinned) || other.pinned == pinned) &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.reblog, reblog) || other.reblog == reblog) &&
             (identical(other.application, application) ||
-                const DeepCollectionEquality()
-                    .equals(other.application, application)) &&
-            (identical(other.account, account) ||
-                const DeepCollectionEquality()
-                    .equals(other.account, account)) &&
-            (identical(other.mediaAttachments, mediaAttachments) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaAttachments, mediaAttachments)) &&
-            (identical(other.mentions, mentions) ||
-                const DeepCollectionEquality()
-                    .equals(other.mentions, mentions)) &&
-            (identical(other.tags, tags) ||
-                const DeepCollectionEquality().equals(other.tags, tags)) &&
-            (identical(other.emojis, emojis) ||
-                const DeepCollectionEquality().equals(other.emojis, emojis)) &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)) &&
-            (identical(other.card, card) ||
-                const DeepCollectionEquality().equals(other.card, card)) &&
+                other.application == application) &&
+            (identical(other.account, account) || other.account == account) &&
+            const DeepCollectionEquality()
+                .equals(other.mediaAttachments, mediaAttachments) &&
+            const DeepCollectionEquality().equals(other.mentions, mentions) &&
+            const DeepCollectionEquality().equals(other.tags, tags) &&
+            const DeepCollectionEquality().equals(other.emojis, emojis) &&
+            (identical(other.poll, poll) || other.poll == poll) &&
+            (identical(other.card, card) || other.card == card) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality().equals(other.language, language)) &&
-            (identical(other.visibility, visibility) || const DeepCollectionEquality().equals(other.visibility, visibility)));
+                other.language == language) &&
+            (identical(other.visibility, visibility) ||
+                other.visibility == visibility));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(inReplyToId) ^
-      const DeepCollectionEquality().hash(inReplyToAccountId) ^
-      const DeepCollectionEquality().hash(sensitive) ^
-      const DeepCollectionEquality().hash(spoilerText) ^
-      const DeepCollectionEquality().hash(uri) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(repliesCount) ^
-      const DeepCollectionEquality().hash(reblogsCount) ^
-      const DeepCollectionEquality().hash(favouritesCount) ^
-      const DeepCollectionEquality().hash(favourited) ^
-      const DeepCollectionEquality().hash(reblogged) ^
-      const DeepCollectionEquality().hash(muted) ^
-      const DeepCollectionEquality().hash(bookmarked) ^
-      const DeepCollectionEquality().hash(pinned) ^
-      const DeepCollectionEquality().hash(content) ^
-      const DeepCollectionEquality().hash(reblog) ^
-      const DeepCollectionEquality().hash(application) ^
-      const DeepCollectionEquality().hash(account) ^
-      const DeepCollectionEquality().hash(mediaAttachments) ^
-      const DeepCollectionEquality().hash(mentions) ^
-      const DeepCollectionEquality().hash(tags) ^
-      const DeepCollectionEquality().hash(emojis) ^
-      const DeepCollectionEquality().hash(poll) ^
-      const DeepCollectionEquality().hash(card) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(visibility);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        createdAt,
+        inReplyToId,
+        inReplyToAccountId,
+        sensitive,
+        spoilerText,
+        uri,
+        url,
+        repliesCount,
+        reblogsCount,
+        favouritesCount,
+        favourited,
+        reblogged,
+        muted,
+        bookmarked,
+        pinned,
+        content,
+        reblog,
+        application,
+        account,
+        const DeepCollectionEquality().hash(mediaAttachments),
+        const DeepCollectionEquality().hash(mentions),
+        const DeepCollectionEquality().hash(tags),
+        const DeepCollectionEquality().hash(emojis),
+        poll,
+        card,
+        language,
+        visibility
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -1092,97 +1066,96 @@ abstract class _MastodonApiStatus implements MastodonApiStatus {
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @HiveField(2)
   @JsonKey(name: 'in_reply_to_id')
-  String? get inReplyToId => throw _privateConstructorUsedError;
+  String? get inReplyToId;
   @override
   @HiveField(3)
   @JsonKey(name: 'in_reply_to_account_id')
-  String? get inReplyToAccountId => throw _privateConstructorUsedError;
+  String? get inReplyToAccountId;
   @override
   @HiveField(4)
-  bool get sensitive => throw _privateConstructorUsedError;
+  bool get sensitive;
   @override
   @HiveField(5)
   @JsonKey(name: 'spoiler_text')
-  String? get spoilerText => throw _privateConstructorUsedError;
+  String? get spoilerText;
   @override
   @HiveField(6)
-  String get uri => throw _privateConstructorUsedError;
+  String get uri;
   @override
   @HiveField(7)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @HiveField(8)
   @JsonKey(name: 'replies_count')
-  int? get repliesCount => throw _privateConstructorUsedError;
+  int? get repliesCount;
   @override
   @HiveField(9)
   @JsonKey(name: 'reblogs_count')
-  int? get reblogsCount => throw _privateConstructorUsedError;
+  int? get reblogsCount;
   @override
   @HiveField(10)
   @JsonKey(name: 'favourites_count')
-  int? get favouritesCount => throw _privateConstructorUsedError;
+  int? get favouritesCount;
   @override
   @HiveField(11)
-  bool? get favourited => throw _privateConstructorUsedError;
+  bool? get favourited;
   @override
   @HiveField(12)
-  bool? get reblogged => throw _privateConstructorUsedError;
+  bool? get reblogged;
   @override
   @HiveField(13)
-  bool? get muted => throw _privateConstructorUsedError;
+  bool? get muted;
   @override
   @HiveField(14)
-  bool? get bookmarked => throw _privateConstructorUsedError;
+  bool? get bookmarked;
   @override
   @HiveField(15)
-  bool? get pinned => throw _privateConstructorUsedError;
+  bool? get pinned;
   @override
   @HiveField(16)
-  String? get content => throw _privateConstructorUsedError;
+  String? get content;
   @override
   @HiveField(17)
-  MastodonApiStatus? get reblog => throw _privateConstructorUsedError;
+  MastodonApiStatus? get reblog;
   @override
   @HiveField(18)
-  MastodonApiApplication? get application => throw _privateConstructorUsedError;
+  MastodonApiApplication? get application;
   @override
   @HiveField(19)
-  MastodonApiAccount get account => throw _privateConstructorUsedError;
+  MastodonApiAccount get account;
   @override
   @HiveField(20)
   @JsonKey(name: 'media_attachments')
-  List<MastodonApiMediaAttachment>? get mediaAttachments =>
-      throw _privateConstructorUsedError;
+  List<MastodonApiMediaAttachment>? get mediaAttachments;
   @override
   @HiveField(21)
-  List<MastodonApiMention>? get mentions => throw _privateConstructorUsedError;
+  List<MastodonApiMention>? get mentions;
   @override
   @HiveField(22)
-  List<MastodonApiTag>? get tags => throw _privateConstructorUsedError;
+  List<MastodonApiTag>? get tags;
   @override
   @HiveField(23)
-  List<MastodonApiEmoji>? get emojis => throw _privateConstructorUsedError;
+  List<MastodonApiEmoji>? get emojis;
   @override
   @HiveField(24)
-  MastodonApiPoll? get poll => throw _privateConstructorUsedError;
+  MastodonApiPoll? get poll;
   @override
   @HiveField(25)
-  MastodonApiCard? get card => throw _privateConstructorUsedError;
+  MastodonApiCard? get card;
   @override
   @HiveField(27)
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @HiveField(28)
-  String get visibility => throw _privateConstructorUsedError;
+  String get visibility;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiStatusCopyWith<_MastodonApiStatus> get copyWith =>

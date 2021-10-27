@@ -139,20 +139,17 @@ class _$_FilterRepositoryFilters implements _FilterRepositoryFilters {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FilterRepositoryFilters &&
-            (identical(other.onlyWithContextTypes, onlyWithContextTypes) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyWithContextTypes, onlyWithContextTypes)) &&
+        (other.runtimeType == runtimeType &&
+            other is _FilterRepositoryFilters &&
+            const DeepCollectionEquality()
+                .equals(other.onlyWithContextTypes, onlyWithContextTypes) &&
             (identical(other.notExpired, notExpired) ||
-                const DeepCollectionEquality()
-                    .equals(other.notExpired, notExpired)));
+                other.notExpired == notExpired));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(onlyWithContextTypes) ^
-      const DeepCollectionEquality().hash(notExpired);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(onlyWithContextTypes), notExpired);
 
   @JsonKey(ignore: true)
   @override
@@ -167,10 +164,9 @@ abstract class _FilterRepositoryFilters implements FilterRepositoryFilters {
       bool? notExpired}) = _$_FilterRepositoryFilters;
 
   @override
-  List<UnifediApiFilterContextType>? get onlyWithContextTypes =>
-      throw _privateConstructorUsedError;
+  List<UnifediApiFilterContextType>? get onlyWithContextTypes;
   @override
-  bool? get notExpired => throw _privateConstructorUsedError;
+  bool? get notExpired;
   @override
   @JsonKey(ignore: true)
   _$FilterRepositoryFiltersCopyWith<_FilterRepositoryFilters> get copyWith =>
@@ -297,20 +293,16 @@ class _$_FilterOrderingTermData implements _FilterOrderingTermData {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FilterOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _FilterOrderingTermData &&
             (identical(other.orderType, orderType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderType, orderType)) &&
+                other.orderType == orderType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -325,9 +317,9 @@ abstract class _FilterOrderingTermData implements FilterOrderingTermData {
       required moor.OrderingMode orderingMode}) = _$_FilterOrderingTermData;
 
   @override
-  FilterOrderType get orderType => throw _privateConstructorUsedError;
+  FilterOrderType get orderType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$FilterOrderingTermDataCopyWith<_FilterOrderingTermData> get copyWith =>

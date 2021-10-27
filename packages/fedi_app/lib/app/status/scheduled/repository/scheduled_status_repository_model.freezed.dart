@@ -138,21 +138,18 @@ class _$_ScheduledStatusRepositoryFilters
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ScheduledStatusRepositoryFilters &&
+        (other.runtimeType == runtimeType &&
+            other is _ScheduledStatusRepositoryFilters &&
             (identical(other.excludeCanceled, excludeCanceled) ||
-                const DeepCollectionEquality()
-                    .equals(other.excludeCanceled, excludeCanceled)) &&
+                other.excludeCanceled == excludeCanceled) &&
             (identical(
                     other.excludeScheduleAtExpired, excludeScheduleAtExpired) ||
-                const DeepCollectionEquality().equals(
-                    other.excludeScheduleAtExpired, excludeScheduleAtExpired)));
+                other.excludeScheduleAtExpired == excludeScheduleAtExpired));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(excludeCanceled) ^
-      const DeepCollectionEquality().hash(excludeScheduleAtExpired);
+      Object.hash(runtimeType, excludeCanceled, excludeScheduleAtExpired);
 
   @JsonKey(ignore: true)
   @override
@@ -168,9 +165,9 @@ abstract class _ScheduledStatusRepositoryFilters
       bool? excludeScheduleAtExpired}) = _$_ScheduledStatusRepositoryFilters;
 
   @override
-  bool? get excludeCanceled => throw _privateConstructorUsedError;
+  bool? get excludeCanceled;
   @override
-  bool? get excludeScheduleAtExpired => throw _privateConstructorUsedError;
+  bool? get excludeScheduleAtExpired;
   @override
   @JsonKey(ignore: true)
   _$ScheduledStatusRepositoryFiltersCopyWith<_ScheduledStatusRepositoryFilters>
@@ -311,20 +308,16 @@ class _$_ScheduledStatusRepositoryOrderingTermData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ScheduledStatusRepositoryOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _ScheduledStatusRepositoryOrderingTermData &&
             (identical(other.orderType, orderType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderType, orderType)) &&
+                other.orderType == orderType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -342,10 +335,9 @@ abstract class _ScheduledStatusRepositoryOrderingTermData
       _$_ScheduledStatusRepositoryOrderingTermData;
 
   @override
-  ScheduledStatusRepositoryOrderType get orderType =>
-      throw _privateConstructorUsedError;
+  ScheduledStatusRepositoryOrderType get orderType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$ScheduledStatusRepositoryOrderingTermDataCopyWith<

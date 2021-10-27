@@ -101,7 +101,7 @@ class _$UnifediApiInstanceTearOff {
     );
   }
 
-  UnifediApiInstance fromJson(Map<String, Object> json) {
+  UnifediApiInstance fromJson(Map<String, Object?> json) {
     return UnifediApiInstance.fromJson(json);
   }
 }
@@ -770,93 +770,72 @@ class _$_UnifediApiInstance implements _UnifediApiInstance {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstance &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstance &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.versionString, versionString) ||
-                const DeepCollectionEquality()
-                    .equals(other.versionString, versionString)) &&
-            (identical(other.limits, limits) ||
-                const DeepCollectionEquality().equals(other.limits, limits)) &&
+                other.versionString == versionString) &&
+            (identical(other.limits, limits) || other.limits == limits) &&
             (identical(other.vapidPublicKey, vapidPublicKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.vapidPublicKey, vapidPublicKey)) &&
+                other.vapidPublicKey == vapidPublicKey) &&
             (identical(other.backgroundImage, backgroundImage) ||
-                const DeepCollectionEquality()
-                    .equals(other.backgroundImage, backgroundImage)) &&
+                other.backgroundImage == backgroundImage) &&
             (identical(other.contactAccount, contactAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.contactAccount, contactAccount)) &&
-            (identical(other.features, features) ||
-                const DeepCollectionEquality()
-                    .equals(other.features, features)) &&
-            (identical(other.postFormats, postFormats) ||
-                const DeepCollectionEquality()
-                    .equals(other.postFormats, postFormats)) &&
-            (identical(other.accountActivationRequired, accountActivationRequired) ||
-                const DeepCollectionEquality().equals(
-                    other.accountActivationRequired,
-                    accountActivationRequired)) &&
+                other.contactAccount == contactAccount) &&
+            const DeepCollectionEquality().equals(other.features, features) &&
+            const DeepCollectionEquality()
+                .equals(other.postFormats, postFormats) &&
+            (identical(other.accountActivationRequired,
+                    accountActivationRequired) ||
+                other.accountActivationRequired == accountActivationRequired) &&
             (identical(other.federation, federation) ||
-                const DeepCollectionEquality()
-                    .equals(other.federation, federation)) &&
-            (identical(other.urls, urls) ||
-                const DeepCollectionEquality().equals(other.urls, urls)) &&
-            (identical(other.stats, stats) ||
-                const DeepCollectionEquality().equals(other.stats, stats)) &&
-            (identical(other.uri, uri) ||
-                const DeepCollectionEquality().equals(other.uri, uri)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
+                other.federation == federation) &&
+            (identical(other.urls, urls) || other.urls == urls) &&
+            (identical(other.stats, stats) || other.stats == stats) &&
+            (identical(other.uri, uri) || other.uri == uri) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.shortDescription, shortDescription) ||
-                const DeepCollectionEquality()
-                    .equals(other.shortDescription, shortDescription)) &&
+                other.shortDescription == shortDescription) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
+                other.description == description) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.thumbnail, thumbnail) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnail, thumbnail)) &&
-            (identical(other.languages, languages) ||
-                const DeepCollectionEquality()
-                    .equals(other.languages, languages)) &&
+                other.thumbnail == thumbnail) &&
+            const DeepCollectionEquality().equals(other.languages, languages) &&
             (identical(other.registrations, registrations) ||
-                const DeepCollectionEquality()
-                    .equals(other.registrations, registrations)) &&
+                other.registrations == registrations) &&
             (identical(other.approvalRequired, approvalRequired) ||
-                const DeepCollectionEquality()
-                    .equals(other.approvalRequired, approvalRequired)) &&
+                other.approvalRequired == approvalRequired) &&
             (identical(other.invitesEnabled, invitesEnabled) ||
-                const DeepCollectionEquality().equals(other.invitesEnabled, invitesEnabled)));
+                other.invitesEnabled == invitesEnabled));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(versionString) ^
-      const DeepCollectionEquality().hash(limits) ^
-      const DeepCollectionEquality().hash(vapidPublicKey) ^
-      const DeepCollectionEquality().hash(backgroundImage) ^
-      const DeepCollectionEquality().hash(contactAccount) ^
-      const DeepCollectionEquality().hash(features) ^
-      const DeepCollectionEquality().hash(postFormats) ^
-      const DeepCollectionEquality().hash(accountActivationRequired) ^
-      const DeepCollectionEquality().hash(federation) ^
-      const DeepCollectionEquality().hash(urls) ^
-      const DeepCollectionEquality().hash(stats) ^
-      const DeepCollectionEquality().hash(uri) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(shortDescription) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(thumbnail) ^
-      const DeepCollectionEquality().hash(languages) ^
-      const DeepCollectionEquality().hash(registrations) ^
-      const DeepCollectionEquality().hash(approvalRequired) ^
-      const DeepCollectionEquality().hash(invitesEnabled);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        type,
+        versionString,
+        limits,
+        vapidPublicKey,
+        backgroundImage,
+        contactAccount,
+        const DeepCollectionEquality().hash(features),
+        const DeepCollectionEquality().hash(postFormats),
+        accountActivationRequired,
+        federation,
+        urls,
+        stats,
+        uri,
+        title,
+        shortDescription,
+        description,
+        email,
+        thumbnail,
+        const DeepCollectionEquality().hash(languages),
+        registrations,
+        approvalRequired,
+        invitesEnabled
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -930,80 +909,79 @@ abstract class _UnifediApiInstance implements UnifediApiInstance {
 
   @override
   @HiveField(0)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @JsonKey(name: 'version')
   @HiveField(1)
-  String get versionString => throw _privateConstructorUsedError;
+  String get versionString;
   @override
   @HiveField(2)
-  UnifediApiInstanceLimits? get limits => throw _privateConstructorUsedError;
+  UnifediApiInstanceLimits? get limits;
   @override
   @JsonKey(name: 'vapid_public_key')
   @HiveField(3)
-  String? get vapidPublicKey => throw _privateConstructorUsedError;
+  String? get vapidPublicKey;
   @override
   @JsonKey(name: 'background_image')
   @HiveField(4)
-  String? get backgroundImage => throw _privateConstructorUsedError;
+  String? get backgroundImage;
   @override
   @JsonKey(name: 'contact_account')
   @HiveField(5)
-  UnifediApiAccount? get contactAccount => throw _privateConstructorUsedError;
+  UnifediApiAccount? get contactAccount;
   @override
   @HiveField(6)
-  List<String>? get features => throw _privateConstructorUsedError;
+  List<String>? get features;
   @override
   @JsonKey(name: 'post_formats')
   @HiveField(7)
-  List<String>? get postFormats => throw _privateConstructorUsedError;
+  List<String>? get postFormats;
   @override
   @HiveField(8)
   @JsonKey(name: 'account_activation')
-  bool? get accountActivationRequired => throw _privateConstructorUsedError;
+  bool? get accountActivationRequired;
   @override
   @HiveField(9)
-  UnifediApiInstanceFederation? get federation =>
-      throw _privateConstructorUsedError;
+  UnifediApiInstanceFederation? get federation;
   @override
   @HiveField(10)
-  UnifediApiInstanceUrls? get urls => throw _privateConstructorUsedError;
+  UnifediApiInstanceUrls? get urls;
   @override
   @HiveField(11)
-  UnifediApiInstanceStats? get stats => throw _privateConstructorUsedError;
+  UnifediApiInstanceStats? get stats;
   @override
   @HiveField(12)
-  String get uri => throw _privateConstructorUsedError;
+  String get uri;
   @override
   @HiveField(13)
-  String? get title => throw _privateConstructorUsedError;
+  String? get title;
   @override
   @JsonKey(name: 'short_description')
   @HiveField(14)
-  String? get shortDescription => throw _privateConstructorUsedError;
+  String? get shortDescription;
   @override
   @HiveField(15)
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
   @HiveField(16)
-  String? get email => throw _privateConstructorUsedError;
+  String? get email;
   @override
   @HiveField(17)
-  String? get thumbnail => throw _privateConstructorUsedError;
+  String? get thumbnail;
   @override
   @HiveField(18)
-  List<String>? get languages => throw _privateConstructorUsedError;
+  List<String>? get languages;
   @override
   @HiveField(19)
-  bool? get registrations => throw _privateConstructorUsedError;
+  bool? get registrations;
   @override
   @JsonKey(name: 'approval_required')
   @HiveField(20)
-  bool? get approvalRequired => throw _privateConstructorUsedError;
+  bool? get approvalRequired;
   @override
   @JsonKey(name: 'invites_enabled')
   @HiveField(21)
-  bool? get invitesEnabled => throw _privateConstructorUsedError;
+  bool? get invitesEnabled;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceCopyWith<_UnifediApiInstance> get copyWith =>

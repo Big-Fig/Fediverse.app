@@ -31,7 +31,7 @@ class _$FediverseApiAccessScopesItemTearOff {
     );
   }
 
-  FediverseApiAccessScopesItem fromJson(Map<String, Object> json) {
+  FediverseApiAccessScopesItem fromJson(Map<String, Object?> json) {
     return FediverseApiAccessScopesItem.fromJson(json);
   }
 }
@@ -155,19 +155,15 @@ class _$_FediverseApiAccessScopesItem implements _FediverseApiAccessScopesItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiAccessScopesItem &&
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiAccessScopesItem &&
             (identical(other.permission, permission) ||
-                const DeepCollectionEquality()
-                    .equals(other.permission, permission)) &&
-            (identical(other.target, target) ||
-                const DeepCollectionEquality().equals(other.target, target)));
+                other.permission == permission) &&
+            (identical(other.target, target) || other.target == target));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(permission) ^
-      const DeepCollectionEquality().hash(target);
+  int get hashCode => Object.hash(runtimeType, permission, target);
 
   @JsonKey(ignore: true)
   @override
@@ -192,10 +188,10 @@ abstract class _FediverseApiAccessScopesItem
 
   @override
   @HiveField(0)
-  String get permission => throw _privateConstructorUsedError;
+  String get permission;
   @override
   @HiveField(1)
-  String get target => throw _privateConstructorUsedError;
+  String get target;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiAccessScopesItemCopyWith<_FediverseApiAccessScopesItem>

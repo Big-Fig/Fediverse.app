@@ -234,15 +234,14 @@ class _$_InvalidGrant implements _InvalidGrant {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _InvalidGrant &&
+        (other.runtimeType == runtimeType &&
+            other is _InvalidGrant &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -349,7 +348,7 @@ abstract class _InvalidGrant implements MastodonApiRestErrorType {
   const factory _InvalidGrant({String stringValue}) = _$_InvalidGrant;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$InvalidGrantCopyWith<_InvalidGrant> get copyWith =>
@@ -409,15 +408,14 @@ class _$_AccessTokenRevoked implements _AccessTokenRevoked {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AccessTokenRevoked &&
+        (other.runtimeType == runtimeType &&
+            other is _AccessTokenRevoked &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -525,7 +523,7 @@ abstract class _AccessTokenRevoked implements MastodonApiRestErrorType {
       _$_AccessTokenRevoked;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$AccessTokenRevokedCopyWith<_AccessTokenRevoked> get copyWith =>
@@ -588,15 +586,14 @@ class _$_EmailConfirmationRequired implements _EmailConfirmationRequired {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _EmailConfirmationRequired &&
+        (other.runtimeType == runtimeType &&
+            other is _EmailConfirmationRequired &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -706,7 +703,7 @@ abstract class _EmailConfirmationRequired implements MastodonApiRestErrorType {
       _$_EmailConfirmationRequired;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$EmailConfirmationRequiredCopyWith<_EmailConfirmationRequired>
@@ -763,15 +760,14 @@ class _$_TooShort implements _TooShort {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TooShort &&
+        (other.runtimeType == runtimeType &&
+            other is _TooShort &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -878,7 +874,7 @@ abstract class _TooShort implements MastodonApiRestErrorType {
   const factory _TooShort({String stringValue}) = _$_TooShort;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$TooShortCopyWith<_TooShort> get copyWith =>
@@ -937,15 +933,14 @@ class _$_NotIncluded implements _NotIncluded {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotIncluded &&
+        (other.runtimeType == runtimeType &&
+            other is _NotIncluded &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1052,7 +1047,7 @@ abstract class _NotIncluded implements MastodonApiRestErrorType {
   const factory _NotIncluded({String stringValue}) = _$_NotIncluded;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$NotIncludedCopyWith<_NotIncluded> get copyWith =>
@@ -1111,15 +1106,14 @@ class _$_Unreachable implements _Unreachable {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unreachable &&
+        (other.runtimeType == runtimeType &&
+            other is _Unreachable &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1226,7 +1220,7 @@ abstract class _Unreachable implements MastodonApiRestErrorType {
   const factory _Unreachable({String stringValue}) = _$_Unreachable;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnreachableCopyWith<_Unreachable> get copyWith =>
@@ -1281,15 +1275,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1396,7 +1389,7 @@ abstract class _Unknown implements MastodonApiRestErrorType {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

@@ -49,7 +49,7 @@ class _$PleromaApiMyAccountSourceTearOff {
     );
   }
 
-  PleromaApiMyAccountSource fromJson(Map<String, Object> json) {
+  PleromaApiMyAccountSource fromJson(Map<String, Object?> json) {
     return PleromaApiMyAccountSource.fromJson(json);
   }
 }
@@ -308,37 +308,30 @@ class _$_PleromaApiMyAccountSource implements _PleromaApiMyAccountSource {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMyAccountSource &&
-            (identical(other.privacy, privacy) ||
-                const DeepCollectionEquality()
-                    .equals(other.privacy, privacy)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMyAccountSource &&
+            (identical(other.privacy, privacy) || other.privacy == privacy) &&
             (identical(other.sensitive, sensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.sensitive, sensitive)) &&
+                other.sensitive == sensitive) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality()
-                    .equals(other.language, language)) &&
-            (identical(other.note, note) ||
-                const DeepCollectionEquality().equals(other.note, note)) &&
-            (identical(other.fields, fields) ||
-                const DeepCollectionEquality().equals(other.fields, fields)) &&
+                other.language == language) &&
+            (identical(other.note, note) || other.note == note) &&
+            const DeepCollectionEquality().equals(other.fields, fields) &&
             (identical(other.followRequestsCount, followRequestsCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followRequestsCount, followRequestsCount)) &&
-            (identical(other.pleroma, pleroma) ||
-                const DeepCollectionEquality().equals(other.pleroma, pleroma)));
+                other.followRequestsCount == followRequestsCount) &&
+            (identical(other.pleroma, pleroma) || other.pleroma == pleroma));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(privacy) ^
-      const DeepCollectionEquality().hash(sensitive) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(note) ^
-      const DeepCollectionEquality().hash(fields) ^
-      const DeepCollectionEquality().hash(followRequestsCount) ^
-      const DeepCollectionEquality().hash(pleroma);
+  int get hashCode => Object.hash(
+      runtimeType,
+      privacy,
+      sensitive,
+      language,
+      note,
+      const DeepCollectionEquality().hash(fields),
+      followRequestsCount,
+      pleroma);
 
   @JsonKey(ignore: true)
   @override
@@ -377,27 +370,26 @@ abstract class _PleromaApiMyAccountSource implements PleromaApiMyAccountSource {
 
   @override
   @HiveField(1)
-  String? get privacy => throw _privateConstructorUsedError;
+  String? get privacy;
   @override
   @HiveField(2)
-  bool? get sensitive => throw _privateConstructorUsedError;
+  bool? get sensitive;
   @override
   @HiveField(3)
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @HiveField(4)
-  String? get note => throw _privateConstructorUsedError;
+  String? get note;
   @override
   @HiveField(5)
-  List<PleromaApiField>? get fields => throw _privateConstructorUsedError;
+  List<PleromaApiField>? get fields;
   @override
   @HiveField(6)
   @JsonKey(name: 'follow_requests_count')
-  int? get followRequestsCount => throw _privateConstructorUsedError;
+  int? get followRequestsCount;
   @override
   @HiveField(7)
-  PleromaApiMyAccountSourcePleromaPart? get pleroma =>
-      throw _privateConstructorUsedError;
+  PleromaApiMyAccountSourcePleromaPart? get pleroma;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMyAccountSourceCopyWith<_PleromaApiMyAccountSource>
@@ -426,7 +418,7 @@ class _$PleromaApiMyAccountSourcePleromaPartTearOff {
     );
   }
 
-  PleromaApiMyAccountSourcePleromaPart fromJson(Map<String, Object> json) {
+  PleromaApiMyAccountSourcePleromaPart fromJson(Map<String, Object?> json) {
     return PleromaApiMyAccountSourcePleromaPart.fromJson(json);
   }
 }
@@ -600,28 +592,21 @@ class _$_PleromaApiMyAccountSourcePleromaPart
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMyAccountSourcePleromaPart &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMyAccountSourcePleromaPart &&
             (identical(other.showRole, showRole) ||
-                const DeepCollectionEquality()
-                    .equals(other.showRole, showRole)) &&
+                other.showRole == showRole) &&
             (identical(other.noRichText, noRichText) ||
-                const DeepCollectionEquality()
-                    .equals(other.noRichText, noRichText)) &&
+                other.noRichText == noRichText) &&
             (identical(other.discoverable, discoverable) ||
-                const DeepCollectionEquality()
-                    .equals(other.discoverable, discoverable)) &&
+                other.discoverable == discoverable) &&
             (identical(other.actorType, actorType) ||
-                const DeepCollectionEquality()
-                    .equals(other.actorType, actorType)));
+                other.actorType == actorType));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(showRole) ^
-      const DeepCollectionEquality().hash(noRichText) ^
-      const DeepCollectionEquality().hash(discoverable) ^
-      const DeepCollectionEquality().hash(actorType);
+      Object.hash(runtimeType, showRole, noRichText, discoverable, actorType);
 
   @JsonKey(ignore: true)
   @override
@@ -659,18 +644,18 @@ abstract class _PleromaApiMyAccountSourcePleromaPart
   @override
   @HiveField(1)
   @JsonKey(name: 'show_role')
-  bool? get showRole => throw _privateConstructorUsedError;
+  bool? get showRole;
   @override
   @HiveField(2)
   @JsonKey(name: 'no_rich_text')
-  bool? get noRichText => throw _privateConstructorUsedError;
+  bool? get noRichText;
   @override
   @HiveField(3)
-  bool? get discoverable => throw _privateConstructorUsedError;
+  bool? get discoverable;
   @override
   @HiveField(4)
   @JsonKey(name: 'actor_type')
-  String? get actorType => throw _privateConstructorUsedError;
+  String? get actorType;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMyAccountSourcePleromaPartCopyWith<

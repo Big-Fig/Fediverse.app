@@ -1,4 +1,5 @@
 import 'package:fedi_app/app/access/memory_access_bloc_impl.dart';
+import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/instance/remote/remote_instance_bloc.dart';
 import 'package:fedi_app/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi_app/connection/connection_service.dart';
@@ -13,6 +14,7 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
   final Uri instanceUri;
 
   final IConnectionService connectionService;
+  final IConfigService configService;
 
   @override
   // ignore: avoid-late-keyword
@@ -21,6 +23,7 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
   RemoteInstanceBloc({
     required this.instanceUri,
     required this.connectionService,
+    required this.configService,
     required this.unifediApiInstance,
   });
 
@@ -30,6 +33,10 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
   }) =>
       RemoteInstanceBloc(
         instanceUri: instanceUri,
+        configService: IConfigService.of(
+          context,
+          listen: false,
+        ),
         connectionService: Provider.of<IConnectionService>(
           context,
           listen: false,
@@ -49,6 +56,7 @@ class RemoteInstanceBloc extends AsyncInitLoadingBloc
     );
 
     var unifediApiAccessBloc = MemoryAccessBloc(
+      configService: configService,
       access: UnifediApiAccess(
         url: instanceUri.toString(),
         instance: null,

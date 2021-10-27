@@ -139,19 +139,15 @@ class _$_FediverseApiRequirementReason
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiRequirementReason &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiRequirementReason &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)));
+                other.description == description));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(description);
+  int get hashCode => Object.hash(runtimeType, name, description);
 
   @JsonKey(ignore: true)
   @override
@@ -167,9 +163,9 @@ abstract class _FediverseApiRequirementReason
       required String description}) = _$_FediverseApiRequirementReason;
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String get description => throw _privateConstructorUsedError;
+  String get description;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiRequirementReasonCopyWith<_FediverseApiRequirementReason>

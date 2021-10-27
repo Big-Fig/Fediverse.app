@@ -168,15 +168,14 @@ class _$_Background implements _Background {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Background &&
+        (other.runtimeType == runtimeType &&
+            other is _Background &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -250,7 +249,7 @@ abstract class _Background implements WebSocketsChannelHandlerType {
   const factory _Background({String stringValue}) = _$_Background;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$BackgroundCopyWith<_Background> get copyWith =>
@@ -309,15 +308,14 @@ class _$_Foreground implements _Foreground {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Foreground &&
+        (other.runtimeType == runtimeType &&
+            other is _Foreground &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -391,7 +389,7 @@ abstract class _Foreground implements WebSocketsChannelHandlerType {
   const factory _Foreground({String stringValue}) = _$_Foreground;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ForegroundCopyWith<_Foreground> get copyWith =>

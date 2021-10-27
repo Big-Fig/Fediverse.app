@@ -35,7 +35,7 @@ class _$UnifediApiAccessScopesTearOff {
     );
   }
 
-  UnifediApiAccessScopes fromJson(Map<String, Object> json) {
+  UnifediApiAccessScopes fromJson(Map<String, Object?> json) {
     return UnifediApiAccessScopes.fromJson(json);
   }
 }
@@ -176,20 +176,19 @@ class _$_UnifediApiAccessScopes implements _UnifediApiAccessScopes {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccessScopes &&
-            (identical(other.globalPermissions, globalPermissions) ||
-                const DeepCollectionEquality()
-                    .equals(other.globalPermissions, globalPermissions)) &&
-            (identical(other.targetPermissions, targetPermissions) ||
-                const DeepCollectionEquality()
-                    .equals(other.targetPermissions, targetPermissions)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiAccessScopes &&
+            const DeepCollectionEquality()
+                .equals(other.globalPermissions, globalPermissions) &&
+            const DeepCollectionEquality()
+                .equals(other.targetPermissions, targetPermissions));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(globalPermissions) ^
-      const DeepCollectionEquality().hash(targetPermissions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(globalPermissions),
+      const DeepCollectionEquality().hash(targetPermissions));
 
   @JsonKey(ignore: true)
   @override
@@ -219,12 +218,11 @@ abstract class _UnifediApiAccessScopes implements UnifediApiAccessScopes {
   @override
   @HiveField(0)
   @JsonKey(name: 'global_permissions')
-  List<String> get globalPermissions => throw _privateConstructorUsedError;
+  List<String> get globalPermissions;
   @override
   @HiveField(1)
   @JsonKey(name: 'target_permissions')
-  List<UnifediApiAccessScopesItem> get targetPermissions =>
-      throw _privateConstructorUsedError;
+  List<UnifediApiAccessScopesItem> get targetPermissions;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiAccessScopesCopyWith<_UnifediApiAccessScopes> get copyWith =>

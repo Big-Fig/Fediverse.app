@@ -36,7 +36,7 @@ class _$UnifediApiListTearOff {
     );
   }
 
-  UnifediApiList fromJson(Map<String, Object> json) {
+  UnifediApiList fromJson(Map<String, Object?> json) {
     return UnifediApiList.fromJson(json);
   }
 }
@@ -184,22 +184,16 @@ class _$_UnifediApiList implements _UnifediApiList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiList &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiList &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.repliesPolicy, repliesPolicy) ||
-                const DeepCollectionEquality()
-                    .equals(other.repliesPolicy, repliesPolicy)));
+                other.repliesPolicy == repliesPolicy));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(repliesPolicy);
+  int get hashCode => Object.hash(runtimeType, id, title, repliesPolicy);
 
   @JsonKey(ignore: true)
   @override
@@ -227,14 +221,14 @@ abstract class _UnifediApiList implements UnifediApiList {
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @JsonKey(name: 'replies_policy')
   @HiveField(2)
-  String? get repliesPolicy => throw _privateConstructorUsedError;
+  String? get repliesPolicy;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiListCopyWith<_UnifediApiList> get copyWith =>

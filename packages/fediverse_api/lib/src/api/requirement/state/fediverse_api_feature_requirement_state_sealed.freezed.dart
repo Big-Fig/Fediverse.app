@@ -143,7 +143,8 @@ class _$_Accessible implements _Accessible {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _Accessible);
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Accessible);
   }
 
   @override
@@ -277,14 +278,14 @@ class _$_Forbidden implements _Forbidden {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Forbidden &&
-            (identical(other.reasons, reasons) ||
-                const DeepCollectionEquality().equals(other.reasons, reasons)));
+        (other.runtimeType == runtimeType &&
+            other is _Forbidden &&
+            const DeepCollectionEquality().equals(other.reasons, reasons));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(reasons);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(reasons));
 
   @JsonKey(ignore: true)
   @override
@@ -372,8 +373,7 @@ abstract class _Forbidden implements FediverseApiFeatureRequirementState {
   const factory _Forbidden(
       List<IFediverseApiFeatureRequirementReason> reasons) = _$_Forbidden;
 
-  List<IFediverseApiFeatureRequirementReason> get reasons =>
-      throw _privateConstructorUsedError;
+  List<IFediverseApiFeatureRequirementReason> get reasons;
   @JsonKey(ignore: true)
   _$ForbiddenCopyWith<_Forbidden> get copyWith =>
       throw _privateConstructorUsedError;
@@ -425,14 +425,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
-            (identical(other.reasons, reasons) ||
-                const DeepCollectionEquality().equals(other.reasons, reasons)));
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
+            const DeepCollectionEquality().equals(other.reasons, reasons));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(reasons);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(reasons));
 
   @JsonKey(ignore: true)
   @override
@@ -520,8 +520,7 @@ abstract class _Unknown implements FediverseApiFeatureRequirementState {
   const factory _Unknown(List<IFediverseApiFeatureRequirementReason> reasons) =
       _$_Unknown;
 
-  List<IFediverseApiFeatureRequirementReason> get reasons =>
-      throw _privateConstructorUsedError;
+  List<IFediverseApiFeatureRequirementReason> get reasons;
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>
       throw _privateConstructorUsedError;

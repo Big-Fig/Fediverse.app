@@ -192,15 +192,14 @@ class _$_Followed implements _Followed {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Followed &&
+        (other.runtimeType == runtimeType &&
+            other is _Followed &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -286,7 +285,7 @@ abstract class _Followed implements MastodonApiListRepliesPolicyType {
   const factory _Followed({String stringValue}) = _$_Followed;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$FollowedCopyWith<_Followed> get copyWith =>
@@ -343,15 +342,14 @@ class _$_List implements _List {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _List &&
+        (other.runtimeType == runtimeType &&
+            other is _List &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -437,7 +435,7 @@ abstract class _List implements MastodonApiListRepliesPolicyType {
   const factory _List({String stringValue}) = _$_List;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ListCopyWith<_List> get copyWith => throw _privateConstructorUsedError;
@@ -493,15 +491,14 @@ class _$_None implements _None {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _None &&
+        (other.runtimeType == runtimeType &&
+            other is _None &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -587,7 +584,7 @@ abstract class _None implements MastodonApiListRepliesPolicyType {
   const factory _None({String stringValue}) = _$_None;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$NoneCopyWith<_None> get copyWith => throw _privateConstructorUsedError;
@@ -641,15 +638,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -735,7 +731,7 @@ abstract class _Unknown implements MastodonApiListRepliesPolicyType {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

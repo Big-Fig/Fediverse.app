@@ -34,7 +34,7 @@ class _$UnifediApiAccessTokenTearOff {
     );
   }
 
-  UnifediApiAccessToken fromJson(Map<String, Object> json) {
+  UnifediApiAccessToken fromJson(Map<String, Object?> json) {
     return UnifediApiAccessToken.fromJson(json);
   }
 }
@@ -189,19 +189,15 @@ class _$_UnifediApiAccessToken extends _UnifediApiAccessToken {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccessToken &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiAccessToken &&
             (identical(other.oauthToken, oauthToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.oauthToken, oauthToken)) &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)));
+                other.oauthToken == oauthToken) &&
+            (identical(other.scopes, scopes) || other.scopes == scopes));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(oauthToken) ^
-      const DeepCollectionEquality().hash(scopes);
+  int get hashCode => Object.hash(runtimeType, oauthToken, scopes);
 
   @JsonKey(ignore: true)
   @override
@@ -230,10 +226,10 @@ abstract class _UnifediApiAccessToken extends UnifediApiAccessToken {
   @override
   @HiveField(0)
   @JsonKey(name: 'oauth_token')
-  UnifediApiOAuthToken get oauthToken => throw _privateConstructorUsedError;
+  UnifediApiOAuthToken get oauthToken;
   @override
   @HiveField(1)
-  UnifediApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  UnifediApiAccessScopes get scopes;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiAccessTokenCopyWith<_UnifediApiAccessToken> get copyWith =>

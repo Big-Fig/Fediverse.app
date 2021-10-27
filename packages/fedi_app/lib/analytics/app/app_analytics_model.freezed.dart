@@ -30,7 +30,7 @@ class _$AppAnalyticsDataTearOff {
     );
   }
 
-  AppAnalyticsData fromJson(Map<String, Object> json) {
+  AppAnalyticsData fromJson(Map<String, Object?> json) {
     return AppAnalyticsData.fromJson(json);
   }
 }
@@ -140,16 +140,14 @@ class _$_AppAnalyticsData implements _AppAnalyticsData {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AppAnalyticsData &&
+        (other.runtimeType == runtimeType &&
+            other is _AppAnalyticsData &&
             (identical(other.appOpenedCount, appOpenedCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.appOpenedCount, appOpenedCount)));
+                other.appOpenedCount == appOpenedCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(appOpenedCount);
+  int get hashCode => Object.hash(runtimeType, appOpenedCount);
 
   @JsonKey(ignore: true)
   @override
@@ -174,7 +172,7 @@ abstract class _AppAnalyticsData implements AppAnalyticsData {
   @override
   @JsonKey(name: 'appOpenedCount')
   @HiveField(0)
-  int get appOpenedCount => throw _privateConstructorUsedError;
+  int get appOpenedCount;
   @override
   @JsonKey(ignore: true)
   _$AppAnalyticsDataCopyWith<_AppAnalyticsData> get copyWith =>

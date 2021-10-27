@@ -43,7 +43,7 @@ class _$PleromaApiCaptchaTearOff {
     );
   }
 
-  PleromaApiCaptcha fromJson(Map<String, Object> json) {
+  PleromaApiCaptcha fromJson(Map<String, Object?> json) {
     return PleromaApiCaptcha.fromJson(json);
   }
 }
@@ -225,29 +225,20 @@ class _$_PleromaApiCaptcha implements _PleromaApiCaptcha {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiCaptcha &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiCaptcha &&
             (identical(other.secondsValid, secondsValid) ||
-                const DeepCollectionEquality()
-                    .equals(other.secondsValid, secondsValid)) &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+                other.secondsValid == secondsValid) &&
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.answerData, answerData) ||
-                const DeepCollectionEquality()
-                    .equals(other.answerData, answerData)));
+                other.answerData == answerData));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(secondsValid) ^
-      const DeepCollectionEquality().hash(token) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(answerData);
+      Object.hash(runtimeType, secondsValid, token, type, url, answerData);
 
   @JsonKey(ignore: true)
   @override
@@ -281,20 +272,20 @@ abstract class _PleromaApiCaptcha implements PleromaApiCaptcha {
   @override
   @HiveField(1)
   @JsonKey(name: 'seconds_valid')
-  int? get secondsValid => throw _privateConstructorUsedError;
+  int? get secondsValid;
   @override
   @HiveField(2)
-  String? get token => throw _privateConstructorUsedError;
+  String? get token;
   @override
   @HiveField(3)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(4)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @JsonKey(name: 'answer_data')
   @HiveField(5)
-  String? get answerData => throw _privateConstructorUsedError;
+  String? get answerData;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiCaptchaCopyWith<_PleromaApiCaptcha> get copyWith =>

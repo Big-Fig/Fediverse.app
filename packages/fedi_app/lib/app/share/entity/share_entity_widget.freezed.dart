@@ -157,22 +157,18 @@ class _$_ShareEntityCarouselItem implements _ShareEntityCarouselItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ShareEntityCarouselItem &&
+        (other.runtimeType == runtimeType &&
+            other is _ShareEntityCarouselItem &&
             (identical(other.unifediApiMediaAttachment,
                     unifediApiMediaAttachment) ||
-                const DeepCollectionEquality().equals(
-                    other.unifediApiMediaAttachment,
-                    unifediApiMediaAttachment)) &&
+                other.unifediApiMediaAttachment == unifediApiMediaAttachment) &&
             (identical(other.localFile, localFile) ||
-                const DeepCollectionEquality()
-                    .equals(other.localFile, localFile)));
+                other.localFile == localFile));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(unifediApiMediaAttachment) ^
-      const DeepCollectionEquality().hash(localFile);
+      Object.hash(runtimeType, unifediApiMediaAttachment, localFile);
 
   @JsonKey(ignore: true)
   @override
@@ -188,11 +184,9 @@ abstract class _ShareEntityCarouselItem implements ShareEntityCarouselItem {
       _$_ShareEntityCarouselItem;
 
   @override
-  IUnifediApiMediaAttachment? get unifediApiMediaAttachment =>
-      throw _privateConstructorUsedError;
+  IUnifediApiMediaAttachment? get unifediApiMediaAttachment;
   @override
-  ShareEntityItemLocalMediaFile? get localFile =>
-      throw _privateConstructorUsedError;
+  ShareEntityItemLocalMediaFile? get localFile;
   @override
   @JsonKey(ignore: true)
   _$ShareEntityCarouselItemCopyWith<_ShareEntityCarouselItem> get copyWith =>

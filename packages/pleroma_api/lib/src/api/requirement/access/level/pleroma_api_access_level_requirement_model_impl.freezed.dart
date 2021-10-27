@@ -31,7 +31,7 @@ class _$PleromaApiAccessLevelRequirementTearOff {
     );
   }
 
-  PleromaApiAccessLevelRequirement fromJson(Map<String, Object> json) {
+  PleromaApiAccessLevelRequirement fromJson(Map<String, Object?> json) {
     return PleromaApiAccessLevelRequirement.fromJson(json);
   }
 }
@@ -164,15 +164,14 @@ class _$_PleromaApiAccessLevelRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccessLevelRequirement &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccessLevelRequirement &&
             (identical(other.requiredLevel, requiredLevel) ||
-                const DeepCollectionEquality()
-                    .equals(other.requiredLevel, requiredLevel)));
+                other.requiredLevel == requiredLevel));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(requiredLevel);
+  int get hashCode => Object.hash(runtimeType, requiredLevel);
 
   @JsonKey(ignore: true)
   @override
@@ -200,7 +199,7 @@ abstract class _PleromaApiAccessLevelRequirement
   @override
   @HiveField(0)
   @JsonKey(name: 'requiredLevel')
-  PleromaApiAccessLevel get requiredLevel => throw _privateConstructorUsedError;
+  PleromaApiAccessLevel get requiredLevel;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccessLevelRequirementCopyWith<_PleromaApiAccessLevelRequirement>

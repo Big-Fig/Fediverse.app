@@ -47,7 +47,7 @@ class _$PleromaApiMediaAttachmentTearOff {
     );
   }
 
-  PleromaApiMediaAttachment fromJson(Map<String, Object> json) {
+  PleromaApiMediaAttachment fromJson(Map<String, Object?> json) {
     return PleromaApiMediaAttachment.fromJson(json);
   }
 }
@@ -356,47 +356,27 @@ class _$_PleromaApiMediaAttachment implements _PleromaApiMediaAttachment {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMediaAttachment &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMediaAttachment &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+                other.description == description) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.previewUrl, previewUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.previewUrl, previewUrl)) &&
+                other.previewUrl == previewUrl) &&
             (identical(other.remoteUrl, remoteUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.remoteUrl, remoteUrl)) &&
-            (identical(other.textUrl, textUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.textUrl, textUrl)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+                other.remoteUrl == remoteUrl) &&
+            (identical(other.textUrl, textUrl) || other.textUrl == textUrl) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.blurhash, blurhash) ||
-                const DeepCollectionEquality()
-                    .equals(other.blurhash, blurhash)) &&
-            (identical(other.meta, meta) ||
-                const DeepCollectionEquality().equals(other.meta, meta)) &&
-            (identical(other.pleroma, pleroma) ||
-                const DeepCollectionEquality().equals(other.pleroma, pleroma)));
+                other.blurhash == blurhash) &&
+            (identical(other.meta, meta) || other.meta == meta) &&
+            (identical(other.pleroma, pleroma) || other.pleroma == pleroma));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(previewUrl) ^
-      const DeepCollectionEquality().hash(remoteUrl) ^
-      const DeepCollectionEquality().hash(textUrl) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(blurhash) ^
-      const DeepCollectionEquality().hash(meta) ^
-      const DeepCollectionEquality().hash(pleroma);
+  int get hashCode => Object.hash(runtimeType, description, id, previewUrl,
+      remoteUrl, textUrl, type, url, blurhash, meta, pleroma);
 
   @JsonKey(ignore: true)
   @override
@@ -444,39 +424,38 @@ abstract class _PleromaApiMediaAttachment implements PleromaApiMediaAttachment {
 
   @override
   @HiveField(0)
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
   @HiveField(1)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(2)
   @JsonKey(name: 'preview_url')
-  String? get previewUrl => throw _privateConstructorUsedError;
+  String? get previewUrl;
   @override
   @HiveField(3)
   @JsonKey(name: 'remote_url')
-  String? get remoteUrl => throw _privateConstructorUsedError;
+  String? get remoteUrl;
   @override
   @HiveField(5)
   @JsonKey(name: 'text_url')
-  String? get textUrl => throw _privateConstructorUsedError;
+  String? get textUrl;
   @override
   @HiveField(6)
   @JsonKey(name: 'type')
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(7)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @HiveField(8)
-  String? get blurhash => throw _privateConstructorUsedError;
+  String? get blurhash;
   @override
   @HiveField(9)
-  PleromaApiMediaAttachmentMeta? get meta => throw _privateConstructorUsedError;
+  PleromaApiMediaAttachmentMeta? get meta;
   @override
   @HiveField(10)
-  PleromaApiMediaAttachmentPleromaPart? get pleroma =>
-      throw _privateConstructorUsedError;
+  PleromaApiMediaAttachmentPleromaPart? get pleroma;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMediaAttachmentCopyWith<_PleromaApiMediaAttachment>
@@ -499,7 +478,7 @@ class _$PleromaApiMediaAttachmentPleromaPartTearOff {
     );
   }
 
-  PleromaApiMediaAttachmentPleromaPart fromJson(Map<String, Object> json) {
+  PleromaApiMediaAttachmentPleromaPart fromJson(Map<String, Object?> json) {
     return PleromaApiMediaAttachmentPleromaPart.fromJson(json);
   }
 }
@@ -613,15 +592,14 @@ class _$_PleromaApiMediaAttachmentPleromaPart
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMediaAttachmentPleromaPart &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMediaAttachmentPleromaPart &&
             (identical(other.mimeType, mimeType) ||
-                const DeepCollectionEquality()
-                    .equals(other.mimeType, mimeType)));
+                other.mimeType == mimeType));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(mimeType);
+  int get hashCode => Object.hash(runtimeType, mimeType);
 
   @JsonKey(ignore: true)
   @override
@@ -650,7 +628,7 @@ abstract class _PleromaApiMediaAttachmentPleromaPart
   @override
   @HiveField(0)
   @JsonKey(name: 'mime_type')
-  String? get mimeType => throw _privateConstructorUsedError;
+  String? get mimeType;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMediaAttachmentPleromaPartCopyWith<

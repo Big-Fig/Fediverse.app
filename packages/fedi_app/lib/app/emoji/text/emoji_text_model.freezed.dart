@@ -126,18 +126,15 @@ class _$_EmojiText implements _EmojiText {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _EmojiText &&
-            (identical(other.text, text) ||
-                const DeepCollectionEquality().equals(other.text, text)) &&
-            (identical(other.emojis, emojis) ||
-                const DeepCollectionEquality().equals(other.emojis, emojis)));
+        (other.runtimeType == runtimeType &&
+            other is _EmojiText &&
+            (identical(other.text, text) || other.text == text) &&
+            const DeepCollectionEquality().equals(other.emojis, emojis));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(emojis);
+  int get hashCode => Object.hash(
+      runtimeType, text, const DeepCollectionEquality().hash(emojis));
 
   @JsonKey(ignore: true)
   @override
@@ -151,9 +148,9 @@ abstract class _EmojiText implements EmojiText {
       required List<IUnifediApiEmoji>? emojis}) = _$_EmojiText;
 
   @override
-  String get text => throw _privateConstructorUsedError;
+  String get text;
   @override
-  List<IUnifediApiEmoji>? get emojis => throw _privateConstructorUsedError;
+  List<IUnifediApiEmoji>? get emojis;
   @override
   @JsonKey(ignore: true)
   _$EmojiTextCopyWith<_EmojiText> get copyWith =>

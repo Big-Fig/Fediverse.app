@@ -30,7 +30,7 @@ class _$EmojiPickerCustomImageUrlCategoryItemsTearOff {
     );
   }
 
-  EmojiPickerCustomImageUrlCategoryItems fromJson(Map<String, Object> json) {
+  EmojiPickerCustomImageUrlCategoryItems fromJson(Map<String, Object?> json) {
     return EmojiPickerCustomImageUrlCategoryItems.fromJson(json);
   }
 }
@@ -144,14 +144,14 @@ class _$_EmojiPickerCustomImageUrlCategoryItems
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _EmojiPickerCustomImageUrlCategoryItems &&
-            (identical(other.items, items) ||
-                const DeepCollectionEquality().equals(other.items, items)));
+        (other.runtimeType == runtimeType &&
+            other is _EmojiPickerCustomImageUrlCategoryItems &&
+            const DeepCollectionEquality().equals(other.items, items));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(items);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(items));
 
   @JsonKey(ignore: true)
   @override
@@ -178,8 +178,7 @@ abstract class _EmojiPickerCustomImageUrlCategoryItems
 
   @override
   @HiveField(0)
-  List<CustomEmojiPickerImageUrlItem> get items =>
-      throw _privateConstructorUsedError;
+  List<CustomEmojiPickerImageUrlItem> get items;
   @override
   @JsonKey(ignore: true)
   _$EmojiPickerCustomImageUrlCategoryItemsCopyWith<

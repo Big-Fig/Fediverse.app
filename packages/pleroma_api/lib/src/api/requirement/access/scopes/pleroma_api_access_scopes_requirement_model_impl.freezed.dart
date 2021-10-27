@@ -31,7 +31,7 @@ class _$PleromaApiAccessScopesRequirementTearOff {
     );
   }
 
-  PleromaApiAccessScopesRequirement fromJson(Map<String, Object> json) {
+  PleromaApiAccessScopesRequirement fromJson(Map<String, Object?> json) {
     return PleromaApiAccessScopesRequirement.fromJson(json);
   }
 }
@@ -153,16 +153,15 @@ class _$_PleromaApiAccessScopesRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccessScopesRequirement &&
-            (identical(other.scopesVariants, scopesVariants) ||
-                const DeepCollectionEquality()
-                    .equals(other.scopesVariants, scopesVariants)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccessScopesRequirement &&
+            const DeepCollectionEquality()
+                .equals(other.scopesVariants, scopesVariants));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(scopesVariants);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(scopesVariants));
 
   @JsonKey(ignore: true)
   @override
@@ -192,8 +191,7 @@ abstract class _PleromaApiAccessScopesRequirement
   @override
   @HiveField(0)
   @JsonKey(name: 'scopes_variants')
-  List<PleromaApiAccessScopes> get scopesVariants =>
-      throw _privateConstructorUsedError;
+  List<PleromaApiAccessScopes> get scopesVariants;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccessScopesRequirementCopyWith<

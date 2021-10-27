@@ -162,26 +162,23 @@ class _$_RepositoryPagination<T> extends _RepositoryPagination<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RepositoryPagination<T> &&
-            (identical(other.newerThanItem, newerThanItem) ||
-                const DeepCollectionEquality()
-                    .equals(other.newerThanItem, newerThanItem)) &&
-            (identical(other.olderThanItem, olderThanItem) ||
-                const DeepCollectionEquality()
-                    .equals(other.olderThanItem, olderThanItem)) &&
-            (identical(other.limit, limit) ||
-                const DeepCollectionEquality().equals(other.limit, limit)) &&
-            (identical(other.offset, offset) ||
-                const DeepCollectionEquality().equals(other.offset, offset)));
+        (other.runtimeType == runtimeType &&
+            other is _RepositoryPagination<T> &&
+            const DeepCollectionEquality()
+                .equals(other.newerThanItem, newerThanItem) &&
+            const DeepCollectionEquality()
+                .equals(other.olderThanItem, olderThanItem) &&
+            (identical(other.limit, limit) || other.limit == limit) &&
+            (identical(other.offset, offset) || other.offset == offset));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(newerThanItem) ^
-      const DeepCollectionEquality().hash(olderThanItem) ^
-      const DeepCollectionEquality().hash(limit) ^
-      const DeepCollectionEquality().hash(offset);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(newerThanItem),
+      const DeepCollectionEquality().hash(olderThanItem),
+      limit,
+      offset);
 
   @JsonKey(ignore: true)
   @override
@@ -199,13 +196,13 @@ abstract class _RepositoryPagination<T> extends RepositoryPagination<T> {
   const _RepositoryPagination._() : super._();
 
   @override
-  T? get newerThanItem => throw _privateConstructorUsedError;
+  T? get newerThanItem;
   @override
-  T? get olderThanItem => throw _privateConstructorUsedError;
+  T? get olderThanItem;
   @override
-  int? get limit => throw _privateConstructorUsedError;
+  int? get limit;
   @override
-  int? get offset => throw _privateConstructorUsedError;
+  int? get offset;
   @override
   @JsonKey(ignore: true)
   _$RepositoryPaginationCopyWith<T, _RepositoryPagination<T>> get copyWith =>

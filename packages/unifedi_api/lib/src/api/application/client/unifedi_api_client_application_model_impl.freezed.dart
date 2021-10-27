@@ -45,7 +45,7 @@ class _$UnifediApiClientApplicationTearOff {
     );
   }
 
-  UnifediApiClientApplication fromJson(Map<String, Object> json) {
+  UnifediApiClientApplication fromJson(Map<String, Object?> json) {
     return UnifediApiClientApplication.fromJson(json);
   }
 }
@@ -241,31 +241,21 @@ class _$_UnifediApiClientApplication implements _UnifediApiClientApplication {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiClientApplication &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.website, website) ||
-                const DeepCollectionEquality()
-                    .equals(other.website, website)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiClientApplication &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.website, website) || other.website == website) &&
             (identical(other.vapidKey, vapidKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.vapidKey, vapidKey)) &&
+                other.vapidKey == vapidKey) &&
             (identical(other.clientId, clientId) ||
-                const DeepCollectionEquality()
-                    .equals(other.clientId, clientId)) &&
+                other.clientId == clientId) &&
             (identical(other.clientSecret, clientSecret) ||
-                const DeepCollectionEquality()
-                    .equals(other.clientSecret, clientSecret)));
+                other.clientSecret == clientSecret));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(website) ^
-      const DeepCollectionEquality().hash(vapidKey) ^
-      const DeepCollectionEquality().hash(clientId) ^
-      const DeepCollectionEquality().hash(clientSecret);
+      Object.hash(runtimeType, name, website, vapidKey, clientId, clientSecret);
 
   @JsonKey(ignore: true)
   @override
@@ -301,22 +291,22 @@ abstract class _UnifediApiClientApplication
 
   @override
   @HiveField(0)
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
   @HiveField(1)
-  String? get website => throw _privateConstructorUsedError;
+  String? get website;
   @override
   @JsonKey(name: 'vapid_key')
   @HiveField(2)
-  String? get vapidKey => throw _privateConstructorUsedError;
+  String? get vapidKey;
   @override
   @JsonKey(name: 'client_id')
   @HiveField(3)
-  String? get clientId => throw _privateConstructorUsedError;
+  String? get clientId;
   @override
   @JsonKey(name: 'client_secret')
   @HiveField(4)
-  String? get clientSecret => throw _privateConstructorUsedError;
+  String? get clientSecret;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiClientApplicationCopyWith<_UnifediApiClientApplication>

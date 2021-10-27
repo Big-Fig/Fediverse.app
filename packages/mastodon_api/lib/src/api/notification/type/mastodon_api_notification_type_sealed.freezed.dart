@@ -242,15 +242,14 @@ class _$_Follow implements _Follow {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Follow &&
+        (other.runtimeType == runtimeType &&
+            other is _Follow &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -360,7 +359,7 @@ abstract class _Follow implements MastodonApiNotificationType {
   const factory _Follow({String stringValue}) = _$_Follow;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$FollowCopyWith<_Follow> get copyWith => throw _privateConstructorUsedError;
@@ -417,15 +416,14 @@ class _$_Favourite implements _Favourite {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Favourite &&
+        (other.runtimeType == runtimeType &&
+            other is _Favourite &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -535,7 +533,7 @@ abstract class _Favourite implements MastodonApiNotificationType {
   const factory _Favourite({String stringValue}) = _$_Favourite;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$FavouriteCopyWith<_Favourite> get copyWith =>
@@ -592,15 +590,14 @@ class _$_Reblog implements _Reblog {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Reblog &&
+        (other.runtimeType == runtimeType &&
+            other is _Reblog &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -710,7 +707,7 @@ abstract class _Reblog implements MastodonApiNotificationType {
   const factory _Reblog({String stringValue}) = _$_Reblog;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ReblogCopyWith<_Reblog> get copyWith => throw _privateConstructorUsedError;
@@ -766,15 +763,14 @@ class _$_Mention implements _Mention {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Mention &&
+        (other.runtimeType == runtimeType &&
+            other is _Mention &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -884,7 +880,7 @@ abstract class _Mention implements MastodonApiNotificationType {
   const factory _Mention({String stringValue}) = _$_Mention;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$MentionCopyWith<_Mention> get copyWith =>
@@ -941,15 +937,14 @@ class _$_Poll implements _Poll {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Poll &&
+        (other.runtimeType == runtimeType &&
+            other is _Poll &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1059,7 +1054,7 @@ abstract class _Poll implements MastodonApiNotificationType {
   const factory _Poll({String stringValue}) = _$_Poll;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PollCopyWith<_Poll> get copyWith => throw _privateConstructorUsedError;
@@ -1115,15 +1110,14 @@ class _$_Move implements _Move {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Move &&
+        (other.runtimeType == runtimeType &&
+            other is _Move &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1233,7 +1227,7 @@ abstract class _Move implements MastodonApiNotificationType {
   const factory _Move({String stringValue}) = _$_Move;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$MoveCopyWith<_Move> get copyWith => throw _privateConstructorUsedError;
@@ -1292,15 +1286,14 @@ class _$_followRequest implements _followRequest {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _followRequest &&
+        (other.runtimeType == runtimeType &&
+            other is _followRequest &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1410,7 +1403,7 @@ abstract class _followRequest implements MastodonApiNotificationType {
   const factory _followRequest({String stringValue}) = _$_followRequest;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$followRequestCopyWith<_followRequest> get copyWith =>
@@ -1465,15 +1458,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1583,7 +1575,7 @@ abstract class _Unknown implements MastodonApiNotificationType {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

@@ -35,7 +35,7 @@ class _$MastodonApiRegisterAccountResponseTearOff {
     );
   }
 
-  MastodonApiRegisterAccountResponse fromJson(Map<String, Object> json) {
+  MastodonApiRegisterAccountResponse fromJson(Map<String, Object?> json) {
     return MastodonApiRegisterAccountResponse.fromJson(json);
   }
 }
@@ -199,20 +199,16 @@ class _$_MastodonApiRegisterAccountResponse
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiRegisterAccountResponse &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiRegisterAccountResponse &&
             (identical(other.approvalRequired, approvalRequired) ||
-                const DeepCollectionEquality()
-                    .equals(other.approvalRequired, approvalRequired)) &&
+                other.approvalRequired == approvalRequired) &&
             (identical(other.authToken, authToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.authToken, authToken)));
+                other.authToken == authToken));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(approvalRequired) ^
-      const DeepCollectionEquality().hash(authToken);
+  int get hashCode => Object.hash(runtimeType, approvalRequired, authToken);
 
   @JsonKey(ignore: true)
   @override
@@ -245,11 +241,11 @@ abstract class _MastodonApiRegisterAccountResponse
   @override
   @JsonKey(name: 'approval_required')
   @HiveField(0)
-  bool? get approvalRequired => throw _privateConstructorUsedError;
+  bool? get approvalRequired;
   @override
   @JsonKey(name: 'auth_token')
   @HiveField(1)
-  MastodonApiOAuthToken? get authToken => throw _privateConstructorUsedError;
+  MastodonApiOAuthToken? get authToken;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiRegisterAccountResponseCopyWith<

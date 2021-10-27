@@ -128,19 +128,15 @@ class _$_FilterState implements _FilterState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FilterState &&
+        (other.runtimeType == runtimeType &&
+            other is _FilterState &&
             (identical(other.dismissed, dismissed) ||
-                const DeepCollectionEquality()
-                    .equals(other.dismissed, dismissed)) &&
-            (identical(other.unread, unread) ||
-                const DeepCollectionEquality().equals(other.unread, unread)));
+                other.dismissed == dismissed) &&
+            (identical(other.unread, unread) || other.unread == unread));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dismissed) ^
-      const DeepCollectionEquality().hash(unread);
+  int get hashCode => Object.hash(runtimeType, dismissed, unread);
 
   @JsonKey(ignore: true)
   @override
@@ -153,9 +149,9 @@ abstract class _FilterState implements FilterState {
       {required bool? dismissed, required bool? unread}) = _$_FilterState;
 
   @override
-  bool? get dismissed => throw _privateConstructorUsedError;
+  bool? get dismissed;
   @override
-  bool? get unread => throw _privateConstructorUsedError;
+  bool? get unread;
   @override
   @JsonKey(ignore: true)
   _$FilterStateCopyWith<_FilterState> get copyWith =>
@@ -280,16 +276,14 @@ class _$_DbFilterPopulatedWrapper extends _DbFilterPopulatedWrapper {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbFilterPopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbFilterPopulatedWrapper &&
             (identical(other.dbFilterPopulated, dbFilterPopulated) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbFilterPopulated, dbFilterPopulated)));
+                other.dbFilterPopulated == dbFilterPopulated));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbFilterPopulated);
+  int get hashCode => Object.hash(runtimeType, dbFilterPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -305,7 +299,7 @@ abstract class _DbFilterPopulatedWrapper extends DbFilterPopulatedWrapper {
   const _DbFilterPopulatedWrapper._() : super._();
 
   @override
-  DbFilterPopulated get dbFilterPopulated => throw _privateConstructorUsedError;
+  DbFilterPopulated get dbFilterPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbFilterPopulatedWrapperCopyWith<_DbFilterPopulatedWrapper> get copyWith =>
@@ -415,15 +409,14 @@ class _$_DbFilterPopulated extends _DbFilterPopulated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbFilterPopulated &&
-            (identical(other.dbFilter, dbFilter) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbFilter, dbFilter)));
+        (other.runtimeType == runtimeType &&
+            other is _DbFilterPopulated &&
+            const DeepCollectionEquality().equals(other.dbFilter, dbFilter));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(dbFilter);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(dbFilter));
 
   @JsonKey(ignore: true)
   @override
@@ -437,7 +430,7 @@ abstract class _DbFilterPopulated extends DbFilterPopulated {
   const _DbFilterPopulated._() : super._();
 
   @override
-  DbFilter get dbFilter => throw _privateConstructorUsedError;
+  DbFilter get dbFilter;
   @override
   @JsonKey(ignore: true)
   _$DbFilterPopulatedCopyWith<_DbFilterPopulated> get copyWith =>

@@ -204,36 +204,32 @@ class _$_UnifediChatMessageRepositoryFilters
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediChatMessageRepositoryFilters &&
-            (identical(other.onlyInChats, onlyInChats) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyInChats, onlyInChats)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediChatMessageRepositoryFilters &&
+            const DeepCollectionEquality()
+                .equals(other.onlyInChats, onlyInChats) &&
             (identical(other.onlyPendingStatePublishedOrNull,
                     onlyPendingStatePublishedOrNull) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyPendingStatePublishedOrNull,
-                    onlyPendingStatePublishedOrNull)) &&
+                other.onlyPendingStatePublishedOrNull ==
+                    onlyPendingStatePublishedOrNull) &&
             (identical(other.onlyNotDeleted, onlyNotDeleted) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyNotDeleted, onlyNotDeleted)) &&
+                other.onlyNotDeleted == onlyNotDeleted) &&
             (identical(other.onlyNotHiddenLocallyOnDevice,
                     onlyNotHiddenLocallyOnDevice) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyNotHiddenLocallyOnDevice,
-                    onlyNotHiddenLocallyOnDevice)) &&
+                other.onlyNotHiddenLocallyOnDevice ==
+                    onlyNotHiddenLocallyOnDevice) &&
             (identical(other.groupByChatId, groupByChatId) ||
-                const DeepCollectionEquality()
-                    .equals(other.groupByChatId, groupByChatId)));
+                other.groupByChatId == groupByChatId));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(onlyInChats) ^
-      const DeepCollectionEquality().hash(onlyPendingStatePublishedOrNull) ^
-      const DeepCollectionEquality().hash(onlyNotDeleted) ^
-      const DeepCollectionEquality().hash(onlyNotHiddenLocallyOnDevice) ^
-      const DeepCollectionEquality().hash(groupByChatId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(onlyInChats),
+      onlyPendingStatePublishedOrNull,
+      onlyNotDeleted,
+      onlyNotHiddenLocallyOnDevice,
+      groupByChatId);
 
   @JsonKey(ignore: true)
   @override
@@ -254,16 +250,15 @@ abstract class _UnifediChatMessageRepositoryFilters
   const _UnifediChatMessageRepositoryFilters._() : super._();
 
   @override
-  List<IUnifediChat>? get onlyInChats => throw _privateConstructorUsedError;
+  List<IUnifediChat>? get onlyInChats;
   @override
-  bool get onlyPendingStatePublishedOrNull =>
-      throw _privateConstructorUsedError;
+  bool get onlyPendingStatePublishedOrNull;
   @override
-  bool get onlyNotDeleted => throw _privateConstructorUsedError;
+  bool get onlyNotDeleted;
   @override
-  bool get onlyNotHiddenLocallyOnDevice => throw _privateConstructorUsedError;
+  bool get onlyNotHiddenLocallyOnDevice;
   @override
-  bool get groupByChatId => throw _privateConstructorUsedError;
+  bool get groupByChatId;
   @override
   @JsonKey(ignore: true)
   _$UnifediChatMessageRepositoryFiltersCopyWith<
@@ -404,20 +399,16 @@ class _$_UnifediChatMessageRepositoryOrderingTermData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediChatMessageRepositoryOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediChatMessageRepositoryOrderingTermData &&
             (identical(other.orderType, orderType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderType, orderType)) &&
+                other.orderType == orderType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -437,10 +428,9 @@ abstract class _UnifediChatMessageRepositoryOrderingTermData
   const _UnifediChatMessageRepositoryOrderingTermData._() : super._();
 
   @override
-  UnifediChatMessageOrderType get orderType =>
-      throw _privateConstructorUsedError;
+  UnifediChatMessageOrderType get orderType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$UnifediChatMessageRepositoryOrderingTermDataCopyWith<

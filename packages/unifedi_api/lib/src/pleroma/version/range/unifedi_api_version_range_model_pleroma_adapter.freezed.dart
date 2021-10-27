@@ -29,7 +29,7 @@ class _$UnifediApiVersionRangePleromaAdapterTearOff {
     );
   }
 
-  UnifediApiVersionRangePleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiVersionRangePleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiVersionRangePleromaAdapter.fromJson(json);
   }
 }
@@ -153,14 +153,13 @@ class _$_UnifediApiVersionRangePleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiVersionRangePleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiVersionRangePleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +187,7 @@ abstract class _UnifediApiVersionRangePleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiVersionRange get value => throw _privateConstructorUsedError;
+  PleromaApiVersionRange get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiVersionRangePleromaAdapterCopyWith<

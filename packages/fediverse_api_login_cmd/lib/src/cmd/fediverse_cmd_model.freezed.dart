@@ -132,19 +132,17 @@ class _$_FediverseCmdConfig implements _FediverseCmdConfig {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseCmdConfig &&
-            (identical(other.options, options) ||
-                const DeepCollectionEquality()
-                    .equals(other.options, options)) &&
-            (identical(other.flags, flags) ||
-                const DeepCollectionEquality().equals(other.flags, flags)));
+        (other.runtimeType == runtimeType &&
+            other is _FediverseCmdConfig &&
+            const DeepCollectionEquality().equals(other.options, options) &&
+            const DeepCollectionEquality().equals(other.flags, flags));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(options) ^
-      const DeepCollectionEquality().hash(flags);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(options),
+      const DeepCollectionEquality().hash(flags));
 
   @JsonKey(ignore: true)
   @override
@@ -158,9 +156,9 @@ abstract class _FediverseCmdConfig implements FediverseCmdConfig {
       required List<FediverseCmdFlag> flags}) = _$_FediverseCmdConfig;
 
   @override
-  List<FediverseCmdOption> get options => throw _privateConstructorUsedError;
+  List<FediverseCmdOption> get options;
   @override
-  List<FediverseCmdFlag> get flags => throw _privateConstructorUsedError;
+  List<FediverseCmdFlag> get flags;
   @override
   @JsonKey(ignore: true)
   _$FediverseCmdConfigCopyWith<_FediverseCmdConfig> get copyWith =>
@@ -455,51 +453,40 @@ class _$_FediverseCmdOption implements _FediverseCmdOption {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseCmdOption &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.abbr, abbr) ||
-                const DeepCollectionEquality().equals(other.abbr, abbr)) &&
-            (identical(other.help, help) ||
-                const DeepCollectionEquality().equals(other.help, help)) &&
+        (other.runtimeType == runtimeType &&
+            other is _FediverseCmdOption &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.abbr, abbr) || other.abbr == abbr) &&
+            (identical(other.help, help) || other.help == help) &&
             (identical(other.valueHelp, valueHelp) ||
-                const DeepCollectionEquality()
-                    .equals(other.valueHelp, valueHelp)) &&
-            (identical(other.allowed, allowed) ||
-                const DeepCollectionEquality()
-                    .equals(other.allowed, allowed)) &&
-            (identical(other.allowedHelp, allowedHelp) ||
-                const DeepCollectionEquality()
-                    .equals(other.allowedHelp, allowedHelp)) &&
+                other.valueHelp == valueHelp) &&
+            const DeepCollectionEquality().equals(other.allowed, allowed) &&
+            const DeepCollectionEquality()
+                .equals(other.allowedHelp, allowedHelp) &&
             (identical(other.defaultsTo, defaultsTo) ||
-                const DeepCollectionEquality()
-                    .equals(other.defaultsTo, defaultsTo)) &&
+                other.defaultsTo == defaultsTo) &&
             (identical(other.callback, callback) ||
-                const DeepCollectionEquality()
-                    .equals(other.callback, callback)) &&
+                other.callback == callback) &&
             (identical(other.mandatory, mandatory) ||
-                const DeepCollectionEquality()
-                    .equals(other.mandatory, mandatory)) &&
-            (identical(other.hide, hide) ||
-                const DeepCollectionEquality().equals(other.hide, hide)) &&
-            (identical(other.aliases, aliases) ||
-                const DeepCollectionEquality().equals(other.aliases, aliases)));
+                other.mandatory == mandatory) &&
+            (identical(other.hide, hide) || other.hide == hide) &&
+            const DeepCollectionEquality().equals(other.aliases, aliases));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(abbr) ^
-      const DeepCollectionEquality().hash(help) ^
-      const DeepCollectionEquality().hash(valueHelp) ^
-      const DeepCollectionEquality().hash(allowed) ^
-      const DeepCollectionEquality().hash(allowedHelp) ^
-      const DeepCollectionEquality().hash(defaultsTo) ^
-      const DeepCollectionEquality().hash(callback) ^
-      const DeepCollectionEquality().hash(mandatory) ^
-      const DeepCollectionEquality().hash(hide) ^
-      const DeepCollectionEquality().hash(aliases);
+  int get hashCode => Object.hash(
+      runtimeType,
+      name,
+      abbr,
+      help,
+      valueHelp,
+      const DeepCollectionEquality().hash(allowed),
+      const DeepCollectionEquality().hash(allowedHelp),
+      defaultsTo,
+      callback,
+      mandatory,
+      hide,
+      const DeepCollectionEquality().hash(aliases));
 
   @JsonKey(ignore: true)
   @override
@@ -521,27 +508,27 @@ abstract class _FediverseCmdOption implements FediverseCmdOption {
       List<String> aliases}) = _$_FediverseCmdOption;
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String? get abbr => throw _privateConstructorUsedError;
+  String? get abbr;
   @override
-  String? get help => throw _privateConstructorUsedError;
+  String? get help;
   @override
-  String? get valueHelp => throw _privateConstructorUsedError;
+  String? get valueHelp;
   @override
-  Iterable<String>? get allowed => throw _privateConstructorUsedError;
+  Iterable<String>? get allowed;
   @override
-  Map<String, String>? get allowedHelp => throw _privateConstructorUsedError;
+  Map<String, String>? get allowedHelp;
   @override
-  String? get defaultsTo => throw _privateConstructorUsedError;
+  String? get defaultsTo;
   @override
-  void Function(String?)? get callback => throw _privateConstructorUsedError;
+  void Function(String?)? get callback;
   @override
-  bool get mandatory => throw _privateConstructorUsedError;
+  bool get mandatory;
   @override
-  bool get hide => throw _privateConstructorUsedError;
+  bool get hide;
   @override
-  List<String> get aliases => throw _privateConstructorUsedError;
+  List<String> get aliases;
   @override
   @JsonKey(ignore: true)
   _$FediverseCmdOptionCopyWith<_FediverseCmdOption> get copyWith =>
@@ -783,39 +770,24 @@ class _$_FediverseCmdFlag implements _FediverseCmdFlag {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseCmdFlag &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.abbr, abbr) ||
-                const DeepCollectionEquality().equals(other.abbr, abbr)) &&
-            (identical(other.help, help) ||
-                const DeepCollectionEquality().equals(other.help, help)) &&
+        (other.runtimeType == runtimeType &&
+            other is _FediverseCmdFlag &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.abbr, abbr) || other.abbr == abbr) &&
+            (identical(other.help, help) || other.help == help) &&
             (identical(other.defaultsTo, defaultsTo) ||
-                const DeepCollectionEquality()
-                    .equals(other.defaultsTo, defaultsTo)) &&
+                other.defaultsTo == defaultsTo) &&
             (identical(other.negatable, negatable) ||
-                const DeepCollectionEquality()
-                    .equals(other.negatable, negatable)) &&
+                other.negatable == negatable) &&
             (identical(other.callback, callback) ||
-                const DeepCollectionEquality()
-                    .equals(other.callback, callback)) &&
-            (identical(other.hide, hide) ||
-                const DeepCollectionEquality().equals(other.hide, hide)) &&
-            (identical(other.aliases, aliases) ||
-                const DeepCollectionEquality().equals(other.aliases, aliases)));
+                other.callback == callback) &&
+            (identical(other.hide, hide) || other.hide == hide) &&
+            const DeepCollectionEquality().equals(other.aliases, aliases));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(abbr) ^
-      const DeepCollectionEquality().hash(help) ^
-      const DeepCollectionEquality().hash(defaultsTo) ^
-      const DeepCollectionEquality().hash(negatable) ^
-      const DeepCollectionEquality().hash(callback) ^
-      const DeepCollectionEquality().hash(hide) ^
-      const DeepCollectionEquality().hash(aliases);
+  int get hashCode => Object.hash(runtimeType, name, abbr, help, defaultsTo,
+      negatable, callback, hide, const DeepCollectionEquality().hash(aliases));
 
   @JsonKey(ignore: true)
   @override
@@ -834,21 +806,21 @@ abstract class _FediverseCmdFlag implements FediverseCmdFlag {
       List<String> aliases}) = _$_FediverseCmdFlag;
 
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  String? get abbr => throw _privateConstructorUsedError;
+  String? get abbr;
   @override
-  String? get help => throw _privateConstructorUsedError;
+  String? get help;
   @override
-  bool get defaultsTo => throw _privateConstructorUsedError;
+  bool get defaultsTo;
   @override
-  bool get negatable => throw _privateConstructorUsedError;
+  bool get negatable;
   @override
-  void Function(bool)? get callback => throw _privateConstructorUsedError;
+  void Function(bool)? get callback;
   @override
-  bool get hide => throw _privateConstructorUsedError;
+  bool get hide;
   @override
-  List<String> get aliases => throw _privateConstructorUsedError;
+  List<String> get aliases;
   @override
   @JsonKey(ignore: true)
   _$FediverseCmdFlagCopyWith<_FediverseCmdFlag> get copyWith =>

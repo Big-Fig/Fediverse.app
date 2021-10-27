@@ -29,7 +29,7 @@ class _$UnifediApiTagHistoryMastodonAdapterTearOff {
     );
   }
 
-  UnifediApiTagHistoryMastodonAdapter fromJson(Map<String, Object> json) {
+  UnifediApiTagHistoryMastodonAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiTagHistoryMastodonAdapter.fromJson(json);
   }
 }
@@ -142,14 +142,14 @@ class _$_UnifediApiTagHistoryMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiTagHistoryMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTagHistoryMastodonAdapter &&
+            const DeepCollectionEquality().equals(other.value, value));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override
@@ -177,8 +177,7 @@ abstract class _UnifediApiTagHistoryMastodonAdapter
 
   @override
   @HiveField(0)
-  List<MastodonApiTagHistoryItem> get value =>
-      throw _privateConstructorUsedError;
+  List<MastodonApiTagHistoryItem> get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiTagHistoryMastodonAdapterCopyWith<
@@ -203,7 +202,7 @@ class _$UnifediApiTagHistoryItemMastodonAdapterTearOff {
     );
   }
 
-  UnifediApiTagHistoryItemMastodonAdapter fromJson(Map<String, Object> json) {
+  UnifediApiTagHistoryItemMastodonAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiTagHistoryItemMastodonAdapter.fromJson(json);
   }
 }
@@ -329,14 +328,13 @@ class _$_UnifediApiTagHistoryItemMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiTagHistoryItemMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTagHistoryItemMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -364,7 +362,7 @@ abstract class _UnifediApiTagHistoryItemMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiTagHistoryItem get value => throw _privateConstructorUsedError;
+  MastodonApiTagHistoryItem get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiTagHistoryItemMastodonAdapterCopyWith<

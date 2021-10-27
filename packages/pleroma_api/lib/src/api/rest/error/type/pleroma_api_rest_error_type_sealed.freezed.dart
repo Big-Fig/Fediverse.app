@@ -182,15 +182,14 @@ class _$_MissingConfirmedEmail implements _MissingConfirmedEmail {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MissingConfirmedEmail &&
+        (other.runtimeType == runtimeType &&
+            other is _MissingConfirmedEmail &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -273,7 +272,7 @@ abstract class _MissingConfirmedEmail implements PleromaApiRestErrorType {
       _$_MissingConfirmedEmail;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$MissingConfirmedEmailCopyWith<_MissingConfirmedEmail> get copyWith =>
@@ -332,15 +331,14 @@ class _$_AwaitingApproval implements _AwaitingApproval {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AwaitingApproval &&
+        (other.runtimeType == runtimeType &&
+            other is _AwaitingApproval &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -421,7 +419,7 @@ abstract class _AwaitingApproval implements PleromaApiRestErrorType {
   const factory _AwaitingApproval({String stringValue}) = _$_AwaitingApproval;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$AwaitingApprovalCopyWith<_AwaitingApproval> get copyWith =>
@@ -476,15 +474,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -565,7 +562,7 @@ abstract class _Unknown implements PleromaApiRestErrorType {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

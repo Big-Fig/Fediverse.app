@@ -1,4 +1,3 @@
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/context/app_context_bloc_impl.dart';
 import 'package:fedi_app/app/init/deep_link/deep_link_init_bloc_impl.dart';
 import 'package:fedi_app/app/init/init_bloc.dart';
@@ -11,11 +10,7 @@ class InitBloc extends AsyncInitLoadingBloc implements IInitBloc {
   // ignore: avoid-late-keyword
   late DeepLinkInitBloc deepLinkInitBloc;
 
-  final AppLaunchType appLaunchType;
-
-  InitBloc({
-    required this.appLaunchType,
-  }) : appContextBloc = AppContextBloc(appLaunchType: appLaunchType);
+  InitBloc() : appContextBloc = AppContextBloc();
 
   @override
   Future<void> internalAsyncInit() async {

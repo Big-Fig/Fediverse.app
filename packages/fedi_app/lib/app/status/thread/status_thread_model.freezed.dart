@@ -133,18 +133,14 @@ class _$_StatusThreadStatusAtIndex implements _StatusThreadStatusAtIndex {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StatusThreadStatusAtIndex &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
-            (identical(other.index, index) ||
-                const DeepCollectionEquality().equals(other.index, index)));
+        (other.runtimeType == runtimeType &&
+            other is _StatusThreadStatusAtIndex &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.index, index) || other.index == index));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(index);
+  int get hashCode => Object.hash(runtimeType, status, index);
 
   @JsonKey(ignore: true)
   @override
@@ -160,9 +156,9 @@ abstract class _StatusThreadStatusAtIndex implements StatusThreadStatusAtIndex {
       required int index}) = _$_StatusThreadStatusAtIndex;
 
   @override
-  IStatus get status => throw _privateConstructorUsedError;
+  IStatus get status;
   @override
-  int get index => throw _privateConstructorUsedError;
+  int get index;
   @override
   @JsonKey(ignore: true)
   _$StatusThreadStatusAtIndexCopyWith<_StatusThreadStatusAtIndex>

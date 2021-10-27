@@ -41,7 +41,7 @@ class _$PleromaApiAccountRelationshipFollowUpdateItemTearOff {
   }
 
   PleromaApiAccountRelationshipFollowUpdateItem fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return PleromaApiAccountRelationshipFollowUpdateItem.fromJson(json);
   }
 }
@@ -205,24 +205,19 @@ class _$_PleromaApiAccountRelationshipFollowUpdateItem
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccountRelationshipFollowUpdateItem &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccountRelationshipFollowUpdateItem &&
             (identical(other.accountId, accountId) ||
-                const DeepCollectionEquality()
-                    .equals(other.accountId, accountId)) &&
+                other.accountId == accountId) &&
             (identical(other.followerCount, followerCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followerCount, followerCount)) &&
+                other.followerCount == followerCount) &&
             (identical(other.followingCount, followingCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followingCount, followingCount)));
+                other.followingCount == followingCount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(accountId) ^
-      const DeepCollectionEquality().hash(followerCount) ^
-      const DeepCollectionEquality().hash(followingCount);
+      Object.hash(runtimeType, accountId, followerCount, followingCount);
 
   @JsonKey(ignore: true)
   @override
@@ -259,15 +254,15 @@ abstract class _PleromaApiAccountRelationshipFollowUpdateItem
   @override
   @JsonKey(name: 'id')
   @HiveField(1)
-  String get accountId => throw _privateConstructorUsedError;
+  String get accountId;
   @override
   @JsonKey(name: 'follower_count')
   @HiveField(2)
-  int? get followerCount => throw _privateConstructorUsedError;
+  int? get followerCount;
   @override
   @JsonKey(name: 'following_count')
   @HiveField(3)
-  int? get followingCount => throw _privateConstructorUsedError;
+  int? get followingCount;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccountRelationshipFollowUpdateItemCopyWith<

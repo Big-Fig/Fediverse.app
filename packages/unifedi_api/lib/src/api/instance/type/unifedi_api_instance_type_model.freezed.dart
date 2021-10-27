@@ -175,15 +175,14 @@ class _$_Pleroma implements _Pleroma {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Pleroma &&
+        (other.runtimeType == runtimeType &&
+            other is _Pleroma &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -263,7 +262,7 @@ abstract class _Pleroma implements UnifediApiInstanceType {
   const factory _Pleroma({String? stringValue}) = _$_Pleroma;
 
   @override
-  String? get stringValue => throw _privateConstructorUsedError;
+  String? get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PleromaCopyWith<_Pleroma> get copyWith =>
@@ -320,15 +319,14 @@ class _$_Mastodon implements _Mastodon {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Mastodon &&
+        (other.runtimeType == runtimeType &&
+            other is _Mastodon &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -408,7 +406,7 @@ abstract class _Mastodon implements UnifediApiInstanceType {
   const factory _Mastodon({String? stringValue}) = _$_Mastodon;
 
   @override
-  String? get stringValue => throw _privateConstructorUsedError;
+  String? get stringValue;
   @override
   @JsonKey(ignore: true)
   _$MastodonCopyWith<_Mastodon> get copyWith =>
@@ -463,15 +461,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -551,7 +548,7 @@ abstract class _Unknown implements UnifediApiInstanceType {
   const factory _Unknown({required String? stringValue}) = _$_Unknown;
 
   @override
-  String? get stringValue => throw _privateConstructorUsedError;
+  String? get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

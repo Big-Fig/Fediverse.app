@@ -134,15 +134,14 @@ class _$_UnifediApiRestErrorException extends _UnifediApiRestErrorException {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiRestErrorException &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiRestErrorException &&
             (identical(other.unifediError, unifediError) ||
-                const DeepCollectionEquality()
-                    .equals(other.unifediError, unifediError)));
+                other.unifediError == unifediError));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(unifediError);
+  int get hashCode => Object.hash(runtimeType, unifediError);
 
   @JsonKey(ignore: true)
   @override
@@ -159,7 +158,7 @@ abstract class _UnifediApiRestErrorException
   const _UnifediApiRestErrorException._() : super._();
 
   @override
-  UnifediApiRestError get unifediError => throw _privateConstructorUsedError;
+  UnifediApiRestError get unifediError;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiRestErrorExceptionCopyWith<_UnifediApiRestErrorException>

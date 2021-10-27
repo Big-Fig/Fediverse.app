@@ -31,7 +31,7 @@ class _$MastodonApiAccessLevelTearOff {
     );
   }
 
-  MastodonApiAccessLevel fromJson(Map<String, Object> json) {
+  MastodonApiAccessLevel fromJson(Map<String, Object?> json) {
     return MastodonApiAccessLevel.fromJson(json);
   }
 }
@@ -137,15 +137,14 @@ class _$_MastodonApiAccessLevel implements _MastodonApiAccessLevel {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiAccessLevel &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiAccessLevel &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -171,7 +170,7 @@ abstract class _MastodonApiAccessLevel implements MastodonApiAccessLevel {
   @override
   @HiveField(1)
   @JsonKey(name: 'string_value')
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiAccessLevelCopyWith<_MastodonApiAccessLevel> get copyWith =>

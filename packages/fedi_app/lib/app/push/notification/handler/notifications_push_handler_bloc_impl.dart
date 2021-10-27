@@ -266,6 +266,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     addDisposable(unifediApiAccessLocalPreferenceBloc);
 
     var localPreferencesUnifediApiAccessBloc = LocalPreferencesAccessBloc(
+      configService: configService,
       accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
     );
 
@@ -400,6 +401,7 @@ class NotificationsPushHandlerBloc extends DisposableOwner
     addDisposable(unifediApiAccessLocalPreferenceBloc);
 
     var localPreferencesUnifediApiAccessBloc = LocalPreferencesAccessBloc(
+      configService: configService,
       accessLocalPreferenceBloc: unifediApiAccessLocalPreferenceBloc,
     );
 

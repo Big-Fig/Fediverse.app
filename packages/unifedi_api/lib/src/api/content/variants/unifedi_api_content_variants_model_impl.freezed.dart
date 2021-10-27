@@ -29,7 +29,7 @@ class _$UnifediApiContentVariantsTearOff {
     );
   }
 
-  UnifediApiContentVariants fromJson(Map<String, Object> json) {
+  UnifediApiContentVariants fromJson(Map<String, Object?> json) {
     return UnifediApiContentVariants.fromJson(json);
   }
 }
@@ -136,15 +136,14 @@ class _$_UnifediApiContentVariants implements _UnifediApiContentVariants {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiContentVariants &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiContentVariants &&
             (identical(other.textPlain, textPlain) ||
-                const DeepCollectionEquality()
-                    .equals(other.textPlain, textPlain)));
+                other.textPlain == textPlain));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(textPlain);
+  int get hashCode => Object.hash(runtimeType, textPlain);
 
   @JsonKey(ignore: true)
   @override
@@ -171,7 +170,7 @@ abstract class _UnifediApiContentVariants implements UnifediApiContentVariants {
   @override
   @HiveField(0)
   @JsonKey(name: 'text/plain')
-  String? get textPlain => throw _privateConstructorUsedError;
+  String? get textPlain;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiContentVariantsCopyWith<_UnifediApiContentVariants>

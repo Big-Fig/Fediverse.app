@@ -30,7 +30,7 @@ class _$UnifediApiMediaAttachmentFocusTearOff {
     );
   }
 
-  UnifediApiMediaAttachmentFocus fromJson(Map<String, Object> json) {
+  UnifediApiMediaAttachmentFocus fromJson(Map<String, Object?> json) {
     return UnifediApiMediaAttachmentFocus.fromJson(json);
   }
 }
@@ -162,18 +162,14 @@ class _$_UnifediApiMediaAttachmentFocus
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiMediaAttachmentFocus &&
-            (identical(other.x, x) ||
-                const DeepCollectionEquality().equals(other.x, x)) &&
-            (identical(other.y, y) ||
-                const DeepCollectionEquality().equals(other.y, y)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiMediaAttachmentFocus &&
+            (identical(other.x, x) || other.x == x) &&
+            (identical(other.y, y) || other.y == y));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(x) ^
-      const DeepCollectionEquality().hash(y);
+  int get hashCode => Object.hash(runtimeType, x, y);
 
   @JsonKey(ignore: true)
   @override
@@ -198,10 +194,10 @@ abstract class _UnifediApiMediaAttachmentFocus
 
   @override
   @HiveField(0)
-  double get x => throw _privateConstructorUsedError;
+  double get x;
   @override
   @HiveField(1)
-  double get y => throw _privateConstructorUsedError;
+  double get y;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiMediaAttachmentFocusCopyWith<_UnifediApiMediaAttachmentFocus>

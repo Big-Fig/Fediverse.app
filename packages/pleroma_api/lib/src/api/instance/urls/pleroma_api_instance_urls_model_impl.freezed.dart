@@ -31,7 +31,7 @@ class _$PleromaApiInstanceUrlsTearOff {
     );
   }
 
-  PleromaApiInstanceUrls fromJson(Map<String, Object> json) {
+  PleromaApiInstanceUrls fromJson(Map<String, Object?> json) {
     return PleromaApiInstanceUrls.fromJson(json);
   }
 }
@@ -141,15 +141,14 @@ class _$_PleromaApiInstanceUrls implements _PleromaApiInstanceUrls {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstanceUrls &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstanceUrls &&
             (identical(other.streamingApi, streamingApi) ||
-                const DeepCollectionEquality()
-                    .equals(other.streamingApi, streamingApi)));
+                other.streamingApi == streamingApi));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(streamingApi);
+  int get hashCode => Object.hash(runtimeType, streamingApi);
 
   @JsonKey(ignore: true)
   @override
@@ -175,7 +174,7 @@ abstract class _PleromaApiInstanceUrls implements PleromaApiInstanceUrls {
   @override
   @JsonKey(name: 'streaming_api')
   @HiveField(0)
-  String? get streamingApi => throw _privateConstructorUsedError;
+  String? get streamingApi;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstanceUrlsCopyWith<_PleromaApiInstanceUrls> get copyWith =>

@@ -165,22 +165,19 @@ class _$_NotificationPushLoaderNotification
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotificationPushLoaderNotification &&
+        (other.runtimeType == runtimeType &&
+            other is _NotificationPushLoaderNotification &&
             (identical(other.notification, notification) ||
-                const DeepCollectionEquality()
-                    .equals(other.notification, notification)) &&
+                other.notification == notification) &&
             (identical(other.notificationsPushHandlerMessage,
                     notificationsPushHandlerMessage) ||
-                const DeepCollectionEquality().equals(
-                    other.notificationsPushHandlerMessage,
-                    notificationsPushHandlerMessage)));
+                other.notificationsPushHandlerMessage ==
+                    notificationsPushHandlerMessage));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(notification) ^
-      const DeepCollectionEquality().hash(notificationsPushHandlerMessage);
+      Object.hash(runtimeType, notification, notificationsPushHandlerMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -199,10 +196,9 @@ abstract class _NotificationPushLoaderNotification
       _$_NotificationPushLoaderNotification;
 
   @override
-  INotification get notification => throw _privateConstructorUsedError;
+  INotification get notification;
   @override
-  NotificationsPushHandlerMessage get notificationsPushHandlerMessage =>
-      throw _privateConstructorUsedError;
+  NotificationsPushHandlerMessage get notificationsPushHandlerMessage;
   @override
   @JsonKey(ignore: true)
   _$NotificationPushLoaderNotificationCopyWith<

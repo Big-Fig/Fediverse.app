@@ -1,10 +1,12 @@
 import 'package:easy_dispose/easy_dispose.dart';
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/async/loading/init/async_init_loading_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
+  bool? get disableSmartRefresher;
+
   static IConfigService of(
     BuildContext context, {
     bool listen = true,
@@ -69,15 +71,33 @@ abstract class IConfigService implements IAsyncInitLoadingBloc, IDisposable {
 
   String? get helpTranslateUrl;
 
-  String? get joinBetaIosUrl;
+  String? get joinBetaUrlIos;
 
-  String? get joinBetaAndroidUrl;
+  String? get joinBetaUrlAndroid;
 
-  String? get iosTestUnifediApiAccessJson;
+  String? get displayInstanceUrl;
 
-  String? get androidTestUnifediApiAccessJson;
+  String? get actualInstanceUrlAndroid;
 
-  AppLaunchType get appLaunchType;
+  String? get actualInstanceUrlIos;
+
+  bool? get clearDatabaseOnLaunch;
+
+  bool? get clearLocalPreferencesOnLaunch;
 
   void printConfigToLog();
+
+  String processUrlOnInstanceForDisplay({
+    required String urlOnInstance,
+  });
+
+  String processUrlOnInstanceForRequest({
+    required String urlOnInstance,
+  });
+
+  UnifediApiAccess? tryFindPreDefinedApiAccessForHost({
+    required Uri hostUri,
+  });
+
+  bool get isActualInstanceUrlExist;
 }

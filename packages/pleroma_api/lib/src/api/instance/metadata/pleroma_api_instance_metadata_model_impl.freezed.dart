@@ -45,7 +45,7 @@ class _$PleromaApiInstanceMetadataTearOff {
     );
   }
 
-  PleromaApiInstanceMetadata fromJson(Map<String, Object> json) {
+  PleromaApiInstanceMetadata fromJson(Map<String, Object?> json) {
     return PleromaApiInstanceMetadata.fromJson(json);
   }
 }
@@ -289,34 +289,28 @@ class _$_PleromaApiInstanceMetadata implements _PleromaApiInstanceMetadata {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstanceMetadata &&
-            (identical(other.features, features) ||
-                const DeepCollectionEquality()
-                    .equals(other.features, features)) &&
-            (identical(other.postFormats, postFormats) ||
-                const DeepCollectionEquality()
-                    .equals(other.postFormats, postFormats)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstanceMetadata &&
+            const DeepCollectionEquality().equals(other.features, features) &&
+            const DeepCollectionEquality()
+                .equals(other.postFormats, postFormats) &&
             (identical(other.accountActivationRequired,
                     accountActivationRequired) ||
-                const DeepCollectionEquality().equals(
-                    other.accountActivationRequired,
-                    accountActivationRequired)) &&
+                other.accountActivationRequired == accountActivationRequired) &&
             (identical(other.fieldsLimits, fieldsLimits) ||
-                const DeepCollectionEquality()
-                    .equals(other.fieldsLimits, fieldsLimits)) &&
+                other.fieldsLimits == fieldsLimits) &&
             (identical(other.federation, federation) ||
-                const DeepCollectionEquality()
-                    .equals(other.federation, federation)));
+                other.federation == federation));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(features) ^
-      const DeepCollectionEquality().hash(postFormats) ^
-      const DeepCollectionEquality().hash(accountActivationRequired) ^
-      const DeepCollectionEquality().hash(fieldsLimits) ^
-      const DeepCollectionEquality().hash(federation);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(features),
+      const DeepCollectionEquality().hash(postFormats),
+      accountActivationRequired,
+      fieldsLimits,
+      federation);
 
   @JsonKey(ignore: true)
   @override
@@ -353,24 +347,22 @@ abstract class _PleromaApiInstanceMetadata
 
   @override
   @HiveField(0)
-  List<String>? get features => throw _privateConstructorUsedError;
+  List<String>? get features;
   @override
   @HiveField(2)
   @JsonKey(name: 'post_formats')
-  List<String>? get postFormats => throw _privateConstructorUsedError;
+  List<String>? get postFormats;
   @override
   @HiveField(3)
   @JsonKey(name: 'account_activation_required')
-  bool? get accountActivationRequired => throw _privateConstructorUsedError;
+  bool? get accountActivationRequired;
   @override
   @HiveField(4)
   @JsonKey(name: 'fields_limits')
-  PleromaApiInstanceFieldLimits? get fieldsLimits =>
-      throw _privateConstructorUsedError;
+  PleromaApiInstanceFieldLimits? get fieldsLimits;
   @override
   @HiveField(5)
-  PleromaApiInstanceFederation? get federation =>
-      throw _privateConstructorUsedError;
+  PleromaApiInstanceFederation? get federation;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstanceMetadataCopyWith<_PleromaApiInstanceMetadata>

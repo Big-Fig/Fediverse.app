@@ -37,7 +37,7 @@ class _$MastodonApiPushSubscriptionAlertsTearOff {
     );
   }
 
-  MastodonApiPushSubscriptionAlerts fromJson(Map<String, Object> json) {
+  MastodonApiPushSubscriptionAlerts fromJson(Map<String, Object?> json) {
     return MastodonApiPushSubscriptionAlerts.fromJson(json);
   }
 }
@@ -223,29 +223,19 @@ class _$_MastodonApiPushSubscribeRequestDataAlerts
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiPushSubscribeRequestDataAlerts &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiPushSubscribeRequestDataAlerts &&
             (identical(other.favourite, favourite) ||
-                const DeepCollectionEquality()
-                    .equals(other.favourite, favourite)) &&
-            (identical(other.follow, follow) ||
-                const DeepCollectionEquality().equals(other.follow, follow)) &&
-            (identical(other.mention, mention) ||
-                const DeepCollectionEquality()
-                    .equals(other.mention, mention)) &&
-            (identical(other.reblog, reblog) ||
-                const DeepCollectionEquality().equals(other.reblog, reblog)) &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)));
+                other.favourite == favourite) &&
+            (identical(other.follow, follow) || other.follow == follow) &&
+            (identical(other.mention, mention) || other.mention == mention) &&
+            (identical(other.reblog, reblog) || other.reblog == reblog) &&
+            (identical(other.poll, poll) || other.poll == poll));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(favourite) ^
-      const DeepCollectionEquality().hash(follow) ^
-      const DeepCollectionEquality().hash(mention) ^
-      const DeepCollectionEquality().hash(reblog) ^
-      const DeepCollectionEquality().hash(poll);
+      Object.hash(runtimeType, favourite, follow, mention, reblog, poll);
 
   @JsonKey(ignore: true)
   @override
@@ -276,19 +266,19 @@ abstract class _MastodonApiPushSubscribeRequestDataAlerts
 
   @override
   @HiveField(0)
-  bool? get favourite => throw _privateConstructorUsedError;
+  bool? get favourite;
   @override
   @HiveField(1)
-  bool? get follow => throw _privateConstructorUsedError;
+  bool? get follow;
   @override
   @HiveField(2)
-  bool? get mention => throw _privateConstructorUsedError;
+  bool? get mention;
   @override
   @HiveField(3)
-  bool? get reblog => throw _privateConstructorUsedError;
+  bool? get reblog;
   @override
   @HiveField(4)
-  bool? get poll => throw _privateConstructorUsedError;
+  bool? get poll;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiPushSubscribeRequestDataAlertsCopyWith<

@@ -161,23 +161,18 @@ class _$_UploadMediaExceedFileSizeLimitException
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UploadMediaExceedFileSizeLimitException &&
-            (identical(other.file, file) ||
-                const DeepCollectionEquality().equals(other.file, file)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UploadMediaExceedFileSizeLimitException &&
+            (identical(other.file, file) || other.file == file) &&
             (identical(other.maximumFileSizeInBytes, maximumFileSizeInBytes) ||
-                const DeepCollectionEquality().equals(
-                    other.maximumFileSizeInBytes, maximumFileSizeInBytes)) &&
+                other.maximumFileSizeInBytes == maximumFileSizeInBytes) &&
             (identical(other.currentFileSizeInBytes, currentFileSizeInBytes) ||
-                const DeepCollectionEquality().equals(
-                    other.currentFileSizeInBytes, currentFileSizeInBytes)));
+                other.currentFileSizeInBytes == currentFileSizeInBytes));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(file) ^
-      const DeepCollectionEquality().hash(maximumFileSizeInBytes) ^
-      const DeepCollectionEquality().hash(currentFileSizeInBytes);
+  int get hashCode => Object.hash(
+      runtimeType, file, maximumFileSizeInBytes, currentFileSizeInBytes);
 
   @JsonKey(ignore: true)
   @override
@@ -196,11 +191,11 @@ abstract class _UploadMediaExceedFileSizeLimitException
       _$_UploadMediaExceedFileSizeLimitException;
 
   @override
-  File get file => throw _privateConstructorUsedError;
+  File get file;
   @override
-  int? get maximumFileSizeInBytes => throw _privateConstructorUsedError;
+  int? get maximumFileSizeInBytes;
   @override
-  int get currentFileSizeInBytes => throw _privateConstructorUsedError;
+  int get currentFileSizeInBytes;
   @override
   @JsonKey(ignore: true)
   _$UploadMediaExceedFileSizeLimitExceptionCopyWith<

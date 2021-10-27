@@ -39,7 +39,7 @@ class _$PleromaApiFrontendConfigurationsTearOff {
     );
   }
 
-  PleromaApiFrontendConfigurations fromJson(Map<String, Object> json) {
+  PleromaApiFrontendConfigurations fromJson(Map<String, Object?> json) {
     return PleromaApiFrontendConfigurations.fromJson(json);
   }
 }
@@ -256,24 +256,17 @@ class _$_PleromaApiFrontendConfigurations
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiFrontendConfigurations &&
-            (identical(other.mastoFe, mastoFe) ||
-                const DeepCollectionEquality()
-                    .equals(other.mastoFe, mastoFe)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiFrontendConfigurations &&
+            (identical(other.mastoFe, mastoFe) || other.mastoFe == mastoFe) &&
             (identical(other.pleromaFe, pleromaFe) ||
-                const DeepCollectionEquality()
-                    .equals(other.pleromaFe, pleromaFe)) &&
+                other.pleromaFe == pleromaFe) &&
             (identical(other.soapboxFe, soapboxFe) ||
-                const DeepCollectionEquality()
-                    .equals(other.soapboxFe, soapboxFe)));
+                other.soapboxFe == soapboxFe));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(mastoFe) ^
-      const DeepCollectionEquality().hash(pleromaFe) ^
-      const DeepCollectionEquality().hash(soapboxFe);
+  int get hashCode => Object.hash(runtimeType, mastoFe, pleromaFe, soapboxFe);
 
   @JsonKey(ignore: true)
   @override
@@ -307,18 +300,15 @@ abstract class _PleromaApiFrontendConfigurations
   @override
   @JsonKey(name: 'masto_fe')
   @HiveField(0)
-  PleromaApiFrontendConfigurationsMastoFe? get mastoFe =>
-      throw _privateConstructorUsedError;
+  PleromaApiFrontendConfigurationsMastoFe? get mastoFe;
   @override
   @JsonKey(name: 'pleroma_fe')
   @HiveField(1)
-  PleromaApiFrontendConfigurationsPleromaFe? get pleromaFe =>
-      throw _privateConstructorUsedError;
+  PleromaApiFrontendConfigurationsPleromaFe? get pleromaFe;
   @override
   @JsonKey(name: 'soapbox_fe')
   @HiveField(2)
-  PleromaApiFrontendConfigurationsSoapboxFe? get soapboxFe =>
-      throw _privateConstructorUsedError;
+  PleromaApiFrontendConfigurationsSoapboxFe? get soapboxFe;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiFrontendConfigurationsCopyWith<_PleromaApiFrontendConfigurations>

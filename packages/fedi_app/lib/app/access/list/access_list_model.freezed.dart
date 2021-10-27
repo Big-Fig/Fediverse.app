@@ -27,7 +27,7 @@ class _$AccessListTearOff {
     );
   }
 
-  AccessList fromJson(Map<String, Object> json) {
+  AccessList fromJson(Map<String, Object?> json) {
     return AccessList.fromJson(json);
   }
 }
@@ -127,15 +127,14 @@ class _$_AccessList implements _AccessList {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AccessList &&
-            (identical(other.instances, instances) ||
-                const DeepCollectionEquality()
-                    .equals(other.instances, instances)));
+        (other.runtimeType == runtimeType &&
+            other is _AccessList &&
+            const DeepCollectionEquality().equals(other.instances, instances));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(instances);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(instances));
 
   @JsonKey(ignore: true)
   @override
@@ -158,7 +157,7 @@ abstract class _AccessList implements AccessList {
 
   @override
   @HiveField(0)
-  List<UnifediApiAccess> get instances => throw _privateConstructorUsedError;
+  List<UnifediApiAccess> get instances;
   @override
   @JsonKey(ignore: true)
   _$AccessListCopyWith<_AccessList> get copyWith =>

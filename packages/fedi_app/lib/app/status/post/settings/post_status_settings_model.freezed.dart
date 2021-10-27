@@ -42,7 +42,7 @@ class _$PostStatusSettingsTearOff {
     );
   }
 
-  PostStatusSettings fromJson(Map<String, Object> json) {
+  PostStatusSettings fromJson(Map<String, Object?> json) {
     return PostStatusSettings.fromJson(json);
   }
 }
@@ -253,32 +253,29 @@ class _$_PostStatusSettings extends _PostStatusSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PostStatusSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _PostStatusSettings &&
             (identical(
                     other.markMediaAsNsfwOnAttach, markMediaAsNsfwOnAttach) ||
-                const DeepCollectionEquality().equals(
-                    other.markMediaAsNsfwOnAttach, markMediaAsNsfwOnAttach)) &&
+                other.markMediaAsNsfwOnAttach == markMediaAsNsfwOnAttach) &&
             (identical(
                     other.defaultVisibilityString, defaultVisibilityString) ||
-                const DeepCollectionEquality().equals(
-                    other.defaultVisibilityString, defaultVisibilityString)) &&
+                other.defaultVisibilityString == defaultVisibilityString) &&
             (identical(other.defaultStatusLocale, defaultStatusLocale) ||
-                const DeepCollectionEquality()
-                    .equals(other.defaultStatusLocale, defaultStatusLocale)) &&
+                other.defaultStatusLocale == defaultStatusLocale) &&
             (identical(other.dontUploadMediaDuringEditing,
                     dontUploadMediaDuringEditing) ||
-                const DeepCollectionEquality().equals(
-                    other.dontUploadMediaDuringEditing,
-                    dontUploadMediaDuringEditing)));
+                other.dontUploadMediaDuringEditing ==
+                    dontUploadMediaDuringEditing));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(markMediaAsNsfwOnAttach) ^
-      const DeepCollectionEquality().hash(defaultVisibilityString) ^
-      const DeepCollectionEquality().hash(defaultStatusLocale) ^
-      const DeepCollectionEquality().hash(dontUploadMediaDuringEditing);
+  int get hashCode => Object.hash(
+      runtimeType,
+      markMediaAsNsfwOnAttach,
+      defaultVisibilityString,
+      defaultStatusLocale,
+      dontUploadMediaDuringEditing);
 
   @JsonKey(ignore: true)
   @override
@@ -313,20 +310,19 @@ abstract class _PostStatusSettings extends PostStatusSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'mark_media_as_nsfw_on_attach')
-  bool get markMediaAsNsfwOnAttach => throw _privateConstructorUsedError;
+  bool get markMediaAsNsfwOnAttach;
   @override
   @HiveField(1)
   @JsonKey(name: 'default_visibility')
-  String get defaultVisibilityString => throw _privateConstructorUsedError;
+  String get defaultVisibilityString;
   @override
   @HiveField(2)
   @JsonKey(name: 'default_status_locale')
-  LocalizationLocale? get defaultStatusLocale =>
-      throw _privateConstructorUsedError;
+  LocalizationLocale? get defaultStatusLocale;
   @override
   @HiveField(3)
   @JsonKey(name: 'dont_upload_media_during_editing_on_attach')
-  bool get dontUploadMediaDuringEditing => throw _privateConstructorUsedError;
+  bool get dontUploadMediaDuringEditing;
   @override
   @JsonKey(ignore: true)
   _$PostStatusSettingsCopyWith<_PostStatusSettings> get copyWith =>

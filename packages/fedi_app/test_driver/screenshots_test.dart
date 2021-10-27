@@ -38,7 +38,6 @@ void main() {
     setUpAll(() async {
       // Connect to a running Flutter application instance.
       driver = await FlutterDriver.connect();
-      // get the localizations for the current locale
       instanceHost = await driver.requestData(null);
       // ignore: avoid_print
       print('instanceHost=$instanceHost');
@@ -63,15 +62,9 @@ void main() {
         var hostTextField = find.byValueKey(
           JoinAccessWidgetKeys.hostTextFieldKey,
         );
-        await driver.tap(hostTextField);
+        // await driver.tap(hostTextField);
 
-        // await driver.enterText('mastodon.social');
-        await driver.enterText(instanceHost);
-        // if(Platform.isAndroid) {
-        //   await driver.enterText('http://10.0.2.2:4000');
-        // } else if(Platform.isIOS) {
-        //   await driver.enterText('http://localhost:4000');
-        // }
+        // await driver.enterText(instanceHost);
 
         var exploreAsGuestButton = find.byValueKey(
           JoinAccessWidgetKeys.exploreAsGuestButtonKey,
@@ -123,9 +116,9 @@ void main() {
         hostTextField = find.byValueKey(
           JoinAccessWidgetKeys.hostTextFieldKey,
         );
-        await driver.tap(hostTextField);
+        // await driver.tap(hostTextField);
 
-        await driver.enterText('mastodon.social');
+        // await driver.enterText('fedi.app');
         // ignore: avoid_print
         print('before joinUnifediApiAccessWidgetKey');
 

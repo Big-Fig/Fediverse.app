@@ -29,7 +29,7 @@ class _$UnifediApiPushPayloadMastodonAdapterTearOff {
     );
   }
 
-  UnifediApiPushPayloadMastodonAdapter fromJson(Map<String, Object> json) {
+  UnifediApiPushPayloadMastodonAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiPushPayloadMastodonAdapter.fromJson(json);
   }
 }
@@ -153,14 +153,13 @@ class _$_UnifediApiPushPayloadMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPushPayloadMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPushPayloadMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +187,7 @@ abstract class _UnifediApiPushPayloadMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiPushPayload get value => throw _privateConstructorUsedError;
+  MastodonApiPushPayload get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPushPayloadMastodonAdapterCopyWith<

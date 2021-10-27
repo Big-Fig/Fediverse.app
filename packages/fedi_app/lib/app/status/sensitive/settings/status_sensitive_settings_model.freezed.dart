@@ -44,7 +44,7 @@ class _$StatusSensitiveSettingsTearOff {
     );
   }
 
-  StatusSensitiveSettings fromJson(Map<String, Object> json) {
+  StatusSensitiveSettings fromJson(Map<String, Object?> json) {
     return StatusSensitiveSettings.fromJson(json);
   }
 }
@@ -241,33 +241,28 @@ class _$_StatusSensitiveSettings extends _StatusSensitiveSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StatusSensitiveSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _StatusSensitiveSettings &&
             (identical(other.isAlwaysShowSpoiler, isAlwaysShowSpoiler) ||
-                const DeepCollectionEquality()
-                    .equals(other.isAlwaysShowSpoiler, isAlwaysShowSpoiler)) &&
+                other.isAlwaysShowSpoiler == isAlwaysShowSpoiler) &&
             (identical(other.isAlwaysShowNsfw, isAlwaysShowNsfw) ||
-                const DeepCollectionEquality()
-                    .equals(other.isAlwaysShowNsfw, isAlwaysShowNsfw)) &&
+                other.isAlwaysShowNsfw == isAlwaysShowNsfw) &&
             (identical(other.nsfwDisplayDelayDurationMicrosecondsTotal,
                     nsfwDisplayDelayDurationMicrosecondsTotal) ||
-                const DeepCollectionEquality().equals(
-                    other.nsfwDisplayDelayDurationMicrosecondsTotal,
-                    nsfwDisplayDelayDurationMicrosecondsTotal)) &&
+                other.nsfwDisplayDelayDurationMicrosecondsTotal ==
+                    nsfwDisplayDelayDurationMicrosecondsTotal) &&
             (identical(other.isNeedReplaceBlurWithFill,
                     isNeedReplaceBlurWithFill) ||
-                const DeepCollectionEquality().equals(
-                    other.isNeedReplaceBlurWithFill,
-                    isNeedReplaceBlurWithFill)));
+                other.isNeedReplaceBlurWithFill == isNeedReplaceBlurWithFill));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(isAlwaysShowSpoiler) ^
-      const DeepCollectionEquality().hash(isAlwaysShowNsfw) ^
-      const DeepCollectionEquality()
-          .hash(nsfwDisplayDelayDurationMicrosecondsTotal) ^
-      const DeepCollectionEquality().hash(isNeedReplaceBlurWithFill);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isAlwaysShowSpoiler,
+      isAlwaysShowNsfw,
+      nsfwDisplayDelayDurationMicrosecondsTotal,
+      isNeedReplaceBlurWithFill);
 
   @JsonKey(ignore: true)
   @override
@@ -304,20 +299,19 @@ abstract class _StatusSensitiveSettings extends StatusSensitiveSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'is_always_show_spoiler')
-  bool get isAlwaysShowSpoiler => throw _privateConstructorUsedError;
+  bool get isAlwaysShowSpoiler;
   @override
   @HiveField(1)
   @JsonKey(name: 'is_always_show_nsfw')
-  bool get isAlwaysShowNsfw => throw _privateConstructorUsedError;
+  bool get isAlwaysShowNsfw;
   @override
   @HiveField(2)
   @JsonKey(name: 'nsfw_display_delay_duration_seconds_total')
-  int? get nsfwDisplayDelayDurationMicrosecondsTotal =>
-      throw _privateConstructorUsedError;
+  int? get nsfwDisplayDelayDurationMicrosecondsTotal;
   @override
   @HiveField(3)
   @JsonKey(name: 'is_need_replace_blur_with_fill')
-  bool? get isNeedReplaceBlurWithFill => throw _privateConstructorUsedError;
+  bool? get isNeedReplaceBlurWithFill;
   @override
   @JsonKey(ignore: true)
   _$StatusSensitiveSettingsCopyWith<_StatusSensitiveSettings> get copyWith =>

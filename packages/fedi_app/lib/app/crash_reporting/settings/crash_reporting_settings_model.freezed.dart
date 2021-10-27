@@ -31,7 +31,7 @@ class _$CrashReportingSettingsTearOff {
     );
   }
 
-  CrashReportingSettings fromJson(Map<String, Object> json) {
+  CrashReportingSettings fromJson(Map<String, Object?> json) {
     return CrashReportingSettings.fromJson(json);
   }
 }
@@ -146,16 +146,14 @@ class _$_CrashReportingSettings extends _CrashReportingSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CrashReportingSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _CrashReportingSettings &&
             (identical(other.reportingEnabled, reportingEnabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.reportingEnabled, reportingEnabled)));
+                other.reportingEnabled == reportingEnabled));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(reportingEnabled);
+  int get hashCode => Object.hash(runtimeType, reportingEnabled);
 
   @JsonKey(ignore: true)
   @override
@@ -182,7 +180,7 @@ abstract class _CrashReportingSettings extends CrashReportingSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'reporting_enabled')
-  bool get reportingEnabled => throw _privateConstructorUsedError;
+  bool get reportingEnabled;
   @override
   @JsonKey(ignore: true)
   _$CrashReportingSettingsCopyWith<_CrashReportingSettings> get copyWith =>

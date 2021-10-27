@@ -39,7 +39,7 @@ class _$MastodonApiRegisterAccountTearOff {
     );
   }
 
-  MastodonApiRegisterAccount fromJson(Map<String, Object> json) {
+  MastodonApiRegisterAccount fromJson(Map<String, Object?> json) {
     return MastodonApiRegisterAccount.fromJson(json);
   }
 }
@@ -237,33 +237,22 @@ class _$_MastodonApiRegisterAccount implements _MastodonApiRegisterAccount {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiRegisterAccount &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiRegisterAccount &&
             (identical(other.username, username) ||
-                const DeepCollectionEquality()
-                    .equals(other.username, username)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
+                other.username == username) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality()
-                    .equals(other.password, password)) &&
+                other.password == password) &&
             (identical(other.agreement, agreement) ||
-                const DeepCollectionEquality()
-                    .equals(other.agreement, agreement)) &&
-            (identical(other.locale, locale) ||
-                const DeepCollectionEquality().equals(other.locale, locale)) &&
-            (identical(other.reason, reason) ||
-                const DeepCollectionEquality().equals(other.reason, reason)));
+                other.agreement == agreement) &&
+            (identical(other.locale, locale) || other.locale == locale) &&
+            (identical(other.reason, reason) || other.reason == reason));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(username) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(password) ^
-      const DeepCollectionEquality().hash(agreement) ^
-      const DeepCollectionEquality().hash(locale) ^
-      const DeepCollectionEquality().hash(reason);
+  int get hashCode => Object.hash(
+      runtimeType, username, email, password, agreement, locale, reason);
 
   @JsonKey(ignore: true)
   @override
@@ -292,22 +281,22 @@ abstract class _MastodonApiRegisterAccount
 
   @override
   @HiveField(1)
-  String get username => throw _privateConstructorUsedError;
+  String get username;
   @override
   @HiveField(2)
-  String get email => throw _privateConstructorUsedError;
+  String get email;
   @override
   @HiveField(3)
-  String get password => throw _privateConstructorUsedError;
+  String get password;
   @override
   @HiveField(4)
-  bool get agreement => throw _privateConstructorUsedError;
+  bool get agreement;
   @override
   @HiveField(5)
-  String get locale => throw _privateConstructorUsedError;
+  String get locale;
   @override
   @HiveField(6)
-  String? get reason => throw _privateConstructorUsedError;
+  String? get reason;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiRegisterAccountCopyWith<_MastodonApiRegisterAccount>

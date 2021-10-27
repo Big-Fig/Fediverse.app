@@ -203,15 +203,14 @@ class _$_Image implements _Image {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Image &&
+        (other.runtimeType == runtimeType &&
+            other is _Image &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -303,7 +302,7 @@ abstract class _Image implements MastodonApiMediaAttachmentType {
   const factory _Image({String stringValue}) = _$_Image;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ImageCopyWith<_Image> get copyWith => throw _privateConstructorUsedError;
@@ -359,15 +358,14 @@ class _$_Gifv implements _Gifv {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Gifv &&
+        (other.runtimeType == runtimeType &&
+            other is _Gifv &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -459,7 +457,7 @@ abstract class _Gifv implements MastodonApiMediaAttachmentType {
   const factory _Gifv({String stringValue}) = _$_Gifv;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$GifvCopyWith<_Gifv> get copyWith => throw _privateConstructorUsedError;
@@ -515,15 +513,14 @@ class _$_Video implements _Video {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Video &&
+        (other.runtimeType == runtimeType &&
+            other is _Video &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -615,7 +612,7 @@ abstract class _Video implements MastodonApiMediaAttachmentType {
   const factory _Video({String stringValue}) = _$_Video;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$VideoCopyWith<_Video> get copyWith => throw _privateConstructorUsedError;
@@ -671,15 +668,14 @@ class _$_Audio implements _Audio {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Audio &&
+        (other.runtimeType == runtimeType &&
+            other is _Audio &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -771,7 +767,7 @@ abstract class _Audio implements MastodonApiMediaAttachmentType {
   const factory _Audio({String stringValue}) = _$_Audio;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$AudioCopyWith<_Audio> get copyWith => throw _privateConstructorUsedError;
@@ -825,15 +821,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -925,7 +920,7 @@ abstract class _Unknown implements MastodonApiMediaAttachmentType {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

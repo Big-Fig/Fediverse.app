@@ -39,7 +39,7 @@ class _$MastodonApiFeatureTearOff {
     );
   }
 
-  MastodonApiFeature fromJson(Map<String, Object> json) {
+  MastodonApiFeature fromJson(Map<String, Object?> json) {
     return MastodonApiFeature.fromJson(json);
   }
 }
@@ -250,27 +250,22 @@ class _$_MastodonApiFeature implements _MastodonApiFeature {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiFeature &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiFeature &&
             (identical(other.accessLevelRequirement, accessLevelRequirement) ||
-                const DeepCollectionEquality().equals(
-                    other.accessLevelRequirement, accessLevelRequirement)) &&
+                other.accessLevelRequirement == accessLevelRequirement) &&
             (identical(
                     other.accessScopesRequirement, accessScopesRequirement) ||
-                const DeepCollectionEquality().equals(
-                    other.accessScopesRequirement, accessScopesRequirement)) &&
+                other.accessScopesRequirement == accessScopesRequirement) &&
             (identical(other.instanceVersionRequirement,
                     instanceVersionRequirement) ||
-                const DeepCollectionEquality().equals(
-                    other.instanceVersionRequirement,
-                    instanceVersionRequirement)));
+                other.instanceVersionRequirement ==
+                    instanceVersionRequirement));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(accessLevelRequirement) ^
-      const DeepCollectionEquality().hash(accessScopesRequirement) ^
-      const DeepCollectionEquality().hash(instanceVersionRequirement);
+  int get hashCode => Object.hash(runtimeType, accessLevelRequirement,
+      accessScopesRequirement, instanceVersionRequirement);
 
   @JsonKey(ignore: true)
   @override
@@ -302,18 +297,15 @@ abstract class _MastodonApiFeature implements MastodonApiFeature {
   @override
   @HiveField(0)
   @JsonKey(name: 'access_level_requirement')
-  MastodonApiAccessLevelRequirement get accessLevelRequirement =>
-      throw _privateConstructorUsedError;
+  MastodonApiAccessLevelRequirement get accessLevelRequirement;
   @override
   @HiveField(1)
   @JsonKey(name: 'access_scopes_requirement')
-  MastodonApiAccessScopesRequirement get accessScopesRequirement =>
-      throw _privateConstructorUsedError;
+  MastodonApiAccessScopesRequirement get accessScopesRequirement;
   @override
   @HiveField(2)
   @JsonKey(name: 'instance_version_requirement')
-  MastodonApiInstanceMetadataVersionRequirement
-      get instanceVersionRequirement => throw _privateConstructorUsedError;
+  MastodonApiInstanceMetadataVersionRequirement get instanceVersionRequirement;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiFeatureCopyWith<_MastodonApiFeature> get copyWith =>

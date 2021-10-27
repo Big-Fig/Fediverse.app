@@ -30,7 +30,7 @@ class _$PushRelaySettingsTearOff {
     );
   }
 
-  PushRelaySettings fromJson(Map<String, Object> json) {
+  PushRelaySettings fromJson(Map<String, Object?> json) {
     return PushRelaySettings.fromJson(json);
   }
 }
@@ -145,16 +145,14 @@ class _$_PushRelaySettings extends _PushRelaySettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PushRelaySettings &&
+        (other.runtimeType == runtimeType &&
+            other is _PushRelaySettings &&
             (identical(other.pushRelayBaseUrl, pushRelayBaseUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.pushRelayBaseUrl, pushRelayBaseUrl)));
+                other.pushRelayBaseUrl == pushRelayBaseUrl));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(pushRelayBaseUrl);
+  int get hashCode => Object.hash(runtimeType, pushRelayBaseUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -180,7 +178,7 @@ abstract class _PushRelaySettings extends PushRelaySettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'push_relay_base_url')
-  String get pushRelayBaseUrl => throw _privateConstructorUsedError;
+  String get pushRelayBaseUrl;
   @override
   @JsonKey(ignore: true)
   _$PushRelaySettingsCopyWith<_PushRelaySettings> get copyWith =>

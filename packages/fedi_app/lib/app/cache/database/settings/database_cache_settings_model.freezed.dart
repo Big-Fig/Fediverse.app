@@ -35,7 +35,7 @@ class _$DatabaseCacheSettingsTearOff {
     );
   }
 
-  DatabaseCacheSettings fromJson(Map<String, Object> json) {
+  DatabaseCacheSettings fromJson(Map<String, Object?> json) {
     return DatabaseCacheSettings.fromJson(json);
   }
 }
@@ -179,22 +179,19 @@ class _$_DatabaseCacheSettings extends _DatabaseCacheSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DatabaseCacheSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _DatabaseCacheSettings &&
             (identical(other.entriesCountByTypeLimitTypeString,
                     entriesCountByTypeLimitTypeString) ||
-                const DeepCollectionEquality().equals(
-                    other.entriesCountByTypeLimitTypeString,
-                    entriesCountByTypeLimitTypeString)) &&
+                other.entriesCountByTypeLimitTypeString ==
+                    entriesCountByTypeLimitTypeString) &&
             (identical(other.ageLimitTypeString, ageLimitTypeString) ||
-                const DeepCollectionEquality()
-                    .equals(other.ageLimitTypeString, ageLimitTypeString)));
+                other.ageLimitTypeString == ageLimitTypeString));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(entriesCountByTypeLimitTypeString) ^
-      const DeepCollectionEquality().hash(ageLimitTypeString);
+  int get hashCode => Object.hash(
+      runtimeType, entriesCountByTypeLimitTypeString, ageLimitTypeString);
 
   @JsonKey(ignore: true)
   @override
@@ -224,12 +221,11 @@ abstract class _DatabaseCacheSettings extends DatabaseCacheSettings {
   @override
   @HiveField(2)
   @JsonKey(name: 'entries_count_by_type_limit_type')
-  String get entriesCountByTypeLimitTypeString =>
-      throw _privateConstructorUsedError;
+  String get entriesCountByTypeLimitTypeString;
   @override
   @HiveField(3)
   @JsonKey(name: 'age_limit_in_microseconds_type')
-  String get ageLimitTypeString => throw _privateConstructorUsedError;
+  String get ageLimitTypeString;
   @override
   @JsonKey(ignore: true)
   _$DatabaseCacheSettingsCopyWith<_DatabaseCacheSettings> get copyWith =>

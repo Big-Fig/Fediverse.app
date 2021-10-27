@@ -31,7 +31,7 @@ class _$UnifediApiStatusContextTearOff {
     );
   }
 
-  UnifediApiStatusContext fromJson(Map<String, Object> json) {
+  UnifediApiStatusContext fromJson(Map<String, Object?> json) {
     return UnifediApiStatusContext.fromJson(json);
   }
 }
@@ -156,20 +156,18 @@ class _$_UnifediApiStatusContext implements _UnifediApiStatusContext {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiStatusContext &&
-            (identical(other.descendants, descendants) ||
-                const DeepCollectionEquality()
-                    .equals(other.descendants, descendants)) &&
-            (identical(other.ancestors, ancestors) ||
-                const DeepCollectionEquality()
-                    .equals(other.ancestors, ancestors)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiStatusContext &&
+            const DeepCollectionEquality()
+                .equals(other.descendants, descendants) &&
+            const DeepCollectionEquality().equals(other.ancestors, ancestors));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(descendants) ^
-      const DeepCollectionEquality().hash(ancestors);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(descendants),
+      const DeepCollectionEquality().hash(ancestors));
 
   @JsonKey(ignore: true)
   @override
@@ -194,10 +192,10 @@ abstract class _UnifediApiStatusContext implements UnifediApiStatusContext {
 
   @override
   @HiveField(0)
-  List<UnifediApiStatus> get descendants => throw _privateConstructorUsedError;
+  List<UnifediApiStatus> get descendants;
   @override
   @HiveField(1)
-  List<UnifediApiStatus> get ancestors => throw _privateConstructorUsedError;
+  List<UnifediApiStatus> get ancestors;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiStatusContextCopyWith<_UnifediApiStatusContext> get copyWith =>

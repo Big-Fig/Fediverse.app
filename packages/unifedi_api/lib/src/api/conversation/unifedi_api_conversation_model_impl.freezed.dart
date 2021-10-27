@@ -43,7 +43,7 @@ class _$UnifediApiConversationTearOff {
     );
   }
 
-  UnifediApiConversation fromJson(Map<String, Object> json) {
+  UnifediApiConversation fromJson(Map<String, Object?> json) {
     return UnifediApiConversation.fromJson(json);
   }
 }
@@ -239,30 +239,25 @@ class _$_UnifediApiConversation implements _UnifediApiConversation {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiConversation &&
-            (identical(other.unread, unread) ||
-                const DeepCollectionEquality().equals(other.unread, unread)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiConversation &&
+            (identical(other.unread, unread) || other.unread == unread) &&
             (identical(other.lastStatus, lastStatus) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastStatus, lastStatus)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.accounts, accounts) ||
-                const DeepCollectionEquality()
-                    .equals(other.accounts, accounts)) &&
-            (identical(other.recipients, recipients) ||
-                const DeepCollectionEquality()
-                    .equals(other.recipients, recipients)));
+                other.lastStatus == lastStatus) &&
+            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality().equals(other.accounts, accounts) &&
+            const DeepCollectionEquality()
+                .equals(other.recipients, recipients));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(unread) ^
-      const DeepCollectionEquality().hash(lastStatus) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(accounts) ^
-      const DeepCollectionEquality().hash(recipients);
+  int get hashCode => Object.hash(
+      runtimeType,
+      unread,
+      lastStatus,
+      id,
+      const DeepCollectionEquality().hash(accounts),
+      const DeepCollectionEquality().hash(recipients));
 
   @JsonKey(ignore: true)
   @override
@@ -296,20 +291,20 @@ abstract class _UnifediApiConversation implements UnifediApiConversation {
 
   @override
   @HiveField(0)
-  bool? get unread => throw _privateConstructorUsedError;
+  bool? get unread;
   @override
   @HiveField(1)
   @JsonKey(name: 'last_status')
-  UnifediApiStatus? get lastStatus => throw _privateConstructorUsedError;
+  UnifediApiStatus? get lastStatus;
   @override
   @HiveField(2)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(3)
-  List<UnifediApiAccount> get accounts => throw _privateConstructorUsedError;
+  List<UnifediApiAccount> get accounts;
   @override
   @HiveField(4)
-  List<UnifediApiAccount>? get recipients => throw _privateConstructorUsedError;
+  List<UnifediApiAccount>? get recipients;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiConversationCopyWith<_UnifediApiConversation> get copyWith =>

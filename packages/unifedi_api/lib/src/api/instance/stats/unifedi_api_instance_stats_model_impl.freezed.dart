@@ -33,7 +33,7 @@ class _$UnifediApiInstanceStatsTearOff {
     );
   }
 
-  UnifediApiInstanceStats fromJson(Map<String, Object> json) {
+  UnifediApiInstanceStats fromJson(Map<String, Object?> json) {
     return UnifediApiInstanceStats.fromJson(json);
   }
 }
@@ -182,24 +182,19 @@ class _$_UnifediApiInstanceStats implements _UnifediApiInstanceStats {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceStats &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceStats &&
             (identical(other.userCount, userCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.userCount, userCount)) &&
+                other.userCount == userCount) &&
             (identical(other.statusCount, statusCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusCount, statusCount)) &&
+                other.statusCount == statusCount) &&
             (identical(other.domainCount, domainCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.domainCount, domainCount)));
+                other.domainCount == domainCount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(userCount) ^
-      const DeepCollectionEquality().hash(statusCount) ^
-      const DeepCollectionEquality().hash(domainCount);
+      Object.hash(runtimeType, userCount, statusCount, domainCount);
 
   @JsonKey(ignore: true)
   @override
@@ -231,15 +226,15 @@ abstract class _UnifediApiInstanceStats implements UnifediApiInstanceStats {
   @override
   @JsonKey(name: 'user_count')
   @HiveField(0)
-  int? get userCount => throw _privateConstructorUsedError;
+  int? get userCount;
   @override
   @JsonKey(name: 'status_count')
   @HiveField(1)
-  int? get statusCount => throw _privateConstructorUsedError;
+  int? get statusCount;
   @override
   @JsonKey(name: 'domain_count')
   @HiveField(2)
-  int? get domainCount => throw _privateConstructorUsedError;
+  int? get domainCount;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceStatsCopyWith<_UnifediApiInstanceStats> get copyWith =>

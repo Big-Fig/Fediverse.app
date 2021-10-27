@@ -186,15 +186,14 @@ class _$_Native implements _Native {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Native &&
+        (other.runtimeType == runtimeType &&
+            other is _Native &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -280,7 +279,7 @@ abstract class _Native implements PleromaApiCaptchaType {
   const factory _Native({String stringValue}) = _$_Native;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$NativeCopyWith<_Native> get copyWith => throw _privateConstructorUsedError;
@@ -337,15 +336,14 @@ class _$_Kocaptcha implements _Kocaptcha {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Kocaptcha &&
+        (other.runtimeType == runtimeType &&
+            other is _Kocaptcha &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -431,7 +429,7 @@ abstract class _Kocaptcha implements PleromaApiCaptchaType {
   const factory _Kocaptcha({String stringValue}) = _$_Kocaptcha;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$KocaptchaCopyWith<_Kocaptcha> get copyWith =>
@@ -487,15 +485,14 @@ class _$_None implements _None {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _None &&
+        (other.runtimeType == runtimeType &&
+            other is _None &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -581,7 +578,7 @@ abstract class _None implements PleromaApiCaptchaType {
   const factory _None({String stringValue}) = _$_None;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$NoneCopyWith<_None> get copyWith => throw _privateConstructorUsedError;
@@ -635,15 +632,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -729,7 +725,7 @@ abstract class _Unknown implements PleromaApiCaptchaType {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

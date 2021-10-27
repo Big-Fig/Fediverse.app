@@ -156,22 +156,17 @@ class _$_UploadMediaAttachmentState implements _UploadMediaAttachmentState {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UploadMediaAttachmentState &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UploadMediaAttachmentState &&
+            (identical(other.type, type) || other.type == type) &&
+            const DeepCollectionEquality().equals(other.error, error) &&
             (identical(other.stackTrace, stackTrace) ||
-                const DeepCollectionEquality()
-                    .equals(other.stackTrace, stackTrace)));
+                other.stackTrace == stackTrace));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(stackTrace);
+  int get hashCode => Object.hash(runtimeType, type,
+      const DeepCollectionEquality().hash(error), stackTrace);
 
   @JsonKey(ignore: true)
   @override
@@ -188,11 +183,11 @@ abstract class _UploadMediaAttachmentState
       StackTrace? stackTrace}) = _$_UploadMediaAttachmentState;
 
   @override
-  UploadMediaAttachmentStateType get type => throw _privateConstructorUsedError;
+  UploadMediaAttachmentStateType get type;
   @override
-  dynamic get error => throw _privateConstructorUsedError;
+  dynamic get error;
   @override
-  StackTrace? get stackTrace => throw _privateConstructorUsedError;
+  StackTrace? get stackTrace;
   @override
   @JsonKey(ignore: true)
   _$UploadMediaAttachmentStateCopyWith<_UploadMediaAttachmentState>

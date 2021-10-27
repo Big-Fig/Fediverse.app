@@ -35,7 +35,7 @@ class _$MastodonApiPaginationTearOff {
     );
   }
 
-  MastodonApiPagination fromJson(Map<String, Object> json) {
+  MastodonApiPagination fromJson(Map<String, Object?> json) {
     return MastodonApiPagination.fromJson(json);
   }
 }
@@ -201,24 +201,16 @@ class _$_MastodonApiPagination implements _MastodonApiPagination {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiPagination &&
-            (identical(other.limit, limit) ||
-                const DeepCollectionEquality().equals(other.limit, limit)) &&
-            (identical(other.maxId, maxId) ||
-                const DeepCollectionEquality().equals(other.maxId, maxId)) &&
-            (identical(other.minId, minId) ||
-                const DeepCollectionEquality().equals(other.minId, minId)) &&
-            (identical(other.sinceId, sinceId) ||
-                const DeepCollectionEquality().equals(other.sinceId, sinceId)));
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiPagination &&
+            (identical(other.limit, limit) || other.limit == limit) &&
+            (identical(other.maxId, maxId) || other.maxId == maxId) &&
+            (identical(other.minId, minId) || other.minId == minId) &&
+            (identical(other.sinceId, sinceId) || other.sinceId == sinceId));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(limit) ^
-      const DeepCollectionEquality().hash(maxId) ^
-      const DeepCollectionEquality().hash(minId) ^
-      const DeepCollectionEquality().hash(sinceId);
+  int get hashCode => Object.hash(runtimeType, limit, maxId, minId, sinceId);
 
   @JsonKey(ignore: true)
   @override
@@ -245,19 +237,19 @@ abstract class _MastodonApiPagination implements MastodonApiPagination {
 
   @override
   @HiveField(0)
-  int? get limit => throw _privateConstructorUsedError;
+  int? get limit;
   @override
   @HiveField(1)
   @JsonKey(name: 'max_id')
-  String? get maxId => throw _privateConstructorUsedError;
+  String? get maxId;
   @override
   @HiveField(2)
   @JsonKey(name: 'min_id')
-  String? get minId => throw _privateConstructorUsedError;
+  String? get minId;
   @override
   @HiveField(3)
   @JsonKey(name: 'since_id')
-  String? get sinceId => throw _privateConstructorUsedError;
+  String? get sinceId;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiPaginationCopyWith<_MastodonApiPagination> get copyWith =>

@@ -34,7 +34,7 @@ class _$ToastSettingsTearOff {
     );
   }
 
-  ToastSettings fromJson(Map<String, Object> json) {
+  ToastSettings fromJson(Map<String, Object?> json) {
     return ToastSettings.fromJson(json);
   }
 }
@@ -187,20 +187,17 @@ class _$_ToastSettings extends _ToastSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ToastSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _ToastSettings &&
             (identical(other.pushSettings, pushSettings) ||
-                const DeepCollectionEquality()
-                    .equals(other.pushSettings, pushSettings)) &&
+                other.pushSettings == pushSettings) &&
             (identical(other.handlingTypeString, handlingTypeString) ||
-                const DeepCollectionEquality()
-                    .equals(other.handlingTypeString, handlingTypeString)));
+                other.handlingTypeString == handlingTypeString));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(pushSettings) ^
-      const DeepCollectionEquality().hash(handlingTypeString);
+      Object.hash(runtimeType, pushSettings, handlingTypeString);
 
   @JsonKey(ignore: true)
   @override
@@ -229,11 +226,11 @@ abstract class _ToastSettings extends ToastSettings {
   @override
   @HiveField(3)
   @JsonKey(name: 'push_settings')
-  PushSettings get pushSettings => throw _privateConstructorUsedError;
+  PushSettings get pushSettings;
   @override
   @HiveField(4)
   @JsonKey(name: 'handling_type_string')
-  String get handlingTypeString => throw _privateConstructorUsedError;
+  String get handlingTypeString;
   @override
   @JsonKey(ignore: true)
   _$ToastSettingsCopyWith<_ToastSettings> get copyWith =>

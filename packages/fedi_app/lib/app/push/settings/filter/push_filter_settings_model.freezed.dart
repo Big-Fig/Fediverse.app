@@ -34,7 +34,7 @@ class _$PushFilterSettingsTearOff {
     );
   }
 
-  PushFilterSettings fromJson(Map<String, Object> json) {
+  PushFilterSettings fromJson(Map<String, Object?> json) {
     return PushFilterSettings.fromJson(json);
   }
 }
@@ -175,21 +175,18 @@ class _$_PushFilterSettings extends _PushFilterSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PushFilterSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _PushFilterSettings &&
             (identical(other.blockFromStrangers, blockFromStrangers) ||
-                const DeepCollectionEquality()
-                    .equals(other.blockFromStrangers, blockFromStrangers)) &&
+                other.blockFromStrangers == blockFromStrangers) &&
             (identical(
                     other.hideNotificationContents, hideNotificationContents) ||
-                const DeepCollectionEquality().equals(
-                    other.hideNotificationContents, hideNotificationContents)));
+                other.hideNotificationContents == hideNotificationContents));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(blockFromStrangers) ^
-      const DeepCollectionEquality().hash(hideNotificationContents);
+      Object.hash(runtimeType, blockFromStrangers, hideNotificationContents);
 
   @JsonKey(ignore: true)
   @override
@@ -218,11 +215,11 @@ abstract class _PushFilterSettings extends PushFilterSettings {
   @override
   @JsonKey(name: 'blockFromStrangers')
   @HiveField(1)
-  bool? get blockFromStrangers => throw _privateConstructorUsedError;
+  bool? get blockFromStrangers;
   @override
   @JsonKey(name: 'hideNotificationContents')
   @HiveField(2)
-  bool? get hideNotificationContents => throw _privateConstructorUsedError;
+  bool? get hideNotificationContents;
   @override
   @JsonKey(ignore: true)
   _$PushFilterSettingsCopyWith<_PushFilterSettings> get copyWith =>

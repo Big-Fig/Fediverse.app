@@ -32,7 +32,7 @@ class _$UnifediApiPaginationTearOff {
     );
   }
 
-  UnifediApiPagination fromJson(Map<String, Object> json) {
+  UnifediApiPagination fromJson(Map<String, Object?> json) {
     return UnifediApiPagination.fromJson(json);
   }
 }
@@ -178,21 +178,15 @@ class _$_UnifediApiPagination implements _UnifediApiPagination {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPagination &&
-            (identical(other.limit, limit) ||
-                const DeepCollectionEquality().equals(other.limit, limit)) &&
-            (identical(other.maxId, maxId) ||
-                const DeepCollectionEquality().equals(other.maxId, maxId)) &&
-            (identical(other.minId, minId) ||
-                const DeepCollectionEquality().equals(other.minId, minId)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPagination &&
+            (identical(other.limit, limit) || other.limit == limit) &&
+            (identical(other.maxId, maxId) || other.maxId == maxId) &&
+            (identical(other.minId, minId) || other.minId == minId));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(limit) ^
-      const DeepCollectionEquality().hash(maxId) ^
-      const DeepCollectionEquality().hash(minId);
+  int get hashCode => Object.hash(runtimeType, limit, maxId, minId);
 
   @JsonKey(ignore: true)
   @override
@@ -218,15 +212,15 @@ abstract class _UnifediApiPagination implements UnifediApiPagination {
 
   @override
   @HiveField(0)
-  int? get limit => throw _privateConstructorUsedError;
+  int? get limit;
   @override
   @HiveField(1)
   @JsonKey(name: 'max_id')
-  String? get maxId => throw _privateConstructorUsedError;
+  String? get maxId;
   @override
   @HiveField(2)
   @JsonKey(name: 'min_id')
-  String? get minId => throw _privateConstructorUsedError;
+  String? get minId;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPaginationCopyWith<_UnifediApiPagination> get copyWith =>

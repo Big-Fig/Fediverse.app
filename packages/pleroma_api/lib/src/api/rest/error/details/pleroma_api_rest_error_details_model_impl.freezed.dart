@@ -33,7 +33,7 @@ class _$PleromaApiRestErrorDetailsTearOff {
     );
   }
 
-  PleromaApiRestErrorDetails fromJson(Map<String, Object> json) {
+  PleromaApiRestErrorDetails fromJson(Map<String, Object?> json) {
     return PleromaApiRestErrorDetails.fromJson(json);
   }
 }
@@ -163,22 +163,16 @@ class _$_PleromaApiRestErrorDetails implements _PleromaApiRestErrorDetails {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiRestErrorDetails &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiRestErrorDetails &&
+            (identical(other.error, error) || other.error == error) &&
             (identical(other.identifier, identifier) ||
-                const DeepCollectionEquality()
-                    .equals(other.identifier, identifier)) &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality().equals(other.message, message)));
+                other.identifier == identifier) &&
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(identifier) ^
-      const DeepCollectionEquality().hash(message);
+  int get hashCode => Object.hash(runtimeType, error, identifier, message);
 
   @JsonKey(ignore: true)
   @override
@@ -203,11 +197,11 @@ abstract class _PleromaApiRestErrorDetails
       _$_PleromaApiRestErrorDetails.fromJson;
 
   @override
-  String? get error => throw _privateConstructorUsedError;
+  String? get error;
   @override
-  String? get identifier => throw _privateConstructorUsedError;
+  String? get identifier;
   @override
-  String? get message => throw _privateConstructorUsedError;
+  String? get message;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiRestErrorDetailsCopyWith<_PleromaApiRestErrorDetails>

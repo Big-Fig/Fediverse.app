@@ -283,7 +283,7 @@ scripts:
   test:driver:screenshots:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast -- \
-      flutter driver --no-pub --target=test_driver/screenshots.dart --flavor dev
+      flutter driver --no-pub --target=test_driver/screenshots.dart --flavor fluttertest
     description: Run test driver to iterate over screens used for screenshots as test(dev purpose)
     select-package:
       dir-exists: test_driver
@@ -300,7 +300,7 @@ scripts:
   screenshots:make:dev:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast --depends-on="screenshots" -- \
-      flutter pub global run screenshots:main --flavor dev -b false --config=screenshots_dev.yaml
+      flutter pub global run screenshots:main --flavor fluttertest -b false --config=screenshots_dev.yaml
     description: Run screenshots tool to generate screenshots via screenshots_dev.yaml config (dev purposes)
     select-package:
       dir-exists:
@@ -324,7 +324,7 @@ scripts:
   screenshots:make:android:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast --depends-on="screenshots" -- \
-      flutter pub global run screenshots:main --flavor dev -b false --config=screenshots_android.yaml
+      flutter pub global run screenshots:main --flavor fluttertest -b false --config=screenshots_android.yaml
     description: Run screenshots tool to generate screenshots via screenshots_android.yaml config
     select-package:
       dir-exists:
@@ -336,7 +336,7 @@ scripts:
   screenshots:make:ios:
     run: |
       flutter pub global run melos exec -c 1 --fail-fast --depends-on="screenshots" -- \
-      flutter pub global run screenshots:main --flavor dev -b false --config=screenshots_ios.yaml
+      flutter pub global run screenshots:main --flavor fluttertest -b false --config=screenshots_ios.yaml
     description: Run screenshots tool to generate screenshots via screenshots_ios.yaml config
     select-package:
       dir-exists:

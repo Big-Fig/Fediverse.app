@@ -545,15 +545,14 @@ class _$_BadRequest implements _BadRequest {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _BadRequest &&
+        (other.runtimeType == runtimeType &&
+            other is _BadRequest &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -801,7 +800,7 @@ abstract class _BadRequest implements RestResponseClientErrorCodeType {
   const factory _BadRequest({int intValue}) = _$_BadRequest;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$BadRequestCopyWith<_BadRequest> get copyWith =>
@@ -860,15 +859,14 @@ class _$_Unauthorized implements _Unauthorized {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unauthorized &&
+        (other.runtimeType == runtimeType &&
+            other is _Unauthorized &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1116,7 +1114,7 @@ abstract class _Unauthorized implements RestResponseClientErrorCodeType {
   const factory _Unauthorized({int intValue}) = _$_Unauthorized;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$UnauthorizedCopyWith<_Unauthorized> get copyWith =>
@@ -1177,15 +1175,14 @@ class _$_PaymentRequired implements _PaymentRequired {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PaymentRequired &&
+        (other.runtimeType == runtimeType &&
+            other is _PaymentRequired &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1433,7 +1430,7 @@ abstract class _PaymentRequired implements RestResponseClientErrorCodeType {
   const factory _PaymentRequired({int intValue}) = _$_PaymentRequired;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$PaymentRequiredCopyWith<_PaymentRequired> get copyWith =>
@@ -1491,15 +1488,14 @@ class _$_Forbidden implements _Forbidden {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Forbidden &&
+        (other.runtimeType == runtimeType &&
+            other is _Forbidden &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1747,7 +1743,7 @@ abstract class _Forbidden implements RestResponseClientErrorCodeType {
   const factory _Forbidden({int intValue}) = _$_Forbidden;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$ForbiddenCopyWith<_Forbidden> get copyWith =>
@@ -1804,15 +1800,14 @@ class _$_NotFound implements _NotFound {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotFound &&
+        (other.runtimeType == runtimeType &&
+            other is _NotFound &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -2060,7 +2055,7 @@ abstract class _NotFound implements RestResponseClientErrorCodeType {
   const factory _NotFound({int intValue}) = _$_NotFound;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$NotFoundCopyWith<_NotFound> get copyWith =>
@@ -2121,15 +2116,14 @@ class _$_MethodNotAllowed implements _MethodNotAllowed {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MethodNotAllowed &&
+        (other.runtimeType == runtimeType &&
+            other is _MethodNotAllowed &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -2377,7 +2371,7 @@ abstract class _MethodNotAllowed implements RestResponseClientErrorCodeType {
   const factory _MethodNotAllowed({int intValue}) = _$_MethodNotAllowed;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$MethodNotAllowedCopyWith<_MethodNotAllowed> get copyWith =>
@@ -2436,15 +2430,14 @@ class _$_NotAcceptable implements _NotAcceptable {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NotAcceptable &&
+        (other.runtimeType == runtimeType &&
+            other is _NotAcceptable &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -2692,7 +2685,7 @@ abstract class _NotAcceptable implements RestResponseClientErrorCodeType {
   const factory _NotAcceptable({int intValue}) = _$_NotAcceptable;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$NotAcceptableCopyWith<_NotAcceptable> get copyWith =>
@@ -2757,15 +2750,14 @@ class _$_ProxyAuthenticationRequired implements _ProxyAuthenticationRequired {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ProxyAuthenticationRequired &&
+        (other.runtimeType == runtimeType &&
+            other is _ProxyAuthenticationRequired &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -3016,7 +3008,7 @@ abstract class _ProxyAuthenticationRequired
       _$_ProxyAuthenticationRequired;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$ProxyAuthenticationRequiredCopyWith<_ProxyAuthenticationRequired>
@@ -3075,15 +3067,14 @@ class _$_RequestTimeout implements _RequestTimeout {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RequestTimeout &&
+        (other.runtimeType == runtimeType &&
+            other is _RequestTimeout &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -3331,7 +3322,7 @@ abstract class _RequestTimeout implements RestResponseClientErrorCodeType {
   const factory _RequestTimeout({int intValue}) = _$_RequestTimeout;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$RequestTimeoutCopyWith<_RequestTimeout> get copyWith =>
@@ -3388,15 +3379,14 @@ class _$_Conflict implements _Conflict {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Conflict &&
+        (other.runtimeType == runtimeType &&
+            other is _Conflict &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -3644,7 +3634,7 @@ abstract class _Conflict implements RestResponseClientErrorCodeType {
   const factory _Conflict({int intValue}) = _$_Conflict;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$ConflictCopyWith<_Conflict> get copyWith =>
@@ -3700,15 +3690,14 @@ class _$_Gone implements _Gone {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Gone &&
+        (other.runtimeType == runtimeType &&
+            other is _Gone &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -3956,7 +3945,7 @@ abstract class _Gone implements RestResponseClientErrorCodeType {
   const factory _Gone({int intValue}) = _$_Gone;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$GoneCopyWith<_Gone> get copyWith => throw _privateConstructorUsedError;
@@ -4014,15 +4003,14 @@ class _$_LengthRequired implements _LengthRequired {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _LengthRequired &&
+        (other.runtimeType == runtimeType &&
+            other is _LengthRequired &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -4270,7 +4258,7 @@ abstract class _LengthRequired implements RestResponseClientErrorCodeType {
   const factory _LengthRequired({int intValue}) = _$_LengthRequired;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$LengthRequiredCopyWith<_LengthRequired> get copyWith =>
@@ -4331,15 +4319,14 @@ class _$_PreconditionFailed implements _PreconditionFailed {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PreconditionFailed &&
+        (other.runtimeType == runtimeType &&
+            other is _PreconditionFailed &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -4587,7 +4574,7 @@ abstract class _PreconditionFailed implements RestResponseClientErrorCodeType {
   const factory _PreconditionFailed({int intValue}) = _$_PreconditionFailed;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$PreconditionFailedCopyWith<_PreconditionFailed> get copyWith =>
@@ -4648,15 +4635,14 @@ class _$_PayloadTooLarge implements _PayloadTooLarge {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PayloadTooLarge &&
+        (other.runtimeType == runtimeType &&
+            other is _PayloadTooLarge &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -4904,7 +4890,7 @@ abstract class _PayloadTooLarge implements RestResponseClientErrorCodeType {
   const factory _PayloadTooLarge({int intValue}) = _$_PayloadTooLarge;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$PayloadTooLargeCopyWith<_PayloadTooLarge> get copyWith =>
@@ -4963,15 +4949,14 @@ class _$_UriTooLong implements _UriTooLong {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UriTooLong &&
+        (other.runtimeType == runtimeType &&
+            other is _UriTooLong &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -5219,7 +5204,7 @@ abstract class _UriTooLong implements RestResponseClientErrorCodeType {
   const factory _UriTooLong({int intValue}) = _$_UriTooLong;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$UriTooLongCopyWith<_UriTooLong> get copyWith =>
@@ -5281,15 +5266,14 @@ class _$_UnsupportedMediaType implements _UnsupportedMediaType {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnsupportedMediaType &&
+        (other.runtimeType == runtimeType &&
+            other is _UnsupportedMediaType &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -5539,7 +5523,7 @@ abstract class _UnsupportedMediaType
   const factory _UnsupportedMediaType({int intValue}) = _$_UnsupportedMediaType;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$UnsupportedMediaTypeCopyWith<_UnsupportedMediaType> get copyWith =>
@@ -5600,15 +5584,14 @@ class _$_RangeNotSatisfiable implements _RangeNotSatisfiable {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RangeNotSatisfiable &&
+        (other.runtimeType == runtimeType &&
+            other is _RangeNotSatisfiable &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -5857,7 +5840,7 @@ abstract class _RangeNotSatisfiable implements RestResponseClientErrorCodeType {
   const factory _RangeNotSatisfiable({int intValue}) = _$_RangeNotSatisfiable;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$RangeNotSatisfiableCopyWith<_RangeNotSatisfiable> get copyWith =>
@@ -5918,15 +5901,14 @@ class _$_ExpectationFailed implements _ExpectationFailed {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ExpectationFailed &&
+        (other.runtimeType == runtimeType &&
+            other is _ExpectationFailed &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -6174,7 +6156,7 @@ abstract class _ExpectationFailed implements RestResponseClientErrorCodeType {
   const factory _ExpectationFailed({int intValue}) = _$_ExpectationFailed;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$ExpectationFailedCopyWith<_ExpectationFailed> get copyWith =>
@@ -6232,15 +6214,14 @@ class _$_IAmTeapot implements _IAmTeapot {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _IAmTeapot &&
+        (other.runtimeType == runtimeType &&
+            other is _IAmTeapot &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -6488,7 +6469,7 @@ abstract class _IAmTeapot implements RestResponseClientErrorCodeType {
   const factory _IAmTeapot({int intValue}) = _$_IAmTeapot;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$IAmTeapotCopyWith<_IAmTeapot> get copyWith =>
@@ -6549,15 +6530,14 @@ class _$_MisdirectRequest implements _MisdirectRequest {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MisdirectRequest &&
+        (other.runtimeType == runtimeType &&
+            other is _MisdirectRequest &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -6805,7 +6785,7 @@ abstract class _MisdirectRequest implements RestResponseClientErrorCodeType {
   const factory _MisdirectRequest({int intValue}) = _$_MisdirectRequest;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$MisdirectRequestCopyWith<_MisdirectRequest> get copyWith =>
@@ -6868,15 +6848,14 @@ class _$_UnprocessableEntityEntity implements _UnprocessableEntityEntity {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnprocessableEntityEntity &&
+        (other.runtimeType == runtimeType &&
+            other is _UnprocessableEntityEntity &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -7128,7 +7107,7 @@ abstract class _UnprocessableEntityEntity
       _$_UnprocessableEntityEntity;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$UnprocessableEntityEntityCopyWith<_UnprocessableEntityEntity>
@@ -7185,15 +7164,14 @@ class _$_Locked implements _Locked {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Locked &&
+        (other.runtimeType == runtimeType &&
+            other is _Locked &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -7441,7 +7419,7 @@ abstract class _Locked implements RestResponseClientErrorCodeType {
   const factory _Locked({int intValue}) = _$_Locked;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$LockedCopyWith<_Locked> get copyWith => throw _privateConstructorUsedError;
@@ -7501,15 +7479,14 @@ class _$_FailedDependency implements _FailedDependency {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FailedDependency &&
+        (other.runtimeType == runtimeType &&
+            other is _FailedDependency &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -7757,7 +7734,7 @@ abstract class _FailedDependency implements RestResponseClientErrorCodeType {
   const factory _FailedDependency({int intValue}) = _$_FailedDependency;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$FailedDependencyCopyWith<_FailedDependency> get copyWith =>
@@ -7814,15 +7791,14 @@ class _$_TooEarly implements _TooEarly {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TooEarly &&
+        (other.runtimeType == runtimeType &&
+            other is _TooEarly &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -8070,7 +8046,7 @@ abstract class _TooEarly implements RestResponseClientErrorCodeType {
   const factory _TooEarly({int intValue}) = _$_TooEarly;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$TooEarlyCopyWith<_TooEarly> get copyWith =>
@@ -8131,15 +8107,14 @@ class _$_UpgradeRequired implements _UpgradeRequired {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UpgradeRequired &&
+        (other.runtimeType == runtimeType &&
+            other is _UpgradeRequired &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -8387,7 +8362,7 @@ abstract class _UpgradeRequired implements RestResponseClientErrorCodeType {
   const factory _UpgradeRequired({int intValue}) = _$_UpgradeRequired;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$UpgradeRequiredCopyWith<_UpgradeRequired> get copyWith =>
@@ -8449,15 +8424,14 @@ class _$_PreconditionRequired implements _PreconditionRequired {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PreconditionRequired &&
+        (other.runtimeType == runtimeType &&
+            other is _PreconditionRequired &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -8707,7 +8681,7 @@ abstract class _PreconditionRequired
   const factory _PreconditionRequired({int intValue}) = _$_PreconditionRequired;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$PreconditionRequiredCopyWith<_PreconditionRequired> get copyWith =>
@@ -8768,15 +8742,14 @@ class _$_TooManyRequests implements _TooManyRequests {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _TooManyRequests &&
+        (other.runtimeType == runtimeType &&
+            other is _TooManyRequests &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -9024,7 +8997,7 @@ abstract class _TooManyRequests implements RestResponseClientErrorCodeType {
   const factory _TooManyRequests({int intValue}) = _$_TooManyRequests;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$TooManyRequestsCopyWith<_TooManyRequests> get copyWith =>
@@ -9089,15 +9062,14 @@ class _$_RequestHeaderFieldsTooLarge implements _RequestHeaderFieldsTooLarge {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RequestHeaderFieldsTooLarge &&
+        (other.runtimeType == runtimeType &&
+            other is _RequestHeaderFieldsTooLarge &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -9348,7 +9320,7 @@ abstract class _RequestHeaderFieldsTooLarge
       _$_RequestHeaderFieldsTooLarge;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$RequestHeaderFieldsTooLargeCopyWith<_RequestHeaderFieldsTooLarge>
@@ -9412,15 +9384,14 @@ class _$_UnavailableForLegalReasons implements _UnavailableForLegalReasons {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnavailableForLegalReasons &&
+        (other.runtimeType == runtimeType &&
+            other is _UnavailableForLegalReasons &&
             (identical(other.intValue, intValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.intValue, intValue)));
+                other.intValue == intValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(intValue);
+  int get hashCode => Object.hash(runtimeType, intValue);
 
   @JsonKey(ignore: true)
   @override
@@ -9671,7 +9642,7 @@ abstract class _UnavailableForLegalReasons
       _$_UnavailableForLegalReasons;
 
   @override
-  int get intValue => throw _privateConstructorUsedError;
+  int get intValue;
   @override
   @JsonKey(ignore: true)
   _$UnavailableForLegalReasonsCopyWith<_UnavailableForLegalReasons>

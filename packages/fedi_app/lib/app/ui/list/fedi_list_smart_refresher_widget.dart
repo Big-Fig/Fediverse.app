@@ -1,4 +1,3 @@
-import 'package:fedi_app/app/app_model.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/ui/list/fedi_list_smart_refresher_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,7 +54,7 @@ class FediListSmartRefresherWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var configService = IConfigService.of(context);
-    if (configService.appLaunchType == AppLaunchType.mock) {
+    if (configService.disableSmartRefresher == true) {
       // todo: remove hack
       // SmartRefresher broke UI tests
       // https://github.com/peng8350/flutter_pulltorefresh/issues/504

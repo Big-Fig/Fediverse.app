@@ -158,23 +158,16 @@ class _$_RestResponse implements _RestResponse {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RestResponse &&
-            (identical(other.request, request) ||
-                const DeepCollectionEquality()
-                    .equals(other.request, request)) &&
+        (other.runtimeType == runtimeType &&
+            other is _RestResponse &&
+            (identical(other.request, request) || other.request == request) &&
             (identical(other.statusCode, statusCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusCode, statusCode)) &&
-            (identical(other.content, content) ||
-                const DeepCollectionEquality().equals(other.content, content)));
+                other.statusCode == statusCode) &&
+            (identical(other.content, content) || other.content == content));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(request) ^
-      const DeepCollectionEquality().hash(statusCode) ^
-      const DeepCollectionEquality().hash(content);
+  int get hashCode => Object.hash(runtimeType, request, statusCode, content);
 
   @JsonKey(ignore: true)
   @override
@@ -189,11 +182,11 @@ abstract class _RestResponse implements RestResponse {
       required String? content}) = _$_RestResponse;
 
   @override
-  RestRequest get request => throw _privateConstructorUsedError;
+  RestRequest get request;
   @override
-  int get statusCode => throw _privateConstructorUsedError;
+  int get statusCode;
   @override
-  String? get content => throw _privateConstructorUsedError;
+  String? get content;
   @override
   @JsonKey(ignore: true)
   _$RestResponseCopyWith<_RestResponse> get copyWith =>

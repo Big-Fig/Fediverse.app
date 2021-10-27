@@ -30,7 +30,7 @@ class _$MediaSettingsTearOff {
     );
   }
 
-  MediaSettings fromJson(Map<String, Object> json) {
+  MediaSettings fromJson(Map<String, Object?> json) {
     return MediaSettings.fromJson(json);
   }
 }
@@ -159,20 +159,16 @@ class _$_MediaSettings extends _MediaSettings {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MediaSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _MediaSettings &&
             (identical(other.autoInit, autoInit) ||
-                const DeepCollectionEquality()
-                    .equals(other.autoInit, autoInit)) &&
+                other.autoInit == autoInit) &&
             (identical(other.autoPlay, autoPlay) ||
-                const DeepCollectionEquality()
-                    .equals(other.autoPlay, autoPlay)));
+                other.autoPlay == autoPlay));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(autoInit) ^
-      const DeepCollectionEquality().hash(autoPlay);
+  int get hashCode => Object.hash(runtimeType, autoInit, autoPlay);
 
   @JsonKey(ignore: true)
   @override
@@ -198,11 +194,11 @@ abstract class _MediaSettings extends MediaSettings {
   @override
   @HiveField(0)
   @JsonKey(name: 'auto_init')
-  bool get autoInit => throw _privateConstructorUsedError;
+  bool get autoInit;
   @override
   @HiveField(1)
   @JsonKey(name: 'auto_play')
-  bool get autoPlay => throw _privateConstructorUsedError;
+  bool get autoPlay;
   @override
   @JsonKey(ignore: true)
   _$MediaSettingsCopyWith<_MediaSettings> get copyWith =>

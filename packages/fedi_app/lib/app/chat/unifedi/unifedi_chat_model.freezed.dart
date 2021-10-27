@@ -132,19 +132,17 @@ class _$_DbUnifediChatPopulated implements _DbUnifediChatPopulated {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbUnifediChatPopulated &&
-            (identical(other.dbChat, dbChat) ||
-                const DeepCollectionEquality().equals(other.dbChat, dbChat)) &&
-            (identical(other.dbAccount, dbAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbAccount, dbAccount)));
+        (other.runtimeType == runtimeType &&
+            other is _DbUnifediChatPopulated &&
+            const DeepCollectionEquality().equals(other.dbChat, dbChat) &&
+            const DeepCollectionEquality().equals(other.dbAccount, dbAccount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbChat) ^
-      const DeepCollectionEquality().hash(dbAccount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(dbChat),
+      const DeepCollectionEquality().hash(dbAccount));
 
   @JsonKey(ignore: true)
   @override
@@ -159,9 +157,9 @@ abstract class _DbUnifediChatPopulated implements DbUnifediChatPopulated {
       required DbAccount dbAccount}) = _$_DbUnifediChatPopulated;
 
   @override
-  DbChat get dbChat => throw _privateConstructorUsedError;
+  DbChat get dbChat;
   @override
-  DbAccount get dbAccount => throw _privateConstructorUsedError;
+  DbAccount get dbAccount;
   @override
   @JsonKey(ignore: true)
   _$DbUnifediChatPopulatedCopyWith<_DbUnifediChatPopulated> get copyWith =>
@@ -331,20 +329,17 @@ class _$_DbUnifediChatWithLastMessagePopulated
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbUnifediChatWithLastMessagePopulated &&
+        (other.runtimeType == runtimeType &&
+            other is _DbUnifediChatWithLastMessagePopulated &&
             (identical(other.dbUnifediChatPopulated, dbUnifediChatPopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbUnifediChatPopulated, dbUnifediChatPopulated)) &&
+                other.dbUnifediChatPopulated == dbUnifediChatPopulated) &&
             (identical(other.dbChatMessagePopulated, dbChatMessagePopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbChatMessagePopulated, dbChatMessagePopulated)));
+                other.dbChatMessagePopulated == dbChatMessagePopulated));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbUnifediChatPopulated) ^
-      const DeepCollectionEquality().hash(dbChatMessagePopulated);
+      Object.hash(runtimeType, dbUnifediChatPopulated, dbChatMessagePopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -362,11 +357,9 @@ abstract class _DbUnifediChatWithLastMessagePopulated
       _$_DbUnifediChatWithLastMessagePopulated;
 
   @override
-  DbUnifediChatPopulated get dbUnifediChatPopulated =>
-      throw _privateConstructorUsedError;
+  DbUnifediChatPopulated get dbUnifediChatPopulated;
   @override
-  DbChatMessagePopulated? get dbChatMessagePopulated =>
-      throw _privateConstructorUsedError;
+  DbChatMessagePopulated? get dbChatMessagePopulated;
   @override
   @JsonKey(ignore: true)
   _$DbUnifediChatWithLastMessagePopulatedCopyWith<
@@ -517,19 +510,17 @@ class _$_DbUnifediChatWithLastMessagePopulatedWrapper
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbUnifediChatWithLastMessagePopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbUnifediChatWithLastMessagePopulatedWrapper &&
             (identical(other.dbUnifediChatWithLastMessagePopulated,
                     dbUnifediChatWithLastMessagePopulated) ||
-                const DeepCollectionEquality().equals(
-                    other.dbUnifediChatWithLastMessagePopulated,
-                    dbUnifediChatWithLastMessagePopulated)));
+                other.dbUnifediChatWithLastMessagePopulated ==
+                    dbUnifediChatWithLastMessagePopulated));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality()
-          .hash(dbUnifediChatWithLastMessagePopulated);
+      Object.hash(runtimeType, dbUnifediChatWithLastMessagePopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -550,8 +541,7 @@ abstract class _DbUnifediChatWithLastMessagePopulatedWrapper
 
   @override
   DbUnifediChatWithLastMessagePopulated
-      get dbUnifediChatWithLastMessagePopulated =>
-          throw _privateConstructorUsedError;
+      get dbUnifediChatWithLastMessagePopulated;
   @override
   @JsonKey(ignore: true)
   _$DbUnifediChatWithLastMessagePopulatedWrapperCopyWith<
@@ -682,16 +672,14 @@ class _$_DbUnifediChatPopulatedWrapper extends _DbUnifediChatPopulatedWrapper {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DbUnifediChatPopulatedWrapper &&
+        (other.runtimeType == runtimeType &&
+            other is _DbUnifediChatPopulatedWrapper &&
             (identical(other.dbChatPopulated, dbChatPopulated) ||
-                const DeepCollectionEquality()
-                    .equals(other.dbChatPopulated, dbChatPopulated)));
+                other.dbChatPopulated == dbChatPopulated));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(dbChatPopulated);
+  int get hashCode => Object.hash(runtimeType, dbChatPopulated);
 
   @JsonKey(ignore: true)
   @override
@@ -708,8 +696,7 @@ abstract class _DbUnifediChatPopulatedWrapper
   const _DbUnifediChatPopulatedWrapper._() : super._();
 
   @override
-  DbUnifediChatPopulated get dbChatPopulated =>
-      throw _privateConstructorUsedError;
+  DbUnifediChatPopulated get dbChatPopulated;
   @override
   @JsonKey(ignore: true)
   _$DbUnifediChatPopulatedWrapperCopyWith<_DbUnifediChatPopulatedWrapper>

@@ -159,24 +159,19 @@ class _$_InstanceAnnouncementRepositoryFilters
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _InstanceAnnouncementRepositoryFilters &&
+        (other.runtimeType == runtimeType &&
+            other is _InstanceAnnouncementRepositoryFilters &&
             (identical(other.withDismissed, withDismissed) ||
-                const DeepCollectionEquality()
-                    .equals(other.withDismissed, withDismissed)) &&
+                other.withDismissed == withDismissed) &&
             (identical(other.withExpired, withExpired) ||
-                const DeepCollectionEquality()
-                    .equals(other.withExpired, withExpired)) &&
+                other.withExpired == withExpired) &&
             (identical(other.withNotStartedYet, withNotStartedYet) ||
-                const DeepCollectionEquality()
-                    .equals(other.withNotStartedYet, withNotStartedYet)));
+                other.withNotStartedYet == withNotStartedYet));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(withDismissed) ^
-      const DeepCollectionEquality().hash(withExpired) ^
-      const DeepCollectionEquality().hash(withNotStartedYet);
+      Object.hash(runtimeType, withDismissed, withExpired, withNotStartedYet);
 
   @JsonKey(ignore: true)
   @override
@@ -196,11 +191,11 @@ abstract class _InstanceAnnouncementRepositoryFilters
   const _InstanceAnnouncementRepositoryFilters._() : super._();
 
   @override
-  bool? get withDismissed => throw _privateConstructorUsedError;
+  bool? get withDismissed;
   @override
-  bool? get withExpired => throw _privateConstructorUsedError;
+  bool? get withExpired;
   @override
-  bool? get withNotStartedYet => throw _privateConstructorUsedError;
+  bool? get withNotStartedYet;
   @override
   @JsonKey(ignore: true)
   _$InstanceAnnouncementRepositoryFiltersCopyWith<
@@ -341,20 +336,16 @@ class _$_InstanceAnnouncementOrderingTermData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _InstanceAnnouncementOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _InstanceAnnouncementOrderingTermData &&
             (identical(other.orderType, orderType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderType, orderType)) &&
+                other.orderType == orderType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -373,10 +364,9 @@ abstract class _InstanceAnnouncementOrderingTermData
   const _InstanceAnnouncementOrderingTermData._() : super._();
 
   @override
-  InstanceAnnouncementOrderType get orderType =>
-      throw _privateConstructorUsedError;
+  InstanceAnnouncementOrderType get orderType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$InstanceAnnouncementOrderingTermDataCopyWith<

@@ -31,7 +31,7 @@ class _$CustomEmojiPickerCodeItemTearOff {
     );
   }
 
-  CustomEmojiPickerCodeItem fromJson(Map<String, Object> json) {
+  CustomEmojiPickerCodeItem fromJson(Map<String, Object?> json) {
     return CustomEmojiPickerCodeItem.fromJson(json);
   }
 }
@@ -152,18 +152,14 @@ class _$_CustomEmojiPickerCodeItem extends _CustomEmojiPickerCodeItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CustomEmojiPickerCodeItem &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.code, code) ||
-                const DeepCollectionEquality().equals(other.code, code)));
+        (other.runtimeType == runtimeType &&
+            other is _CustomEmojiPickerCodeItem &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.code, code) || other.code == code));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(code);
+  int get hashCode => Object.hash(runtimeType, name, code);
 
   @JsonKey(ignore: true)
   @override
@@ -189,10 +185,10 @@ abstract class _CustomEmojiPickerCodeItem extends CustomEmojiPickerCodeItem {
 
   @override
   @HiveField(0)
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @HiveField(1)
-  String get code => throw _privateConstructorUsedError;
+  String get code;
   @override
   @JsonKey(ignore: true)
   _$CustomEmojiPickerCodeItemCopyWith<_CustomEmojiPickerCodeItem>

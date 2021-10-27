@@ -46,7 +46,7 @@ class _$UnifediApiTagTearOff {
     );
   }
 
-  UnifediApiTag fromJson(Map<String, Object> json) {
+  UnifediApiTag fromJson(Map<String, Object?> json) {
     return UnifediApiTag.fromJson(json);
   }
 }
@@ -270,33 +270,21 @@ class _$_UnifediApiTag implements _UnifediApiTag {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiTag &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
-            (identical(other.history, history) ||
-                const DeepCollectionEquality()
-                    .equals(other.history, history)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiTag &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.history, history) || other.history == history) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.lastStatusAt, lastStatusAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastStatusAt, lastStatusAt)) &&
+                other.lastStatusAt == lastStatusAt) &&
             (identical(other.statusesCount, statusesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusesCount, statusesCount)));
+                other.statusesCount == statusesCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(history) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(lastStatusAt) ^
-      const DeepCollectionEquality().hash(statusesCount);
+  int get hashCode => Object.hash(
+      runtimeType, name, url, history, id, lastStatusAt, statusesCount);
 
   @JsonKey(ignore: true)
   @override
@@ -331,24 +319,24 @@ abstract class _UnifediApiTag implements UnifediApiTag {
 
   @override
   @HiveField(0)
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @HiveField(1)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @HiveField(2)
-  UnifediApiTagHistory? get history => throw _privateConstructorUsedError;
+  UnifediApiTagHistory? get history;
   @override
   @HiveField(3)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @JsonKey(name: 'last_status_at')
   @HiveField(4)
-  DateTime? get lastStatusAt => throw _privateConstructorUsedError;
+  DateTime? get lastStatusAt;
   @override
   @JsonKey(name: 'statuses_count')
   @HiveField(5)
-  int? get statusesCount => throw _privateConstructorUsedError;
+  int? get statusesCount;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiTagCopyWith<_UnifediApiTag> get copyWith =>

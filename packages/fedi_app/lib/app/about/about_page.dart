@@ -98,17 +98,17 @@ class AboutPage extends StatelessWidget {
                   valueUrl: gitHubUrl,
                 ),
               if (Platform.isAndroid &&
-                  configService.joinBetaAndroidUrl != null)
+                  configService.joinBetaUrlAndroid != null)
                 _AboutPageRowWidget(
                   label: S.of(context).app_about_field_joinBeta_label,
                   value: S.of(context).app_about_learnMore,
-                  valueUrl: configService.joinBetaAndroidUrl,
+                  valueUrl: configService.joinBetaUrlAndroid,
                 ),
-              if (Platform.isIOS && configService.joinBetaIosUrl != null)
+              if (Platform.isIOS && configService.joinBetaUrlIos != null)
                 _AboutPageRowWidget(
                   label: S.of(context).app_about_field_joinBeta_label,
                   value: S.of(context).app_about_learnMore,
-                  valueUrl: configService.joinBetaIosUrl,
+                  valueUrl: configService.joinBetaUrlIos,
                 ),
             ],
           ),

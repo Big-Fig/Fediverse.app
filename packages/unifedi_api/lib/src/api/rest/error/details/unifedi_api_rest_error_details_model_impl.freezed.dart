@@ -33,7 +33,7 @@ class _$UnifediApiRestErrorDetailsTearOff {
     );
   }
 
-  UnifediApiRestErrorDetails fromJson(Map<String, Object> json) {
+  UnifediApiRestErrorDetails fromJson(Map<String, Object?> json) {
     return UnifediApiRestErrorDetails.fromJson(json);
   }
 }
@@ -170,23 +170,17 @@ class _$_UnifediApiRestErrorDetails implements _UnifediApiRestErrorDetails {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiRestErrorDetails &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiRestErrorDetails &&
             (identical(other.identifier, identifier) ||
-                const DeepCollectionEquality()
-                    .equals(other.identifier, identifier)) &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality().equals(other.details, details)));
+                other.identifier == identifier) &&
+            (identical(other.message, message) || other.message == message) &&
+            const DeepCollectionEquality().equals(other.details, details));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(identifier) ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(details);
+  int get hashCode => Object.hash(runtimeType, identifier, message,
+      const DeepCollectionEquality().hash(details));
 
   @JsonKey(ignore: true)
   @override
@@ -212,12 +206,11 @@ abstract class _UnifediApiRestErrorDetails
       _$_UnifediApiRestErrorDetails.fromJson;
 
   @override
-  String? get identifier => throw _privateConstructorUsedError;
+  String? get identifier;
   @override
-  String? get message => throw _privateConstructorUsedError;
+  String? get message;
   @override
-  Map<String, List<UnifediApiRestErrorDetails>>? get details =>
-      throw _privateConstructorUsedError;
+  Map<String, List<UnifediApiRestErrorDetails>>? get details;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiRestErrorDetailsCopyWith<_UnifediApiRestErrorDetails>

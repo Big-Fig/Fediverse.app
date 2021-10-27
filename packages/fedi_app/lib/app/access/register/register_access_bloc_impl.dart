@@ -62,6 +62,7 @@ class RegisterAccessBloc extends AsyncInitLoadingBloc
     required this.configService,
   }) {
     memoryUnifediApiAccessBloc = MemoryAccessBloc(
+      configService: configService,
       access: UnifediApiAccess(
         url: instanceBaseUri.toString(),
         instance: null,

@@ -31,7 +31,7 @@ class _$MastodonApiOAuthTokenTearOff {
     );
   }
 
-  MastodonApiOAuthToken fromJson(Map<String, Object> json) {
+  MastodonApiOAuthToken fromJson(Map<String, Object?> json) {
     return MastodonApiOAuthToken.fromJson(json);
   }
 }
@@ -159,20 +159,16 @@ class _$_MastodonApiOAuthToken implements _MastodonApiOAuthToken {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiOAuthToken &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiOAuthToken &&
             (identical(other.accessToken, accessToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.accessToken, accessToken)) &&
+                other.accessToken == accessToken) &&
             (identical(other.tokenType, tokenType) ||
-                const DeepCollectionEquality()
-                    .equals(other.tokenType, tokenType)));
+                other.tokenType == tokenType));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(accessToken) ^
-      const DeepCollectionEquality().hash(tokenType);
+  int get hashCode => Object.hash(runtimeType, accessToken, tokenType);
 
   @JsonKey(ignore: true)
   @override
@@ -201,11 +197,11 @@ abstract class _MastodonApiOAuthToken implements MastodonApiOAuthToken {
   @override
   @HiveField(0)
   @JsonKey(name: 'access_token')
-  String get accessToken => throw _privateConstructorUsedError;
+  String get accessToken;
   @override
   @HiveField(1)
   @JsonKey(name: 'token_type')
-  String get tokenType => throw _privateConstructorUsedError;
+  String get tokenType;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiOAuthTokenCopyWith<_MastodonApiOAuthToken> get copyWith =>

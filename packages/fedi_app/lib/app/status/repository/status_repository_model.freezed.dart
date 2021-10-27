@@ -164,20 +164,17 @@ class _$_UnifediApiReplyVisibilityFilterCondition
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiReplyVisibilityFilterCondition &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiReplyVisibilityFilterCondition &&
             (identical(other.myAccountRemoteId, myAccountRemoteId) ||
-                const DeepCollectionEquality()
-                    .equals(other.myAccountRemoteId, myAccountRemoteId)) &&
+                other.myAccountRemoteId == myAccountRemoteId) &&
             (identical(other.replyVisibilityFilter, replyVisibilityFilter) ||
-                const DeepCollectionEquality().equals(
-                    other.replyVisibilityFilter, replyVisibilityFilter)));
+                other.replyVisibilityFilter == replyVisibilityFilter));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(myAccountRemoteId) ^
-      const DeepCollectionEquality().hash(replyVisibilityFilter);
+      Object.hash(runtimeType, myAccountRemoteId, replyVisibilityFilter);
 
   @JsonKey(ignore: true)
   @override
@@ -195,10 +192,9 @@ abstract class _UnifediApiReplyVisibilityFilterCondition
       _$_UnifediApiReplyVisibilityFilterCondition;
 
   @override
-  String? get myAccountRemoteId => throw _privateConstructorUsedError;
+  String? get myAccountRemoteId;
   @override
-  UnifediApiReplyVisibilityFilter? get replyVisibilityFilter =>
-      throw _privateConstructorUsedError;
+  UnifediApiReplyVisibilityFilter? get replyVisibilityFilter;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiReplyVisibilityFilterConditionCopyWith<
@@ -761,90 +757,86 @@ class _$_StatusRepositoryFilters extends _StatusRepositoryFilters {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StatusRepositoryFilters &&
+        (other.runtimeType == runtimeType &&
+            other is _StatusRepositoryFilters &&
             (identical(other.onlyInListWithRemoteId, onlyInListWithRemoteId) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyInListWithRemoteId, onlyInListWithRemoteId)) &&
+                other.onlyInListWithRemoteId == onlyInListWithRemoteId) &&
             (identical(other.onlyWithHashtag, onlyWithHashtag) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyWithHashtag, onlyWithHashtag)) &&
-            (identical(other.onlyFromAccountsFollowingByAccount, onlyFromAccountsFollowingByAccount) ||
-                const DeepCollectionEquality().equals(
-                    other.onlyFromAccountsFollowingByAccount,
-                    onlyFromAccountsFollowingByAccount)) &&
+                other.onlyWithHashtag == onlyWithHashtag) &&
+            (identical(other.onlyFromAccountsFollowingByAccount,
+                    onlyFromAccountsFollowingByAccount) ||
+                other.onlyFromAccountsFollowingByAccount ==
+                    onlyFromAccountsFollowingByAccount) &&
             (identical(other.onlyFromAccount, onlyFromAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyFromAccount, onlyFromAccount)) &&
+                other.onlyFromAccount == onlyFromAccount) &&
             (identical(other.onlyInConversation, onlyInConversation) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyInConversation, onlyInConversation)) &&
+                other.onlyInConversation == onlyInConversation) &&
             (identical(other.onlyLocalCondition, onlyLocalCondition) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyLocalCondition, onlyLocalCondition)) &&
+                other.onlyLocalCondition == onlyLocalCondition) &&
             (identical(other.onlyWithMedia, onlyWithMedia) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyWithMedia, onlyWithMedia)) &&
+                other.onlyWithMedia == onlyWithMedia) &&
             (identical(other.withMuted, withMuted) ||
-                const DeepCollectionEquality()
-                    .equals(other.withMuted, withMuted)) &&
-            (identical(other.excludeVisibilities, excludeVisibilities) ||
-                const DeepCollectionEquality()
-                    .equals(other.excludeVisibilities, excludeVisibilities)) &&
+                other.withMuted == withMuted) &&
+            const DeepCollectionEquality()
+                .equals(other.excludeVisibilities, excludeVisibilities) &&
             (identical(other.onlyNoNsfwSensitive, onlyNoNsfwSensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyNoNsfwSensitive, onlyNoNsfwSensitive)) &&
+                other.onlyNoNsfwSensitive == onlyNoNsfwSensitive) &&
             (identical(other.onlyNoReplies, onlyNoReplies) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyNoReplies, onlyNoReplies)) &&
+                other.onlyNoReplies == onlyNoReplies) &&
             (identical(other.isFromHomeTimeline, isFromHomeTimeline) ||
-                const DeepCollectionEquality()
-                    .equals(other.isFromHomeTimeline, isFromHomeTimeline)) &&
+                other.isFromHomeTimeline == isFromHomeTimeline) &&
             (identical(other.onlyFavourited, onlyFavourited) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyFavourited, onlyFavourited)) &&
+                other.onlyFavourited == onlyFavourited) &&
             (identical(other.onlyBookmarked, onlyBookmarked) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyBookmarked, onlyBookmarked)) &&
-            (identical(other.excludeTextConditions, excludeTextConditions) ||
-                const DeepCollectionEquality().equals(
-                    other.excludeTextConditions, excludeTextConditions)) &&
+                other.onlyBookmarked == onlyBookmarked) &&
+            const DeepCollectionEquality()
+                .equals(other.excludeTextConditions, excludeTextConditions) &&
             (identical(other.onlyNotDeleted, onlyNotDeleted) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyNotDeleted, onlyNotDeleted)) &&
+                other.onlyNotDeleted == onlyNotDeleted) &&
             (identical(other.onlyNotHiddenLocallyOnDevice, onlyNotHiddenLocallyOnDevice) ||
-                const DeepCollectionEquality().equals(other.onlyNotHiddenLocallyOnDevice, onlyNotHiddenLocallyOnDevice)) &&
-            (identical(other.onlyRemoteCondition, onlyRemoteCondition) || const DeepCollectionEquality().equals(other.onlyRemoteCondition, onlyRemoteCondition)) &&
-            (identical(other.mustBeConversationItem, mustBeConversationItem) || const DeepCollectionEquality().equals(other.mustBeConversationItem, mustBeConversationItem)) &&
-            (identical(other.onlyFromInstance, onlyFromInstance) || const DeepCollectionEquality().equals(other.onlyFromInstance, onlyFromInstance)) &&
-            (identical(other.replyVisibilityFilterCondition, replyVisibilityFilterCondition) || const DeepCollectionEquality().equals(other.replyVisibilityFilterCondition, replyVisibilityFilterCondition)) &&
-            (identical(other.onlyPendingStatePublishedOrNull, onlyPendingStatePublishedOrNull) || const DeepCollectionEquality().equals(other.onlyPendingStatePublishedOrNull, onlyPendingStatePublishedOrNull)));
+                other.onlyNotHiddenLocallyOnDevice ==
+                    onlyNotHiddenLocallyOnDevice) &&
+            (identical(other.onlyRemoteCondition, onlyRemoteCondition) ||
+                other.onlyRemoteCondition == onlyRemoteCondition) &&
+            (identical(other.mustBeConversationItem, mustBeConversationItem) ||
+                other.mustBeConversationItem == mustBeConversationItem) &&
+            (identical(other.onlyFromInstance, onlyFromInstance) ||
+                other.onlyFromInstance == onlyFromInstance) &&
+            (identical(other.replyVisibilityFilterCondition,
+                    replyVisibilityFilterCondition) ||
+                other.replyVisibilityFilterCondition ==
+                    replyVisibilityFilterCondition) &&
+            (identical(other.onlyPendingStatePublishedOrNull,
+                    onlyPendingStatePublishedOrNull) ||
+                other.onlyPendingStatePublishedOrNull == onlyPendingStatePublishedOrNull));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(onlyInListWithRemoteId) ^
-      const DeepCollectionEquality().hash(onlyWithHashtag) ^
-      const DeepCollectionEquality().hash(onlyFromAccountsFollowingByAccount) ^
-      const DeepCollectionEquality().hash(onlyFromAccount) ^
-      const DeepCollectionEquality().hash(onlyInConversation) ^
-      const DeepCollectionEquality().hash(onlyLocalCondition) ^
-      const DeepCollectionEquality().hash(onlyWithMedia) ^
-      const DeepCollectionEquality().hash(withMuted) ^
-      const DeepCollectionEquality().hash(excludeVisibilities) ^
-      const DeepCollectionEquality().hash(onlyNoNsfwSensitive) ^
-      const DeepCollectionEquality().hash(onlyNoReplies) ^
-      const DeepCollectionEquality().hash(isFromHomeTimeline) ^
-      const DeepCollectionEquality().hash(onlyFavourited) ^
-      const DeepCollectionEquality().hash(onlyBookmarked) ^
-      const DeepCollectionEquality().hash(excludeTextConditions) ^
-      const DeepCollectionEquality().hash(onlyNotDeleted) ^
-      const DeepCollectionEquality().hash(onlyNotHiddenLocallyOnDevice) ^
-      const DeepCollectionEquality().hash(onlyRemoteCondition) ^
-      const DeepCollectionEquality().hash(mustBeConversationItem) ^
-      const DeepCollectionEquality().hash(onlyFromInstance) ^
-      const DeepCollectionEquality().hash(replyVisibilityFilterCondition) ^
-      const DeepCollectionEquality().hash(onlyPendingStatePublishedOrNull);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        onlyInListWithRemoteId,
+        onlyWithHashtag,
+        onlyFromAccountsFollowingByAccount,
+        onlyFromAccount,
+        onlyInConversation,
+        onlyLocalCondition,
+        onlyWithMedia,
+        withMuted,
+        const DeepCollectionEquality().hash(excludeVisibilities),
+        onlyNoNsfwSensitive,
+        onlyNoReplies,
+        isFromHomeTimeline,
+        onlyFavourited,
+        onlyBookmarked,
+        const DeepCollectionEquality().hash(excludeTextConditions),
+        onlyNotDeleted,
+        onlyNotHiddenLocallyOnDevice,
+        onlyRemoteCondition,
+        mustBeConversationItem,
+        onlyFromInstance,
+        replyVisibilityFilterCondition,
+        onlyPendingStatePublishedOrNull
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -881,57 +873,49 @@ abstract class _StatusRepositoryFilters extends StatusRepositoryFilters {
   const _StatusRepositoryFilters._() : super._();
 
   @override
-  String? get onlyInListWithRemoteId => throw _privateConstructorUsedError;
+  String? get onlyInListWithRemoteId;
   @override
-  String? get onlyWithHashtag => throw _privateConstructorUsedError;
+  String? get onlyWithHashtag;
   @override
-  IAccount? get onlyFromAccountsFollowingByAccount =>
-      throw _privateConstructorUsedError;
+  IAccount? get onlyFromAccountsFollowingByAccount;
   @override
-  IAccount? get onlyFromAccount => throw _privateConstructorUsedError;
+  IAccount? get onlyFromAccount;
   @override
-  IConversationChat? get onlyInConversation =>
-      throw _privateConstructorUsedError;
+  IConversationChat? get onlyInConversation;
   @override
-  StatusOnlyLocalCondition? get onlyLocalCondition =>
-      throw _privateConstructorUsedError;
+  StatusOnlyLocalCondition? get onlyLocalCondition;
   @override
-  bool? get onlyWithMedia => throw _privateConstructorUsedError;
+  bool? get onlyWithMedia;
   @override
-  bool? get withMuted => throw _privateConstructorUsedError;
+  bool? get withMuted;
   @override
-  List<UnifediApiVisibility>? get excludeVisibilities =>
-      throw _privateConstructorUsedError;
+  List<UnifediApiVisibility>? get excludeVisibilities;
   @override
-  bool? get onlyNoNsfwSensitive => throw _privateConstructorUsedError;
+  bool? get onlyNoNsfwSensitive;
   @override
-  bool? get onlyNoReplies => throw _privateConstructorUsedError;
+  bool? get onlyNoReplies;
   @override
-  bool? get isFromHomeTimeline => throw _privateConstructorUsedError;
+  bool? get isFromHomeTimeline;
   @override
-  bool? get onlyFavourited => throw _privateConstructorUsedError;
+  bool? get onlyFavourited;
   @override
-  bool? get onlyBookmarked => throw _privateConstructorUsedError;
+  bool? get onlyBookmarked;
   @override
-  List<StatusTextCondition>? get excludeTextConditions =>
-      throw _privateConstructorUsedError;
+  List<StatusTextCondition>? get excludeTextConditions;
   @override
-  bool get onlyNotDeleted => throw _privateConstructorUsedError;
+  bool get onlyNotDeleted;
   @override
-  bool get onlyNotHiddenLocallyOnDevice => throw _privateConstructorUsedError;
+  bool get onlyNotHiddenLocallyOnDevice;
   @override
-  StatusOnlyRemoteCondition? get onlyRemoteCondition =>
-      throw _privateConstructorUsedError;
+  StatusOnlyRemoteCondition? get onlyRemoteCondition;
   @override
-  bool get mustBeConversationItem => throw _privateConstructorUsedError;
+  bool get mustBeConversationItem;
   @override
-  String? get onlyFromInstance => throw _privateConstructorUsedError;
+  String? get onlyFromInstance;
   @override
-  UnifediApiReplyVisibilityFilterCondition?
-      get replyVisibilityFilterCondition => throw _privateConstructorUsedError;
+  UnifediApiReplyVisibilityFilterCondition? get replyVisibilityFilterCondition;
   @override
-  bool get onlyPendingStatePublishedOrNull =>
-      throw _privateConstructorUsedError;
+  bool get onlyPendingStatePublishedOrNull;
   @override
   @JsonKey(ignore: true)
   _$StatusRepositoryFiltersCopyWith<_StatusRepositoryFilters> get copyWith =>
@@ -1067,20 +1051,16 @@ class _$_StatusRepositoryOrderingTermData
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StatusRepositoryOrderingTermData &&
+        (other.runtimeType == runtimeType &&
+            other is _StatusRepositoryOrderingTermData &&
             (identical(other.orderByType, orderByType) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderByType, orderByType)) &&
+                other.orderByType == orderByType) &&
             (identical(other.orderingMode, orderingMode) ||
-                const DeepCollectionEquality()
-                    .equals(other.orderingMode, orderingMode)));
+                other.orderingMode == orderingMode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(orderByType) ^
-      const DeepCollectionEquality().hash(orderingMode);
+  int get hashCode => Object.hash(runtimeType, orderByType, orderingMode);
 
   @JsonKey(ignore: true)
   @override
@@ -1097,10 +1077,9 @@ abstract class _StatusRepositoryOrderingTermData
       _$_StatusRepositoryOrderingTermData;
 
   @override
-  StatusRepositoryOrderType get orderByType =>
-      throw _privateConstructorUsedError;
+  StatusRepositoryOrderType get orderByType;
   @override
-  moor.OrderingMode get orderingMode => throw _privateConstructorUsedError;
+  moor.OrderingMode get orderingMode;
   @override
   @JsonKey(ignore: true)
   _$StatusRepositoryOrderingTermDataCopyWith<_StatusRepositoryOrderingTermData>
@@ -1211,15 +1190,14 @@ class _$_StatusOnlyLocalCondition implements _StatusOnlyLocalCondition {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StatusOnlyLocalCondition &&
+        (other.runtimeType == runtimeType &&
+            other is _StatusOnlyLocalCondition &&
             (identical(other.localUrlHost, localUrlHost) ||
-                const DeepCollectionEquality()
-                    .equals(other.localUrlHost, localUrlHost)));
+                other.localUrlHost == localUrlHost));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(localUrlHost);
+  int get hashCode => Object.hash(runtimeType, localUrlHost);
 
   @JsonKey(ignore: true)
   @override
@@ -1233,7 +1211,7 @@ abstract class _StatusOnlyLocalCondition implements StatusOnlyLocalCondition {
       _$_StatusOnlyLocalCondition;
 
   @override
-  String? get localUrlHost => throw _privateConstructorUsedError;
+  String? get localUrlHost;
   @override
   @JsonKey(ignore: true)
   _$StatusOnlyLocalConditionCopyWith<_StatusOnlyLocalCondition> get copyWith =>
@@ -1344,15 +1322,14 @@ class _$_StatusOnlyRemoteCondition implements _StatusOnlyRemoteCondition {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StatusOnlyRemoteCondition &&
+        (other.runtimeType == runtimeType &&
+            other is _StatusOnlyRemoteCondition &&
             (identical(other.localUrlHost, localUrlHost) ||
-                const DeepCollectionEquality()
-                    .equals(other.localUrlHost, localUrlHost)));
+                other.localUrlHost == localUrlHost));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(localUrlHost);
+  int get hashCode => Object.hash(runtimeType, localUrlHost);
 
   @JsonKey(ignore: true)
   @override
@@ -1367,7 +1344,7 @@ abstract class _StatusOnlyRemoteCondition implements StatusOnlyRemoteCondition {
       _$_StatusOnlyRemoteCondition;
 
   @override
-  String? get localUrlHost => throw _privateConstructorUsedError;
+  String? get localUrlHost;
   @override
   @JsonKey(ignore: true)
   _$StatusOnlyRemoteConditionCopyWith<_StatusOnlyRemoteCondition>
@@ -1491,19 +1468,15 @@ class _$_StatusTextCondition implements _StatusTextCondition {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StatusTextCondition &&
-            (identical(other.phrase, phrase) ||
-                const DeepCollectionEquality().equals(other.phrase, phrase)) &&
+        (other.runtimeType == runtimeType &&
+            other is _StatusTextCondition &&
+            (identical(other.phrase, phrase) || other.phrase == phrase) &&
             (identical(other.wholeWord, wholeWord) ||
-                const DeepCollectionEquality()
-                    .equals(other.wholeWord, wholeWord)));
+                other.wholeWord == wholeWord));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(phrase) ^
-      const DeepCollectionEquality().hash(wholeWord);
+  int get hashCode => Object.hash(runtimeType, phrase, wholeWord);
 
   @JsonKey(ignore: true)
   @override
@@ -1518,9 +1491,9 @@ abstract class _StatusTextCondition implements StatusTextCondition {
       required bool wholeWord}) = _$_StatusTextCondition;
 
   @override
-  String get phrase => throw _privateConstructorUsedError;
+  String get phrase;
   @override
-  bool get wholeWord => throw _privateConstructorUsedError;
+  bool get wholeWord;
   @override
   @JsonKey(ignore: true)
   _$StatusTextConditionCopyWith<_StatusTextCondition> get copyWith =>

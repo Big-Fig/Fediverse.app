@@ -46,7 +46,7 @@ class _$PleromaApiVersionTearOff {
     );
   }
 
-  PleromaApiVersion fromJson(Map<String, Object> json) {
+  PleromaApiVersion fromJson(Map<String, Object?> json) {
     return PleromaApiVersion.fromJson(json);
   }
 }
@@ -284,34 +284,23 @@ class _$_PleromaApiVersion implements _PleromaApiVersion {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiVersion &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiVersion &&
             (identical(other.mastodonCompatibilityVersion,
                     mastodonCompatibilityVersion) ||
-                const DeepCollectionEquality().equals(
-                    other.mastodonCompatibilityVersion,
-                    mastodonCompatibilityVersion)) &&
-            (identical(other.major, major) ||
-                const DeepCollectionEquality().equals(other.major, major)) &&
-            (identical(other.minor, minor) ||
-                const DeepCollectionEquality().equals(other.minor, minor)) &&
-            (identical(other.patch, patch) ||
-                const DeepCollectionEquality().equals(other.patch, patch)) &&
+                other.mastodonCompatibilityVersion ==
+                    mastodonCompatibilityVersion) &&
+            (identical(other.major, major) || other.major == major) &&
+            (identical(other.minor, minor) || other.minor == minor) &&
+            (identical(other.patch, patch) || other.patch == patch) &&
             (identical(other.buildNumber, buildNumber) ||
-                const DeepCollectionEquality()
-                    .equals(other.buildNumber, buildNumber)) &&
-            (identical(other.commit, commit) ||
-                const DeepCollectionEquality().equals(other.commit, commit)));
+                other.buildNumber == buildNumber) &&
+            (identical(other.commit, commit) || other.commit == commit));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(mastodonCompatibilityVersion) ^
-      const DeepCollectionEquality().hash(major) ^
-      const DeepCollectionEquality().hash(minor) ^
-      const DeepCollectionEquality().hash(patch) ^
-      const DeepCollectionEquality().hash(buildNumber) ^
-      const DeepCollectionEquality().hash(commit);
+  int get hashCode => Object.hash(runtimeType, mastodonCompatibilityVersion,
+      major, minor, patch, buildNumber, commit);
 
   @JsonKey(ignore: true)
   @override
@@ -347,24 +336,23 @@ abstract class _PleromaApiVersion implements PleromaApiVersion {
   @override
   @HiveField(0)
   @JsonKey(name: 'mastodon_compatibility_version')
-  MastodonApiVersion get mastodonCompatibilityVersion =>
-      throw _privateConstructorUsedError;
+  MastodonApiVersion get mastodonCompatibilityVersion;
   @override
   @HiveField(1)
-  int get major => throw _privateConstructorUsedError;
+  int get major;
   @override
   @HiveField(2)
-  int? get minor => throw _privateConstructorUsedError;
+  int? get minor;
   @override
   @HiveField(3)
-  int? get patch => throw _privateConstructorUsedError;
+  int? get patch;
   @override
   @HiveField(4)
   @JsonKey(name: 'build_number')
-  int? get buildNumber => throw _privateConstructorUsedError;
+  int? get buildNumber;
   @override
   @HiveField(5)
-  String? get commit => throw _privateConstructorUsedError;
+  String? get commit;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiVersionCopyWith<_PleromaApiVersion> get copyWith =>
