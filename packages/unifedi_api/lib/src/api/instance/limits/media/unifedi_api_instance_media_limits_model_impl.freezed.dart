@@ -47,7 +47,7 @@ class _$UnifediApiInstanceMediaLimitsTearOff {
     );
   }
 
-  UnifediApiInstanceMediaLimits fromJson(Map<String, Object> json) {
+  UnifediApiInstanceMediaLimits fromJson(Map<String, Object?> json) {
     return UnifediApiInstanceMediaLimits.fromJson(json);
   }
 }
@@ -271,32 +271,23 @@ class _$_UnifediApiInstanceMediaLimits
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceMediaLimits &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceMediaLimits &&
             (identical(other.uploadLimit, uploadLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.uploadLimit, uploadLimit)) &&
+                other.uploadLimit == uploadLimit) &&
             (identical(other.avatarUploadLimit, avatarUploadLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.avatarUploadLimit, avatarUploadLimit)) &&
+                other.avatarUploadLimit == avatarUploadLimit) &&
             (identical(other.backgroundUploadLimit, backgroundUploadLimit) ||
-                const DeepCollectionEquality().equals(
-                    other.backgroundUploadLimit, backgroundUploadLimit)) &&
+                other.backgroundUploadLimit == backgroundUploadLimit) &&
             (identical(other.bannerUploadLimit, bannerUploadLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.bannerUploadLimit, bannerUploadLimit)) &&
+                other.bannerUploadLimit == bannerUploadLimit) &&
             (identical(other.descriptionLimit, descriptionLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.descriptionLimit, descriptionLimit)));
+                other.descriptionLimit == descriptionLimit));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(uploadLimit) ^
-      const DeepCollectionEquality().hash(avatarUploadLimit) ^
-      const DeepCollectionEquality().hash(backgroundUploadLimit) ^
-      const DeepCollectionEquality().hash(bannerUploadLimit) ^
-      const DeepCollectionEquality().hash(descriptionLimit);
+  int get hashCode => Object.hash(runtimeType, uploadLimit, avatarUploadLimit,
+      backgroundUploadLimit, bannerUploadLimit, descriptionLimit);
 
   @JsonKey(ignore: true)
   @override
@@ -335,23 +326,23 @@ abstract class _UnifediApiInstanceMediaLimits
   @override
   @HiveField(0)
   @JsonKey(name: 'upload_limit')
-  int? get uploadLimit => throw _privateConstructorUsedError;
+  int? get uploadLimit;
   @override
   @HiveField(1)
   @JsonKey(name: 'avatar_upload_limit')
-  int? get avatarUploadLimit => throw _privateConstructorUsedError;
+  int? get avatarUploadLimit;
   @override
   @HiveField(2)
   @JsonKey(name: 'background_upload_limit')
-  int? get backgroundUploadLimit => throw _privateConstructorUsedError;
+  int? get backgroundUploadLimit;
   @override
   @HiveField(3)
   @JsonKey(name: 'banner_upload_limit')
-  int? get bannerUploadLimit => throw _privateConstructorUsedError;
+  int? get bannerUploadLimit;
   @override
   @HiveField(4)
   @JsonKey(name: 'description_limit')
-  int? get descriptionLimit => throw _privateConstructorUsedError;
+  int? get descriptionLimit;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceMediaLimitsCopyWith<_UnifediApiInstanceMediaLimits>

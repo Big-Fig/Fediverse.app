@@ -65,7 +65,7 @@ class _$PleromaApiWebSocketsChannelTearOff {
     );
   }
 
-  PleromaApiWebSocketsChannel fromJson(Map<String, Object> json) {
+  PleromaApiWebSocketsChannel fromJson(Map<String, Object?> json) {
     return PleromaApiWebSocketsChannel.fromJson(json);
   }
 }
@@ -409,50 +409,41 @@ class _$_PleromaApiWebSocketsChannel implements _PleromaApiWebSocketsChannel {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiWebSocketsChannel &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiWebSocketsChannel &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.localOnly, localOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.localOnly, localOnly)) &&
+                other.localOnly == localOnly) &&
             (identical(other.remoteOnly, remoteOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.remoteOnly, remoteOnly)) &&
+                other.remoteOnly == remoteOnly) &&
             (identical(other.mediaOnly, mediaOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaOnly, mediaOnly)) &&
+                other.mediaOnly == mediaOnly) &&
             (identical(other.onlyFromInstance, onlyFromInstance) ||
-                const DeepCollectionEquality()
-                    .equals(other.onlyFromInstance, onlyFromInstance)) &&
+                other.onlyFromInstance == onlyFromInstance) &&
             (identical(other.fromAccountIdOnly, fromAccountIdOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.fromAccountIdOnly, fromAccountIdOnly)) &&
+                other.fromAccountIdOnly == fromAccountIdOnly) &&
             (identical(other.chatOnly, chatOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.chatOnly, chatOnly)) &&
+                other.chatOnly == chatOnly) &&
             (identical(other.notificationOnly, notificationOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationOnly, notificationOnly)) &&
+                other.notificationOnly == notificationOnly) &&
             (identical(other.listIdOnly, listIdOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.listIdOnly, listIdOnly)) &&
-            (identical(other.tag, tag) ||
-                const DeepCollectionEquality().equals(other.tag, tag)));
+                other.listIdOnly == listIdOnly) &&
+            (identical(other.tag, tag) || other.tag == tag));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(localOnly) ^
-      const DeepCollectionEquality().hash(remoteOnly) ^
-      const DeepCollectionEquality().hash(mediaOnly) ^
-      const DeepCollectionEquality().hash(onlyFromInstance) ^
-      const DeepCollectionEquality().hash(fromAccountIdOnly) ^
-      const DeepCollectionEquality().hash(chatOnly) ^
-      const DeepCollectionEquality().hash(notificationOnly) ^
-      const DeepCollectionEquality().hash(listIdOnly) ^
-      const DeepCollectionEquality().hash(tag);
+  int get hashCode => Object.hash(
+      runtimeType,
+      type,
+      localOnly,
+      remoteOnly,
+      mediaOnly,
+      onlyFromInstance,
+      fromAccountIdOnly,
+      chatOnly,
+      notificationOnly,
+      listIdOnly,
+      tag);
 
   @JsonKey(ignore: true)
   @override
@@ -503,42 +494,42 @@ abstract class _PleromaApiWebSocketsChannel
 
   @override
   @HiveField(0)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(1)
   @JsonKey(name: 'local_only')
-  bool? get localOnly => throw _privateConstructorUsedError;
+  bool? get localOnly;
   @override
   @HiveField(2)
   @JsonKey(name: 'remote_only')
-  bool? get remoteOnly => throw _privateConstructorUsedError;
+  bool? get remoteOnly;
   @override
   @HiveField(3)
   @JsonKey(name: 'media_only')
-  bool? get mediaOnly => throw _privateConstructorUsedError;
+  bool? get mediaOnly;
   @override
   @HiveField(4)
   @JsonKey(name: 'only_from_instance')
-  String? get onlyFromInstance => throw _privateConstructorUsedError;
+  String? get onlyFromInstance;
   @override
   @HiveField(5)
   @JsonKey(name: 'from_account_id_only')
-  String? get fromAccountIdOnly => throw _privateConstructorUsedError;
+  String? get fromAccountIdOnly;
   @override
   @HiveField(6)
   @JsonKey(name: 'chat_only')
-  bool? get chatOnly => throw _privateConstructorUsedError;
+  bool? get chatOnly;
   @override
   @HiveField(7)
   @JsonKey(name: 'notification_only')
-  bool? get notificationOnly => throw _privateConstructorUsedError;
+  bool? get notificationOnly;
   @override
   @HiveField(8)
   @JsonKey(name: 'list_id_only')
-  String? get listIdOnly => throw _privateConstructorUsedError;
+  String? get listIdOnly;
   @override
   @HiveField(9)
-  String? get tag => throw _privateConstructorUsedError;
+  String? get tag;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiWebSocketsChannelCopyWith<_PleromaApiWebSocketsChannel>

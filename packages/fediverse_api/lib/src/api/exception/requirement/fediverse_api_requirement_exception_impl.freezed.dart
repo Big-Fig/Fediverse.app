@@ -137,14 +137,13 @@ class _$_FediverseApiRequirementException
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiRequirementException &&
-            (identical(other.state, state) ||
-                const DeepCollectionEquality().equals(other.state, state)));
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiRequirementException &&
+            (identical(other.state, state) || other.state == state));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(state);
+  int get hashCode => Object.hash(runtimeType, state);
 
   @JsonKey(ignore: true)
   @override
@@ -160,8 +159,7 @@ abstract class _FediverseApiRequirementException
       _$_FediverseApiRequirementException;
 
   @override
-  FediverseApiFeatureRequirementState get state =>
-      throw _privateConstructorUsedError;
+  FediverseApiFeatureRequirementState get state;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiRequirementExceptionCopyWith<_FediverseApiRequirementException>

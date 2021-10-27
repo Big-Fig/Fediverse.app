@@ -198,19 +198,15 @@ class _$_Public implements _Public {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Public &&
-            (identical(other.level, level) ||
-                const DeepCollectionEquality().equals(other.level, level)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Public &&
+            (identical(other.level, level) || other.level == level) &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(level) ^
-      const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, level, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -290,9 +286,9 @@ abstract class _Public implements UnifediApiAccessLevelType {
   const factory _Public({int level, String stringValue}) = _$_Public;
 
   @override
-  int get level => throw _privateConstructorUsedError;
+  int get level;
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PublicCopyWith<_Public> get copyWith => throw _privateConstructorUsedError;
@@ -360,19 +356,15 @@ class _$_Application implements _Application {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Application &&
-            (identical(other.level, level) ||
-                const DeepCollectionEquality().equals(other.level, level)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Application &&
+            (identical(other.level, level) || other.level == level) &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(level) ^
-      const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, level, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -452,9 +444,9 @@ abstract class _Application implements UnifediApiAccessLevelType {
   const factory _Application({int level, String stringValue}) = _$_Application;
 
   @override
-  int get level => throw _privateConstructorUsedError;
+  int get level;
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ApplicationCopyWith<_Application> get copyWith =>
@@ -520,19 +512,15 @@ class _$_Valid implements _Valid {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Valid &&
-            (identical(other.level, level) ||
-                const DeepCollectionEquality().equals(other.level, level)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Valid &&
+            (identical(other.level, level) || other.level == level) &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(level) ^
-      const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, level, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -612,9 +600,9 @@ abstract class _Valid implements UnifediApiAccessLevelType {
   const factory _Valid({int level, String stringValue}) = _$_Valid;
 
   @override
-  int get level => throw _privateConstructorUsedError;
+  int get level;
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ValidCopyWith<_Valid> get copyWith => throw _privateConstructorUsedError;

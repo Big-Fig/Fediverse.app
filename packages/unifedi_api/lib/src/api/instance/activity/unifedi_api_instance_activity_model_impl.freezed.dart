@@ -29,7 +29,7 @@ class _$UnifediApiInstanceActivityTearOff {
     );
   }
 
-  UnifediApiInstanceActivity fromJson(Map<String, Object> json) {
+  UnifediApiInstanceActivity fromJson(Map<String, Object?> json) {
     return UnifediApiInstanceActivity.fromJson(json);
   }
 }
@@ -135,14 +135,14 @@ class _$_UnifediApiInstanceActivity implements _UnifediApiInstanceActivity {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceActivity &&
-            (identical(other.items, items) ||
-                const DeepCollectionEquality().equals(other.items, items)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceActivity &&
+            const DeepCollectionEquality().equals(other.items, items));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(items);
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(items));
 
   @JsonKey(ignore: true)
   @override
@@ -167,8 +167,7 @@ abstract class _UnifediApiInstanceActivity
 
   @override
   @HiveField(0)
-  List<UnifediApiInstanceActivityItem> get items =>
-      throw _privateConstructorUsedError;
+  List<UnifediApiInstanceActivityItem> get items;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceActivityCopyWith<_UnifediApiInstanceActivity>

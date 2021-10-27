@@ -35,7 +35,7 @@ class _$FediverseApiAccessScopesTearOff {
     );
   }
 
-  FediverseApiAccessScopes fromJson(Map<String, Object> json) {
+  FediverseApiAccessScopes fromJson(Map<String, Object?> json) {
     return FediverseApiAccessScopes.fromJson(json);
   }
 }
@@ -177,20 +177,19 @@ class _$_FediverseApiAccessScopes implements _FediverseApiAccessScopes {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiAccessScopes &&
-            (identical(other.globalPermissions, globalPermissions) ||
-                const DeepCollectionEquality()
-                    .equals(other.globalPermissions, globalPermissions)) &&
-            (identical(other.targetPermissions, targetPermissions) ||
-                const DeepCollectionEquality()
-                    .equals(other.targetPermissions, targetPermissions)));
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiAccessScopes &&
+            const DeepCollectionEquality()
+                .equals(other.globalPermissions, globalPermissions) &&
+            const DeepCollectionEquality()
+                .equals(other.targetPermissions, targetPermissions));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(globalPermissions) ^
-      const DeepCollectionEquality().hash(targetPermissions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(globalPermissions),
+      const DeepCollectionEquality().hash(targetPermissions));
 
   @JsonKey(ignore: true)
   @override
@@ -220,12 +219,11 @@ abstract class _FediverseApiAccessScopes implements FediverseApiAccessScopes {
   @override
   @HiveField(0)
   @JsonKey(name: 'global_permissions')
-  List<String> get globalPermissions => throw _privateConstructorUsedError;
+  List<String> get globalPermissions;
   @override
   @HiveField(1)
   @JsonKey(name: 'target_permissions')
-  List<FediverseApiAccessScopesItem> get targetPermissions =>
-      throw _privateConstructorUsedError;
+  List<FediverseApiAccessScopesItem> get targetPermissions;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiAccessScopesCopyWith<_FediverseApiAccessScopes> get copyWith =>

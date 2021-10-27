@@ -32,7 +32,7 @@ class _$UnifediApiInstanceFederationMfrObjectAgeTearOff {
     );
   }
 
-  UnifediApiInstanceFederationMfrObjectAge fromJson(Map<String, Object> json) {
+  UnifediApiInstanceFederationMfrObjectAge fromJson(Map<String, Object?> json) {
     return UnifediApiInstanceFederationMfrObjectAge.fromJson(json);
   }
 }
@@ -164,19 +164,16 @@ class _$_UnifediApiInstanceFederationMfrObjectAge
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceFederationMfrObjectAge &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceFederationMfrObjectAge &&
             (identical(other.threshold, threshold) ||
-                const DeepCollectionEquality()
-                    .equals(other.threshold, threshold)) &&
-            (identical(other.actions, actions) ||
-                const DeepCollectionEquality().equals(other.actions, actions)));
+                other.threshold == threshold) &&
+            const DeepCollectionEquality().equals(other.actions, actions));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(threshold) ^
-      const DeepCollectionEquality().hash(actions);
+  int get hashCode => Object.hash(
+      runtimeType, threshold, const DeepCollectionEquality().hash(actions));
 
   @JsonKey(ignore: true)
   @override
@@ -204,10 +201,10 @@ abstract class _UnifediApiInstanceFederationMfrObjectAge
 
   @override
   @HiveField(0)
-  int? get threshold => throw _privateConstructorUsedError;
+  int? get threshold;
   @override
   @HiveField(1)
-  List<String>? get actions => throw _privateConstructorUsedError;
+  List<String>? get actions;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceFederationMfrObjectAgeCopyWith<

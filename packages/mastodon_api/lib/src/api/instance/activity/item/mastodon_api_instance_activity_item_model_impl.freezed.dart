@@ -51,7 +51,7 @@ class _$MastodonApiInstanceActivityItemTearOff {
     );
   }
 
-  MastodonApiInstanceActivityItem fromJson(Map<String, Object> json) {
+  MastodonApiInstanceActivityItem fromJson(Map<String, Object?> json) {
     return MastodonApiInstanceActivityItem.fromJson(json);
   }
 }
@@ -290,26 +290,19 @@ class _$_MastodonApiInstanceActivityItem
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiInstanceActivityItem &&
-            (identical(other.week, week) ||
-                const DeepCollectionEquality().equals(other.week, week)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiInstanceActivityItem &&
+            (identical(other.week, week) || other.week == week) &&
             (identical(other.statuses, statuses) ||
-                const DeepCollectionEquality()
-                    .equals(other.statuses, statuses)) &&
-            (identical(other.logins, logins) ||
-                const DeepCollectionEquality().equals(other.logins, logins)) &&
+                other.statuses == statuses) &&
+            (identical(other.logins, logins) || other.logins == logins) &&
             (identical(other.registrations, registrations) ||
-                const DeepCollectionEquality()
-                    .equals(other.registrations, registrations)));
+                other.registrations == registrations));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(week) ^
-      const DeepCollectionEquality().hash(statuses) ^
-      const DeepCollectionEquality().hash(logins) ^
-      const DeepCollectionEquality().hash(registrations);
+      Object.hash(runtimeType, week, statuses, logins, registrations);
 
   @JsonKey(ignore: true)
   @override
@@ -355,25 +348,25 @@ abstract class _MastodonApiInstanceActivityItem
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
   @HiveField(0)
-  int get week => throw _privateConstructorUsedError;
+  int get week;
   @override
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
   @HiveField(1)
-  int get statuses => throw _privateConstructorUsedError;
+  int get statuses;
   @override
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
   @HiveField(2)
-  int get logins => throw _privateConstructorUsedError;
+  int get logins;
   @override
   @JsonKey(
       fromJson: JsonParseHelper.fromStringToInt,
       toJson: JsonParseHelper.toStringFromInt)
   @HiveField(3)
-  int get registrations => throw _privateConstructorUsedError;
+  int get registrations;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiInstanceActivityItemCopyWith<_MastodonApiInstanceActivityItem>

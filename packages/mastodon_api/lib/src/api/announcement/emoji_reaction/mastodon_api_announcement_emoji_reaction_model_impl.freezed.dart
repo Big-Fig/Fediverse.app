@@ -37,7 +37,7 @@ class _$MastodonApiAnnouncementEmojiReactionTearOff {
     );
   }
 
-  MastodonApiAnnouncementEmojiReaction fromJson(Map<String, Object> json) {
+  MastodonApiAnnouncementEmojiReaction fromJson(Map<String, Object?> json) {
     return MastodonApiAnnouncementEmojiReaction.fromJson(json);
   }
 }
@@ -225,28 +225,18 @@ class _$_MastodonApiAnnouncementEmojiReaction
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiAnnouncementEmojiReaction &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.count, count) ||
-                const DeepCollectionEquality().equals(other.count, count)) &&
-            (identical(other.me, me) ||
-                const DeepCollectionEquality().equals(other.me, me)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiAnnouncementEmojiReaction &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.count, count) || other.count == count) &&
+            (identical(other.me, me) || other.me == me) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.staticUrl, staticUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.staticUrl, staticUrl)));
+                other.staticUrl == staticUrl));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(count) ^
-      const DeepCollectionEquality().hash(me) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(staticUrl);
+  int get hashCode => Object.hash(runtimeType, name, count, me, url, staticUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -283,20 +273,20 @@ abstract class _MastodonApiAnnouncementEmojiReaction
 
   @override
   @HiveField(0)
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @HiveField(1)
-  int get count => throw _privateConstructorUsedError;
+  int get count;
   @override
   @HiveField(2)
-  bool get me => throw _privateConstructorUsedError;
+  bool get me;
   @override
   @HiveField(3)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @HiveField(4)
   @JsonKey(name: 'static_url')
-  String? get staticUrl => throw _privateConstructorUsedError;
+  String? get staticUrl;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiAnnouncementEmojiReactionCopyWith<

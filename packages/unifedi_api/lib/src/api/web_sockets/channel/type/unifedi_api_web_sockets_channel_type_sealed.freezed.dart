@@ -207,15 +207,14 @@ class _$_Public implements _Public {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Public &&
+        (other.runtimeType == runtimeType &&
+            other is _Public &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -307,7 +306,7 @@ abstract class _Public implements UnifediApiWebSocketsChannelType {
   const factory _Public({String stringValue}) = _$_Public;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PublicCopyWith<_Public> get copyWith => throw _privateConstructorUsedError;
@@ -363,15 +362,14 @@ class _$_Direct implements _Direct {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Direct &&
+        (other.runtimeType == runtimeType &&
+            other is _Direct &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -463,7 +461,7 @@ abstract class _Direct implements UnifediApiWebSocketsChannelType {
   const factory _Direct({String stringValue}) = _$_Direct;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$DirectCopyWith<_Direct> get copyWith => throw _privateConstructorUsedError;
@@ -519,15 +517,14 @@ class _$_User implements _User {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _User &&
+        (other.runtimeType == runtimeType &&
+            other is _User &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -619,7 +616,7 @@ abstract class _User implements UnifediApiWebSocketsChannelType {
   const factory _User({String stringValue}) = _$_User;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;
@@ -675,15 +672,14 @@ class _$_List implements _List {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _List &&
+        (other.runtimeType == runtimeType &&
+            other is _List &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -775,7 +771,7 @@ abstract class _List implements UnifediApiWebSocketsChannelType {
   const factory _List({String stringValue}) = _$_List;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ListCopyWith<_List> get copyWith => throw _privateConstructorUsedError;
@@ -831,15 +827,14 @@ class _$_Hashtag implements _Hashtag {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Hashtag &&
+        (other.runtimeType == runtimeType &&
+            other is _Hashtag &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -931,7 +926,7 @@ abstract class _Hashtag implements UnifediApiWebSocketsChannelType {
   const factory _Hashtag({String stringValue}) = _$_Hashtag;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$HashtagCopyWith<_Hashtag> get copyWith =>

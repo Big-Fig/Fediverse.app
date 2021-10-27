@@ -35,7 +35,7 @@ class _$UnifediApiInstanceStatusLimitsTearOff {
     );
   }
 
-  UnifediApiInstanceStatusLimits fromJson(Map<String, Object> json) {
+  UnifediApiInstanceStatusLimits fromJson(Map<String, Object?> json) {
     return UnifediApiInstanceStatusLimits.fromJson(json);
   }
 }
@@ -182,21 +182,18 @@ class _$_UnifediApiInstanceStatusLimits
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceStatusLimits &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceStatusLimits &&
             (identical(other.maxTootChars, maxTootChars) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxTootChars, maxTootChars)) &&
+                other.maxTootChars == maxTootChars) &&
             (identical(
                     other.maxMediaAttachmentsCount, maxMediaAttachmentsCount) ||
-                const DeepCollectionEquality().equals(
-                    other.maxMediaAttachmentsCount, maxMediaAttachmentsCount)));
+                other.maxMediaAttachmentsCount == maxMediaAttachmentsCount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(maxTootChars) ^
-      const DeepCollectionEquality().hash(maxMediaAttachmentsCount);
+      Object.hash(runtimeType, maxTootChars, maxMediaAttachmentsCount);
 
   @JsonKey(ignore: true)
   @override
@@ -227,11 +224,11 @@ abstract class _UnifediApiInstanceStatusLimits
   @override
   @HiveField(0)
   @JsonKey(name: 'max_toot_chars')
-  int? get maxTootChars => throw _privateConstructorUsedError;
+  int? get maxTootChars;
   @override
   @HiveField(1)
   @JsonKey(name: 'max_media_attachments_count')
-  int? get maxMediaAttachmentsCount => throw _privateConstructorUsedError;
+  int? get maxMediaAttachmentsCount;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceStatusLimitsCopyWith<_UnifediApiInstanceStatusLimits>

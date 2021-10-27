@@ -37,7 +37,7 @@ class _$MastodonApiNotificationTearOff {
     );
   }
 
-  MastodonApiNotification fromJson(Map<String, Object> json) {
+  MastodonApiNotification fromJson(Map<String, Object?> json) {
     return MastodonApiNotification.fromJson(json);
   }
 }
@@ -248,29 +248,19 @@ class _$_MastodonApiNotification implements _MastodonApiNotification {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiNotification &&
-            (identical(other.account, account) ||
-                const DeepCollectionEquality()
-                    .equals(other.account, account)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiNotification &&
+            (identical(other.account, account) || other.account == account) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)));
+                other.createdAt == createdAt) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(account) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(status);
+      Object.hash(runtimeType, account, createdAt, id, type, status);
 
   @JsonKey(ignore: true)
   @override
@@ -303,20 +293,20 @@ abstract class _MastodonApiNotification implements MastodonApiNotification {
 
   @override
   @HiveField(0)
-  MastodonApiAccount? get account => throw _privateConstructorUsedError;
+  MastodonApiAccount? get account;
   @override
   @HiveField(2)
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @HiveField(3)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(4)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(5)
-  MastodonApiStatus? get status => throw _privateConstructorUsedError;
+  MastodonApiStatus? get status;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiNotificationCopyWith<_MastodonApiNotification> get copyWith =>

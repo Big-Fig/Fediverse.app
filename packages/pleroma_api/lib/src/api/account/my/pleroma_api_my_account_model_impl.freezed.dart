@@ -114,7 +114,7 @@ class _$PleromaApiMyAccountTearOff {
     );
   }
 
-  PleromaApiMyAccount fromJson(Map<String, Object> json) {
+  PleromaApiMyAccount fromJson(Map<String, Object?> json) {
     return PleromaApiMyAccount.fromJson(json);
   }
 }
@@ -830,104 +830,79 @@ class _$_PleromaApiMyAccount implements _PleromaApiMyAccount {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMyAccount &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMyAccount &&
             (identical(other.username, username) ||
-                const DeepCollectionEquality()
-                    .equals(other.username, username)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+                other.username == username) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.statusesCount, statusesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusesCount, statusesCount)) &&
-            (identical(other.note, note) ||
-                const DeepCollectionEquality().equals(other.note, note)) &&
-            (identical(other.locked, locked) ||
-                const DeepCollectionEquality().equals(other.locked, locked)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+                other.statusesCount == statusesCount) &&
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.locked, locked) || other.locked == locked) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.headerStatic, headerStatic) ||
-                const DeepCollectionEquality()
-                    .equals(other.headerStatic, headerStatic)) &&
-            (identical(other.header, header) ||
-                const DeepCollectionEquality().equals(other.header, header)) &&
+                other.headerStatic == headerStatic) &&
+            (identical(other.header, header) || other.header == header) &&
             (identical(other.followingCount, followingCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followingCount, followingCount)) &&
+                other.followingCount == followingCount) &&
             (identical(other.followersCount, followersCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followersCount, followersCount)) &&
-            (identical(other.fields, fields) ||
-                const DeepCollectionEquality().equals(other.fields, fields)) &&
-            (identical(other.emojis, emojis) ||
-                const DeepCollectionEquality().equals(other.emojis, emojis)) &&
+                other.followersCount == followersCount) &&
+            const DeepCollectionEquality().equals(other.fields, fields) &&
+            const DeepCollectionEquality().equals(other.emojis, emojis) &&
             (identical(other.displayName, displayName) ||
-                const DeepCollectionEquality()
-                    .equals(other.displayName, displayName)) &&
+                other.displayName == displayName) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.bot, bot) ||
-                const DeepCollectionEquality().equals(other.bot, bot)) &&
+                other.createdAt == createdAt) &&
+            (identical(other.bot, bot) || other.bot == bot) &&
             (identical(other.avatarStatic, avatarStatic) ||
-                const DeepCollectionEquality()
-                    .equals(other.avatarStatic, avatarStatic)) &&
-            (identical(other.avatar, avatar) ||
-                const DeepCollectionEquality().equals(other.avatar, avatar)) &&
-            (identical(other.acct, acct) ||
-                const DeepCollectionEquality().equals(other.acct, acct)) &&
-            (identical(other.pleroma, pleroma) ||
-                const DeepCollectionEquality()
-                    .equals(other.pleroma, pleroma)) &&
+                other.avatarStatic == avatarStatic) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.acct, acct) || other.acct == acct) &&
+            (identical(other.pleroma, pleroma) || other.pleroma == pleroma) &&
             (identical(other.lastStatusAt, lastStatusAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastStatusAt, lastStatusAt)) &&
-            (identical(other.source, source) ||
-                const DeepCollectionEquality().equals(other.source, source)) &&
+                other.lastStatusAt == lastStatusAt) &&
+            (identical(other.source, source) || other.source == source) &&
             (identical(other.discoverable, discoverable) ||
-                const DeepCollectionEquality()
-                    .equals(other.discoverable, discoverable)) &&
+                other.discoverable == discoverable) &&
             (identical(other.followRequestsCount, followRequestsCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followRequestsCount, followRequestsCount)) &&
-            (identical(other.fqn, fqn) ||
-                const DeepCollectionEquality().equals(other.fqn, fqn)) &&
+                other.followRequestsCount == followRequestsCount) &&
+            (identical(other.fqn, fqn) || other.fqn == fqn) &&
             (identical(other.suspended, suspended) ||
-                const DeepCollectionEquality()
-                    .equals(other.suspended, suspended)) &&
+                other.suspended == suspended) &&
             (identical(other.muteExpiresAt, muteExpiresAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.muteExpiresAt, muteExpiresAt)));
+                other.muteExpiresAt == muteExpiresAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(username) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(statusesCount) ^
-      const DeepCollectionEquality().hash(note) ^
-      const DeepCollectionEquality().hash(locked) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(headerStatic) ^
-      const DeepCollectionEquality().hash(header) ^
-      const DeepCollectionEquality().hash(followingCount) ^
-      const DeepCollectionEquality().hash(followersCount) ^
-      const DeepCollectionEquality().hash(fields) ^
-      const DeepCollectionEquality().hash(emojis) ^
-      const DeepCollectionEquality().hash(displayName) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(bot) ^
-      const DeepCollectionEquality().hash(avatarStatic) ^
-      const DeepCollectionEquality().hash(avatar) ^
-      const DeepCollectionEquality().hash(acct) ^
-      const DeepCollectionEquality().hash(pleroma) ^
-      const DeepCollectionEquality().hash(lastStatusAt) ^
-      const DeepCollectionEquality().hash(source) ^
-      const DeepCollectionEquality().hash(discoverable) ^
-      const DeepCollectionEquality().hash(followRequestsCount) ^
-      const DeepCollectionEquality().hash(fqn) ^
-      const DeepCollectionEquality().hash(suspended) ^
-      const DeepCollectionEquality().hash(muteExpiresAt);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        username,
+        url,
+        statusesCount,
+        note,
+        locked,
+        id,
+        headerStatic,
+        header,
+        followingCount,
+        followersCount,
+        const DeepCollectionEquality().hash(fields),
+        const DeepCollectionEquality().hash(emojis),
+        displayName,
+        createdAt,
+        bot,
+        avatarStatic,
+        avatar,
+        acct,
+        pleroma,
+        lastStatusAt,
+        source,
+        discoverable,
+        followRequestsCount,
+        fqn,
+        suspended,
+        muteExpiresAt
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -1011,93 +986,92 @@ abstract class _PleromaApiMyAccount implements PleromaApiMyAccount {
 
   @override
   @HiveField(0)
-  String get username => throw _privateConstructorUsedError;
+  String get username;
   @override
   @HiveField(1)
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @override
   @HiveField(2)
   @JsonKey(name: 'statuses_count')
-  int get statusesCount => throw _privateConstructorUsedError;
+  int get statusesCount;
   @override
   @HiveField(3)
-  String? get note => throw _privateConstructorUsedError;
+  String? get note;
   @override
   @HiveField(4)
-  bool get locked => throw _privateConstructorUsedError;
+  bool get locked;
   @override
   @HiveField(5)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(6)
   @JsonKey(name: 'header_static')
-  String get headerStatic => throw _privateConstructorUsedError;
+  String get headerStatic;
   @override
   @HiveField(7)
-  String get header => throw _privateConstructorUsedError;
+  String get header;
   @override
   @HiveField(8)
   @JsonKey(name: 'following_count')
-  int get followingCount => throw _privateConstructorUsedError;
+  int get followingCount;
   @override
   @HiveField(9)
   @JsonKey(name: 'followers_count')
-  int get followersCount => throw _privateConstructorUsedError;
+  int get followersCount;
   @override
   @HiveField(10)
-  List<PleromaApiField>? get fields => throw _privateConstructorUsedError;
+  List<PleromaApiField>? get fields;
   @override
   @HiveField(11)
-  List<PleromaApiEmoji>? get emojis => throw _privateConstructorUsedError;
+  List<PleromaApiEmoji>? get emojis;
   @override
   @HiveField(12)
   @JsonKey(name: 'display_name')
-  String? get displayName => throw _privateConstructorUsedError;
+  String? get displayName;
   @override
   @HiveField(13)
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @HiveField(14)
-  bool? get bot => throw _privateConstructorUsedError;
+  bool? get bot;
   @override
   @HiveField(15)
   @JsonKey(name: 'avatar_static')
-  String get avatarStatic => throw _privateConstructorUsedError;
+  String get avatarStatic;
   @override
   @HiveField(16)
-  String get avatar => throw _privateConstructorUsedError;
+  String get avatar;
   @override
   @HiveField(17)
-  String get acct => throw _privateConstructorUsedError;
+  String get acct;
   @override
   @HiveField(19)
-  PleromaApiMyAccountPleromaPart? get pleroma =>
-      throw _privateConstructorUsedError;
+  PleromaApiMyAccountPleromaPart? get pleroma;
   @override
   @HiveField(20)
   @JsonKey(name: 'last_status_at')
-  DateTime? get lastStatusAt => throw _privateConstructorUsedError;
+  DateTime? get lastStatusAt;
   @override
   @HiveField(21)
-  PleromaApiMyAccountSource? get source => throw _privateConstructorUsedError;
+  PleromaApiMyAccountSource? get source;
   @override
   @HiveField(22)
-  bool? get discoverable => throw _privateConstructorUsedError;
+  bool? get discoverable;
   @override
   @HiveField(23)
   @JsonKey(name: 'follow_requests_count')
-  int? get followRequestsCount => throw _privateConstructorUsedError;
+  int? get followRequestsCount;
   @override
   @HiveField(24)
-  String? get fqn => throw _privateConstructorUsedError;
+  String? get fqn;
   @override
   @HiveField(25)
-  bool? get suspended => throw _privateConstructorUsedError;
+  bool? get suspended;
   @override
   @JsonKey(name: 'mute_expires_at')
   @HiveField(26)
-  DateTime? get muteExpiresAt => throw _privateConstructorUsedError;
+  DateTime? get muteExpiresAt;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMyAccountCopyWith<_PleromaApiMyAccount> get copyWith =>
@@ -1210,7 +1184,7 @@ class _$PleromaApiMyAccountPleromaPartTearOff {
     );
   }
 
-  PleromaApiMyAccountPleromaPart fromJson(Map<String, Object> json) {
+  PleromaApiMyAccountPleromaPart fromJson(Map<String, Object?> json) {
     return PleromaApiMyAccountPleromaPart.fromJson(json);
   }
 }
@@ -1963,100 +1937,84 @@ class _$_PleromaApiMyAccountPleromaPart
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMyAccountPleromaPart &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMyAccountPleromaPart &&
             (identical(other.backgroundImage, backgroundImage) ||
-                const DeepCollectionEquality()
-                    .equals(other.backgroundImage, backgroundImage)) &&
-            (identical(other.tags, tags) ||
-                const DeepCollectionEquality().equals(other.tags, tags)) &&
+                other.backgroundImage == backgroundImage) &&
+            const DeepCollectionEquality().equals(other.tags, tags) &&
             (identical(other.relationship, relationship) ||
-                const DeepCollectionEquality()
-                    .equals(other.relationship, relationship)) &&
-            (identical(other.isAdmin, isAdmin) ||
-                const DeepCollectionEquality()
-                    .equals(other.isAdmin, isAdmin)) &&
+                other.relationship == relationship) &&
+            (identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin) &&
             (identical(other.isModerator, isModerator) ||
-                const DeepCollectionEquality()
-                    .equals(other.isModerator, isModerator)) &&
+                other.isModerator == isModerator) &&
             (identical(other.confirmationPending, confirmationPending) ||
-                const DeepCollectionEquality()
-                    .equals(other.confirmationPending, confirmationPending)) &&
+                other.confirmationPending == confirmationPending) &&
             (identical(other.hideFavorites, hideFavorites) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFavorites, hideFavorites)) &&
+                other.hideFavorites == hideFavorites) &&
             (identical(other.hideFollowers, hideFollowers) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFollowers, hideFollowers)) &&
+                other.hideFollowers == hideFollowers) &&
             (identical(other.hideFollows, hideFollows) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFollows, hideFollows)) &&
+                other.hideFollows == hideFollows) &&
             (identical(other.hideFollowersCount, hideFollowersCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFollowersCount, hideFollowersCount)) &&
+                other.hideFollowersCount == hideFollowersCount) &&
             (identical(other.hideFollowsCount, hideFollowsCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideFollowsCount, hideFollowsCount)) &&
-            (identical(other.settingsStore, settingsStore) ||
-                const DeepCollectionEquality()
-                    .equals(other.settingsStore, settingsStore)) &&
+                other.hideFollowsCount == hideFollowsCount) &&
+            const DeepCollectionEquality()
+                .equals(other.settingsStore, settingsStore) &&
             (identical(other.chatToken, chatToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.chatToken, chatToken)) &&
+                other.chatToken == chatToken) &&
             (identical(other.deactivated, deactivated) ||
-                const DeepCollectionEquality()
-                    .equals(other.deactivated, deactivated)) &&
+                other.deactivated == deactivated) &&
             (identical(other.allowFollowingMove, allowFollowingMove) ||
-                const DeepCollectionEquality()
-                    .equals(other.allowFollowingMove, allowFollowingMove)) &&
-            (identical(other.unreadConversationCount, unreadConversationCount) ||
-                const DeepCollectionEquality().equals(
-                    other.unreadConversationCount, unreadConversationCount)) &&
+                other.allowFollowingMove == allowFollowingMove) &&
+            (identical(
+                    other.unreadConversationCount, unreadConversationCount) ||
+                other.unreadConversationCount == unreadConversationCount) &&
             (identical(other.notificationSettings, notificationSettings) ||
-                const DeepCollectionEquality().equals(
-                    other.notificationSettings, notificationSettings)) &&
+                other.notificationSettings == notificationSettings) &&
             (identical(other.skipThreadContainment, skipThreadContainment) ||
-                const DeepCollectionEquality().equals(
-                    other.skipThreadContainment, skipThreadContainment)) &&
+                other.skipThreadContainment == skipThreadContainment) &&
             (identical(other.acceptsChatMessages, acceptsChatMessages) ||
-                const DeepCollectionEquality()
-                    .equals(other.acceptsChatMessages, acceptsChatMessages)) &&
+                other.acceptsChatMessages == acceptsChatMessages) &&
             (identical(other.isConfirmed, isConfirmed) ||
-                const DeepCollectionEquality()
-                    .equals(other.isConfirmed, isConfirmed)) &&
-            (identical(other.favicon, favicon) ||
-                const DeepCollectionEquality().equals(other.favicon, favicon)) &&
-            (identical(other.apId, apId) || const DeepCollectionEquality().equals(other.apId, apId)) &&
-            (identical(other.alsoKnownAs, alsoKnownAs) || const DeepCollectionEquality().equals(other.alsoKnownAs, alsoKnownAs)) &&
-            (identical(other.unreadNotificationsCount, unreadNotificationsCount) || const DeepCollectionEquality().equals(other.unreadNotificationsCount, unreadNotificationsCount)));
+                other.isConfirmed == isConfirmed) &&
+            (identical(other.favicon, favicon) || other.favicon == favicon) &&
+            (identical(other.apId, apId) || other.apId == apId) &&
+            const DeepCollectionEquality()
+                .equals(other.alsoKnownAs, alsoKnownAs) &&
+            (identical(
+                    other.unreadNotificationsCount, unreadNotificationsCount) ||
+                other.unreadNotificationsCount == unreadNotificationsCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(backgroundImage) ^
-      const DeepCollectionEquality().hash(tags) ^
-      const DeepCollectionEquality().hash(relationship) ^
-      const DeepCollectionEquality().hash(isAdmin) ^
-      const DeepCollectionEquality().hash(isModerator) ^
-      const DeepCollectionEquality().hash(confirmationPending) ^
-      const DeepCollectionEquality().hash(hideFavorites) ^
-      const DeepCollectionEquality().hash(hideFollowers) ^
-      const DeepCollectionEquality().hash(hideFollows) ^
-      const DeepCollectionEquality().hash(hideFollowersCount) ^
-      const DeepCollectionEquality().hash(hideFollowsCount) ^
-      const DeepCollectionEquality().hash(settingsStore) ^
-      const DeepCollectionEquality().hash(chatToken) ^
-      const DeepCollectionEquality().hash(deactivated) ^
-      const DeepCollectionEquality().hash(allowFollowingMove) ^
-      const DeepCollectionEquality().hash(unreadConversationCount) ^
-      const DeepCollectionEquality().hash(notificationSettings) ^
-      const DeepCollectionEquality().hash(skipThreadContainment) ^
-      const DeepCollectionEquality().hash(acceptsChatMessages) ^
-      const DeepCollectionEquality().hash(isConfirmed) ^
-      const DeepCollectionEquality().hash(favicon) ^
-      const DeepCollectionEquality().hash(apId) ^
-      const DeepCollectionEquality().hash(alsoKnownAs) ^
-      const DeepCollectionEquality().hash(unreadNotificationsCount);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        backgroundImage,
+        const DeepCollectionEquality().hash(tags),
+        relationship,
+        isAdmin,
+        isModerator,
+        confirmationPending,
+        hideFavorites,
+        hideFollowers,
+        hideFollows,
+        hideFollowersCount,
+        hideFollowsCount,
+        const DeepCollectionEquality().hash(settingsStore),
+        chatToken,
+        deactivated,
+        allowFollowingMove,
+        unreadConversationCount,
+        notificationSettings,
+        skipThreadContainment,
+        acceptsChatMessages,
+        isConfirmed,
+        favicon,
+        apId,
+        const DeepCollectionEquality().hash(alsoKnownAs),
+        unreadNotificationsCount
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -2149,46 +2107,45 @@ abstract class _PleromaApiMyAccountPleromaPart
   @override
   @HiveField(1)
   @JsonKey(name: 'background_image')
-  String? get backgroundImage => throw _privateConstructorUsedError;
+  String? get backgroundImage;
   @override
   @HiveField(2)
-  List<PleromaApiTag>? get tags => throw _privateConstructorUsedError;
+  List<PleromaApiTag>? get tags;
   @override
   @HiveField(3)
-  PleromaApiAccountRelationship? get relationship =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccountRelationship? get relationship;
   @override
   @HiveField(4)
   @JsonKey(name: 'is_admin')
-  bool? get isAdmin => throw _privateConstructorUsedError;
+  bool? get isAdmin;
   @override
   @HiveField(5)
   @JsonKey(name: 'is_moderator')
-  bool? get isModerator => throw _privateConstructorUsedError;
+  bool? get isModerator;
   @override
   @HiveField(7)
   @JsonKey(name: 'confirmation_pending')
-  bool? get confirmationPending => throw _privateConstructorUsedError;
+  bool? get confirmationPending;
   @override
   @HiveField(8)
   @JsonKey(name: 'hide_favorites')
-  bool? get hideFavorites => throw _privateConstructorUsedError;
+  bool? get hideFavorites;
   @override
   @HiveField(9)
   @JsonKey(name: 'hide_followers')
-  bool? get hideFollowers => throw _privateConstructorUsedError;
+  bool? get hideFollowers;
   @override
   @HiveField(11)
   @JsonKey(name: 'hide_follows')
-  bool? get hideFollows => throw _privateConstructorUsedError;
+  bool? get hideFollows;
   @override
   @HiveField(12)
   @JsonKey(name: 'hide_followers_count')
-  bool? get hideFollowersCount => throw _privateConstructorUsedError;
+  bool? get hideFollowersCount;
   @override
   @HiveField(13)
   @JsonKey(name: 'hide_follows_count')
-  bool? get hideFollowsCount => throw _privateConstructorUsedError;
+  bool? get hideFollowsCount;
   @override
 
   ///  A generic map of settings for frontends.
@@ -2196,60 +2153,59 @@ abstract class _PleromaApiMyAccountPleromaPart
   ///  Only returned in verify_credentials and update_credentials
   @HiveField(14)
   @JsonKey(name: 'settings_store')
-  Map<String, dynamic>? get settingsStore => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get settingsStore;
   @override
 
   /// The token needed for Pleroma chat. Only returned in verify_credentials
   @HiveField(15)
   @JsonKey(name: 'chat_token')
-  String? get chatToken => throw _privateConstructorUsedError;
+  String? get chatToken;
   @override
   @HiveField(16)
-  bool? get deactivated => throw _privateConstructorUsedError;
+  bool? get deactivated;
   @override
 
   ///  boolean, true when the user allows automatically follow moved
   ///  following accounts
   @HiveField(17)
   @JsonKey(name: 'allow_following_move')
-  bool? get allowFollowingMove => throw _privateConstructorUsedError;
+  bool? get allowFollowingMove;
   @override
 
   /// The count of unread conversations. Only returned to the account owner.
   @HiveField(18)
   @JsonKey(name: 'unread_conversation_count')
-  int? get unreadConversationCount => throw _privateConstructorUsedError;
+  int? get unreadConversationCount;
   @override
   @HiveField(19)
   @JsonKey(name: 'notifications_settings')
-  PleromaApiMyAccountNotificationsSettings? get notificationSettings =>
-      throw _privateConstructorUsedError;
+  PleromaApiMyAccountNotificationsSettings? get notificationSettings;
   @override
   @HiveField(20)
   @JsonKey(name: 'skip_thread_containment')
-  bool? get skipThreadContainment => throw _privateConstructorUsedError;
+  bool? get skipThreadContainment;
   @override
   @HiveField(21)
   @JsonKey(name: 'accepts_chat_messages')
-  bool? get acceptsChatMessages => throw _privateConstructorUsedError;
+  bool? get acceptsChatMessages;
   @override
   @HiveField(22)
   @JsonKey(name: 'is_confirmed')
-  bool? get isConfirmed => throw _privateConstructorUsedError;
+  bool? get isConfirmed;
   @override
   @HiveField(23)
-  String? get favicon => throw _privateConstructorUsedError;
+  String? get favicon;
   @override
   @HiveField(24)
-  String? get apId => throw _privateConstructorUsedError;
+  String? get apId;
   @override
   @HiveField(25)
   @JsonKey(name: 'also_known_as')
-  List<String>? get alsoKnownAs => throw _privateConstructorUsedError;
+  List<String>? get alsoKnownAs;
   @override
   @HiveField(26)
   @JsonKey(name: 'unread_notifications_count')
-  int? get unreadNotificationsCount => throw _privateConstructorUsedError;
+  int? get unreadNotificationsCount;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMyAccountPleromaPartCopyWith<_PleromaApiMyAccountPleromaPart>

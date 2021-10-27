@@ -29,7 +29,7 @@ class _$PleromaApiContentVariantsTearOff {
     );
   }
 
-  PleromaApiContentVariants fromJson(Map<String, Object> json) {
+  PleromaApiContentVariants fromJson(Map<String, Object?> json) {
     return PleromaApiContentVariants.fromJson(json);
   }
 }
@@ -136,15 +136,14 @@ class _$_PleromaApiContentVariants implements _PleromaApiContentVariants {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiContentVariants &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiContentVariants &&
             (identical(other.textPlain, textPlain) ||
-                const DeepCollectionEquality()
-                    .equals(other.textPlain, textPlain)));
+                other.textPlain == textPlain));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(textPlain);
+  int get hashCode => Object.hash(runtimeType, textPlain);
 
   @JsonKey(ignore: true)
   @override
@@ -171,7 +170,7 @@ abstract class _PleromaApiContentVariants implements PleromaApiContentVariants {
   @override
   @HiveField(0)
   @JsonKey(name: 'text/plain')
-  String? get textPlain => throw _privateConstructorUsedError;
+  String? get textPlain;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiContentVariantsCopyWith<_PleromaApiContentVariants>

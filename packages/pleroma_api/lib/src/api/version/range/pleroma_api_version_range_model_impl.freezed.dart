@@ -41,7 +41,7 @@ class _$PleromaApiVersionRangeTearOff {
     );
   }
 
-  PleromaApiVersionRange fromJson(Map<String, Object> json) {
+  PleromaApiVersionRange fromJson(Map<String, Object?> json) {
     return PleromaApiVersionRange.fromJson(json);
   }
 }
@@ -235,26 +235,19 @@ class _$_PleromaApiVersionRange implements _PleromaApiVersionRange {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiVersionRange &&
-            (identical(other.min, min) ||
-                const DeepCollectionEquality().equals(other.min, min)) &&
-            (identical(other.max, max) ||
-                const DeepCollectionEquality().equals(other.max, max)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiVersionRange &&
+            (identical(other.min, min) || other.min == min) &&
+            (identical(other.max, max) || other.max == max) &&
             (identical(other.minInclusive, minInclusive) ||
-                const DeepCollectionEquality()
-                    .equals(other.minInclusive, minInclusive)) &&
+                other.minInclusive == minInclusive) &&
             (identical(other.maxInclusive, maxInclusive) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxInclusive, maxInclusive)));
+                other.maxInclusive == maxInclusive));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(min) ^
-      const DeepCollectionEquality().hash(max) ^
-      const DeepCollectionEquality().hash(minInclusive) ^
-      const DeepCollectionEquality().hash(maxInclusive);
+      Object.hash(runtimeType, min, max, minInclusive, maxInclusive);
 
   @JsonKey(ignore: true)
   @override
@@ -281,18 +274,18 @@ abstract class _PleromaApiVersionRange implements PleromaApiVersionRange {
 
   @override
   @HiveField(0)
-  PleromaApiVersion? get min => throw _privateConstructorUsedError;
+  PleromaApiVersion? get min;
   @override
   @HiveField(1)
-  PleromaApiVersion? get max => throw _privateConstructorUsedError;
+  PleromaApiVersion? get max;
   @override
   @HiveField(2)
   @JsonKey(name: 'min_inclusive')
-  bool get minInclusive => throw _privateConstructorUsedError;
+  bool get minInclusive;
   @override
   @HiveField(3)
   @JsonKey(name: 'max_inclusive')
-  bool get maxInclusive => throw _privateConstructorUsedError;
+  bool get maxInclusive;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiVersionRangeCopyWith<_PleromaApiVersionRange> get copyWith =>

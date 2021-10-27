@@ -31,7 +31,7 @@ class _$PleromaApiStatusContextTearOff {
     );
   }
 
-  PleromaApiStatusContext fromJson(Map<String, Object> json) {
+  PleromaApiStatusContext fromJson(Map<String, Object?> json) {
     return PleromaApiStatusContext.fromJson(json);
   }
 }
@@ -156,20 +156,18 @@ class _$_PleromaApiStatusContext implements _PleromaApiStatusContext {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiStatusContext &&
-            (identical(other.descendants, descendants) ||
-                const DeepCollectionEquality()
-                    .equals(other.descendants, descendants)) &&
-            (identical(other.ancestors, ancestors) ||
-                const DeepCollectionEquality()
-                    .equals(other.ancestors, ancestors)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiStatusContext &&
+            const DeepCollectionEquality()
+                .equals(other.descendants, descendants) &&
+            const DeepCollectionEquality().equals(other.ancestors, ancestors));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(descendants) ^
-      const DeepCollectionEquality().hash(ancestors);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(descendants),
+      const DeepCollectionEquality().hash(ancestors));
 
   @JsonKey(ignore: true)
   @override
@@ -194,10 +192,10 @@ abstract class _PleromaApiStatusContext implements PleromaApiStatusContext {
 
   @override
   @HiveField(0)
-  List<PleromaApiStatus> get descendants => throw _privateConstructorUsedError;
+  List<PleromaApiStatus> get descendants;
   @override
   @HiveField(1)
-  List<PleromaApiStatus> get ancestors => throw _privateConstructorUsedError;
+  List<PleromaApiStatus> get ancestors;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiStatusContextCopyWith<_PleromaApiStatusContext> get copyWith =>

@@ -38,7 +38,8 @@ class _$PleromaApiAccountRelationshipFollowUpdateTearOff {
     );
   }
 
-  PleromaApiAccountRelationshipFollowUpdate fromJson(Map<String, Object> json) {
+  PleromaApiAccountRelationshipFollowUpdate fromJson(
+      Map<String, Object?> json) {
     return PleromaApiAccountRelationshipFollowUpdate.fromJson(json);
   }
 }
@@ -218,23 +219,17 @@ class _$_PleromaApiAccountRelationshipFollowUpdate
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccountRelationshipFollowUpdate &&
-            (identical(other.state, state) ||
-                const DeepCollectionEquality().equals(other.state, state)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccountRelationshipFollowUpdate &&
+            (identical(other.state, state) || other.state == state) &&
             (identical(other.follower, follower) ||
-                const DeepCollectionEquality()
-                    .equals(other.follower, follower)) &&
+                other.follower == follower) &&
             (identical(other.following, following) ||
-                const DeepCollectionEquality()
-                    .equals(other.following, following)));
+                other.following == following));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(state) ^
-      const DeepCollectionEquality().hash(follower) ^
-      const DeepCollectionEquality().hash(following);
+  int get hashCode => Object.hash(runtimeType, state, follower, following);
 
   @JsonKey(ignore: true)
   @override
@@ -268,15 +263,13 @@ abstract class _PleromaApiAccountRelationshipFollowUpdate
   @override
   @JsonKey(name: 'state')
   @HiveField(0)
-  String get state => throw _privateConstructorUsedError;
+  String get state;
   @override
   @HiveField(1)
-  PleromaApiAccountRelationshipFollowUpdateItem get follower =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccountRelationshipFollowUpdateItem get follower;
   @override
   @HiveField(2)
-  PleromaApiAccountRelationshipFollowUpdateItem get following =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccountRelationshipFollowUpdateItem get following;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccountRelationshipFollowUpdateCopyWith<

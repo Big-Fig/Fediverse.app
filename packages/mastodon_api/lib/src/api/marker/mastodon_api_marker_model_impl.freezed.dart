@@ -37,7 +37,7 @@ class _$MastodonApiMarkerTearOff {
     );
   }
 
-  MastodonApiMarker fromJson(Map<String, Object> json) {
+  MastodonApiMarker fromJson(Map<String, Object?> json) {
     return MastodonApiMarker.fromJson(json);
   }
 }
@@ -188,24 +188,17 @@ class _$_MastodonApiMarker implements _MastodonApiMarker {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiMarker &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiMarker &&
             (identical(other.lastReadId, lastReadId) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastReadId, lastReadId)) &&
-            (identical(other.version, version) ||
-                const DeepCollectionEquality()
-                    .equals(other.version, version)) &&
+                other.lastReadId == lastReadId) &&
+            (identical(other.version, version) || other.version == version) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)));
+                other.updatedAt == updatedAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(lastReadId) ^
-      const DeepCollectionEquality().hash(version) ^
-      const DeepCollectionEquality().hash(updatedAt);
+  int get hashCode => Object.hash(runtimeType, lastReadId, version, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -235,14 +228,14 @@ abstract class _MastodonApiMarker implements MastodonApiMarker {
   @override
   @HiveField(0)
   @JsonKey(name: 'updated_last_read_id')
-  String? get lastReadId => throw _privateConstructorUsedError;
+  String? get lastReadId;
   @override
   @HiveField(1)
-  int get version => throw _privateConstructorUsedError;
+  int get version;
   @override
   @HiveField(2)
   @JsonKey(name: 'updated_at')
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiMarkerCopyWith<_MastodonApiMarker> get copyWith =>

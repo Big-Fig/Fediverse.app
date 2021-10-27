@@ -45,7 +45,7 @@ class _$PleromaApiInstanceFederationTearOff {
     );
   }
 
-  PleromaApiInstanceFederation fromJson(Map<String, Object> json) {
+  PleromaApiInstanceFederation fromJson(Map<String, Object?> json) {
     return PleromaApiInstanceFederation.fromJson(json);
   }
 }
@@ -275,32 +275,27 @@ class _$_PleromaApiInstanceFederation implements _PleromaApiInstanceFederation {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstanceFederation &&
-            (identical(other.enabled, enabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.enabled, enabled)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstanceFederation &&
+            (identical(other.enabled, enabled) || other.enabled == enabled) &&
             (identical(other.exclusions, exclusions) ||
-                const DeepCollectionEquality()
-                    .equals(other.exclusions, exclusions)) &&
+                other.exclusions == exclusions) &&
             (identical(other.mrfObjectAge, mrfObjectAge) ||
-                const DeepCollectionEquality()
-                    .equals(other.mrfObjectAge, mrfObjectAge)) &&
-            (identical(other.mrfPolicies, mrfPolicies) ||
-                const DeepCollectionEquality()
-                    .equals(other.mrfPolicies, mrfPolicies)) &&
-            (identical(other.quarantinedInstances, quarantinedInstances) ||
-                const DeepCollectionEquality()
-                    .equals(other.quarantinedInstances, quarantinedInstances)));
+                other.mrfObjectAge == mrfObjectAge) &&
+            const DeepCollectionEquality()
+                .equals(other.mrfPolicies, mrfPolicies) &&
+            const DeepCollectionEquality()
+                .equals(other.quarantinedInstances, quarantinedInstances));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(enabled) ^
-      const DeepCollectionEquality().hash(exclusions) ^
-      const DeepCollectionEquality().hash(mrfObjectAge) ^
-      const DeepCollectionEquality().hash(mrfPolicies) ^
-      const DeepCollectionEquality().hash(quarantinedInstances);
+  int get hashCode => Object.hash(
+      runtimeType,
+      enabled,
+      exclusions,
+      mrfObjectAge,
+      const DeepCollectionEquality().hash(mrfPolicies),
+      const DeepCollectionEquality().hash(quarantinedInstances));
 
   @JsonKey(ignore: true)
   @override
@@ -337,23 +332,22 @@ abstract class _PleromaApiInstanceFederation
 
   @override
   @HiveField(0)
-  bool? get enabled => throw _privateConstructorUsedError;
+  bool? get enabled;
   @override
   @HiveField(1)
-  bool? get exclusions => throw _privateConstructorUsedError;
+  bool? get exclusions;
   @override
   @HiveField(2)
   @JsonKey(name: 'mrf_object_age')
-  PleromaApiInstanceFederationMfrObjectAge? get mrfObjectAge =>
-      throw _privateConstructorUsedError;
+  PleromaApiInstanceFederationMfrObjectAge? get mrfObjectAge;
   @override
   @HiveField(3)
   @JsonKey(name: 'mrf_policies')
-  List<String>? get mrfPolicies => throw _privateConstructorUsedError;
+  List<String>? get mrfPolicies;
   @override
   @HiveField(4)
   @JsonKey(name: 'quarantined_instances')
-  List<String>? get quarantinedInstances => throw _privateConstructorUsedError;
+  List<String>? get quarantinedInstances;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstanceFederationCopyWith<_PleromaApiInstanceFederation>

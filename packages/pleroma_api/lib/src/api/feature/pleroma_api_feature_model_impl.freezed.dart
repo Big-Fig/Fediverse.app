@@ -45,7 +45,7 @@ class _$PleromaApiFeatureTearOff {
     );
   }
 
-  PleromaApiFeature fromJson(Map<String, Object> json) {
+  PleromaApiFeature fromJson(Map<String, Object?> json) {
     return PleromaApiFeature.fromJson(json);
   }
 }
@@ -312,35 +312,31 @@ class _$_PleromaApiFeature implements _PleromaApiFeature {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiFeature &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiFeature &&
             (identical(other.mastodonApiFeature, mastodonApiFeature) ||
-                const DeepCollectionEquality()
-                    .equals(other.mastodonApiFeature, mastodonApiFeature)) &&
+                other.mastodonApiFeature == mastodonApiFeature) &&
             (identical(other.accessLevelRequirement, accessLevelRequirement) ||
-                const DeepCollectionEquality().equals(
-                    other.accessLevelRequirement, accessLevelRequirement)) &&
+                other.accessLevelRequirement == accessLevelRequirement) &&
             (identical(
                     other.accessScopesRequirement, accessScopesRequirement) ||
-                const DeepCollectionEquality().equals(
-                    other.accessScopesRequirement, accessScopesRequirement)) &&
+                other.accessScopesRequirement == accessScopesRequirement) &&
             (identical(other.instanceVersionRequirement,
                     instanceVersionRequirement) ||
-                const DeepCollectionEquality().equals(
-                    other.instanceVersionRequirement,
-                    instanceVersionRequirement)) &&
+                other.instanceVersionRequirement ==
+                    instanceVersionRequirement) &&
             (identical(other.forceNotImplementedYet, forceNotImplementedYet) ||
-                const DeepCollectionEquality().equals(
-                    other.forceNotImplementedYet, forceNotImplementedYet)));
+                other.forceNotImplementedYet == forceNotImplementedYet));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(mastodonApiFeature) ^
-      const DeepCollectionEquality().hash(accessLevelRequirement) ^
-      const DeepCollectionEquality().hash(accessScopesRequirement) ^
-      const DeepCollectionEquality().hash(instanceVersionRequirement) ^
-      const DeepCollectionEquality().hash(forceNotImplementedYet);
+  int get hashCode => Object.hash(
+      runtimeType,
+      mastodonApiFeature,
+      accessLevelRequirement,
+      accessScopesRequirement,
+      instanceVersionRequirement,
+      forceNotImplementedYet);
 
   @JsonKey(ignore: true)
   @override
@@ -376,25 +372,21 @@ abstract class _PleromaApiFeature implements PleromaApiFeature {
   @override
   @HiveField(0)
   @JsonKey(name: 'mastodon_api_feature')
-  MastodonApiFeature? get mastodonApiFeature =>
-      throw _privateConstructorUsedError;
+  MastodonApiFeature? get mastodonApiFeature;
   @override
   @HiveField(1)
   @JsonKey(name: 'access_level_requirement')
-  PleromaApiAccessLevelRequirement get accessLevelRequirement =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccessLevelRequirement get accessLevelRequirement;
   @override
   @HiveField(2)
   @JsonKey(name: 'access_scope_requirement')
-  PleromaApiAccessScopesRequirement get accessScopesRequirement =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccessScopesRequirement get accessScopesRequirement;
   @override
   @HiveField(3)
   @JsonKey(name: 'instance_version_requirement')
-  PleromaApiInstanceMetadataVersionRequirement get instanceVersionRequirement =>
-      throw _privateConstructorUsedError;
+  PleromaApiInstanceMetadataVersionRequirement get instanceVersionRequirement;
   @override
-  bool? get forceNotImplementedYet => throw _privateConstructorUsedError;
+  bool? get forceNotImplementedYet;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiFeatureCopyWith<_PleromaApiFeature> get copyWith =>

@@ -31,7 +31,7 @@ class _$UnifediApiPostChatMessageTearOff {
     );
   }
 
-  UnifediApiPostChatMessage fromJson(Map<String, Object> json) {
+  UnifediApiPostChatMessage fromJson(Map<String, Object?> json) {
     return UnifediApiPostChatMessage.fromJson(json);
   }
 }
@@ -158,19 +158,14 @@ class _$_UnifediApiPostChatMessage implements _UnifediApiPostChatMessage {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPostChatMessage &&
-            (identical(other.content, content) ||
-                const DeepCollectionEquality()
-                    .equals(other.content, content)) &&
-            (identical(other.mediaId, mediaId) ||
-                const DeepCollectionEquality().equals(other.mediaId, mediaId)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPostChatMessage &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.mediaId, mediaId) || other.mediaId == mediaId));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(content) ^
-      const DeepCollectionEquality().hash(mediaId);
+  int get hashCode => Object.hash(runtimeType, content, mediaId);
 
   @JsonKey(ignore: true)
   @override
@@ -196,11 +191,11 @@ abstract class _UnifediApiPostChatMessage implements UnifediApiPostChatMessage {
 
   @override
   @HiveField(0)
-  String? get content => throw _privateConstructorUsedError;
+  String? get content;
   @override
   @HiveField(1)
   @JsonKey(name: 'media_id')
-  String? get mediaId => throw _privateConstructorUsedError;
+  String? get mediaId;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPostChatMessageCopyWith<_UnifediApiPostChatMessage>

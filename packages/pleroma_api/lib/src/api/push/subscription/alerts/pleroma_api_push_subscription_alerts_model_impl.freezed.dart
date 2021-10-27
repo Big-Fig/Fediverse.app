@@ -50,7 +50,7 @@ class _$PleromaApiPushSubscriptionAlertsTearOff {
     );
   }
 
-  PleromaApiPushSubscriptionAlerts fromJson(Map<String, Object> json) {
+  PleromaApiPushSubscriptionAlerts fromJson(Map<String, Object?> json) {
     return PleromaApiPushSubscriptionAlerts.fromJson(json);
   }
 }
@@ -303,37 +303,23 @@ class _$_PleromaApiPushSubscribeRequestDataAlerts
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiPushSubscribeRequestDataAlerts &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiPushSubscribeRequestDataAlerts &&
             (identical(other.favourite, favourite) ||
-                const DeepCollectionEquality()
-                    .equals(other.favourite, favourite)) &&
-            (identical(other.follow, follow) ||
-                const DeepCollectionEquality().equals(other.follow, follow)) &&
-            (identical(other.mention, mention) ||
-                const DeepCollectionEquality()
-                    .equals(other.mention, mention)) &&
-            (identical(other.reblog, reblog) ||
-                const DeepCollectionEquality().equals(other.reblog, reblog)) &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)) &&
+                other.favourite == favourite) &&
+            (identical(other.follow, follow) || other.follow == follow) &&
+            (identical(other.mention, mention) || other.mention == mention) &&
+            (identical(other.reblog, reblog) || other.reblog == reblog) &&
+            (identical(other.poll, poll) || other.poll == poll) &&
             (identical(other.pleromaChatMention, pleromaChatMention) ||
-                const DeepCollectionEquality()
-                    .equals(other.pleromaChatMention, pleromaChatMention)) &&
+                other.pleromaChatMention == pleromaChatMention) &&
             (identical(other.pleromaEmojiReaction, pleromaEmojiReaction) ||
-                const DeepCollectionEquality()
-                    .equals(other.pleromaEmojiReaction, pleromaEmojiReaction)));
+                other.pleromaEmojiReaction == pleromaEmojiReaction));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(favourite) ^
-      const DeepCollectionEquality().hash(follow) ^
-      const DeepCollectionEquality().hash(mention) ^
-      const DeepCollectionEquality().hash(reblog) ^
-      const DeepCollectionEquality().hash(poll) ^
-      const DeepCollectionEquality().hash(pleromaChatMention) ^
-      const DeepCollectionEquality().hash(pleromaEmojiReaction);
+  int get hashCode => Object.hash(runtimeType, favourite, follow, mention,
+      reblog, poll, pleromaChatMention, pleromaEmojiReaction);
 
   @JsonKey(ignore: true)
   @override
@@ -375,27 +361,27 @@ abstract class _PleromaApiPushSubscribeRequestDataAlerts
 
   @override
   @HiveField(0)
-  bool? get favourite => throw _privateConstructorUsedError;
+  bool? get favourite;
   @override
   @HiveField(1)
-  bool? get follow => throw _privateConstructorUsedError;
+  bool? get follow;
   @override
   @HiveField(2)
-  bool? get mention => throw _privateConstructorUsedError;
+  bool? get mention;
   @override
   @HiveField(3)
-  bool? get reblog => throw _privateConstructorUsedError;
+  bool? get reblog;
   @override
   @HiveField(4)
-  bool? get poll => throw _privateConstructorUsedError;
+  bool? get poll;
   @override
   @HiveField(5)
   @JsonKey(name: 'pleroma:chat_mention')
-  bool? get pleromaChatMention => throw _privateConstructorUsedError;
+  bool? get pleromaChatMention;
   @override
   @HiveField(6)
   @JsonKey(name: 'pleroma:emoji_reaction')
-  bool? get pleromaEmojiReaction => throw _privateConstructorUsedError;
+  bool? get pleromaEmojiReaction;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiPushSubscribeRequestDataAlertsCopyWith<

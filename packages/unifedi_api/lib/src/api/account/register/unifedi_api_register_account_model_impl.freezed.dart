@@ -67,7 +67,7 @@ class _$UnifediApiRegisterAccountTearOff {
     );
   }
 
-  UnifediApiRegisterAccount fromJson(Map<String, Object> json) {
+  UnifediApiRegisterAccount fromJson(Map<String, Object?> json) {
     return UnifediApiRegisterAccount.fromJson(json);
   }
 }
@@ -428,56 +428,45 @@ class _$_UnifediApiRegisterAccount implements _UnifediApiRegisterAccount {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiRegisterAccount &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiRegisterAccount &&
             (identical(other.username, username) ||
-                const DeepCollectionEquality()
-                    .equals(other.username, username)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
+                other.username == username) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
-                const DeepCollectionEquality()
-                    .equals(other.password, password)) &&
+                other.password == password) &&
             (identical(other.agreement, agreement) ||
-                const DeepCollectionEquality()
-                    .equals(other.agreement, agreement)) &&
-            (identical(other.locale, locale) ||
-                const DeepCollectionEquality().equals(other.locale, locale)) &&
-            (identical(other.reason, reason) ||
-                const DeepCollectionEquality().equals(other.reason, reason)) &&
+                other.agreement == agreement) &&
+            (identical(other.locale, locale) || other.locale == locale) &&
+            (identical(other.reason, reason) || other.reason == reason) &&
             (identical(other.captchaToken, captchaToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.captchaToken, captchaToken)) &&
+                other.captchaToken == captchaToken) &&
             (identical(other.captchaAnswerData, captchaAnswerData) ||
-                const DeepCollectionEquality()
-                    .equals(other.captchaAnswerData, captchaAnswerData)) &&
+                other.captchaAnswerData == captchaAnswerData) &&
             (identical(other.captchaSolution, captchaSolution) ||
-                const DeepCollectionEquality()
-                    .equals(other.captchaSolution, captchaSolution)) &&
+                other.captchaSolution == captchaSolution) &&
             (identical(other.fullName, fullName) ||
-                const DeepCollectionEquality()
-                    .equals(other.fullName, fullName)) &&
-            (identical(other.bio, bio) ||
-                const DeepCollectionEquality().equals(other.bio, bio)) &&
+                other.fullName == fullName) &&
+            (identical(other.bio, bio) || other.bio == bio) &&
             (identical(other.inviteToken, inviteToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.inviteToken, inviteToken)));
+                other.inviteToken == inviteToken));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(username) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(password) ^
-      const DeepCollectionEquality().hash(agreement) ^
-      const DeepCollectionEquality().hash(locale) ^
-      const DeepCollectionEquality().hash(reason) ^
-      const DeepCollectionEquality().hash(captchaToken) ^
-      const DeepCollectionEquality().hash(captchaAnswerData) ^
-      const DeepCollectionEquality().hash(captchaSolution) ^
-      const DeepCollectionEquality().hash(fullName) ^
-      const DeepCollectionEquality().hash(bio) ^
-      const DeepCollectionEquality().hash(inviteToken);
+  int get hashCode => Object.hash(
+      runtimeType,
+      username,
+      email,
+      password,
+      agreement,
+      locale,
+      reason,
+      captchaToken,
+      captchaAnswerData,
+      captchaSolution,
+      fullName,
+      bio,
+      inviteToken);
 
   @JsonKey(ignore: true)
   @override
@@ -528,44 +517,44 @@ abstract class _UnifediApiRegisterAccount implements UnifediApiRegisterAccount {
 
   @override
   @HiveField(1)
-  String get username => throw _privateConstructorUsedError;
+  String get username;
   @override
   @HiveField(2)
-  String get email => throw _privateConstructorUsedError;
+  String get email;
   @override
   @HiveField(3)
-  String get password => throw _privateConstructorUsedError;
+  String get password;
   @override
   @HiveField(4)
-  bool get agreement => throw _privateConstructorUsedError;
+  bool get agreement;
   @override
   @HiveField(5)
-  String get locale => throw _privateConstructorUsedError;
+  String get locale;
   @override
   @HiveField(6)
-  String? get reason => throw _privateConstructorUsedError;
+  String? get reason;
   @override
   @JsonKey(name: 'captcha_token')
   @HiveField(7)
-  String? get captchaToken => throw _privateConstructorUsedError;
+  String? get captchaToken;
   @override
   @JsonKey(name: 'captcha_answer_data')
   @HiveField(8)
-  String? get captchaAnswerData => throw _privateConstructorUsedError;
+  String? get captchaAnswerData;
   @override
   @JsonKey(name: 'captcha_solution')
   @HiveField(9)
-  String? get captchaSolution => throw _privateConstructorUsedError;
+  String? get captchaSolution;
   @override
   @HiveField(10)
-  String? get fullName => throw _privateConstructorUsedError;
+  String? get fullName;
   @override
   @HiveField(11)
-  String? get bio => throw _privateConstructorUsedError;
+  String? get bio;
   @override
   @JsonKey(name: 'token')
   @HiveField(12)
-  String? get inviteToken => throw _privateConstructorUsedError;
+  String? get inviteToken;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiRegisterAccountCopyWith<_UnifediApiRegisterAccount>

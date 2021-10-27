@@ -168,15 +168,14 @@ class _$_Following implements _Following {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Following &&
+        (other.runtimeType == runtimeType &&
+            other is _Following &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -250,7 +249,7 @@ abstract class _Following implements PleromaApiReplyVisibilityFilter {
   const factory _Following({String stringValue}) = _$_Following;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$FollowingCopyWith<_Following> get copyWith =>
@@ -307,15 +306,14 @@ class _$_Self implements _Self {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Self &&
+        (other.runtimeType == runtimeType &&
+            other is _Self &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -389,7 +387,7 @@ abstract class _Self implements PleromaApiReplyVisibilityFilter {
   const factory _Self({String stringValue}) = _$_Self;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$SelfCopyWith<_Self> get copyWith => throw _privateConstructorUsedError;

@@ -138,14 +138,13 @@ class _$_UnifediApiRestErrorExceptionPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiRestErrorExceptionPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiRestErrorExceptionPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -163,7 +162,7 @@ abstract class _UnifediApiRestErrorExceptionPleromaAdapter
   const _UnifediApiRestErrorExceptionPleromaAdapter._() : super._();
 
   @override
-  PleromaApiRestErrorException get value => throw _privateConstructorUsedError;
+  PleromaApiRestErrorException get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiRestErrorExceptionPleromaAdapterCopyWith<

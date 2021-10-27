@@ -31,7 +31,7 @@ class _$UnifediApiPushSubscriptionKeysTearOff {
     );
   }
 
-  UnifediApiPushSubscriptionKeys fromJson(Map<String, Object> json) {
+  UnifediApiPushSubscriptionKeys fromJson(Map<String, Object?> json) {
     return UnifediApiPushSubscriptionKeys.fromJson(json);
   }
 }
@@ -166,18 +166,14 @@ class _$_UnifediApiPushSubscriptionKeys
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPushSubscriptionKeys &&
-            (identical(other.p256dh, p256dh) ||
-                const DeepCollectionEquality().equals(other.p256dh, p256dh)) &&
-            (identical(other.auth, auth) ||
-                const DeepCollectionEquality().equals(other.auth, auth)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPushSubscriptionKeys &&
+            (identical(other.p256dh, p256dh) || other.p256dh == p256dh) &&
+            (identical(other.auth, auth) || other.auth == auth));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(p256dh) ^
-      const DeepCollectionEquality().hash(auth);
+  int get hashCode => Object.hash(runtimeType, p256dh, auth);
 
   @JsonKey(ignore: true)
   @override
@@ -205,12 +201,12 @@ abstract class _UnifediApiPushSubscriptionKeys
   /// User agent public key.
   /// Base64 encoded string of public key of ECDH key using prime256v1 curve.
   @HiveField(0)
-  String get p256dh => throw _privateConstructorUsedError;
+  String get p256dh;
   @override
 
   /// Auth secret. Base64 encoded string of 16 bytes of random data.
   @HiveField(1)
-  String get auth => throw _privateConstructorUsedError;
+  String get auth;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPushSubscriptionKeysCopyWith<_UnifediApiPushSubscriptionKeys>

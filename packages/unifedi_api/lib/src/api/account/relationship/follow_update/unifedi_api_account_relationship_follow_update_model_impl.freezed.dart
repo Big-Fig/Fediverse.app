@@ -38,7 +38,8 @@ class _$UnifediApiAccountRelationshipFollowUpdateTearOff {
     );
   }
 
-  UnifediApiAccountRelationshipFollowUpdate fromJson(Map<String, Object> json) {
+  UnifediApiAccountRelationshipFollowUpdate fromJson(
+      Map<String, Object?> json) {
     return UnifediApiAccountRelationshipFollowUpdate.fromJson(json);
   }
 }
@@ -218,23 +219,17 @@ class _$_UnifediApiAccountRelationshipFollowUpdate
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccountRelationshipFollowUpdate &&
-            (identical(other.state, state) ||
-                const DeepCollectionEquality().equals(other.state, state)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiAccountRelationshipFollowUpdate &&
+            (identical(other.state, state) || other.state == state) &&
             (identical(other.follower, follower) ||
-                const DeepCollectionEquality()
-                    .equals(other.follower, follower)) &&
+                other.follower == follower) &&
             (identical(other.following, following) ||
-                const DeepCollectionEquality()
-                    .equals(other.following, following)));
+                other.following == following));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(state) ^
-      const DeepCollectionEquality().hash(follower) ^
-      const DeepCollectionEquality().hash(following);
+  int get hashCode => Object.hash(runtimeType, state, follower, following);
 
   @JsonKey(ignore: true)
   @override
@@ -268,15 +263,13 @@ abstract class _UnifediApiAccountRelationshipFollowUpdate
   @override
   @JsonKey(name: 'state')
   @HiveField(0)
-  String get state => throw _privateConstructorUsedError;
+  String get state;
   @override
   @HiveField(1)
-  UnifediApiAccountRelationshipFollowUpdateItem get follower =>
-      throw _privateConstructorUsedError;
+  UnifediApiAccountRelationshipFollowUpdateItem get follower;
   @override
   @HiveField(2)
-  UnifediApiAccountRelationshipFollowUpdateItem get following =>
-      throw _privateConstructorUsedError;
+  UnifediApiAccountRelationshipFollowUpdateItem get following;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiAccountRelationshipFollowUpdateCopyWith<

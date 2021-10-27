@@ -33,7 +33,7 @@ class _$PleromaApiAccessScopesTearOff {
     );
   }
 
-  PleromaApiAccessScopes fromJson(Map<String, Object> json) {
+  PleromaApiAccessScopes fromJson(Map<String, Object?> json) {
     return PleromaApiAccessScopes.fromJson(json);
   }
 }
@@ -158,20 +158,19 @@ class _$_PleromaApiAccessScopes implements _PleromaApiAccessScopes {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccessScopes &&
-            (identical(other.globalPermissions, globalPermissions) ||
-                const DeepCollectionEquality()
-                    .equals(other.globalPermissions, globalPermissions)) &&
-            (identical(other.targetPermissions, targetPermissions) ||
-                const DeepCollectionEquality()
-                    .equals(other.targetPermissions, targetPermissions)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccessScopes &&
+            const DeepCollectionEquality()
+                .equals(other.globalPermissions, globalPermissions) &&
+            const DeepCollectionEquality()
+                .equals(other.targetPermissions, targetPermissions));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(globalPermissions) ^
-      const DeepCollectionEquality().hash(targetPermissions);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(globalPermissions),
+      const DeepCollectionEquality().hash(targetPermissions));
 
   @JsonKey(ignore: true)
   @override
@@ -198,11 +197,10 @@ abstract class _PleromaApiAccessScopes implements PleromaApiAccessScopes {
 
   @override
   @HiveField(0)
-  List<String> get globalPermissions => throw _privateConstructorUsedError;
+  List<String> get globalPermissions;
   @override
   @HiveField(1)
-  List<PleromaApiAccessScopesItem> get targetPermissions =>
-      throw _privateConstructorUsedError;
+  List<PleromaApiAccessScopesItem> get targetPermissions;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccessScopesCopyWith<_PleromaApiAccessScopes> get copyWith =>

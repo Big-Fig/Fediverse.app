@@ -41,7 +41,7 @@ class _$MastodonApiAccessUserTokenTearOff {
     );
   }
 
-  MastodonApiAccessUserToken fromJson(Map<String, Object> json) {
+  MastodonApiAccessUserToken fromJson(Map<String, Object?> json) {
     return MastodonApiAccessUserToken.fromJson(json);
   }
 }
@@ -256,26 +256,19 @@ class _$_MastodonApiAccessUserToken extends _MastodonApiAccessUserToken {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiAccessUserToken &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiAccessUserToken &&
             (identical(other.oauthToken, oauthToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.oauthToken, oauthToken)) &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)) &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)) &&
+                other.oauthToken == oauthToken) &&
+            (identical(other.scopes, scopes) || other.scopes == scopes) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.myAccount, myAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.myAccount, myAccount)));
+                other.myAccount == myAccount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(oauthToken) ^
-      const DeepCollectionEquality().hash(scopes) ^
-      const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(myAccount);
+      Object.hash(runtimeType, oauthToken, scopes, user, myAccount);
 
   @JsonKey(ignore: true)
   @override
@@ -310,17 +303,17 @@ abstract class _MastodonApiAccessUserToken extends MastodonApiAccessUserToken {
   @override
   @HiveField(3)
   @JsonKey(name: 'oauth_token')
-  MastodonApiOAuthToken get oauthToken => throw _privateConstructorUsedError;
+  MastodonApiOAuthToken get oauthToken;
   @override
   @HiveField(1)
-  MastodonApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  MastodonApiAccessScopes get scopes;
   @override
   @HiveField(2)
-  String get user => throw _privateConstructorUsedError;
+  String get user;
   @override
   @JsonKey(name: 'my_account')
   @HiveField(4)
-  MastodonApiMyAccount? get myAccount => throw _privateConstructorUsedError;
+  MastodonApiMyAccount? get myAccount;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiAccessUserTokenCopyWith<_MastodonApiAccessUserToken>

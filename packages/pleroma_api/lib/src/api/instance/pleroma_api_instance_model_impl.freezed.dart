@@ -29,7 +29,7 @@ class _$PleromaApiInstancePleromaPartTearOff {
     );
   }
 
-  PleromaApiInstancePleromaPart fromJson(Map<String, Object> json) {
+  PleromaApiInstancePleromaPart fromJson(Map<String, Object?> json) {
     return PleromaApiInstancePleromaPart.fromJson(json);
   }
 }
@@ -156,15 +156,14 @@ class _$_PleromaApiInstancePleromaPart
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstancePleromaPart &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstancePleromaPart &&
             (identical(other.metadata, metadata) ||
-                const DeepCollectionEquality()
-                    .equals(other.metadata, metadata)));
+                other.metadata == metadata));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(metadata);
+  int get hashCode => Object.hash(runtimeType, metadata);
 
   @JsonKey(ignore: true)
   @override
@@ -189,8 +188,7 @@ abstract class _PleromaApiInstancePleromaPart
 
   @override
   @HiveField(0)
-  PleromaApiInstanceMetadata? get metadata =>
-      throw _privateConstructorUsedError;
+  PleromaApiInstanceMetadata? get metadata;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstancePleromaPartCopyWith<_PleromaApiInstancePleromaPart>
@@ -300,7 +298,7 @@ class _$PleromaApiInstanceTearOff {
     );
   }
 
-  PleromaApiInstance fromJson(Map<String, Object> json) {
+  PleromaApiInstance fromJson(Map<String, Object?> json) {
     return PleromaApiInstance.fromJson(json);
   }
 }
@@ -1068,105 +1066,82 @@ class _$_PleromaApiInstance implements _PleromaApiInstance {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstance &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstance &&
             (identical(other.approvalRequired, approvalRequired) ||
-                const DeepCollectionEquality()
-                    .equals(other.approvalRequired, approvalRequired)) &&
+                other.approvalRequired == approvalRequired) &&
             (identical(other.avatarUploadLimit, avatarUploadLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.avatarUploadLimit, avatarUploadLimit)) &&
+                other.avatarUploadLimit == avatarUploadLimit) &&
             (identical(other.backgroundUploadLimit, backgroundUploadLimit) ||
-                const DeepCollectionEquality().equals(
-                    other.backgroundUploadLimit, backgroundUploadLimit)) &&
+                other.backgroundUploadLimit == backgroundUploadLimit) &&
             (identical(other.bannerUploadLimit, bannerUploadLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.bannerUploadLimit, bannerUploadLimit)) &&
+                other.bannerUploadLimit == bannerUploadLimit) &&
             (identical(other.contactAccount, contactAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.contactAccount, contactAccount)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.languages, languages) ||
-                const DeepCollectionEquality()
-                    .equals(other.languages, languages)) &&
+                other.contactAccount == contactAccount) &&
+            (identical(other.email, email) || other.email == email) &&
+            const DeepCollectionEquality().equals(other.languages, languages) &&
             (identical(other.maxTootChars, maxTootChars) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxTootChars, maxTootChars)) &&
-            (identical(other.pleroma, pleroma) ||
-                const DeepCollectionEquality()
-                    .equals(other.pleroma, pleroma)) &&
+                other.maxTootChars == maxTootChars) &&
+            (identical(other.pleroma, pleroma) || other.pleroma == pleroma) &&
             (identical(other.pollLimits, pollLimits) ||
-                const DeepCollectionEquality()
-                    .equals(other.pollLimits, pollLimits)) &&
+                other.pollLimits == pollLimits) &&
             (identical(other.registrations, registrations) ||
-                const DeepCollectionEquality()
-                    .equals(other.registrations, registrations)) &&
+                other.registrations == registrations) &&
             (identical(other.shortDescription, shortDescription) ||
-                const DeepCollectionEquality()
-                    .equals(other.shortDescription, shortDescription)) &&
-            (identical(other.stats, stats) ||
-                const DeepCollectionEquality().equals(other.stats, stats)) &&
+                other.shortDescription == shortDescription) &&
+            (identical(other.stats, stats) || other.stats == stats) &&
             (identical(other.thumbnail, thumbnail) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnail, thumbnail)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
+                other.thumbnail == thumbnail) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.uploadLimit, uploadLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.uploadLimit, uploadLimit)) &&
-            (identical(other.uri, uri) ||
-                const DeepCollectionEquality().equals(other.uri, uri)) &&
-            (identical(other.urls, urls) ||
-                const DeepCollectionEquality().equals(other.urls, urls)) &&
+                other.uploadLimit == uploadLimit) &&
+            (identical(other.uri, uri) || other.uri == uri) &&
+            (identical(other.urls, urls) || other.urls == urls) &&
             (identical(other.vapidPublicKey, vapidPublicKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.vapidPublicKey, vapidPublicKey)) &&
+                other.vapidPublicKey == vapidPublicKey) &&
             (identical(other.versionString, versionString) ||
-                const DeepCollectionEquality()
-                    .equals(other.versionString, versionString)) &&
+                other.versionString == versionString) &&
             (identical(other.backgroundImage, backgroundImage) ||
-                const DeepCollectionEquality()
-                    .equals(other.backgroundImage, backgroundImage)) &&
+                other.backgroundImage == backgroundImage) &&
             (identical(other.chatLimit, chatLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.chatLimit, chatLimit)) &&
+                other.chatLimit == chatLimit) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
+                other.description == description) &&
             (identical(other.descriptionLimit, descriptionLimit) ||
-                const DeepCollectionEquality()
-                    .equals(other.descriptionLimit, descriptionLimit)) &&
-            (identical(other.invitesEnabled, invitesEnabled) || const DeepCollectionEquality().equals(other.invitesEnabled, invitesEnabled)));
+                other.descriptionLimit == descriptionLimit) &&
+            (identical(other.invitesEnabled, invitesEnabled) ||
+                other.invitesEnabled == invitesEnabled));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(approvalRequired) ^
-      const DeepCollectionEquality().hash(avatarUploadLimit) ^
-      const DeepCollectionEquality().hash(backgroundUploadLimit) ^
-      const DeepCollectionEquality().hash(bannerUploadLimit) ^
-      const DeepCollectionEquality().hash(contactAccount) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(languages) ^
-      const DeepCollectionEquality().hash(maxTootChars) ^
-      const DeepCollectionEquality().hash(pleroma) ^
-      const DeepCollectionEquality().hash(pollLimits) ^
-      const DeepCollectionEquality().hash(registrations) ^
-      const DeepCollectionEquality().hash(shortDescription) ^
-      const DeepCollectionEquality().hash(stats) ^
-      const DeepCollectionEquality().hash(thumbnail) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(uploadLimit) ^
-      const DeepCollectionEquality().hash(uri) ^
-      const DeepCollectionEquality().hash(urls) ^
-      const DeepCollectionEquality().hash(vapidPublicKey) ^
-      const DeepCollectionEquality().hash(versionString) ^
-      const DeepCollectionEquality().hash(backgroundImage) ^
-      const DeepCollectionEquality().hash(chatLimit) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(descriptionLimit) ^
-      const DeepCollectionEquality().hash(invitesEnabled);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        approvalRequired,
+        avatarUploadLimit,
+        backgroundUploadLimit,
+        bannerUploadLimit,
+        contactAccount,
+        email,
+        const DeepCollectionEquality().hash(languages),
+        maxTootChars,
+        pleroma,
+        pollLimits,
+        registrations,
+        shortDescription,
+        stats,
+        thumbnail,
+        title,
+        uploadLimit,
+        uri,
+        urls,
+        vapidPublicKey,
+        versionString,
+        backgroundImage,
+        chatLimit,
+        description,
+        descriptionLimit,
+        invitesEnabled
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -1253,97 +1228,95 @@ abstract class _PleromaApiInstance implements PleromaApiInstance {
   @override
   @HiveField(0)
   @JsonKey(name: 'approval_required')
-  bool? get approvalRequired => throw _privateConstructorUsedError;
+  bool? get approvalRequired;
   @override
   @HiveField(1)
   @JsonKey(name: 'avatar_upload_limit')
-  int? get avatarUploadLimit => throw _privateConstructorUsedError;
+  int? get avatarUploadLimit;
   @override
   @HiveField(2)
   @JsonKey(name: 'background_upload_limit')
-  int? get backgroundUploadLimit => throw _privateConstructorUsedError;
+  int? get backgroundUploadLimit;
   @override
   @HiveField(3)
   @JsonKey(name: 'banner_upload_limit')
-  int? get bannerUploadLimit => throw _privateConstructorUsedError;
+  int? get bannerUploadLimit;
   @override
   @HiveField(4)
   @JsonKey(name: 'contact_account')
-  PleromaApiAccount? get contactAccount => throw _privateConstructorUsedError;
+  PleromaApiAccount? get contactAccount;
   @override
   @HiveField(5)
-  String? get email => throw _privateConstructorUsedError;
+  String? get email;
   @override
   @HiveField(6)
-  List<String>? get languages => throw _privateConstructorUsedError;
+  List<String>? get languages;
   @override
   @HiveField(7)
   @JsonKey(
       name: 'max_toot_chars',
       fromJson: JsonParseHelper.intFromJsonOrNullOnError)
-  int? get maxTootChars => throw _privateConstructorUsedError;
+  int? get maxTootChars;
   @override
   @HiveField(8)
-  PleromaApiInstancePleromaPart? get pleroma =>
-      throw _privateConstructorUsedError;
+  PleromaApiInstancePleromaPart? get pleroma;
   @override
   @HiveField(9)
   @JsonKey(name: 'poll_limits')
-  PleromaApiInstancePollLimits? get pollLimits =>
-      throw _privateConstructorUsedError;
+  PleromaApiInstancePollLimits? get pollLimits;
   @override
   @HiveField(10)
-  bool? get registrations => throw _privateConstructorUsedError;
+  bool? get registrations;
   @override
   @HiveField(11)
   @JsonKey(name: 'short_description')
-  String? get shortDescription => throw _privateConstructorUsedError;
+  String? get shortDescription;
   @override
   @HiveField(12)
-  PleromaApiInstanceStats? get stats => throw _privateConstructorUsedError;
+  PleromaApiInstanceStats? get stats;
   @override
   @HiveField(13)
-  String? get thumbnail => throw _privateConstructorUsedError;
+  String? get thumbnail;
   @override
   @HiveField(14)
-  String? get title => throw _privateConstructorUsedError;
+  String? get title;
   @override
   @HiveField(15)
   @JsonKey(name: 'upload_limit')
-  int? get uploadLimit => throw _privateConstructorUsedError;
+  int? get uploadLimit;
   @override
   @HiveField(16)
-  String get uri => throw _privateConstructorUsedError;
+  String get uri;
   @override
   @HiveField(17)
-  PleromaApiInstanceUrls? get urls => throw _privateConstructorUsedError;
+  PleromaApiInstanceUrls? get urls;
   @override
   @HiveField(18)
   @JsonKey(name: 'vapid_public_key')
-  String? get vapidPublicKey => throw _privateConstructorUsedError;
+  String? get vapidPublicKey;
   @override
   @HiveField(19)
   @JsonKey(name: 'version')
-  String get versionString => throw _privateConstructorUsedError;
+  String get versionString;
   @override
   @HiveField(20)
   @JsonKey(name: 'background_image')
-  String? get backgroundImage => throw _privateConstructorUsedError;
+  String? get backgroundImage;
   @override
   @HiveField(21)
   @JsonKey(name: 'chat_limit')
-  int? get chatLimit => throw _privateConstructorUsedError;
+  int? get chatLimit;
   @override
   @HiveField(22)
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
   @HiveField(23)
   @JsonKey(name: 'description_limit')
-  int? get descriptionLimit => throw _privateConstructorUsedError;
+  int? get descriptionLimit;
   @override
   @HiveField(24)
   @JsonKey(name: 'invites_enabled')
-  bool? get invitesEnabled => throw _privateConstructorUsedError;
+  bool? get invitesEnabled;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstanceCopyWith<_PleromaApiInstance> get copyWith =>

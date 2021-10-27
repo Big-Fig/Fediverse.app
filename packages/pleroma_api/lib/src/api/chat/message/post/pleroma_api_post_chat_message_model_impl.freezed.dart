@@ -31,7 +31,7 @@ class _$PleromaApiPostChatMessageTearOff {
     );
   }
 
-  PleromaApiPostChatMessage fromJson(Map<String, Object> json) {
+  PleromaApiPostChatMessage fromJson(Map<String, Object?> json) {
     return PleromaApiPostChatMessage.fromJson(json);
   }
 }
@@ -158,19 +158,14 @@ class _$_PleromaApiPostChatMessage implements _PleromaApiPostChatMessage {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiPostChatMessage &&
-            (identical(other.content, content) ||
-                const DeepCollectionEquality()
-                    .equals(other.content, content)) &&
-            (identical(other.mediaId, mediaId) ||
-                const DeepCollectionEquality().equals(other.mediaId, mediaId)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiPostChatMessage &&
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.mediaId, mediaId) || other.mediaId == mediaId));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(content) ^
-      const DeepCollectionEquality().hash(mediaId);
+  int get hashCode => Object.hash(runtimeType, content, mediaId);
 
   @JsonKey(ignore: true)
   @override
@@ -196,11 +191,11 @@ abstract class _PleromaApiPostChatMessage implements PleromaApiPostChatMessage {
 
   @override
   @HiveField(0)
-  String? get content => throw _privateConstructorUsedError;
+  String? get content;
   @override
   @HiveField(1)
   @JsonKey(name: 'media_id')
-  String? get mediaId => throw _privateConstructorUsedError;
+  String? get mediaId;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiPostChatMessageCopyWith<_PleromaApiPostChatMessage>

@@ -31,7 +31,7 @@ class _$MastodonApiPollOptionTearOff {
     );
   }
 
-  MastodonApiPollOption fromJson(Map<String, Object> json) {
+  MastodonApiPollOption fromJson(Map<String, Object?> json) {
     return MastodonApiPollOption.fromJson(json);
   }
 }
@@ -157,19 +157,15 @@ class _$_MastodonApiPollOption implements _MastodonApiPollOption {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiPollOption &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiPollOption &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.votesCount, votesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.votesCount, votesCount)));
+                other.votesCount == votesCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(votesCount);
+  int get hashCode => Object.hash(runtimeType, title, votesCount);
 
   @JsonKey(ignore: true)
   @override
@@ -196,11 +192,11 @@ abstract class _MastodonApiPollOption implements MastodonApiPollOption {
 
   @override
   @HiveField(0)
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @HiveField(1)
   @JsonKey(name: 'votes_count')
-  int? get votesCount => throw _privateConstructorUsedError;
+  int? get votesCount;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiPollOptionCopyWith<_MastodonApiPollOption> get copyWith =>

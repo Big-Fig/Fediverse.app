@@ -31,7 +31,7 @@ class _$MastodonApiPushSubscriptionMetadataTearOff {
     );
   }
 
-  MastodonApiPushSubscriptionMetadata fromJson(Map<String, Object> json) {
+  MastodonApiPushSubscriptionMetadata fromJson(Map<String, Object?> json) {
     return MastodonApiPushSubscriptionMetadata.fromJson(json);
   }
 }
@@ -179,19 +179,15 @@ class _$_MastodonApiPushSubscribeRequestSubscription
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiPushSubscribeRequestSubscription &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiPushSubscribeRequestSubscription &&
             (identical(other.endpoint, endpoint) ||
-                const DeepCollectionEquality()
-                    .equals(other.endpoint, endpoint)) &&
-            (identical(other.keys, keys) ||
-                const DeepCollectionEquality().equals(other.keys, keys)));
+                other.endpoint == endpoint) &&
+            (identical(other.keys, keys) || other.keys == keys));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(endpoint) ^
-      const DeepCollectionEquality().hash(keys);
+  int get hashCode => Object.hash(runtimeType, endpoint, keys);
 
   @JsonKey(ignore: true)
   @override
@@ -222,11 +218,10 @@ abstract class _MastodonApiPushSubscribeRequestSubscription
 
   /// Endpoint URL that is called when a notification event occurs.
   @HiveField(0)
-  String get endpoint => throw _privateConstructorUsedError;
+  String get endpoint;
   @override
   @HiveField(1)
-  MastodonApiPushSubscriptionKeys get keys =>
-      throw _privateConstructorUsedError;
+  MastodonApiPushSubscriptionKeys get keys;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiPushSubscribeRequestSubscriptionCopyWith<

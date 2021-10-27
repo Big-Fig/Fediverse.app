@@ -177,15 +177,14 @@ class _$_Accounts implements _Accounts {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Accounts &&
+        (other.runtimeType == runtimeType &&
+            other is _Accounts &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -265,7 +264,7 @@ abstract class _Accounts implements MastodonApiSearchRequestType {
   const factory _Accounts({String stringValue}) = _$_Accounts;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$AccountsCopyWith<_Accounts> get copyWith =>
@@ -322,15 +321,14 @@ class _$_Hashtags implements _Hashtags {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Hashtags &&
+        (other.runtimeType == runtimeType &&
+            other is _Hashtags &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -410,7 +408,7 @@ abstract class _Hashtags implements MastodonApiSearchRequestType {
   const factory _Hashtags({String stringValue}) = _$_Hashtags;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$HashtagsCopyWith<_Hashtags> get copyWith =>
@@ -467,15 +465,14 @@ class _$_Statuses implements _Statuses {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Statuses &&
+        (other.runtimeType == runtimeType &&
+            other is _Statuses &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -555,7 +552,7 @@ abstract class _Statuses implements MastodonApiSearchRequestType {
   const factory _Statuses({String stringValue}) = _$_Statuses;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$StatusesCopyWith<_Statuses> get copyWith =>

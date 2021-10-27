@@ -44,7 +44,7 @@ class _$UnifediApiPollTearOff {
     );
   }
 
-  UnifediApiPoll fromJson(Map<String, Object> json) {
+  UnifediApiPoll fromJson(Map<String, Object?> json) {
     return UnifediApiPoll.fromJson(json);
   }
 }
@@ -302,46 +302,35 @@ class _$_UnifediApiPoll implements _UnifediApiPoll {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPoll &&
-            (identical(other.expired, expired) ||
-                const DeepCollectionEquality()
-                    .equals(other.expired, expired)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPoll &&
+            (identical(other.expired, expired) || other.expired == expired) &&
             (identical(other.expiresAt, expiresAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.expiresAt, expiresAt)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+                other.expiresAt == expiresAt) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.multiple, multiple) ||
-                const DeepCollectionEquality()
-                    .equals(other.multiple, multiple)) &&
-            (identical(other.options, options) ||
-                const DeepCollectionEquality()
-                    .equals(other.options, options)) &&
-            (identical(other.ownVotes, ownVotes) ||
-                const DeepCollectionEquality()
-                    .equals(other.ownVotes, ownVotes)) &&
-            (identical(other.voted, voted) ||
-                const DeepCollectionEquality().equals(other.voted, voted)) &&
+                other.multiple == multiple) &&
+            const DeepCollectionEquality().equals(other.options, options) &&
+            const DeepCollectionEquality().equals(other.ownVotes, ownVotes) &&
+            (identical(other.voted, voted) || other.voted == voted) &&
             (identical(other.votersCount, votersCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.votersCount, votersCount)) &&
+                other.votersCount == votersCount) &&
             (identical(other.votesCount, votesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.votesCount, votesCount)));
+                other.votesCount == votesCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(expired) ^
-      const DeepCollectionEquality().hash(expiresAt) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(multiple) ^
-      const DeepCollectionEquality().hash(options) ^
-      const DeepCollectionEquality().hash(ownVotes) ^
-      const DeepCollectionEquality().hash(voted) ^
-      const DeepCollectionEquality().hash(votersCount) ^
-      const DeepCollectionEquality().hash(votesCount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      expired,
+      expiresAt,
+      id,
+      multiple,
+      const DeepCollectionEquality().hash(options),
+      const DeepCollectionEquality().hash(ownVotes),
+      voted,
+      votersCount,
+      votesCount);
 
   @JsonKey(ignore: true)
   @override
@@ -384,35 +373,35 @@ abstract class _UnifediApiPoll implements UnifediApiPoll {
 
   @override
   @HiveField(0)
-  bool get expired => throw _privateConstructorUsedError;
+  bool get expired;
   @override
   @HiveField(1)
   @JsonKey(name: 'expires_at')
-  DateTime? get expiresAt => throw _privateConstructorUsedError;
+  DateTime? get expiresAt;
   @override
   @HiveField(2)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @HiveField(3)
-  bool get multiple => throw _privateConstructorUsedError;
+  bool get multiple;
   @override
   @HiveField(4)
-  List<UnifediApiPollOption> get options => throw _privateConstructorUsedError;
+  List<UnifediApiPollOption> get options;
   @override
   @HiveField(5)
   @JsonKey(name: 'own_votes')
-  List<int>? get ownVotes => throw _privateConstructorUsedError;
+  List<int>? get ownVotes;
   @override
   @HiveField(6)
-  bool? get voted => throw _privateConstructorUsedError;
+  bool? get voted;
   @override
   @HiveField(7)
   @JsonKey(name: 'voters_count')
-  int? get votersCount => throw _privateConstructorUsedError;
+  int? get votersCount;
   @override
   @HiveField(8)
   @JsonKey(name: 'votes_count')
-  int? get votesCount => throw _privateConstructorUsedError;
+  int? get votesCount;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPollCopyWith<_UnifediApiPoll> get copyWith =>

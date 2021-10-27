@@ -33,7 +33,7 @@ class _$PleromaApiSearchResultTearOff {
     );
   }
 
-  PleromaApiSearchResult fromJson(Map<String, Object> json) {
+  PleromaApiSearchResult fromJson(Map<String, Object?> json) {
     return PleromaApiSearchResult.fromJson(json);
   }
 }
@@ -175,24 +175,19 @@ class _$_PleromaApiSearchResult implements _PleromaApiSearchResult {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiSearchResult &&
-            (identical(other.accounts, accounts) ||
-                const DeepCollectionEquality()
-                    .equals(other.accounts, accounts)) &&
-            (identical(other.hashtags, hashtags) ||
-                const DeepCollectionEquality()
-                    .equals(other.hashtags, hashtags)) &&
-            (identical(other.statuses, statuses) ||
-                const DeepCollectionEquality()
-                    .equals(other.statuses, statuses)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiSearchResult &&
+            const DeepCollectionEquality().equals(other.accounts, accounts) &&
+            const DeepCollectionEquality().equals(other.hashtags, hashtags) &&
+            const DeepCollectionEquality().equals(other.statuses, statuses));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(accounts) ^
-      const DeepCollectionEquality().hash(hashtags) ^
-      const DeepCollectionEquality().hash(statuses);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(accounts),
+      const DeepCollectionEquality().hash(hashtags),
+      const DeepCollectionEquality().hash(statuses));
 
   @JsonKey(ignore: true)
   @override
@@ -218,13 +213,13 @@ abstract class _PleromaApiSearchResult implements PleromaApiSearchResult {
 
   @override
   @HiveField(0)
-  List<PleromaApiAccount> get accounts => throw _privateConstructorUsedError;
+  List<PleromaApiAccount> get accounts;
   @override
   @HiveField(1)
-  List<PleromaApiTag> get hashtags => throw _privateConstructorUsedError;
+  List<PleromaApiTag> get hashtags;
   @override
   @HiveField(2)
-  List<PleromaApiStatus> get statuses => throw _privateConstructorUsedError;
+  List<PleromaApiStatus> get statuses;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiSearchResultCopyWith<_PleromaApiSearchResult> get copyWith =>

@@ -33,7 +33,7 @@ class _$MastodonApiInstanceMetadataVersionRequirementTearOff {
   }
 
   MastodonApiInstanceMetadataVersionRequirement fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return MastodonApiInstanceMetadataVersionRequirement.fromJson(json);
   }
 }
@@ -170,15 +170,14 @@ class _$_MastodonApiInstanceMetadataVersionRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiInstanceMetadataVersionRequirement &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiInstanceMetadataVersionRequirement &&
             (identical(other.versionRange, versionRange) ||
-                const DeepCollectionEquality()
-                    .equals(other.versionRange, versionRange)));
+                other.versionRange == versionRange));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(versionRange);
+  int get hashCode => Object.hash(runtimeType, versionRange);
 
   @JsonKey(ignore: true)
   @override
@@ -209,8 +208,7 @@ abstract class _MastodonApiInstanceMetadataVersionRequirement
   @override
   @HiveField(0)
   @JsonKey(name: 'version_range')
-  MastodonApiVersionRange get versionRange =>
-      throw _privateConstructorUsedError;
+  MastodonApiVersionRange get versionRange;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiInstanceMetadataVersionRequirementCopyWith<

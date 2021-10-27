@@ -42,7 +42,7 @@ class _$PleromaApiScheduledStatusTearOff {
     );
   }
 
-  PleromaApiScheduledStatus fromJson(Map<String, Object> json) {
+  PleromaApiScheduledStatus fromJson(Map<String, Object?> json) {
     return PleromaApiScheduledStatus.fromJson(json);
   }
 }
@@ -245,26 +245,23 @@ class _$_PleromaApiScheduledStatus implements _PleromaApiScheduledStatus {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiScheduledStatus &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.mediaAttachments, mediaAttachments) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaAttachments, mediaAttachments)) &&
-            (identical(other.params, params) ||
-                const DeepCollectionEquality().equals(other.params, params)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiScheduledStatus &&
+            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality()
+                .equals(other.mediaAttachments, mediaAttachments) &&
+            (identical(other.params, params) || other.params == params) &&
             (identical(other.scheduledAt, scheduledAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.scheduledAt, scheduledAt)));
+                other.scheduledAt == scheduledAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(mediaAttachments) ^
-      const DeepCollectionEquality().hash(params) ^
-      const DeepCollectionEquality().hash(scheduledAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      const DeepCollectionEquality().hash(mediaAttachments),
+      params,
+      scheduledAt);
 
   @JsonKey(ignore: true)
   @override
@@ -299,20 +296,18 @@ abstract class _PleromaApiScheduledStatus implements PleromaApiScheduledStatus {
   @override
   @HiveField(0)
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
   @JsonKey(name: 'media_attachments')
-  List<PleromaApiMediaAttachment>? get mediaAttachments =>
-      throw _privateConstructorUsedError;
+  List<PleromaApiMediaAttachment>? get mediaAttachments;
   @override
   @HiveField(2)
-  PleromaApiScheduledStatusParams get params =>
-      throw _privateConstructorUsedError;
+  PleromaApiScheduledStatusParams get params;
   @override
   @HiveField(3)
   @JsonKey(name: 'scheduled_at')
-  DateTime get scheduledAt => throw _privateConstructorUsedError;
+  DateTime get scheduledAt;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiScheduledStatusCopyWith<_PleromaApiScheduledStatus>

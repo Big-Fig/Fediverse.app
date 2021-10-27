@@ -55,7 +55,7 @@ class _$UnifediApiWebSocketsEventTearOff {
     );
   }
 
-  UnifediApiWebSocketsEvent fromJson(Map<String, Object> json) {
+  UnifediApiWebSocketsEvent fromJson(Map<String, Object?> json) {
     return UnifediApiWebSocketsEvent.fromJson(json);
   }
 }
@@ -409,44 +409,26 @@ class _$_UnifediApiWebSocketsEvent implements _UnifediApiWebSocketsEvent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiWebSocketsEvent &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.channel, channel) ||
-                const DeepCollectionEquality()
-                    .equals(other.channel, channel)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiWebSocketsEvent &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.channel, channel) || other.channel == channel) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.notification, notification) ||
-                const DeepCollectionEquality()
-                    .equals(other.notification, notification)) &&
+                other.notification == notification) &&
             (identical(other.announcement, announcement) ||
-                const DeepCollectionEquality()
-                    .equals(other.announcement, announcement)) &&
-            (identical(other.chat, chat) ||
-                const DeepCollectionEquality().equals(other.chat, chat)) &&
+                other.announcement == announcement) &&
+            (identical(other.chat, chat) || other.chat == chat) &&
             (identical(other.conversation, conversation) ||
-                const DeepCollectionEquality()
-                    .equals(other.conversation, conversation)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+                other.conversation == conversation) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.followUpdate, followUpdate) ||
-                const DeepCollectionEquality()
-                    .equals(other.followUpdate, followUpdate)));
+                other.followUpdate == followUpdate));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(channel) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(notification) ^
-      const DeepCollectionEquality().hash(announcement) ^
-      const DeepCollectionEquality().hash(chat) ^
-      const DeepCollectionEquality().hash(conversation) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(followUpdate);
+  int get hashCode => Object.hash(runtimeType, type, channel, status,
+      notification, announcement, chat, conversation, id, followUpdate);
 
   @JsonKey(ignore: true)
   @override
@@ -490,35 +472,31 @@ abstract class _UnifediApiWebSocketsEvent implements UnifediApiWebSocketsEvent {
   @override
   @JsonKey(name: 'event')
   @HiveField(0)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(2)
-  UnifediApiWebSocketsChannel get channel => throw _privateConstructorUsedError;
+  UnifediApiWebSocketsChannel get channel;
   @override
   @HiveField(3)
-  UnifediApiStatus? get status => throw _privateConstructorUsedError;
+  UnifediApiStatus? get status;
   @override
   @HiveField(4)
-  UnifediApiNotification? get notification =>
-      throw _privateConstructorUsedError;
+  UnifediApiNotification? get notification;
   @override
   @HiveField(5)
-  UnifediApiAnnouncement? get announcement =>
-      throw _privateConstructorUsedError;
+  UnifediApiAnnouncement? get announcement;
   @override
   @HiveField(6)
-  UnifediApiChat? get chat => throw _privateConstructorUsedError;
+  UnifediApiChat? get chat;
   @override
   @HiveField(7)
-  UnifediApiConversation? get conversation =>
-      throw _privateConstructorUsedError;
+  UnifediApiConversation? get conversation;
   @override
   @HiveField(8)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id;
   @override
   @HiveField(9)
-  UnifediApiAccountRelationshipFollowUpdate? get followUpdate =>
-      throw _privateConstructorUsedError;
+  UnifediApiAccountRelationshipFollowUpdate? get followUpdate;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiWebSocketsEventCopyWith<_UnifediApiWebSocketsEvent>

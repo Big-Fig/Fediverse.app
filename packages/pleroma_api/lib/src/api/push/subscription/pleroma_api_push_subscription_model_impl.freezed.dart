@@ -35,7 +35,7 @@ class _$PleromaApiPushSubscriptionTearOff {
     );
   }
 
-  PleromaApiPushSubscription fromJson(Map<String, Object> json) {
+  PleromaApiPushSubscription fromJson(Map<String, Object?> json) {
     return PleromaApiPushSubscription.fromJson(json);
   }
 }
@@ -213,26 +213,18 @@ class _$_PleromaApiPushSubscription implements _PleromaApiPushSubscription {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiPushSubscription &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiPushSubscription &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.endpoint, endpoint) ||
-                const DeepCollectionEquality()
-                    .equals(other.endpoint, endpoint)) &&
-            (identical(other.alerts, alerts) ||
-                const DeepCollectionEquality().equals(other.alerts, alerts)) &&
+                other.endpoint == endpoint) &&
+            (identical(other.alerts, alerts) || other.alerts == alerts) &&
             (identical(other.serverKey, serverKey) ||
-                const DeepCollectionEquality()
-                    .equals(other.serverKey, serverKey)));
+                other.serverKey == serverKey));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(endpoint) ^
-      const DeepCollectionEquality().hash(alerts) ^
-      const DeepCollectionEquality().hash(serverKey);
+  int get hashCode => Object.hash(runtimeType, id, endpoint, alerts, serverKey);
 
   @JsonKey(ignore: true)
   @override
@@ -264,18 +256,17 @@ abstract class _PleromaApiPushSubscription
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
-  String get endpoint => throw _privateConstructorUsedError;
+  String get endpoint;
   @override
   @HiveField(2)
-  PleromaApiPushSubscriptionAlerts get alerts =>
-      throw _privateConstructorUsedError;
+  PleromaApiPushSubscriptionAlerts get alerts;
   @override
   @HiveField(3)
   @JsonKey(name: 'server_key')
-  String get serverKey => throw _privateConstructorUsedError;
+  String get serverKey;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiPushSubscriptionCopyWith<_PleromaApiPushSubscription>

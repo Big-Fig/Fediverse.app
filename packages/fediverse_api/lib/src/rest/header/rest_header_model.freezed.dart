@@ -127,18 +127,14 @@ class _$_RestHeader implements _RestHeader {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RestHeader &&
-            (identical(other.key, key) ||
-                const DeepCollectionEquality().equals(other.key, key)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _RestHeader &&
+            (identical(other.key, key) || other.key == key) &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(key) ^
-      const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, key, value);
 
   @JsonKey(ignore: true)
   @override
@@ -151,9 +147,9 @@ abstract class _RestHeader implements RestHeader {
       _$_RestHeader;
 
   @override
-  String get key => throw _privateConstructorUsedError;
+  String get key;
   @override
-  String get value => throw _privateConstructorUsedError;
+  String get value;
   @override
   @JsonKey(ignore: true)
   _$RestHeaderCopyWith<_RestHeader> get copyWith =>

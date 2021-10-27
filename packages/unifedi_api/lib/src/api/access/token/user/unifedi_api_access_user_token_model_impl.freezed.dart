@@ -41,7 +41,7 @@ class _$UnifediApiAccessUserTokenTearOff {
     );
   }
 
-  UnifediApiAccessUserToken fromJson(Map<String, Object> json) {
+  UnifediApiAccessUserToken fromJson(Map<String, Object?> json) {
     return UnifediApiAccessUserToken.fromJson(json);
   }
 }
@@ -255,26 +255,19 @@ class _$_UnifediApiAccessUserToken extends _UnifediApiAccessUserToken {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccessUserToken &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiAccessUserToken &&
             (identical(other.oauthToken, oauthToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.oauthToken, oauthToken)) &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)) &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)) &&
+                other.oauthToken == oauthToken) &&
+            (identical(other.scopes, scopes) || other.scopes == scopes) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.myAccount, myAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.myAccount, myAccount)));
+                other.myAccount == myAccount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(oauthToken) ^
-      const DeepCollectionEquality().hash(scopes) ^
-      const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(myAccount);
+      Object.hash(runtimeType, oauthToken, scopes, user, myAccount);
 
   @JsonKey(ignore: true)
   @override
@@ -310,17 +303,17 @@ abstract class _UnifediApiAccessUserToken extends UnifediApiAccessUserToken {
   @override
   @HiveField(3)
   @JsonKey(name: 'oauth_token')
-  UnifediApiOAuthToken get oauthToken => throw _privateConstructorUsedError;
+  UnifediApiOAuthToken get oauthToken;
   @override
   @HiveField(1)
-  UnifediApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  UnifediApiAccessScopes get scopes;
   @override
   @HiveField(2)
-  String get user => throw _privateConstructorUsedError;
+  String get user;
   @override
   @JsonKey(name: 'my_account')
   @HiveField(4)
-  UnifediApiMyAccount? get myAccount => throw _privateConstructorUsedError;
+  UnifediApiMyAccount? get myAccount;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiAccessUserTokenCopyWith<_UnifediApiAccessUserToken>

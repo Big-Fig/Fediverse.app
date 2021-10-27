@@ -50,7 +50,7 @@ class _$UnifediApiPushSubscriptionAlertsTearOff {
     );
   }
 
-  UnifediApiPushSubscriptionAlerts fromJson(Map<String, Object> json) {
+  UnifediApiPushSubscriptionAlerts fromJson(Map<String, Object?> json) {
     return UnifediApiPushSubscriptionAlerts.fromJson(json);
   }
 }
@@ -303,37 +303,23 @@ class _$_UnifediApiPushSubscribeRequestDataAlerts
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPushSubscribeRequestDataAlerts &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPushSubscribeRequestDataAlerts &&
             (identical(other.favourite, favourite) ||
-                const DeepCollectionEquality()
-                    .equals(other.favourite, favourite)) &&
-            (identical(other.follow, follow) ||
-                const DeepCollectionEquality().equals(other.follow, follow)) &&
-            (identical(other.mention, mention) ||
-                const DeepCollectionEquality()
-                    .equals(other.mention, mention)) &&
-            (identical(other.reblog, reblog) ||
-                const DeepCollectionEquality().equals(other.reblog, reblog)) &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)) &&
+                other.favourite == favourite) &&
+            (identical(other.follow, follow) || other.follow == follow) &&
+            (identical(other.mention, mention) || other.mention == mention) &&
+            (identical(other.reblog, reblog) || other.reblog == reblog) &&
+            (identical(other.poll, poll) || other.poll == poll) &&
             (identical(other.chatMention, chatMention) ||
-                const DeepCollectionEquality()
-                    .equals(other.chatMention, chatMention)) &&
+                other.chatMention == chatMention) &&
             (identical(other.emojiReaction, emojiReaction) ||
-                const DeepCollectionEquality()
-                    .equals(other.emojiReaction, emojiReaction)));
+                other.emojiReaction == emojiReaction));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(favourite) ^
-      const DeepCollectionEquality().hash(follow) ^
-      const DeepCollectionEquality().hash(mention) ^
-      const DeepCollectionEquality().hash(reblog) ^
-      const DeepCollectionEquality().hash(poll) ^
-      const DeepCollectionEquality().hash(chatMention) ^
-      const DeepCollectionEquality().hash(emojiReaction);
+  int get hashCode => Object.hash(runtimeType, favourite, follow, mention,
+      reblog, poll, chatMention, emojiReaction);
 
   @JsonKey(ignore: true)
   @override
@@ -375,27 +361,27 @@ abstract class _UnifediApiPushSubscribeRequestDataAlerts
 
   @override
   @HiveField(0)
-  bool? get favourite => throw _privateConstructorUsedError;
+  bool? get favourite;
   @override
   @HiveField(1)
-  bool? get follow => throw _privateConstructorUsedError;
+  bool? get follow;
   @override
   @HiveField(2)
-  bool? get mention => throw _privateConstructorUsedError;
+  bool? get mention;
   @override
   @HiveField(3)
-  bool? get reblog => throw _privateConstructorUsedError;
+  bool? get reblog;
   @override
   @HiveField(4)
-  bool? get poll => throw _privateConstructorUsedError;
+  bool? get poll;
   @override
   @HiveField(5)
   @JsonKey(name: 'unifedi:chat_mention')
-  bool? get chatMention => throw _privateConstructorUsedError;
+  bool? get chatMention;
   @override
   @HiveField(6)
   @JsonKey(name: 'unifedi:emoji_reaction')
-  bool? get emojiReaction => throw _privateConstructorUsedError;
+  bool? get emojiReaction;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPushSubscribeRequestDataAlertsCopyWith<

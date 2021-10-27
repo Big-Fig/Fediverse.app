@@ -31,7 +31,7 @@ class _$FediverseApiAccessScopesRequirementTearOff {
     );
   }
 
-  FediverseApiAccessScopesRequirement fromJson(Map<String, Object> json) {
+  FediverseApiAccessScopesRequirement fromJson(Map<String, Object?> json) {
     return FediverseApiAccessScopesRequirement.fromJson(json);
   }
 }
@@ -154,16 +154,15 @@ class _$_FediverseApiAccessScopesRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiAccessScopesRequirement &&
-            (identical(other.scopesVariants, scopesVariants) ||
-                const DeepCollectionEquality()
-                    .equals(other.scopesVariants, scopesVariants)));
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiAccessScopesRequirement &&
+            const DeepCollectionEquality()
+                .equals(other.scopesVariants, scopesVariants));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(scopesVariants);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(scopesVariants));
 
   @JsonKey(ignore: true)
   @override
@@ -193,8 +192,7 @@ abstract class _FediverseApiAccessScopesRequirement
   @override
   @HiveField(0)
   @JsonKey(name: 'scopes_variants')
-  List<FediverseApiAccessScopes> get scopesVariants =>
-      throw _privateConstructorUsedError;
+  List<FediverseApiAccessScopes> get scopesVariants;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiAccessScopesRequirementCopyWith<

@@ -43,7 +43,7 @@ class _$PleromaApiInstanceFieldLimitsTearOff {
     );
   }
 
-  PleromaApiInstanceFieldLimits fromJson(Map<String, Object> json) {
+  PleromaApiInstanceFieldLimits fromJson(Map<String, Object?> json) {
     return PleromaApiInstanceFieldLimits.fromJson(json);
   }
 }
@@ -225,28 +225,21 @@ class _$_PleromaApiInstanceFieldLimits
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiInstanceFieldLimits &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiInstanceFieldLimits &&
             (identical(other.maxFields, maxFields) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxFields, maxFields)) &&
+                other.maxFields == maxFields) &&
             (identical(other.maxRemoteFields, maxRemoteFields) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxRemoteFields, maxRemoteFields)) &&
+                other.maxRemoteFields == maxRemoteFields) &&
             (identical(other.nameLength, nameLength) ||
-                const DeepCollectionEquality()
-                    .equals(other.nameLength, nameLength)) &&
+                other.nameLength == nameLength) &&
             (identical(other.valueLength, valueLength) ||
-                const DeepCollectionEquality()
-                    .equals(other.valueLength, valueLength)));
+                other.valueLength == valueLength));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(maxFields) ^
-      const DeepCollectionEquality().hash(maxRemoteFields) ^
-      const DeepCollectionEquality().hash(nameLength) ^
-      const DeepCollectionEquality().hash(valueLength);
+  int get hashCode => Object.hash(
+      runtimeType, maxFields, maxRemoteFields, nameLength, valueLength);
 
   @JsonKey(ignore: true)
   @override
@@ -282,19 +275,19 @@ abstract class _PleromaApiInstanceFieldLimits
   @override
   @HiveField(0)
   @JsonKey(name: 'max_fields')
-  int? get maxFields => throw _privateConstructorUsedError;
+  int? get maxFields;
   @override
   @JsonKey(name: 'max_remote_fields')
   @HiveField(1)
-  int? get maxRemoteFields => throw _privateConstructorUsedError;
+  int? get maxRemoteFields;
   @override
   @JsonKey(name: 'name_length')
   @HiveField(2)
-  int? get nameLength => throw _privateConstructorUsedError;
+  int? get nameLength;
   @override
   @JsonKey(name: 'value_length')
   @HiveField(3)
-  int? get valueLength => throw _privateConstructorUsedError;
+  int? get valueLength;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiInstanceFieldLimitsCopyWith<_PleromaApiInstanceFieldLimits>

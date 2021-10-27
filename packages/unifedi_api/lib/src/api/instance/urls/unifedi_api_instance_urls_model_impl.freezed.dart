@@ -31,7 +31,7 @@ class _$UnifediApiInstanceUrlsTearOff {
     );
   }
 
-  UnifediApiInstanceUrls fromJson(Map<String, Object> json) {
+  UnifediApiInstanceUrls fromJson(Map<String, Object?> json) {
     return UnifediApiInstanceUrls.fromJson(json);
   }
 }
@@ -141,15 +141,14 @@ class _$_UnifediApiInstanceUrls implements _UnifediApiInstanceUrls {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceUrls &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceUrls &&
             (identical(other.streamingApi, streamingApi) ||
-                const DeepCollectionEquality()
-                    .equals(other.streamingApi, streamingApi)));
+                other.streamingApi == streamingApi));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(streamingApi);
+  int get hashCode => Object.hash(runtimeType, streamingApi);
 
   @JsonKey(ignore: true)
   @override
@@ -175,7 +174,7 @@ abstract class _UnifediApiInstanceUrls implements UnifediApiInstanceUrls {
   @override
   @JsonKey(name: 'streaming_api')
   @HiveField(0)
-  String? get streamingApi => throw _privateConstructorUsedError;
+  String? get streamingApi;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceUrlsCopyWith<_UnifediApiInstanceUrls> get copyWith =>

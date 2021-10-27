@@ -37,7 +37,7 @@ class _$PleromaApiAccessApplicationTokenTearOff {
     );
   }
 
-  PleromaApiAccessApplicationToken fromJson(Map<String, Object> json) {
+  PleromaApiAccessApplicationToken fromJson(Map<String, Object?> json) {
     return PleromaApiAccessApplicationToken.fromJson(json);
   }
 }
@@ -231,23 +231,18 @@ class _$_PleromaApiAccessApplicationToken
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccessApplicationToken &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccessApplicationToken &&
+            (identical(other.scopes, scopes) || other.scopes == scopes) &&
             (identical(other.clientApplication, clientApplication) ||
-                const DeepCollectionEquality()
-                    .equals(other.clientApplication, clientApplication)) &&
+                other.clientApplication == clientApplication) &&
             (identical(other.oauthToken, oauthToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.oauthToken, oauthToken)));
+                other.oauthToken == oauthToken));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(scopes) ^
-      const DeepCollectionEquality().hash(clientApplication) ^
-      const DeepCollectionEquality().hash(oauthToken);
+      Object.hash(runtimeType, scopes, clientApplication, oauthToken);
 
   @JsonKey(ignore: true)
   @override
@@ -279,15 +274,14 @@ abstract class _PleromaApiAccessApplicationToken
 
   @override
   @HiveField(1)
-  PleromaApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  PleromaApiAccessScopes get scopes;
   @override
   @HiveField(2)
-  PleromaApiClientApplication get clientApplication =>
-      throw _privateConstructorUsedError;
+  PleromaApiClientApplication get clientApplication;
   @override
   @HiveField(3)
   @JsonKey(name: 'oauth_token')
-  PleromaApiOAuthToken get oauthToken => throw _privateConstructorUsedError;
+  PleromaApiOAuthToken get oauthToken;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccessApplicationTokenCopyWith<_PleromaApiAccessApplicationToken>

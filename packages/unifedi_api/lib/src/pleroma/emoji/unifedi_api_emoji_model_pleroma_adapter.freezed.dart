@@ -28,7 +28,7 @@ class _$UnifediApiEmojiPleromaAdapterTearOff {
     );
   }
 
-  UnifediApiEmojiPleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiEmojiPleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiEmojiPleromaAdapter.fromJson(json);
   }
 }
@@ -148,14 +148,13 @@ class _$_UnifediApiEmojiPleromaAdapter extends _UnifediApiEmojiPleromaAdapter {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiEmojiPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiEmojiPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -180,7 +179,7 @@ abstract class _UnifediApiEmojiPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiEmoji get value => throw _privateConstructorUsedError;
+  PleromaApiEmoji get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiEmojiPleromaAdapterCopyWith<_UnifediApiEmojiPleromaAdapter>

@@ -31,7 +31,7 @@ class _$UnifediApiStatusEmojiReactionPleromaAdapterTearOff {
   }
 
   UnifediApiStatusEmojiReactionPleromaAdapter fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return UnifediApiStatusEmojiReactionPleromaAdapter.fromJson(json);
   }
 }
@@ -157,14 +157,13 @@ class _$_UnifediApiStatusEmojiReactionPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiStatusEmojiReactionPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiStatusEmojiReactionPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -193,7 +192,7 @@ abstract class _UnifediApiStatusEmojiReactionPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiStatusEmojiReaction get value => throw _privateConstructorUsedError;
+  PleromaApiStatusEmojiReaction get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiStatusEmojiReactionPleromaAdapterCopyWith<

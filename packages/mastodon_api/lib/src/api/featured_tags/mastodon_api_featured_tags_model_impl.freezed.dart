@@ -41,7 +41,7 @@ class _$MastodonApiFeaturedTagTearOff {
     );
   }
 
-  MastodonApiFeaturedTag fromJson(Map<String, Object> json) {
+  MastodonApiFeaturedTag fromJson(Map<String, Object?> json) {
     return MastodonApiFeaturedTag.fromJson(json);
   }
 }
@@ -211,26 +211,19 @@ class _$_MastodonApiFeaturedTag implements _MastodonApiFeaturedTag {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiFeaturedTag &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiFeaturedTag &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.lastStatusAt, lastStatusAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastStatusAt, lastStatusAt)) &&
+                other.lastStatusAt == lastStatusAt) &&
             (identical(other.statusesCount, statusesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusesCount, statusesCount)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)));
+                other.statusesCount == statusesCount) &&
+            (identical(other.name, name) || other.name == name));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(lastStatusAt) ^
-      const DeepCollectionEquality().hash(statusesCount) ^
-      const DeepCollectionEquality().hash(name);
+      Object.hash(runtimeType, id, lastStatusAt, statusesCount, name);
 
   @JsonKey(ignore: true)
   @override
@@ -262,18 +255,18 @@ abstract class _MastodonApiFeaturedTag implements MastodonApiFeaturedTag {
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
   @JsonKey(name: 'last_status_at')
-  DateTime? get lastStatusAt => throw _privateConstructorUsedError;
+  DateTime? get lastStatusAt;
   @override
   @HiveField(2)
   @JsonKey(name: 'statuses_count')
-  int get statusesCount => throw _privateConstructorUsedError;
+  int get statusesCount;
   @override
   @HiveField(3)
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiFeaturedTagCopyWith<_MastodonApiFeaturedTag> get copyWith =>

@@ -29,7 +29,7 @@ class _$FediverseApiAccessLevelRequirementTearOff {
     );
   }
 
-  FediverseApiAccessLevelRequirement fromJson(Map<String, Object> json) {
+  FediverseApiAccessLevelRequirement fromJson(Map<String, Object?> json) {
     return FediverseApiAccessLevelRequirement.fromJson(json);
   }
 }
@@ -155,15 +155,14 @@ class _$_FediverseApiAccessLevelRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiAccessLevelRequirement &&
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiAccessLevelRequirement &&
             (identical(other.requiredLevel, requiredLevel) ||
-                const DeepCollectionEquality()
-                    .equals(other.requiredLevel, requiredLevel)));
+                other.requiredLevel == requiredLevel));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(requiredLevel);
+  int get hashCode => Object.hash(runtimeType, requiredLevel);
 
   @JsonKey(ignore: true)
   @override
@@ -190,8 +189,7 @@ abstract class _FediverseApiAccessLevelRequirement
 
   @override
   @HiveField(0)
-  FediverseApiAccessLevel get requiredLevel =>
-      throw _privateConstructorUsedError;
+  FediverseApiAccessLevel get requiredLevel;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiAccessLevelRequirementCopyWith<

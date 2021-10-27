@@ -35,7 +35,7 @@ class _$UnifediApiFrontendConfigurationsTearOff {
     );
   }
 
-  UnifediApiFrontendConfigurations fromJson(Map<String, Object> json) {
+  UnifediApiFrontendConfigurations fromJson(Map<String, Object?> json) {
     return UnifediApiFrontendConfigurations.fromJson(json);
   }
 }
@@ -182,20 +182,16 @@ class _$_UnifediApiFrontendConfigurations
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiFrontendConfigurations &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiFrontendConfigurations &&
             (identical(other.brandHexColor, brandHexColor) ||
-                const DeepCollectionEquality()
-                    .equals(other.brandHexColor, brandHexColor)) &&
+                other.brandHexColor == brandHexColor) &&
             (identical(other.backgroundImage, backgroundImage) ||
-                const DeepCollectionEquality()
-                    .equals(other.backgroundImage, backgroundImage)));
+                other.backgroundImage == backgroundImage));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(brandHexColor) ^
-      const DeepCollectionEquality().hash(backgroundImage);
+  int get hashCode => Object.hash(runtimeType, brandHexColor, backgroundImage);
 
   @JsonKey(ignore: true)
   @override
@@ -226,11 +222,11 @@ abstract class _UnifediApiFrontendConfigurations
   @override
   @JsonKey(name: 'brand_hex_color')
   @HiveField(0)
-  String? get brandHexColor => throw _privateConstructorUsedError;
+  String? get brandHexColor;
   @override
   @JsonKey(name: 'background_image')
   @HiveField(1)
-  String? get backgroundImage => throw _privateConstructorUsedError;
+  String? get backgroundImage;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiFrontendConfigurationsCopyWith<_UnifediApiFrontendConfigurations>

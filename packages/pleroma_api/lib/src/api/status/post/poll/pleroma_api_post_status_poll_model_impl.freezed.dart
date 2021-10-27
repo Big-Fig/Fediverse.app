@@ -42,7 +42,7 @@ class _$PleromaApiPostStatusPollTearOff {
     );
   }
 
-  PleromaApiPostStatusPoll fromJson(Map<String, Object> json) {
+  PleromaApiPostStatusPoll fromJson(Map<String, Object?> json) {
     return PleromaApiPostStatusPoll.fromJson(json);
   }
 }
@@ -230,27 +230,20 @@ class _$_PleromaApiPostStatusPoll implements _PleromaApiPostStatusPoll {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiPostStatusPoll &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiPostStatusPoll &&
             (identical(other.expiresInSeconds, expiresInSeconds) ||
-                const DeepCollectionEquality()
-                    .equals(other.expiresInSeconds, expiresInSeconds)) &&
+                other.expiresInSeconds == expiresInSeconds) &&
             (identical(other.hideTotals, hideTotals) ||
-                const DeepCollectionEquality()
-                    .equals(other.hideTotals, hideTotals)) &&
+                other.hideTotals == hideTotals) &&
             (identical(other.multiple, multiple) ||
-                const DeepCollectionEquality()
-                    .equals(other.multiple, multiple)) &&
-            (identical(other.options, options) ||
-                const DeepCollectionEquality().equals(other.options, options)));
+                other.multiple == multiple) &&
+            const DeepCollectionEquality().equals(other.options, options));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(expiresInSeconds) ^
-      const DeepCollectionEquality().hash(hideTotals) ^
-      const DeepCollectionEquality().hash(multiple) ^
-      const DeepCollectionEquality().hash(options);
+  int get hashCode => Object.hash(runtimeType, expiresInSeconds, hideTotals,
+      multiple, const DeepCollectionEquality().hash(options));
 
   @JsonKey(ignore: true)
   @override
@@ -284,18 +277,18 @@ abstract class _PleromaApiPostStatusPoll implements PleromaApiPostStatusPoll {
   @override
   @HiveField(0)
   @JsonKey(name: 'expires_in')
-  int get expiresInSeconds => throw _privateConstructorUsedError;
+  int get expiresInSeconds;
   @override
   @HiveField(1)
   @JsonKey(name: 'hide_totals', includeIfNull: false)
-  bool get hideTotals => throw _privateConstructorUsedError;
+  bool get hideTotals;
   @override
   @HiveField(2)
-  bool get multiple => throw _privateConstructorUsedError;
+  bool get multiple;
   @override
   @HiveField(3)
   @JsonKey(name: 'options')
-  List<String> get options => throw _privateConstructorUsedError;
+  List<String> get options;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiPostStatusPollCopyWith<_PleromaApiPostStatusPoll> get copyWith =>

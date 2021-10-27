@@ -104,7 +104,7 @@ class _$MastodonApiMyAccountTearOff {
     );
   }
 
-  MastodonApiMyAccount fromJson(Map<String, Object> json) {
+  MastodonApiMyAccount fromJson(Map<String, Object?> json) {
     return MastodonApiMyAccount.fromJson(json);
   }
 }
@@ -736,93 +736,72 @@ class _$_MastodonApiMyAccount implements _MastodonApiMyAccount {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiMyAccount &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiMyAccount &&
             (identical(other.username, username) ||
-                const DeepCollectionEquality()
-                    .equals(other.username, username)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+                other.username == username) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.statusesCount, statusesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusesCount, statusesCount)) &&
-            (identical(other.note, note) ||
-                const DeepCollectionEquality().equals(other.note, note)) &&
-            (identical(other.locked, locked) ||
-                const DeepCollectionEquality().equals(other.locked, locked)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+                other.statusesCount == statusesCount) &&
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.locked, locked) || other.locked == locked) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.headerStatic, headerStatic) ||
-                const DeepCollectionEquality()
-                    .equals(other.headerStatic, headerStatic)) &&
-            (identical(other.header, header) ||
-                const DeepCollectionEquality().equals(other.header, header)) &&
+                other.headerStatic == headerStatic) &&
+            (identical(other.header, header) || other.header == header) &&
             (identical(other.followingCount, followingCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followingCount, followingCount)) &&
+                other.followingCount == followingCount) &&
             (identical(other.followersCount, followersCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.followersCount, followersCount)) &&
-            (identical(other.fields, fields) ||
-                const DeepCollectionEquality().equals(other.fields, fields)) &&
-            (identical(other.emojis, emojis) ||
-                const DeepCollectionEquality().equals(other.emojis, emojis)) &&
+                other.followersCount == followersCount) &&
+            const DeepCollectionEquality().equals(other.fields, fields) &&
+            const DeepCollectionEquality().equals(other.emojis, emojis) &&
             (identical(other.displayName, displayName) ||
-                const DeepCollectionEquality()
-                    .equals(other.displayName, displayName)) &&
+                other.displayName == displayName) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.bot, bot) ||
-                const DeepCollectionEquality().equals(other.bot, bot)) &&
+                other.createdAt == createdAt) &&
+            (identical(other.bot, bot) || other.bot == bot) &&
             (identical(other.avatarStatic, avatarStatic) ||
-                const DeepCollectionEquality()
-                    .equals(other.avatarStatic, avatarStatic)) &&
-            (identical(other.avatar, avatar) ||
-                const DeepCollectionEquality().equals(other.avatar, avatar)) &&
-            (identical(other.acct, acct) ||
-                const DeepCollectionEquality().equals(other.acct, acct)) &&
+                other.avatarStatic == avatarStatic) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.acct, acct) || other.acct == acct) &&
             (identical(other.lastStatusAt, lastStatusAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastStatusAt, lastStatusAt)) &&
-            (identical(other.source, source) ||
-                const DeepCollectionEquality().equals(other.source, source)) &&
+                other.lastStatusAt == lastStatusAt) &&
+            (identical(other.source, source) || other.source == source) &&
             (identical(other.discoverable, discoverable) ||
-                const DeepCollectionEquality()
-                    .equals(other.discoverable, discoverable)) &&
+                other.discoverable == discoverable) &&
             (identical(other.suspended, suspended) ||
-                const DeepCollectionEquality()
-                    .equals(other.suspended, suspended)) &&
+                other.suspended == suspended) &&
             (identical(other.muteExpiresAt, muteExpiresAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.muteExpiresAt, muteExpiresAt)));
+                other.muteExpiresAt == muteExpiresAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(username) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(statusesCount) ^
-      const DeepCollectionEquality().hash(note) ^
-      const DeepCollectionEquality().hash(locked) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(headerStatic) ^
-      const DeepCollectionEquality().hash(header) ^
-      const DeepCollectionEquality().hash(followingCount) ^
-      const DeepCollectionEquality().hash(followersCount) ^
-      const DeepCollectionEquality().hash(fields) ^
-      const DeepCollectionEquality().hash(emojis) ^
-      const DeepCollectionEquality().hash(displayName) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(bot) ^
-      const DeepCollectionEquality().hash(avatarStatic) ^
-      const DeepCollectionEquality().hash(avatar) ^
-      const DeepCollectionEquality().hash(acct) ^
-      const DeepCollectionEquality().hash(lastStatusAt) ^
-      const DeepCollectionEquality().hash(source) ^
-      const DeepCollectionEquality().hash(discoverable) ^
-      const DeepCollectionEquality().hash(suspended) ^
-      const DeepCollectionEquality().hash(muteExpiresAt);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        username,
+        url,
+        statusesCount,
+        note,
+        locked,
+        id,
+        headerStatic,
+        header,
+        followingCount,
+        followersCount,
+        const DeepCollectionEquality().hash(fields),
+        const DeepCollectionEquality().hash(emojis),
+        displayName,
+        createdAt,
+        bot,
+        avatarStatic,
+        avatar,
+        acct,
+        lastStatusAt,
+        source,
+        discoverable,
+        suspended,
+        muteExpiresAt
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -899,82 +878,82 @@ abstract class _MastodonApiMyAccount implements MastodonApiMyAccount {
 
   @override
   @HiveField(0)
-  String get username => throw _privateConstructorUsedError;
+  String get username;
   @override
   @HiveField(1)
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @override
   @HiveField(2)
   @JsonKey(name: 'statuses_count')
-  int get statusesCount => throw _privateConstructorUsedError;
+  int get statusesCount;
   @override
   @HiveField(3)
-  String? get note => throw _privateConstructorUsedError;
+  String? get note;
   @override
   @HiveField(4)
-  bool get locked => throw _privateConstructorUsedError;
+  bool get locked;
   @override
   @HiveField(5)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(6)
   @JsonKey(name: 'header_static')
-  String get headerStatic => throw _privateConstructorUsedError;
+  String get headerStatic;
   @override
   @HiveField(7)
-  String get header => throw _privateConstructorUsedError;
+  String get header;
   @override
   @HiveField(8)
   @JsonKey(name: 'following_count')
-  int get followingCount => throw _privateConstructorUsedError;
+  int get followingCount;
   @override
   @HiveField(9)
   @JsonKey(name: 'followers_count')
-  int get followersCount => throw _privateConstructorUsedError;
+  int get followersCount;
   @override
   @HiveField(10)
-  List<MastodonApiField>? get fields => throw _privateConstructorUsedError;
+  List<MastodonApiField>? get fields;
   @override
   @HiveField(11)
-  List<MastodonApiEmoji>? get emojis => throw _privateConstructorUsedError;
+  List<MastodonApiEmoji>? get emojis;
   @override
   @HiveField(12)
   @JsonKey(name: 'display_name')
-  String? get displayName => throw _privateConstructorUsedError;
+  String? get displayName;
   @override
   @HiveField(13)
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @HiveField(14)
-  bool? get bot => throw _privateConstructorUsedError;
+  bool? get bot;
   @override
   @HiveField(15)
   @JsonKey(name: 'avatar_static')
-  String get avatarStatic => throw _privateConstructorUsedError;
+  String get avatarStatic;
   @override
   @HiveField(16)
-  String get avatar => throw _privateConstructorUsedError;
+  String get avatar;
   @override
   @HiveField(17)
-  String get acct => throw _privateConstructorUsedError;
+  String get acct;
   @override
   @HiveField(20)
   @JsonKey(name: 'last_status_at')
-  DateTime? get lastStatusAt => throw _privateConstructorUsedError;
+  DateTime? get lastStatusAt;
   @override
   @HiveField(21)
-  MastodonApiMyAccountSource? get source => throw _privateConstructorUsedError;
+  MastodonApiMyAccountSource? get source;
   @override
   @HiveField(22)
-  bool? get discoverable => throw _privateConstructorUsedError;
+  bool? get discoverable;
   @override
   @HiveField(23)
-  bool? get suspended => throw _privateConstructorUsedError;
+  bool? get suspended;
   @override
   @JsonKey(name: 'mute_expires_at')
   @HiveField(24)
-  DateTime? get muteExpiresAt => throw _privateConstructorUsedError;
+  DateTime? get muteExpiresAt;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiMyAccountCopyWith<_MastodonApiMyAccount> get copyWith =>

@@ -32,7 +32,7 @@ class _$UnifediApiAccountRelationshipFollowUpdatePleromaAdapterTearOff {
   }
 
   UnifediApiAccountRelationshipFollowUpdatePleromaAdapter fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return UnifediApiAccountRelationshipFollowUpdatePleromaAdapter.fromJson(
         json);
   }
@@ -180,14 +180,13 @@ class _$_UnifediApiAccountRelationshipFollowUpdatePleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccountRelationshipFollowUpdatePleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiAccountRelationshipFollowUpdatePleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -219,8 +218,7 @@ abstract class _UnifediApiAccountRelationshipFollowUpdatePleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiAccountRelationshipFollowUpdate get value =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccountRelationshipFollowUpdate get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiAccountRelationshipFollowUpdatePleromaAdapterCopyWith<

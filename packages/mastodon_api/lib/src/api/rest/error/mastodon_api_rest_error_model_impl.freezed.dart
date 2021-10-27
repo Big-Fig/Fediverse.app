@@ -164,19 +164,15 @@ class _$_MastodonApiRestError implements _MastodonApiRestError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiRestError &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiRestError &&
             (identical(other.restResponseError, restResponseError) ||
-                const DeepCollectionEquality()
-                    .equals(other.restResponseError, restResponseError)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality().equals(other.details, details)));
+                other.restResponseError == restResponseError) &&
+            (identical(other.details, details) || other.details == details));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(restResponseError) ^
-      const DeepCollectionEquality().hash(details);
+  int get hashCode => Object.hash(runtimeType, restResponseError, details);
 
   @JsonKey(ignore: true)
   @override
@@ -191,10 +187,9 @@ abstract class _MastodonApiRestError implements MastodonApiRestError {
       required MastodonApiRestErrorDetails? details}) = _$_MastodonApiRestError;
 
   @override
-  RestResponseError get restResponseError => throw _privateConstructorUsedError;
+  RestResponseError get restResponseError;
   @override
-  MastodonApiRestErrorDetails? get details =>
-      throw _privateConstructorUsedError;
+  MastodonApiRestErrorDetails? get details;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiRestErrorCopyWith<_MastodonApiRestError> get copyWith =>

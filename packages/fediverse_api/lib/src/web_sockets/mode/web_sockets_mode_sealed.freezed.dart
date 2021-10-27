@@ -176,15 +176,14 @@ class _$_Disabled implements _Disabled {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Disabled &&
+        (other.runtimeType == runtimeType &&
+            other is _Disabled &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -265,7 +264,7 @@ abstract class _Disabled implements WebSocketsMode {
   const factory _Disabled({String stringValue}) = _$_Disabled;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$DisabledCopyWith<_Disabled> get copyWith =>
@@ -324,15 +323,14 @@ class _$_OnlyForeground implements _OnlyForeground {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _OnlyForeground &&
+        (other.runtimeType == runtimeType &&
+            other is _OnlyForeground &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -413,7 +411,7 @@ abstract class _OnlyForeground implements WebSocketsMode {
   const factory _OnlyForeground({String stringValue}) = _$_OnlyForeground;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$OnlyForegroundCopyWith<_OnlyForeground> get copyWith =>
@@ -473,15 +471,14 @@ class _$_ForegroundAndBackground implements _ForegroundAndBackground {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ForegroundAndBackground &&
+        (other.runtimeType == runtimeType &&
+            other is _ForegroundAndBackground &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -564,7 +561,7 @@ abstract class _ForegroundAndBackground implements WebSocketsMode {
       _$_ForegroundAndBackground;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ForegroundAndBackgroundCopyWith<_ForegroundAndBackground> get copyWith =>

@@ -220,34 +220,26 @@ class _$_RestRequest implements _RestRequest {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RestRequest &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
+        (other.runtimeType == runtimeType &&
+            other is _RestRequest &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.relativeUrlPath, relativeUrlPath) ||
-                const DeepCollectionEquality()
-                    .equals(other.relativeUrlPath, relativeUrlPath)) &&
-            (identical(other.queryArgs, queryArgs) ||
-                const DeepCollectionEquality()
-                    .equals(other.queryArgs, queryArgs)) &&
-            (identical(other.bodyJson, bodyJson) ||
-                const DeepCollectionEquality()
-                    .equals(other.bodyJson, bodyJson)) &&
-            (identical(other.headers, headers) ||
-                const DeepCollectionEquality()
-                    .equals(other.headers, headers)) &&
-            (identical(other.files, files) ||
-                const DeepCollectionEquality().equals(other.files, files)));
+                other.relativeUrlPath == relativeUrlPath) &&
+            const DeepCollectionEquality().equals(other.queryArgs, queryArgs) &&
+            const DeepCollectionEquality().equals(other.bodyJson, bodyJson) &&
+            const DeepCollectionEquality().equals(other.headers, headers) &&
+            const DeepCollectionEquality().equals(other.files, files));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(relativeUrlPath) ^
-      const DeepCollectionEquality().hash(queryArgs) ^
-      const DeepCollectionEquality().hash(bodyJson) ^
-      const DeepCollectionEquality().hash(headers) ^
-      const DeepCollectionEquality().hash(files);
+  int get hashCode => Object.hash(
+      runtimeType,
+      type,
+      relativeUrlPath,
+      const DeepCollectionEquality().hash(queryArgs),
+      const DeepCollectionEquality().hash(bodyJson),
+      const DeepCollectionEquality().hash(headers),
+      const DeepCollectionEquality().hash(files));
 
   @JsonKey(ignore: true)
   @override
@@ -265,17 +257,17 @@ abstract class _RestRequest implements RestRequest {
       required Map<String, File>? files}) = _$_RestRequest;
 
   @override
-  RestRequestType get type => throw _privateConstructorUsedError;
+  RestRequestType get type;
   @override
-  String get relativeUrlPath => throw _privateConstructorUsedError;
+  String get relativeUrlPath;
   @override
-  List<UrlQueryArg>? get queryArgs => throw _privateConstructorUsedError;
+  List<UrlQueryArg>? get queryArgs;
   @override
-  Map<String, dynamic>? get bodyJson => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get bodyJson;
   @override
-  List<RestHeader>? get headers => throw _privateConstructorUsedError;
+  List<RestHeader>? get headers;
   @override
-  Map<String, File>? get files => throw _privateConstructorUsedError;
+  Map<String, File>? get files;
   @override
   @JsonKey(ignore: true)
   _$RestRequestCopyWith<_RestRequest> get copyWith =>

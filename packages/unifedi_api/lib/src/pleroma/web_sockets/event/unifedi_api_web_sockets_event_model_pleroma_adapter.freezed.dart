@@ -30,7 +30,7 @@ class _$UnifediApiWebSocketsEventPleromaAdapterTearOff {
     );
   }
 
-  UnifediApiWebSocketsEventPleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiWebSocketsEventPleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiWebSocketsEventPleromaAdapter.fromJson(json);
   }
 }
@@ -156,14 +156,13 @@ class _$_UnifediApiWebSocketsEventPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiWebSocketsEventPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiWebSocketsEventPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -191,7 +190,7 @@ abstract class _UnifediApiWebSocketsEventPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiWebSocketsEvent get value => throw _privateConstructorUsedError;
+  PleromaApiWebSocketsEvent get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiWebSocketsEventPleromaAdapterCopyWith<

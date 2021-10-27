@@ -40,7 +40,7 @@ class _$PleromaApiAccessTearOff {
     );
   }
 
-  PleromaApiAccess fromJson(Map<String, Object> json) {
+  PleromaApiAccess fromJson(Map<String, Object?> json) {
     return PleromaApiAccess.fromJson(json);
   }
 }
@@ -271,27 +271,20 @@ class _$_PleromaApiAccess extends _PleromaApiAccess {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccess &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccess &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.instance, instance) ||
-                const DeepCollectionEquality()
-                    .equals(other.instance, instance)) &&
+                other.instance == instance) &&
             (identical(other.applicationAccessToken, applicationAccessToken) ||
-                const DeepCollectionEquality().equals(
-                    other.applicationAccessToken, applicationAccessToken)) &&
+                other.applicationAccessToken == applicationAccessToken) &&
             (identical(other.userAccessToken, userAccessToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.userAccessToken, userAccessToken)));
+                other.userAccessToken == userAccessToken));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(instance) ^
-      const DeepCollectionEquality().hash(applicationAccessToken) ^
-      const DeepCollectionEquality().hash(userAccessToken);
+  int get hashCode => Object.hash(
+      runtimeType, url, instance, applicationAccessToken, userAccessToken);
 
   @JsonKey(ignore: true)
   @override
@@ -324,20 +317,18 @@ abstract class _PleromaApiAccess extends PleromaApiAccess {
 
   @override
   @HiveField(0)
-  String get url => throw _privateConstructorUsedError;
+  String get url;
   @override
   @HiveField(1)
-  PleromaApiInstance? get instance => throw _privateConstructorUsedError;
+  PleromaApiInstance? get instance;
   @override
   @HiveField(4)
   @JsonKey(name: 'application_access_token')
-  PleromaApiAccessApplicationToken? get applicationAccessToken =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccessApplicationToken? get applicationAccessToken;
   @override
   @HiveField(5)
   @JsonKey(name: 'user_access_token')
-  PleromaApiAccessUserToken? get userAccessToken =>
-      throw _privateConstructorUsedError;
+  PleromaApiAccessUserToken? get userAccessToken;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccessCopyWith<_PleromaApiAccess> get copyWith =>

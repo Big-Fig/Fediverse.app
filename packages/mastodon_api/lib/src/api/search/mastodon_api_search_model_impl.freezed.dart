@@ -33,7 +33,7 @@ class _$MastodonApiSearchResultTearOff {
     );
   }
 
-  MastodonApiSearchResult fromJson(Map<String, Object> json) {
+  MastodonApiSearchResult fromJson(Map<String, Object?> json) {
     return MastodonApiSearchResult.fromJson(json);
   }
 }
@@ -176,24 +176,19 @@ class _$_MastodonApiSearchResult implements _MastodonApiSearchResult {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiSearchResult &&
-            (identical(other.accounts, accounts) ||
-                const DeepCollectionEquality()
-                    .equals(other.accounts, accounts)) &&
-            (identical(other.hashtags, hashtags) ||
-                const DeepCollectionEquality()
-                    .equals(other.hashtags, hashtags)) &&
-            (identical(other.statuses, statuses) ||
-                const DeepCollectionEquality()
-                    .equals(other.statuses, statuses)));
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiSearchResult &&
+            const DeepCollectionEquality().equals(other.accounts, accounts) &&
+            const DeepCollectionEquality().equals(other.hashtags, hashtags) &&
+            const DeepCollectionEquality().equals(other.statuses, statuses));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(accounts) ^
-      const DeepCollectionEquality().hash(hashtags) ^
-      const DeepCollectionEquality().hash(statuses);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(accounts),
+      const DeepCollectionEquality().hash(hashtags),
+      const DeepCollectionEquality().hash(statuses));
 
   @JsonKey(ignore: true)
   @override
@@ -219,13 +214,13 @@ abstract class _MastodonApiSearchResult implements MastodonApiSearchResult {
 
   @override
   @HiveField(0)
-  List<MastodonApiAccount> get accounts => throw _privateConstructorUsedError;
+  List<MastodonApiAccount> get accounts;
   @override
   @HiveField(1)
-  List<MastodonApiTag> get hashtags => throw _privateConstructorUsedError;
+  List<MastodonApiTag> get hashtags;
   @override
   @HiveField(2)
-  List<MastodonApiStatus> get statuses => throw _privateConstructorUsedError;
+  List<MastodonApiStatus> get statuses;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiSearchResultCopyWith<_MastodonApiSearchResult> get copyWith =>

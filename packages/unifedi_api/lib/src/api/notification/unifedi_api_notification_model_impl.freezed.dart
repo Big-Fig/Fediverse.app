@@ -64,7 +64,7 @@ class _$UnifediApiNotificationTearOff {
     );
   }
 
-  UnifediApiNotification fromJson(Map<String, Object> json) {
+  UnifediApiNotification fromJson(Map<String, Object?> json) {
     return UnifediApiNotification.fromJson(json);
   }
 }
@@ -460,48 +460,26 @@ class _$_UnifediApiNotification implements _UnifediApiNotification {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiNotification &&
-            (identical(other.account, account) ||
-                const DeepCollectionEquality()
-                    .equals(other.account, account)) &&
-            (identical(other.target, target) ||
-                const DeepCollectionEquality().equals(other.target, target)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiNotification &&
+            (identical(other.account, account) || other.account == account) &&
+            (identical(other.target, target) || other.target == target) &&
             (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)) &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
-            (identical(other.emoji, emoji) ||
-                const DeepCollectionEquality().equals(other.emoji, emoji)) &&
+                other.createdAt == createdAt) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.emoji, emoji) || other.emoji == emoji) &&
             (identical(other.chatMessage, chatMessage) ||
-                const DeepCollectionEquality()
-                    .equals(other.chatMessage, chatMessage)) &&
-            (identical(other.report, report) ||
-                const DeepCollectionEquality().equals(other.report, report)) &&
-            (identical(other.isSeen, isSeen) ||
-                const DeepCollectionEquality().equals(other.isSeen, isSeen)) &&
-            (identical(other.isMuted, isMuted) ||
-                const DeepCollectionEquality().equals(other.isMuted, isMuted)));
+                other.chatMessage == chatMessage) &&
+            (identical(other.report, report) || other.report == report) &&
+            (identical(other.isSeen, isSeen) || other.isSeen == isSeen) &&
+            (identical(other.isMuted, isMuted) || other.isMuted == isMuted));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(account) ^
-      const DeepCollectionEquality().hash(target) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(emoji) ^
-      const DeepCollectionEquality().hash(chatMessage) ^
-      const DeepCollectionEquality().hash(report) ^
-      const DeepCollectionEquality().hash(isSeen) ^
-      const DeepCollectionEquality().hash(isMuted);
+  int get hashCode => Object.hash(runtimeType, account, target, createdAt, id,
+      type, status, emoji, chatMessage, report, isSeen, isMuted);
 
   @JsonKey(ignore: true)
   @override
@@ -549,41 +527,41 @@ abstract class _UnifediApiNotification implements UnifediApiNotification {
 
   @override
   @HiveField(0)
-  UnifediApiAccount? get account => throw _privateConstructorUsedError;
+  UnifediApiAccount? get account;
   @override
   @HiveField(1)
-  UnifediApiAccount? get target => throw _privateConstructorUsedError;
+  UnifediApiAccount? get target;
   @override
   @HiveField(2)
   @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt;
   @override
   @HiveField(3)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(4)
-  String get type => throw _privateConstructorUsedError;
+  String get type;
   @override
   @HiveField(5)
-  UnifediApiStatus? get status => throw _privateConstructorUsedError;
+  UnifediApiStatus? get status;
   @override
   @HiveField(6)
-  String? get emoji => throw _privateConstructorUsedError;
+  String? get emoji;
   @override
   @HiveField(8)
   @JsonKey(name: 'chat_message')
-  UnifediApiChatMessage? get chatMessage => throw _privateConstructorUsedError;
+  UnifediApiChatMessage? get chatMessage;
   @override
   @HiveField(9)
-  UnifediApiAccountReport? get report => throw _privateConstructorUsedError;
+  UnifediApiAccountReport? get report;
   @override
   @HiveField(10 + 0)
   @JsonKey(name: 'is_seen')
-  bool? get isSeen => throw _privateConstructorUsedError;
+  bool? get isSeen;
   @override
   @HiveField(11 + 1)
   @JsonKey(name: 'is_muted')
-  bool? get isMuted => throw _privateConstructorUsedError;
+  bool? get isMuted;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiNotificationCopyWith<_UnifediApiNotification> get copyWith =>

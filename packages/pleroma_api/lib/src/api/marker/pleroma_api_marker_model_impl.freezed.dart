@@ -40,7 +40,7 @@ class _$PleromaApiMarkerTearOff {
     );
   }
 
-  PleromaApiMarker fromJson(Map<String, Object> json) {
+  PleromaApiMarker fromJson(Map<String, Object?> json) {
     return PleromaApiMarker.fromJson(json);
   }
 }
@@ -227,27 +227,19 @@ class _$_PleromaApiMarker implements _PleromaApiMarker {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMarker &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMarker &&
             (identical(other.lastReadId, lastReadId) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastReadId, lastReadId)) &&
-            (identical(other.version, version) ||
-                const DeepCollectionEquality()
-                    .equals(other.version, version)) &&
+                other.lastReadId == lastReadId) &&
+            (identical(other.version, version) || other.version == version) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)) &&
-            (identical(other.pleroma, pleroma) ||
-                const DeepCollectionEquality().equals(other.pleroma, pleroma)));
+                other.updatedAt == updatedAt) &&
+            (identical(other.pleroma, pleroma) || other.pleroma == pleroma));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(lastReadId) ^
-      const DeepCollectionEquality().hash(version) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(pleroma);
+      Object.hash(runtimeType, lastReadId, version, updatedAt, pleroma);
 
   @JsonKey(ignore: true)
   @override
@@ -279,18 +271,17 @@ abstract class _PleromaApiMarker implements PleromaApiMarker {
   @override
   @HiveField(0)
   @JsonKey(name: 'updated_last_read_id')
-  String? get lastReadId => throw _privateConstructorUsedError;
+  String? get lastReadId;
   @override
   @HiveField(1)
-  int get version => throw _privateConstructorUsedError;
+  int get version;
   @override
   @HiveField(2)
   @JsonKey(name: 'updated_at')
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
   @HiveField(3)
-  PleromaApiMarkerPleromaPart? get pleroma =>
-      throw _privateConstructorUsedError;
+  PleromaApiMarkerPleromaPart? get pleroma;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMarkerCopyWith<_PleromaApiMarker> get copyWith =>
@@ -315,7 +306,7 @@ class _$PleromaApiMarkerPleromaPartTearOff {
     );
   }
 
-  PleromaApiMarkerPleromaPart fromJson(Map<String, Object> json) {
+  PleromaApiMarkerPleromaPart fromJson(Map<String, Object?> json) {
     return PleromaApiMarkerPleromaPart.fromJson(json);
   }
 }
@@ -425,15 +416,14 @@ class _$_PleromaApiMarkerPleromaPart implements _PleromaApiMarkerPleromaPart {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMarkerPleromaPart &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMarkerPleromaPart &&
             (identical(other.unreadCount, unreadCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.unreadCount, unreadCount)));
+                other.unreadCount == unreadCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(unreadCount);
+  int get hashCode => Object.hash(runtimeType, unreadCount);
 
   @JsonKey(ignore: true)
   @override
@@ -460,7 +450,7 @@ abstract class _PleromaApiMarkerPleromaPart
   @override
   @HiveField(0)
   @JsonKey(name: 'unread_count')
-  int? get unreadCount => throw _privateConstructorUsedError;
+  int? get unreadCount;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMarkerPleromaPartCopyWith<_PleromaApiMarkerPleromaPart>

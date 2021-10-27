@@ -43,7 +43,7 @@ class _$PleromaApiChatTearOff {
     );
   }
 
-  PleromaApiChat fromJson(Map<String, Object> json) {
+  PleromaApiChat fromJson(Map<String, Object?> json) {
     return PleromaApiChat.fromJson(json);
   }
 }
@@ -265,30 +265,20 @@ class _$_PleromaApiChat implements _PleromaApiChat {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiChat &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.unread, unread) ||
-                const DeepCollectionEquality().equals(other.unread, unread)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiChat &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.unread, unread) || other.unread == unread) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)) &&
-            (identical(other.account, account) ||
-                const DeepCollectionEquality()
-                    .equals(other.account, account)) &&
+                other.updatedAt == updatedAt) &&
+            (identical(other.account, account) || other.account == account) &&
             (identical(other.lastMessage, lastMessage) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastMessage, lastMessage)));
+                other.lastMessage == lastMessage));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(unread) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(account) ^
-      const DeepCollectionEquality().hash(lastMessage);
+      Object.hash(runtimeType, id, unread, updatedAt, account, lastMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -321,21 +311,21 @@ abstract class _PleromaApiChat implements PleromaApiChat {
 
   @override
   @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
   @HiveField(1)
-  int get unread => throw _privateConstructorUsedError;
+  int get unread;
   @override
   @HiveField(2)
   @JsonKey(name: 'updated_at')
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
   @HiveField(3)
-  PleromaApiAccount get account => throw _privateConstructorUsedError;
+  PleromaApiAccount get account;
   @override
   @HiveField(4)
   @JsonKey(name: 'last_message')
-  PleromaApiChatMessage? get lastMessage => throw _privateConstructorUsedError;
+  PleromaApiChatMessage? get lastMessage;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiChatCopyWith<_PleromaApiChat> get copyWith =>

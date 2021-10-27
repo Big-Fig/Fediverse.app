@@ -44,7 +44,7 @@ class _$MastodonApiEmojiTearOff {
     );
   }
 
-  MastodonApiEmoji fromJson(Map<String, Object> json) {
+  MastodonApiEmoji fromJson(Map<String, Object?> json) {
     return MastodonApiEmoji.fromJson(json);
   }
 }
@@ -236,31 +236,22 @@ class _$_MastodonApiEmoji implements _MastodonApiEmoji {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiEmoji &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiEmoji &&
             (identical(other.shortcode, shortcode) ||
-                const DeepCollectionEquality()
-                    .equals(other.shortcode, shortcode)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+                other.shortcode == shortcode) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.staticUrl, staticUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.staticUrl, staticUrl)) &&
+                other.staticUrl == staticUrl) &&
             (identical(other.visibleInPicker, visibleInPicker) ||
-                const DeepCollectionEquality()
-                    .equals(other.visibleInPicker, visibleInPicker)) &&
+                other.visibleInPicker == visibleInPicker) &&
             (identical(other.category, category) ||
-                const DeepCollectionEquality()
-                    .equals(other.category, category)));
+                other.category == category));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(shortcode) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(staticUrl) ^
-      const DeepCollectionEquality().hash(visibleInPicker) ^
-      const DeepCollectionEquality().hash(category);
+  int get hashCode => Object.hash(
+      runtimeType, shortcode, url, staticUrl, visibleInPicker, category);
 
   @JsonKey(ignore: true)
   @override
@@ -294,22 +285,22 @@ abstract class _MastodonApiEmoji implements MastodonApiEmoji {
 
   @override
   @HiveField(0)
-  String get shortcode => throw _privateConstructorUsedError;
+  String get shortcode;
   @override
   @HiveField(1)
-  String? get url => throw _privateConstructorUsedError;
+  String? get url;
   @override
   @HiveField(2)
   @JsonKey(name: 'static_url')
-  String? get staticUrl => throw _privateConstructorUsedError;
+  String? get staticUrl;
   @override
   @JsonKey(name: 'visible_in_picker')
   @HiveField(3)
-  bool? get visibleInPicker => throw _privateConstructorUsedError;
+  bool? get visibleInPicker;
   @override
   @override
   @HiveField(4)
-  String? get category => throw _privateConstructorUsedError;
+  String? get category;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiEmojiCopyWith<_MastodonApiEmoji> get copyWith =>

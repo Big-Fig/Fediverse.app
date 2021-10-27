@@ -35,7 +35,7 @@ class _$PleromaApiMediaAttachmentSizeTearOff {
     );
   }
 
-  PleromaApiMediaAttachmentSize fromJson(Map<String, Object> json) {
+  PleromaApiMediaAttachmentSize fromJson(Map<String, Object?> json) {
     return PleromaApiMediaAttachmentSize.fromJson(json);
   }
 }
@@ -201,24 +201,16 @@ class _$_PleromaApiMediaAttachmentSize
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMediaAttachmentSize &&
-            (identical(other.width, width) ||
-                const DeepCollectionEquality().equals(other.width, width)) &&
-            (identical(other.height, height) ||
-                const DeepCollectionEquality().equals(other.height, height)) &&
-            (identical(other.size, size) ||
-                const DeepCollectionEquality().equals(other.size, size)) &&
-            (identical(other.aspect, aspect) ||
-                const DeepCollectionEquality().equals(other.aspect, aspect)));
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMediaAttachmentSize &&
+            (identical(other.width, width) || other.width == width) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.aspect, aspect) || other.aspect == aspect));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(width) ^
-      const DeepCollectionEquality().hash(height) ^
-      const DeepCollectionEquality().hash(size) ^
-      const DeepCollectionEquality().hash(aspect);
+  int get hashCode => Object.hash(runtimeType, width, height, size, aspect);
 
   @JsonKey(ignore: true)
   @override
@@ -246,16 +238,16 @@ abstract class _PleromaApiMediaAttachmentSize
 
   @override
   @HiveField(0)
-  int get width => throw _privateConstructorUsedError;
+  int get width;
   @override
   @HiveField(1)
-  int get height => throw _privateConstructorUsedError;
+  int get height;
   @override
   @HiveField(2)
-  String? get size => throw _privateConstructorUsedError;
+  String? get size;
   @override
   @HiveField(3)
-  double? get aspect => throw _privateConstructorUsedError;
+  double? get aspect;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMediaAttachmentSizeCopyWith<_PleromaApiMediaAttachmentSize>

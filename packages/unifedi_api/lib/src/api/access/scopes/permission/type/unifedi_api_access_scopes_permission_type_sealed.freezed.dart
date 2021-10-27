@@ -225,15 +225,14 @@ class _$_Read implements _Read {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Read &&
+        (other.runtimeType == runtimeType &&
+            other is _Read &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -331,7 +330,7 @@ abstract class _Read implements UnifediApiAccessScopesPermissionType {
   const factory _Read({String stringValue}) = _$_Read;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ReadCopyWith<_Read> get copyWith => throw _privateConstructorUsedError;
@@ -388,15 +387,14 @@ class _$_Write implements _Write {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Write &&
+        (other.runtimeType == runtimeType &&
+            other is _Write &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -494,7 +492,7 @@ abstract class _Write implements UnifediApiAccessScopesPermissionType {
   const factory _Write({String stringValue}) = _$_Write;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$WriteCopyWith<_Write> get copyWith => throw _privateConstructorUsedError;
@@ -551,15 +549,14 @@ class _$_Valid implements _Valid {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Valid &&
+        (other.runtimeType == runtimeType &&
+            other is _Valid &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -657,7 +654,7 @@ abstract class _Valid implements UnifediApiAccessScopesPermissionType {
   const factory _Valid({String stringValue}) = _$_Valid;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$ValidCopyWith<_Valid> get copyWith => throw _privateConstructorUsedError;
@@ -714,15 +711,14 @@ class _$_Push implements _Push {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Push &&
+        (other.runtimeType == runtimeType &&
+            other is _Push &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -820,7 +816,7 @@ abstract class _Push implements UnifediApiAccessScopesPermissionType {
   const factory _Push({String stringValue}) = _$_Push;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PushCopyWith<_Push> get copyWith => throw _privateConstructorUsedError;
@@ -879,15 +875,14 @@ class _$_AdminRead implements _AdminRead {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AdminRead &&
+        (other.runtimeType == runtimeType &&
+            other is _AdminRead &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -985,7 +980,7 @@ abstract class _AdminRead implements UnifediApiAccessScopesPermissionType {
   const factory _AdminRead({String stringValue}) = _$_AdminRead;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$AdminReadCopyWith<_AdminRead> get copyWith =>
@@ -1046,15 +1041,14 @@ class _$_AdminWrite implements _AdminWrite {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AdminWrite &&
+        (other.runtimeType == runtimeType &&
+            other is _AdminWrite &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -1152,7 +1146,7 @@ abstract class _AdminWrite implements UnifediApiAccessScopesPermissionType {
   const factory _AdminWrite({String stringValue}) = _$_AdminWrite;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$AdminWriteCopyWith<_AdminWrite> get copyWith =>

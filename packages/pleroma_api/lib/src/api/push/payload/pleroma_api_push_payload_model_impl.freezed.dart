@@ -44,7 +44,7 @@ class _$PleromaApiPushPayloadTearOff {
     );
   }
 
-  PleromaApiPushPayload fromJson(Map<String, Object> json) {
+  PleromaApiPushPayload fromJson(Map<String, Object?> json) {
     return PleromaApiPushPayload.fromJson(json);
   }
 }
@@ -233,29 +233,20 @@ class _$_PleromaApiPushPayload implements _PleromaApiPushPayload {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiPushPayload &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiPushPayload &&
             (identical(other.notificationId, notificationId) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationId, notificationId)) &&
+                other.notificationId == notificationId) &&
             (identical(other.notificationType, notificationType) ||
-                const DeepCollectionEquality()
-                    .equals(other.notificationType, notificationType)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.body, body) ||
-                const DeepCollectionEquality().equals(other.body, body)) &&
-            (identical(other.icon, icon) ||
-                const DeepCollectionEquality().equals(other.icon, icon)));
+                other.notificationType == notificationType) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.body, body) || other.body == body) &&
+            (identical(other.icon, icon) || other.icon == icon));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(notificationId) ^
-      const DeepCollectionEquality().hash(notificationType) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(body) ^
-      const DeepCollectionEquality().hash(icon);
+  int get hashCode => Object.hash(
+      runtimeType, notificationId, notificationType, title, body, icon);
 
   @JsonKey(ignore: true)
   @override
@@ -290,20 +281,20 @@ abstract class _PleromaApiPushPayload implements PleromaApiPushPayload {
   @override
   @HiveField(0)
   @JsonKey(name: 'notification_id')
-  String get notificationId => throw _privateConstructorUsedError;
+  String get notificationId;
   @override
   @HiveField(1)
   @JsonKey(name: 'notification_type')
-  String get notificationType => throw _privateConstructorUsedError;
+  String get notificationType;
   @override
   @HiveField(2)
-  String? get title => throw _privateConstructorUsedError;
+  String? get title;
   @override
   @HiveField(3)
-  String? get body => throw _privateConstructorUsedError;
+  String? get body;
   @override
   @HiveField(4)
-  String? get icon => throw _privateConstructorUsedError;
+  String? get icon;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiPushPayloadCopyWith<_PleromaApiPushPayload> get copyWith =>

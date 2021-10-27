@@ -160,23 +160,16 @@ class _$_RestResponseError implements _RestResponseError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RestResponseError &&
-            (identical(other.request, request) ||
-                const DeepCollectionEquality()
-                    .equals(other.request, request)) &&
+        (other.runtimeType == runtimeType &&
+            other is _RestResponseError &&
+            (identical(other.request, request) || other.request == request) &&
             (identical(other.statusCode, statusCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.statusCode, statusCode)) &&
-            (identical(other.content, content) ||
-                const DeepCollectionEquality().equals(other.content, content)));
+                other.statusCode == statusCode) &&
+            (identical(other.content, content) || other.content == content));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(request) ^
-      const DeepCollectionEquality().hash(statusCode) ^
-      const DeepCollectionEquality().hash(content);
+  int get hashCode => Object.hash(runtimeType, request, statusCode, content);
 
   @JsonKey(ignore: true)
   @override
@@ -191,11 +184,11 @@ abstract class _RestResponseError implements RestResponseError {
       required String? content}) = _$_RestResponseError;
 
   @override
-  RestRequest get request => throw _privateConstructorUsedError;
+  RestRequest get request;
   @override
-  int get statusCode => throw _privateConstructorUsedError;
+  int get statusCode;
   @override
-  String? get content => throw _privateConstructorUsedError;
+  String? get content;
   @override
   @JsonKey(ignore: true)
   _$RestResponseErrorCopyWith<_RestResponseError> get copyWith =>

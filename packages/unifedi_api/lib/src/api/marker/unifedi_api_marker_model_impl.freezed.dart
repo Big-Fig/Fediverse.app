@@ -41,7 +41,7 @@ class _$UnifediApiMarkerTearOff {
     );
   }
 
-  UnifediApiMarker fromJson(Map<String, Object> json) {
+  UnifediApiMarker fromJson(Map<String, Object?> json) {
     return UnifediApiMarker.fromJson(json);
   }
 }
@@ -214,28 +214,20 @@ class _$_UnifediApiMarker implements _UnifediApiMarker {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiMarker &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiMarker &&
             (identical(other.lastReadId, lastReadId) ||
-                const DeepCollectionEquality()
-                    .equals(other.lastReadId, lastReadId)) &&
-            (identical(other.version, version) ||
-                const DeepCollectionEquality()
-                    .equals(other.version, version)) &&
+                other.lastReadId == lastReadId) &&
+            (identical(other.version, version) || other.version == version) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)) &&
+                other.updatedAt == updatedAt) &&
             (identical(other.unreadCount, unreadCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.unreadCount, unreadCount)));
+                other.unreadCount == unreadCount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(lastReadId) ^
-      const DeepCollectionEquality().hash(version) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(unreadCount);
+      Object.hash(runtimeType, lastReadId, version, updatedAt, unreadCount);
 
   @JsonKey(ignore: true)
   @override
@@ -268,18 +260,18 @@ abstract class _UnifediApiMarker implements UnifediApiMarker {
   @override
   @HiveField(0)
   @JsonKey(name: 'updated_last_read_id')
-  String? get lastReadId => throw _privateConstructorUsedError;
+  String? get lastReadId;
   @override
   @HiveField(1)
-  int get version => throw _privateConstructorUsedError;
+  int get version;
   @override
   @HiveField(2)
   @JsonKey(name: 'updated_at')
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
   @HiveField(3)
   @JsonKey(name: 'unread_count')
-  int? get unreadCount => throw _privateConstructorUsedError;
+  int? get unreadCount;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiMarkerCopyWith<_UnifediApiMarker> get copyWith =>

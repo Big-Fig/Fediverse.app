@@ -198,23 +198,18 @@ class _$_PleromaApiRestError implements _PleromaApiRestError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiRestError &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiRestError &&
             (identical(other.restResponseError, restResponseError) ||
-                const DeepCollectionEquality()
-                    .equals(other.restResponseError, restResponseError)) &&
+                other.restResponseError == restResponseError) &&
             (identical(other.mastodonDetails, mastodonDetails) ||
-                const DeepCollectionEquality()
-                    .equals(other.mastodonDetails, mastodonDetails)) &&
-            (identical(other.details, details) ||
-                const DeepCollectionEquality().equals(other.details, details)));
+                other.mastodonDetails == mastodonDetails) &&
+            (identical(other.details, details) || other.details == details));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(restResponseError) ^
-      const DeepCollectionEquality().hash(mastodonDetails) ^
-      const DeepCollectionEquality().hash(details);
+      Object.hash(runtimeType, restResponseError, mastodonDetails, details);
 
   @JsonKey(ignore: true)
   @override
@@ -230,12 +225,11 @@ abstract class _PleromaApiRestError implements PleromaApiRestError {
       required PleromaApiRestErrorDetails? details}) = _$_PleromaApiRestError;
 
   @override
-  RestResponseError get restResponseError => throw _privateConstructorUsedError;
+  RestResponseError get restResponseError;
   @override
-  MastodonApiRestErrorDetails? get mastodonDetails =>
-      throw _privateConstructorUsedError;
+  MastodonApiRestErrorDetails? get mastodonDetails;
   @override
-  PleromaApiRestErrorDetails? get details => throw _privateConstructorUsedError;
+  PleromaApiRestErrorDetails? get details;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiRestErrorCopyWith<_PleromaApiRestError> get copyWith =>

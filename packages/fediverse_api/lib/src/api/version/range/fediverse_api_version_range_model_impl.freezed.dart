@@ -41,7 +41,7 @@ class _$FediverseApiVersionRangeTearOff {
     );
   }
 
-  FediverseApiVersionRange fromJson(Map<String, Object> json) {
+  FediverseApiVersionRange fromJson(Map<String, Object?> json) {
     return FediverseApiVersionRange.fromJson(json);
   }
 }
@@ -236,26 +236,19 @@ class _$_FediverseApiVersionRange implements _FediverseApiVersionRange {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _FediverseApiVersionRange &&
-            (identical(other.min, min) ||
-                const DeepCollectionEquality().equals(other.min, min)) &&
-            (identical(other.max, max) ||
-                const DeepCollectionEquality().equals(other.max, max)) &&
+        (other.runtimeType == runtimeType &&
+            other is _FediverseApiVersionRange &&
+            (identical(other.min, min) || other.min == min) &&
+            (identical(other.max, max) || other.max == max) &&
             (identical(other.minInclusive, minInclusive) ||
-                const DeepCollectionEquality()
-                    .equals(other.minInclusive, minInclusive)) &&
+                other.minInclusive == minInclusive) &&
             (identical(other.maxInclusive, maxInclusive) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxInclusive, maxInclusive)));
+                other.maxInclusive == maxInclusive));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(min) ^
-      const DeepCollectionEquality().hash(max) ^
-      const DeepCollectionEquality().hash(minInclusive) ^
-      const DeepCollectionEquality().hash(maxInclusive);
+      Object.hash(runtimeType, min, max, minInclusive, maxInclusive);
 
   @JsonKey(ignore: true)
   @override
@@ -282,18 +275,18 @@ abstract class _FediverseApiVersionRange implements FediverseApiVersionRange {
 
   @override
   @HiveField(0)
-  FediverseApiVersion? get min => throw _privateConstructorUsedError;
+  FediverseApiVersion? get min;
   @override
   @HiveField(1)
-  FediverseApiVersion? get max => throw _privateConstructorUsedError;
+  FediverseApiVersion? get max;
   @override
   @HiveField(2)
   @JsonKey(name: 'min_inclusive')
-  bool get minInclusive => throw _privateConstructorUsedError;
+  bool get minInclusive;
   @override
   @HiveField(3)
   @JsonKey(name: 'max_inclusive')
-  bool get maxInclusive => throw _privateConstructorUsedError;
+  bool get maxInclusive;
   @override
   @JsonKey(ignore: true)
   _$FediverseApiVersionRangeCopyWith<_FediverseApiVersionRange> get copyWith =>

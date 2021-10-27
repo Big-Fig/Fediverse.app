@@ -45,7 +45,7 @@ class _$MastodonApiAccountIdentityProofTearOff {
     );
   }
 
-  MastodonApiAccountIdentityProof fromJson(Map<String, Object> json) {
+  MastodonApiAccountIdentityProof fromJson(Map<String, Object?> json) {
     return MastodonApiAccountIdentityProof.fromJson(json);
   }
 }
@@ -260,32 +260,23 @@ class _$_MastodonApiAccountIdentityProof
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiAccountIdentityProof &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiAccountIdentityProof &&
             (identical(other.profileUrl, profileUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.profileUrl, profileUrl)) &&
+                other.profileUrl == profileUrl) &&
             (identical(other.proofUrl, proofUrl) ||
-                const DeepCollectionEquality()
-                    .equals(other.proofUrl, proofUrl)) &&
+                other.proofUrl == proofUrl) &&
             (identical(other.provider, provider) ||
-                const DeepCollectionEquality()
-                    .equals(other.provider, provider)) &&
+                other.provider == provider) &&
             (identical(other.providerUsername, providerUsername) ||
-                const DeepCollectionEquality()
-                    .equals(other.providerUsername, providerUsername)) &&
+                other.providerUsername == providerUsername) &&
             (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)));
+                other.updatedAt == updatedAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(profileUrl) ^
-      const DeepCollectionEquality().hash(proofUrl) ^
-      const DeepCollectionEquality().hash(provider) ^
-      const DeepCollectionEquality().hash(providerUsername) ^
-      const DeepCollectionEquality().hash(updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType, profileUrl, proofUrl, provider, providerUsername, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -322,21 +313,21 @@ abstract class _MastodonApiAccountIdentityProof
   @override
   @JsonKey(name: 'profile_url')
   @HiveField(0)
-  String? get profileUrl => throw _privateConstructorUsedError;
+  String? get profileUrl;
   @override
   @JsonKey(name: 'proof_url')
   @HiveField(1)
-  String? get proofUrl => throw _privateConstructorUsedError;
+  String? get proofUrl;
   @override
   @HiveField(2)
-  String? get provider => throw _privateConstructorUsedError;
+  String? get provider;
   @override
   @JsonKey(name: 'provider_username')
   @HiveField(3)
-  String? get providerUsername => throw _privateConstructorUsedError;
+  String? get providerUsername;
   @override
   @HiveField(4)
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiAccountIdentityProofCopyWith<_MastodonApiAccountIdentityProof>

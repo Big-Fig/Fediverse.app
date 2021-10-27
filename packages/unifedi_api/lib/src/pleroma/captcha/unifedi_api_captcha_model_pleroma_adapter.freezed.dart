@@ -28,7 +28,7 @@ class _$UnifediApiCaptchaPleromaAdapterTearOff {
     );
   }
 
-  UnifediApiCaptchaPleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiCaptchaPleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiCaptchaPleromaAdapter.fromJson(json);
   }
 }
@@ -151,14 +151,13 @@ class _$_UnifediApiCaptchaPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiCaptchaPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiCaptchaPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -184,7 +183,7 @@ abstract class _UnifediApiCaptchaPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiCaptcha get value => throw _privateConstructorUsedError;
+  PleromaApiCaptcha get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiCaptchaPleromaAdapterCopyWith<_UnifediApiCaptchaPleromaAdapter>

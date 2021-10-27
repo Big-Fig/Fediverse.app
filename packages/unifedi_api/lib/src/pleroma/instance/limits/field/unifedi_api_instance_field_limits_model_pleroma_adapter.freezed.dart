@@ -31,7 +31,7 @@ class _$UnifediApiInstanceFieldLimitsPleromaAdapterTearOff {
   }
 
   UnifediApiInstanceFieldLimitsPleromaAdapter fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return UnifediApiInstanceFieldLimitsPleromaAdapter.fromJson(json);
   }
 }
@@ -157,14 +157,13 @@ class _$_UnifediApiInstanceFieldLimitsPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiInstanceFieldLimitsPleromaAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiInstanceFieldLimitsPleromaAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -193,7 +192,7 @@ abstract class _UnifediApiInstanceFieldLimitsPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiInstanceFieldLimits get value => throw _privateConstructorUsedError;
+  PleromaApiInstanceFieldLimits get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiInstanceFieldLimitsPleromaAdapterCopyWith<

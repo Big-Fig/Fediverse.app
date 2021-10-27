@@ -31,7 +31,7 @@ class _$UnifediApiPushSubscriptionMetadataTearOff {
     );
   }
 
-  UnifediApiPushSubscriptionMetadata fromJson(Map<String, Object> json) {
+  UnifediApiPushSubscriptionMetadata fromJson(Map<String, Object?> json) {
     return UnifediApiPushSubscriptionMetadata.fromJson(json);
   }
 }
@@ -183,19 +183,15 @@ class _$_UnifediApiPushSubscribeRequestSubscription
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPushSubscribeRequestSubscription &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPushSubscribeRequestSubscription &&
             (identical(other.endpoint, endpoint) ||
-                const DeepCollectionEquality()
-                    .equals(other.endpoint, endpoint)) &&
-            (identical(other.keys, keys) ||
-                const DeepCollectionEquality().equals(other.keys, keys)));
+                other.endpoint == endpoint) &&
+            (identical(other.keys, keys) || other.keys == keys));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(endpoint) ^
-      const DeepCollectionEquality().hash(keys);
+  int get hashCode => Object.hash(runtimeType, endpoint, keys);
 
   @JsonKey(ignore: true)
   @override
@@ -225,11 +221,10 @@ abstract class _UnifediApiPushSubscribeRequestSubscription
 
   /// Endpoint URL that is called when a notification event occurs.
   @HiveField(0)
-  String? get endpoint => throw _privateConstructorUsedError;
+  String? get endpoint;
   @override
   @HiveField(1)
-  UnifediApiPushSubscriptionKeys? get keys =>
-      throw _privateConstructorUsedError;
+  UnifediApiPushSubscriptionKeys? get keys;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPushSubscribeRequestSubscriptionCopyWith<

@@ -79,7 +79,7 @@ class _$UnifediApiSchedulePostStatusTearOff {
     );
   }
 
-  UnifediApiSchedulePostStatus fromJson(Map<String, Object> json) {
+  UnifediApiSchedulePostStatus fromJson(Map<String, Object?> json) {
     return UnifediApiSchedulePostStatus.fromJson(json);
   }
 }
@@ -531,66 +531,51 @@ class _$_UnifediApiSchedulePostStatus implements _UnifediApiSchedulePostStatus {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiSchedulePostStatus &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiSchedulePostStatus &&
             (identical(other.contentType, contentType) ||
-                const DeepCollectionEquality()
-                    .equals(other.contentType, contentType)) &&
+                other.contentType == contentType) &&
             (identical(other.expiresInSeconds, expiresInSeconds) ||
-                const DeepCollectionEquality()
-                    .equals(other.expiresInSeconds, expiresInSeconds)) &&
+                other.expiresInSeconds == expiresInSeconds) &&
             (identical(
                     other.inReplyToConversationId, inReplyToConversationId) ||
-                const DeepCollectionEquality().equals(
-                    other.inReplyToConversationId, inReplyToConversationId)) &&
+                other.inReplyToConversationId == inReplyToConversationId) &&
             (identical(other.inReplyToId, inReplyToId) ||
-                const DeepCollectionEquality()
-                    .equals(other.inReplyToId, inReplyToId)) &&
+                other.inReplyToId == inReplyToId) &&
             (identical(other.language, language) ||
-                const DeepCollectionEquality()
-                    .equals(other.language, language)) &&
+                other.language == language) &&
             (identical(other.visibility, visibility) ||
-                const DeepCollectionEquality()
-                    .equals(other.visibility, visibility)) &&
-            (identical(other.mediaIds, mediaIds) ||
-                const DeepCollectionEquality()
-                    .equals(other.mediaIds, mediaIds)) &&
-            (identical(other.poll, poll) ||
-                const DeepCollectionEquality().equals(other.poll, poll)) &&
-            (identical(other.preview, preview) ||
-                const DeepCollectionEquality()
-                    .equals(other.preview, preview)) &&
+                other.visibility == visibility) &&
+            const DeepCollectionEquality().equals(other.mediaIds, mediaIds) &&
+            (identical(other.poll, poll) || other.poll == poll) &&
+            (identical(other.preview, preview) || other.preview == preview) &&
             (identical(other.sensitive, sensitive) ||
-                const DeepCollectionEquality()
-                    .equals(other.sensitive, sensitive)) &&
+                other.sensitive == sensitive) &&
             (identical(other.spoilerText, spoilerText) ||
-                const DeepCollectionEquality()
-                    .equals(other.spoilerText, spoilerText)) &&
-            (identical(other.status, status) ||
-                const DeepCollectionEquality().equals(other.status, status)) &&
-            (identical(other.to, to) ||
-                const DeepCollectionEquality().equals(other.to, to)) &&
+                other.spoilerText == spoilerText) &&
+            (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality().equals(other.to, to) &&
             (identical(other.scheduledAt, scheduledAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.scheduledAt, scheduledAt)));
+                other.scheduledAt == scheduledAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(contentType) ^
-      const DeepCollectionEquality().hash(expiresInSeconds) ^
-      const DeepCollectionEquality().hash(inReplyToConversationId) ^
-      const DeepCollectionEquality().hash(inReplyToId) ^
-      const DeepCollectionEquality().hash(language) ^
-      const DeepCollectionEquality().hash(visibility) ^
-      const DeepCollectionEquality().hash(mediaIds) ^
-      const DeepCollectionEquality().hash(poll) ^
-      const DeepCollectionEquality().hash(preview) ^
-      const DeepCollectionEquality().hash(sensitive) ^
-      const DeepCollectionEquality().hash(spoilerText) ^
-      const DeepCollectionEquality().hash(status) ^
-      const DeepCollectionEquality().hash(to) ^
-      const DeepCollectionEquality().hash(scheduledAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      contentType,
+      expiresInSeconds,
+      inReplyToConversationId,
+      inReplyToId,
+      language,
+      visibility,
+      const DeepCollectionEquality().hash(mediaIds),
+      poll,
+      preview,
+      sensitive,
+      spoilerText,
+      status,
+      const DeepCollectionEquality().hash(to),
+      scheduledAt);
 
   @JsonKey(ignore: true)
   @override
@@ -652,55 +637,55 @@ abstract class _UnifediApiSchedulePostStatus
   @override
   @HiveField(0)
   @JsonKey(name: 'content_type')
-  String? get contentType => throw _privateConstructorUsedError;
+  String? get contentType;
   @override
   @HiveField(1)
   @JsonKey(name: 'expires_in')
-  int? get expiresInSeconds => throw _privateConstructorUsedError;
+  int? get expiresInSeconds;
   @override
   @HiveField(2)
   @JsonKey(name: 'in_reply_to_conversation_id')
-  String? get inReplyToConversationId => throw _privateConstructorUsedError;
+  String? get inReplyToConversationId;
   @override
   @HiveField(3)
   @JsonKey(name: 'in_reply_to_id')
-  String? get inReplyToId => throw _privateConstructorUsedError;
+  String? get inReplyToId;
   @override
   @HiveField(4)
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
   @override
   @HiveField(5)
-  String get visibility => throw _privateConstructorUsedError;
+  String get visibility;
   @override
   @JsonKey(name: 'media_ids')
   @HiveField(6)
-  List<String>? get mediaIds => throw _privateConstructorUsedError;
+  List<String>? get mediaIds;
   @override
   @HiveField(7)
-  UnifediApiPostStatusPoll? get poll => throw _privateConstructorUsedError;
+  UnifediApiPostStatusPoll? get poll;
   @override
   @HiveField(8)
-  bool? get preview => throw _privateConstructorUsedError;
+  bool? get preview;
   @override
   @HiveField(9)
-  bool get sensitive => throw _privateConstructorUsedError;
+  bool get sensitive;
   @override
   @HiveField(10)
   @JsonKey(name: 'spoiler_text')
-  String? get spoilerText => throw _privateConstructorUsedError;
+  String? get spoilerText;
   @override
   @HiveField(11)
-  String? get status => throw _privateConstructorUsedError;
+  String? get status;
   @override
   @HiveField(12)
-  List<String>? get to => throw _privateConstructorUsedError;
+  List<String>? get to;
   @override
   @JsonKey(
       name: 'scheduled_at',
       toJson: JsonParseHelper.toUTCIsoString,
       fromJson: JsonParseHelper.fromUTCIsoString)
   @HiveField(13)
-  DateTime get scheduledAt => throw _privateConstructorUsedError;
+  DateTime get scheduledAt;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiSchedulePostStatusCopyWith<_UnifediApiSchedulePostStatus>

@@ -36,7 +36,7 @@ class _$MastodonApiFieldTearOff {
     );
   }
 
-  MastodonApiField fromJson(Map<String, Object> json) {
+  MastodonApiField fromJson(Map<String, Object?> json) {
     return MastodonApiField.fromJson(json);
   }
 }
@@ -180,22 +180,16 @@ class _$_MastodonApiField implements _MastodonApiField {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiField &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiField &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.value, value) || other.value == value) &&
             (identical(other.verifiedAt, verifiedAt) ||
-                const DeepCollectionEquality()
-                    .equals(other.verifiedAt, verifiedAt)));
+                other.verifiedAt == verifiedAt));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(value) ^
-      const DeepCollectionEquality().hash(verifiedAt);
+  int get hashCode => Object.hash(runtimeType, name, value, verifiedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -223,14 +217,14 @@ abstract class _MastodonApiField implements MastodonApiField {
 
   @override
   @HiveField(0)
-  String? get name => throw _privateConstructorUsedError;
+  String? get name;
   @override
   @HiveField(1)
-  String? get value => throw _privateConstructorUsedError;
+  String? get value;
   @override
   @HiveField(2)
   @JsonKey(name: 'verified_at')
-  DateTime? get verifiedAt => throw _privateConstructorUsedError;
+  DateTime? get verifiedAt;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiFieldCopyWith<_MastodonApiField> get copyWith =>

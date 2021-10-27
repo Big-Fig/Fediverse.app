@@ -38,7 +38,7 @@ class _$UnifediApiAccessApplicationTokenTearOff {
     );
   }
 
-  UnifediApiAccessApplicationToken fromJson(Map<String, Object> json) {
+  UnifediApiAccessApplicationToken fromJson(Map<String, Object?> json) {
     return UnifediApiAccessApplicationToken.fromJson(json);
   }
 }
@@ -241,23 +241,18 @@ class _$_UnifediApiAccessApplicationToken
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiAccessApplicationToken &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)) &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiAccessApplicationToken &&
+            (identical(other.scopes, scopes) || other.scopes == scopes) &&
             (identical(other.clientApplication, clientApplication) ||
-                const DeepCollectionEquality()
-                    .equals(other.clientApplication, clientApplication)) &&
+                other.clientApplication == clientApplication) &&
             (identical(other.oauthToken, oauthToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.oauthToken, oauthToken)));
+                other.oauthToken == oauthToken));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(scopes) ^
-      const DeepCollectionEquality().hash(clientApplication) ^
-      const DeepCollectionEquality().hash(oauthToken);
+      Object.hash(runtimeType, scopes, clientApplication, oauthToken);
 
   @JsonKey(ignore: true)
   @override
@@ -290,16 +285,15 @@ abstract class _UnifediApiAccessApplicationToken
 
   @override
   @HiveField(1)
-  UnifediApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  UnifediApiAccessScopes get scopes;
   @override
   @JsonKey(name: 'client_application')
   @HiveField(2)
-  UnifediApiClientApplication get clientApplication =>
-      throw _privateConstructorUsedError;
+  UnifediApiClientApplication get clientApplication;
   @override
   @HiveField(3)
   @JsonKey(name: 'oauth_token')
-  UnifediApiOAuthToken get oauthToken => throw _privateConstructorUsedError;
+  UnifediApiOAuthToken get oauthToken;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiAccessApplicationTokenCopyWith<_UnifediApiAccessApplicationToken>

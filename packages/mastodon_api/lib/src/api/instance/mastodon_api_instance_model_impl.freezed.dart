@@ -71,7 +71,7 @@ class _$MastodonApiInstanceTearOff {
     );
   }
 
-  MastodonApiInstance fromJson(Map<String, Object> json) {
+  MastodonApiInstance fromJson(Map<String, Object?> json) {
     return MastodonApiInstance.fromJson(json);
   }
 }
@@ -512,63 +512,49 @@ class _$_MastodonApiInstance implements _MastodonApiInstance {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiInstance &&
-            (identical(other.uri, uri) ||
-                const DeepCollectionEquality().equals(other.uri, uri)) &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiInstance &&
+            (identical(other.uri, uri) || other.uri == uri) &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.shortDescription, shortDescription) ||
-                const DeepCollectionEquality()
-                    .equals(other.shortDescription, shortDescription)) &&
+                other.shortDescription == shortDescription) &&
             (identical(other.description, description) ||
-                const DeepCollectionEquality()
-                    .equals(other.description, description)) &&
-            (identical(other.email, email) ||
-                const DeepCollectionEquality().equals(other.email, email)) &&
+                other.description == description) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.versionString, versionString) ||
-                const DeepCollectionEquality()
-                    .equals(other.versionString, versionString)) &&
-            (identical(other.urls, urls) ||
-                const DeepCollectionEquality().equals(other.urls, urls)) &&
-            (identical(other.stats, stats) ||
-                const DeepCollectionEquality().equals(other.stats, stats)) &&
+                other.versionString == versionString) &&
+            (identical(other.urls, urls) || other.urls == urls) &&
+            (identical(other.stats, stats) || other.stats == stats) &&
             (identical(other.thumbnail, thumbnail) ||
-                const DeepCollectionEquality()
-                    .equals(other.thumbnail, thumbnail)) &&
-            (identical(other.languages, languages) ||
-                const DeepCollectionEquality()
-                    .equals(other.languages, languages)) &&
+                other.thumbnail == thumbnail) &&
+            const DeepCollectionEquality().equals(other.languages, languages) &&
             (identical(other.registrations, registrations) ||
-                const DeepCollectionEquality()
-                    .equals(other.registrations, registrations)) &&
+                other.registrations == registrations) &&
             (identical(other.approvalRequired, approvalRequired) ||
-                const DeepCollectionEquality()
-                    .equals(other.approvalRequired, approvalRequired)) &&
+                other.approvalRequired == approvalRequired) &&
             (identical(other.invitesEnabled, invitesEnabled) ||
-                const DeepCollectionEquality()
-                    .equals(other.invitesEnabled, invitesEnabled)) &&
+                other.invitesEnabled == invitesEnabled) &&
             (identical(other.contactAccount, contactAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.contactAccount, contactAccount)));
+                other.contactAccount == contactAccount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(uri) ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(shortDescription) ^
-      const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(versionString) ^
-      const DeepCollectionEquality().hash(urls) ^
-      const DeepCollectionEquality().hash(stats) ^
-      const DeepCollectionEquality().hash(thumbnail) ^
-      const DeepCollectionEquality().hash(languages) ^
-      const DeepCollectionEquality().hash(registrations) ^
-      const DeepCollectionEquality().hash(approvalRequired) ^
-      const DeepCollectionEquality().hash(invitesEnabled) ^
-      const DeepCollectionEquality().hash(contactAccount);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uri,
+      title,
+      shortDescription,
+      description,
+      email,
+      versionString,
+      urls,
+      stats,
+      thumbnail,
+      const DeepCollectionEquality().hash(languages),
+      registrations,
+      approvalRequired,
+      invitesEnabled,
+      contactAccount);
 
   @JsonKey(ignore: true)
   @override
@@ -622,49 +608,49 @@ abstract class _MastodonApiInstance implements MastodonApiInstance {
 
   @override
   @HiveField(0)
-  String get uri => throw _privateConstructorUsedError;
+  String get uri;
   @override
   @HiveField(1)
-  String? get title => throw _privateConstructorUsedError;
+  String? get title;
   @override
   @JsonKey(name: 'short_description')
   @HiveField(2)
-  String? get shortDescription => throw _privateConstructorUsedError;
+  String? get shortDescription;
   @override
   @HiveField(3)
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
   @override
   @HiveField(4)
-  String? get email => throw _privateConstructorUsedError;
+  String? get email;
   @override
   @JsonKey(name: 'version')
   @HiveField(5)
-  String get versionString => throw _privateConstructorUsedError;
+  String get versionString;
   @override
   @HiveField(6)
-  MastodonApiInstanceUrls? get urls => throw _privateConstructorUsedError;
+  MastodonApiInstanceUrls? get urls;
   @override
   @HiveField(7)
-  MastodonApiInstanceStats? get stats => throw _privateConstructorUsedError;
+  MastodonApiInstanceStats? get stats;
   @override
   @HiveField(8)
-  String? get thumbnail => throw _privateConstructorUsedError;
+  String? get thumbnail;
   @override
   @HiveField(9)
-  List<String>? get languages => throw _privateConstructorUsedError;
+  List<String>? get languages;
   @override
   @HiveField(10)
-  bool? get registrations => throw _privateConstructorUsedError;
+  bool? get registrations;
   @override
   @HiveField(11)
-  bool? get approvalRequired => throw _privateConstructorUsedError;
+  bool? get approvalRequired;
   @override
   @HiveField(12)
-  bool? get invitesEnabled => throw _privateConstructorUsedError;
+  bool? get invitesEnabled;
   @override
   @JsonKey(name: 'contact_account')
   @HiveField(13)
-  MastodonApiAccount? get contactAccount => throw _privateConstructorUsedError;
+  MastodonApiAccount? get contactAccount;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiInstanceCopyWith<_MastodonApiInstance> get copyWith =>

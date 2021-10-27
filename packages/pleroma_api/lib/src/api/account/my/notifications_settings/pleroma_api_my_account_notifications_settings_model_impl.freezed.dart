@@ -50,7 +50,7 @@ class _$PleromaApiMyAccountNotificationsSettingsTearOff {
     );
   }
 
-  PleromaApiMyAccountNotificationsSettings fromJson(Map<String, Object> json) {
+  PleromaApiMyAccountNotificationsSettings fromJson(Map<String, Object?> json) {
     return PleromaApiMyAccountNotificationsSettings.fromJson(json);
   }
 }
@@ -294,37 +294,25 @@ class _$_PleromaApiMyAccountNotificationsSettings
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiMyAccountNotificationsSettings &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiMyAccountNotificationsSettings &&
             (identical(other.followers, followers) ||
-                const DeepCollectionEquality()
-                    .equals(other.followers, followers)) &&
-            (identical(other.follows, follows) ||
-                const DeepCollectionEquality()
-                    .equals(other.follows, follows)) &&
+                other.followers == followers) &&
+            (identical(other.follows, follows) || other.follows == follows) &&
             (identical(other.nonFollowers, nonFollowers) ||
-                const DeepCollectionEquality()
-                    .equals(other.nonFollowers, nonFollowers)) &&
+                other.nonFollowers == nonFollowers) &&
             (identical(other.nonFollows, nonFollows) ||
-                const DeepCollectionEquality()
-                    .equals(other.nonFollows, nonFollows)) &&
+                other.nonFollows == nonFollows) &&
             (identical(other.blockFromStrangers, blockFromStrangers) ||
-                const DeepCollectionEquality()
-                    .equals(other.blockFromStrangers, blockFromStrangers)) &&
+                other.blockFromStrangers == blockFromStrangers) &&
             (identical(
                     other.hideNotificationContents, hideNotificationContents) ||
-                const DeepCollectionEquality().equals(
-                    other.hideNotificationContents, hideNotificationContents)));
+                other.hideNotificationContents == hideNotificationContents));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(followers) ^
-      const DeepCollectionEquality().hash(follows) ^
-      const DeepCollectionEquality().hash(nonFollowers) ^
-      const DeepCollectionEquality().hash(nonFollows) ^
-      const DeepCollectionEquality().hash(blockFromStrangers) ^
-      const DeepCollectionEquality().hash(hideNotificationContents);
+  int get hashCode => Object.hash(runtimeType, followers, follows, nonFollowers,
+      nonFollows, blockFromStrangers, hideNotificationContents);
 
   @JsonKey(ignore: true)
   @override
@@ -366,26 +354,26 @@ abstract class _PleromaApiMyAccountNotificationsSettings
 
   @override
   @HiveField(0)
-  bool? get followers => throw _privateConstructorUsedError;
+  bool? get followers;
   @override
   @HiveField(1)
-  bool? get follows => throw _privateConstructorUsedError;
+  bool? get follows;
   @override
   @JsonKey(name: 'non_followers')
   @HiveField(2)
-  bool? get nonFollowers => throw _privateConstructorUsedError;
+  bool? get nonFollowers;
   @override
   @JsonKey(name: 'non_follows')
   @HiveField(3)
-  bool? get nonFollows => throw _privateConstructorUsedError;
+  bool? get nonFollows;
   @override
   @JsonKey(name: 'block_from_strangers')
   @HiveField(4)
-  bool? get blockFromStrangers => throw _privateConstructorUsedError;
+  bool? get blockFromStrangers;
   @override
   @JsonKey(name: 'hide_notification_contents')
   @HiveField(5)
-  bool? get hideNotificationContents => throw _privateConstructorUsedError;
+  bool? get hideNotificationContents;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiMyAccountNotificationsSettingsCopyWith<

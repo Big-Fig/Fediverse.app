@@ -41,7 +41,7 @@ class _$PleromaApiAccessUserTokenTearOff {
     );
   }
 
-  PleromaApiAccessUserToken fromJson(Map<String, Object> json) {
+  PleromaApiAccessUserToken fromJson(Map<String, Object?> json) {
     return PleromaApiAccessUserToken.fromJson(json);
   }
 }
@@ -255,26 +255,19 @@ class _$_PleromaApiAccessUserToken extends _PleromaApiAccessUserToken {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiAccessUserToken &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiAccessUserToken &&
             (identical(other.oauthToken, oauthToken) ||
-                const DeepCollectionEquality()
-                    .equals(other.oauthToken, oauthToken)) &&
-            (identical(other.scopes, scopes) ||
-                const DeepCollectionEquality().equals(other.scopes, scopes)) &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)) &&
+                other.oauthToken == oauthToken) &&
+            (identical(other.scopes, scopes) || other.scopes == scopes) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.myAccount, myAccount) ||
-                const DeepCollectionEquality()
-                    .equals(other.myAccount, myAccount)));
+                other.myAccount == myAccount));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(oauthToken) ^
-      const DeepCollectionEquality().hash(scopes) ^
-      const DeepCollectionEquality().hash(user) ^
-      const DeepCollectionEquality().hash(myAccount);
+      Object.hash(runtimeType, oauthToken, scopes, user, myAccount);
 
   @JsonKey(ignore: true)
   @override
@@ -310,17 +303,17 @@ abstract class _PleromaApiAccessUserToken extends PleromaApiAccessUserToken {
   @override
   @HiveField(3)
   @JsonKey(name: 'oauth_token')
-  PleromaApiOAuthToken get oauthToken => throw _privateConstructorUsedError;
+  PleromaApiOAuthToken get oauthToken;
   @override
   @HiveField(1)
-  PleromaApiAccessScopes get scopes => throw _privateConstructorUsedError;
+  PleromaApiAccessScopes get scopes;
   @override
   @HiveField(2)
-  String get user => throw _privateConstructorUsedError;
+  String get user;
   @override
   @JsonKey(name: 'my_account')
   @HiveField(4)
-  PleromaApiMyAccount? get myAccount => throw _privateConstructorUsedError;
+  PleromaApiMyAccount? get myAccount;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiAccessUserTokenCopyWith<_PleromaApiAccessUserToken>

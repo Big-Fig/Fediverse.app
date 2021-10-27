@@ -256,23 +256,16 @@ class _$_Info implements _Info {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Info &&
+        (other.runtimeType == runtimeType &&
+            other is _Info &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)) &&
-            (identical(other.minCode, minCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.minCode, minCode)) &&
-            (identical(other.maxCode, maxCode) ||
-                const DeepCollectionEquality().equals(other.maxCode, maxCode)));
+                other.stringValue == stringValue) &&
+            (identical(other.minCode, minCode) || other.minCode == minCode) &&
+            (identical(other.maxCode, maxCode) || other.maxCode == maxCode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(stringValue) ^
-      const DeepCollectionEquality().hash(minCode) ^
-      const DeepCollectionEquality().hash(maxCode);
+  int get hashCode => Object.hash(runtimeType, stringValue, minCode, maxCode);
 
   @JsonKey(ignore: true)
   @override
@@ -369,11 +362,11 @@ abstract class _Info implements RestResponseCodeType {
   const factory _Info({String stringValue, int minCode, int maxCode}) = _$_Info;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
-  int get minCode => throw _privateConstructorUsedError;
+  int get minCode;
   @override
-  int get maxCode => throw _privateConstructorUsedError;
+  int get maxCode;
   @override
   @JsonKey(ignore: true)
   _$InfoCopyWith<_Info> get copyWith => throw _privateConstructorUsedError;
@@ -447,23 +440,16 @@ class _$_Success implements _Success {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Success &&
+        (other.runtimeType == runtimeType &&
+            other is _Success &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)) &&
-            (identical(other.minCode, minCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.minCode, minCode)) &&
-            (identical(other.maxCode, maxCode) ||
-                const DeepCollectionEquality().equals(other.maxCode, maxCode)));
+                other.stringValue == stringValue) &&
+            (identical(other.minCode, minCode) || other.minCode == minCode) &&
+            (identical(other.maxCode, maxCode) || other.maxCode == maxCode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(stringValue) ^
-      const DeepCollectionEquality().hash(minCode) ^
-      const DeepCollectionEquality().hash(maxCode);
+  int get hashCode => Object.hash(runtimeType, stringValue, minCode, maxCode);
 
   @JsonKey(ignore: true)
   @override
@@ -561,11 +547,11 @@ abstract class _Success implements RestResponseCodeType {
       _$_Success;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
-  int get minCode => throw _privateConstructorUsedError;
+  int get minCode;
   @override
-  int get maxCode => throw _privateConstructorUsedError;
+  int get maxCode;
   @override
   @JsonKey(ignore: true)
   _$SuccessCopyWith<_Success> get copyWith =>
@@ -640,23 +626,16 @@ class _$_Redirect implements _Redirect {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Redirect &&
+        (other.runtimeType == runtimeType &&
+            other is _Redirect &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)) &&
-            (identical(other.minCode, minCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.minCode, minCode)) &&
-            (identical(other.maxCode, maxCode) ||
-                const DeepCollectionEquality().equals(other.maxCode, maxCode)));
+                other.stringValue == stringValue) &&
+            (identical(other.minCode, minCode) || other.minCode == minCode) &&
+            (identical(other.maxCode, maxCode) || other.maxCode == maxCode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(stringValue) ^
-      const DeepCollectionEquality().hash(minCode) ^
-      const DeepCollectionEquality().hash(maxCode);
+  int get hashCode => Object.hash(runtimeType, stringValue, minCode, maxCode);
 
   @JsonKey(ignore: true)
   @override
@@ -754,11 +733,11 @@ abstract class _Redirect implements RestResponseCodeType {
       _$_Redirect;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
-  int get minCode => throw _privateConstructorUsedError;
+  int get minCode;
   @override
-  int get maxCode => throw _privateConstructorUsedError;
+  int get maxCode;
   @override
   @JsonKey(ignore: true)
   _$RedirectCopyWith<_Redirect> get copyWith =>
@@ -835,23 +814,16 @@ class _$_ClientError implements _ClientError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ClientError &&
+        (other.runtimeType == runtimeType &&
+            other is _ClientError &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)) &&
-            (identical(other.minCode, minCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.minCode, minCode)) &&
-            (identical(other.maxCode, maxCode) ||
-                const DeepCollectionEquality().equals(other.maxCode, maxCode)));
+                other.stringValue == stringValue) &&
+            (identical(other.minCode, minCode) || other.minCode == minCode) &&
+            (identical(other.maxCode, maxCode) || other.maxCode == maxCode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(stringValue) ^
-      const DeepCollectionEquality().hash(minCode) ^
-      const DeepCollectionEquality().hash(maxCode);
+  int get hashCode => Object.hash(runtimeType, stringValue, minCode, maxCode);
 
   @JsonKey(ignore: true)
   @override
@@ -949,11 +921,11 @@ abstract class _ClientError implements RestResponseCodeType {
       _$_ClientError;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
-  int get minCode => throw _privateConstructorUsedError;
+  int get minCode;
   @override
-  int get maxCode => throw _privateConstructorUsedError;
+  int get maxCode;
   @override
   @JsonKey(ignore: true)
   _$ClientErrorCopyWith<_ClientError> get copyWith =>
@@ -1030,23 +1002,16 @@ class _$_ServerError implements _ServerError {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ServerError &&
+        (other.runtimeType == runtimeType &&
+            other is _ServerError &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)) &&
-            (identical(other.minCode, minCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.minCode, minCode)) &&
-            (identical(other.maxCode, maxCode) ||
-                const DeepCollectionEquality().equals(other.maxCode, maxCode)));
+                other.stringValue == stringValue) &&
+            (identical(other.minCode, minCode) || other.minCode == minCode) &&
+            (identical(other.maxCode, maxCode) || other.maxCode == maxCode));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(stringValue) ^
-      const DeepCollectionEquality().hash(minCode) ^
-      const DeepCollectionEquality().hash(maxCode);
+  int get hashCode => Object.hash(runtimeType, stringValue, minCode, maxCode);
 
   @JsonKey(ignore: true)
   @override
@@ -1144,11 +1109,11 @@ abstract class _ServerError implements RestResponseCodeType {
       _$_ServerError;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
-  int get minCode => throw _privateConstructorUsedError;
+  int get minCode;
   @override
-  int get maxCode => throw _privateConstructorUsedError;
+  int get maxCode;
   @override
   @JsonKey(ignore: true)
   _$ServerErrorCopyWith<_ServerError> get copyWith =>

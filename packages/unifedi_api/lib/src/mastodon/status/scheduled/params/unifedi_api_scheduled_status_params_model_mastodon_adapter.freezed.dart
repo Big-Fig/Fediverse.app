@@ -31,7 +31,7 @@ class _$UnifediApiScheduledStatusParamsMastodonAdapterTearOff {
   }
 
   UnifediApiScheduledStatusParamsMastodonAdapter fromJson(
-      Map<String, Object> json) {
+      Map<String, Object?> json) {
     return UnifediApiScheduledStatusParamsMastodonAdapter.fromJson(json);
   }
 }
@@ -160,14 +160,13 @@ class _$_UnifediApiScheduledStatusParamsMastodonAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiScheduledStatusParamsMastodonAdapter &&
-            (identical(other.value, value) ||
-                const DeepCollectionEquality().equals(other.value, value)));
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiScheduledStatusParamsMastodonAdapter &&
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(value);
+  int get hashCode => Object.hash(runtimeType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -197,8 +196,7 @@ abstract class _UnifediApiScheduledStatusParamsMastodonAdapter
 
   @override
   @HiveField(0)
-  MastodonApiScheduledStatusParams get value =>
-      throw _privateConstructorUsedError;
+  MastodonApiScheduledStatusParams get value;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiScheduledStatusParamsMastodonAdapterCopyWith<

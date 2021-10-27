@@ -31,7 +31,7 @@ class _$MastodonApiInstanceUrlsTearOff {
     );
   }
 
-  MastodonApiInstanceUrls fromJson(Map<String, Object> json) {
+  MastodonApiInstanceUrls fromJson(Map<String, Object?> json) {
     return MastodonApiInstanceUrls.fromJson(json);
   }
 }
@@ -142,15 +142,14 @@ class _$_MastodonApiInstanceUrls implements _MastodonApiInstanceUrls {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiInstanceUrls &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiInstanceUrls &&
             (identical(other.streamingApi, streamingApi) ||
-                const DeepCollectionEquality()
-                    .equals(other.streamingApi, streamingApi)));
+                other.streamingApi == streamingApi));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(streamingApi);
+  int get hashCode => Object.hash(runtimeType, streamingApi);
 
   @JsonKey(ignore: true)
   @override
@@ -176,7 +175,7 @@ abstract class _MastodonApiInstanceUrls implements MastodonApiInstanceUrls {
   @override
   @JsonKey(name: 'streaming_api')
   @HiveField(0)
-  String? get streamingApi => throw _privateConstructorUsedError;
+  String? get streamingApi;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiInstanceUrlsCopyWith<_MastodonApiInstanceUrls> get copyWith =>

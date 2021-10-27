@@ -134,15 +134,14 @@ class _$_MastodonApiRestErrorException extends _MastodonApiRestErrorException {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiRestErrorException &&
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiRestErrorException &&
             (identical(other.mastodonError, mastodonError) ||
-                const DeepCollectionEquality()
-                    .equals(other.mastodonError, mastodonError)));
+                other.mastodonError == mastodonError));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(mastodonError);
+  int get hashCode => Object.hash(runtimeType, mastodonError);
 
   @JsonKey(ignore: true)
   @override
@@ -159,7 +158,7 @@ abstract class _MastodonApiRestErrorException
   const _MastodonApiRestErrorException._() : super._();
 
   @override
-  MastodonApiRestError get mastodonError => throw _privateConstructorUsedError;
+  MastodonApiRestError get mastodonError;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiRestErrorExceptionCopyWith<_MastodonApiRestErrorException>

@@ -195,15 +195,14 @@ class _$_Link implements _Link {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Link &&
+        (other.runtimeType == runtimeType &&
+            other is _Link &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -295,7 +294,7 @@ abstract class _Link implements UnifediApiCardType {
   const factory _Link({String stringValue}) = _$_Link;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$LinkCopyWith<_Link> get copyWith => throw _privateConstructorUsedError;
@@ -349,15 +348,14 @@ class _$_Photo implements _Photo {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Photo &&
+        (other.runtimeType == runtimeType &&
+            other is _Photo &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -449,7 +447,7 @@ abstract class _Photo implements UnifediApiCardType {
   const factory _Photo({String stringValue}) = _$_Photo;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$PhotoCopyWith<_Photo> get copyWith => throw _privateConstructorUsedError;
@@ -503,15 +501,14 @@ class _$_Video implements _Video {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Video &&
+        (other.runtimeType == runtimeType &&
+            other is _Video &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -603,7 +600,7 @@ abstract class _Video implements UnifediApiCardType {
   const factory _Video({String stringValue}) = _$_Video;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$VideoCopyWith<_Video> get copyWith => throw _privateConstructorUsedError;
@@ -657,15 +654,14 @@ class _$_Rich implements _Rich {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Rich &&
+        (other.runtimeType == runtimeType &&
+            other is _Rich &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -757,7 +753,7 @@ abstract class _Rich implements UnifediApiCardType {
   const factory _Rich({String stringValue}) = _$_Rich;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$RichCopyWith<_Rich> get copyWith => throw _privateConstructorUsedError;
@@ -811,15 +807,14 @@ class _$_Unknown implements _Unknown {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Unknown &&
+        (other.runtimeType == runtimeType &&
+            other is _Unknown &&
             (identical(other.stringValue, stringValue) ||
-                const DeepCollectionEquality()
-                    .equals(other.stringValue, stringValue)));
+                other.stringValue == stringValue));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(stringValue);
+  int get hashCode => Object.hash(runtimeType, stringValue);
 
   @JsonKey(ignore: true)
   @override
@@ -911,7 +906,7 @@ abstract class _Unknown implements UnifediApiCardType {
   const factory _Unknown({required String stringValue}) = _$_Unknown;
 
   @override
-  String get stringValue => throw _privateConstructorUsedError;
+  String get stringValue;
   @override
   @JsonKey(ignore: true)
   _$UnknownCopyWith<_Unknown> get copyWith =>

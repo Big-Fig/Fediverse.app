@@ -30,7 +30,7 @@ class _$PleromaApiPollOptionTearOff {
     );
   }
 
-  PleromaApiPollOption fromJson(Map<String, Object> json) {
+  PleromaApiPollOption fromJson(Map<String, Object?> json) {
     return PleromaApiPollOption.fromJson(json);
   }
 }
@@ -156,19 +156,15 @@ class _$_PleromaApiPollOption implements _PleromaApiPollOption {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PleromaApiPollOption &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
+        (other.runtimeType == runtimeType &&
+            other is _PleromaApiPollOption &&
+            (identical(other.title, title) || other.title == title) &&
             (identical(other.votesCount, votesCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.votesCount, votesCount)));
+                other.votesCount == votesCount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(votesCount);
+  int get hashCode => Object.hash(runtimeType, title, votesCount);
 
   @JsonKey(ignore: true)
   @override
@@ -195,11 +191,11 @@ abstract class _PleromaApiPollOption implements PleromaApiPollOption {
 
   @override
   @HiveField(0)
-  String get title => throw _privateConstructorUsedError;
+  String get title;
   @override
   @HiveField(1)
   @JsonKey(name: 'votes_count')
-  int? get votesCount => throw _privateConstructorUsedError;
+  int? get votesCount;
   @override
   @JsonKey(ignore: true)
   _$PleromaApiPollOptionCopyWith<_PleromaApiPollOption> get copyWith =>

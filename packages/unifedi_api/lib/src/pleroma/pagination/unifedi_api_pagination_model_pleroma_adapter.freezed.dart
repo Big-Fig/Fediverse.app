@@ -29,7 +29,7 @@ class _$UnifediApiPaginationPleromaAdapterTearOff {
     );
   }
 
-  UnifediApiPaginationPleromaAdapter fromJson(Map<String, Object> json) {
+  UnifediApiPaginationPleromaAdapter fromJson(Map<String, Object?> json) {
     return UnifediApiPaginationPleromaAdapter.fromJson(json);
   }
 }
@@ -155,16 +155,14 @@ class _$_UnifediApiPaginationPleromaAdapter
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _UnifediApiPaginationPleromaAdapter &&
+        (other.runtimeType == runtimeType &&
+            other is _UnifediApiPaginationPleromaAdapter &&
             (identical(other.valuePagination, valuePagination) ||
-                const DeepCollectionEquality()
-                    .equals(other.valuePagination, valuePagination)));
+                other.valuePagination == valuePagination));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(valuePagination);
+  int get hashCode => Object.hash(runtimeType, valuePagination);
 
   @JsonKey(ignore: true)
   @override
@@ -192,8 +190,7 @@ abstract class _UnifediApiPaginationPleromaAdapter
 
   @override
   @HiveField(0)
-  PleromaApiPagination get valuePagination =>
-      throw _privateConstructorUsedError;
+  PleromaApiPagination get valuePagination;
   @override
   @JsonKey(ignore: true)
   _$UnifediApiPaginationPleromaAdapterCopyWith<

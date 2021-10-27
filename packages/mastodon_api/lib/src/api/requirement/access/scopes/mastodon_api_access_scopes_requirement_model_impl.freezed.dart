@@ -31,7 +31,7 @@ class _$MastodonApiAccessScopesRequirementTearOff {
     );
   }
 
-  MastodonApiAccessScopesRequirement fromJson(Map<String, Object> json) {
+  MastodonApiAccessScopesRequirement fromJson(Map<String, Object?> json) {
     return MastodonApiAccessScopesRequirement.fromJson(json);
   }
 }
@@ -154,16 +154,15 @@ class _$_MastodonApiAccessScopesRequirement
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _MastodonApiAccessScopesRequirement &&
-            (identical(other.scopesVariants, scopesVariants) ||
-                const DeepCollectionEquality()
-                    .equals(other.scopesVariants, scopesVariants)));
+        (other.runtimeType == runtimeType &&
+            other is _MastodonApiAccessScopesRequirement &&
+            const DeepCollectionEquality()
+                .equals(other.scopesVariants, scopesVariants));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(scopesVariants);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(scopesVariants));
 
   @JsonKey(ignore: true)
   @override
@@ -193,8 +192,7 @@ abstract class _MastodonApiAccessScopesRequirement
   @override
   @HiveField(0)
   @JsonKey(name: 'scopes_variants')
-  List<MastodonApiAccessScopes> get scopesVariants =>
-      throw _privateConstructorUsedError;
+  List<MastodonApiAccessScopes> get scopesVariants;
   @override
   @JsonKey(ignore: true)
   _$MastodonApiAccessScopesRequirementCopyWith<
