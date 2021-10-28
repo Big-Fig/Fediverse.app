@@ -23,7 +23,8 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
   }) : super(
           connectionService: connectionService,
           instanceUri: Uri.parse(
-              unifediApiInstanceService.restService.accessBloc.access.url),
+            unifediApiInstanceService.restService.accessBloc.access.url,
+          ),
           initialInstance: initialInstance,
           paginationSettingsBloc: paginationSettingsBloc,
         );
