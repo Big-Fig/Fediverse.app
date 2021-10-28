@@ -63,6 +63,7 @@ Follow us on Fediverse [fediapp@fedi.app](https://fedi.app/fediapp)
 ## Features
 
 - Pleroma and Mastodon support
+- Separated Pleroma & Mastodon API dart packages which you can use in your applications
 - Offline mode. Access to cached data even without network
 - Custom emojis. With emoji reactions support on Pleroma
 - Customizable home timelines
@@ -88,8 +89,6 @@ Follow us on Fediverse [fediapp@fedi.app](https://fedi.app/fediapp)
 
 * Admin API;
 * Support other Fediverse instances: Pixelfed, Misskey, Peertube, GNU Social, Friendica and others;
-* Pleroma: scrobbles, mascot and recently added new features;
-* Mastodon: recently added new features. 
 * Adopt UI for large screens;
 * Display timelines from different instances on single Home page(currently you should switch instances to see related data);
 * Remember timeline position via Markers API;
@@ -119,7 +118,7 @@ Fedi gathers crashes and non-fatal errors to make app more stable.
 
 ## Push notifications
 
-Push notifications are implemented via [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) server
+Push notifications are implemented via [toot-relay-fcm](https://github.com/Big-Fig/toot-relay-fcm) server
 
 [PushRelayFCM](https://github.com/Big-Fig/toot-relay-fcm) is Ruby on Rails server which handles web pushes and relays them to FCM.
 
@@ -207,6 +206,7 @@ After you make changes in `.arb` files you should do additional actions to regen
 
 ## For developers
 
+* Multi-module project structure supported by Melos
 * Null-safety support
 * Feature-based folder structure
 * Prefers composition over inheritance
@@ -245,6 +245,12 @@ Config is already done, so you just run `fvm install` in repo folder and configu
 To use flutter version specified in `.fvm/fvm_config.json` you should prepend `fvm` like `fvm flutter install`
 
 More info you can found in FVM documentation 
+
+### Melos
+
+There a lot of useful comand line actions automated by melos commands.
+
+Run `fvm flutter pub global run melos run` to see all possible melos actions
 
 ### Libraries
 
@@ -287,6 +293,13 @@ You can find full list in [`pubspec.yaml`](./pubspec.yaml) where each library ha
 Install Flutter version used by this project
 
 `fvm install`
+
+##### Bootstrap with melos
+
+Link multi-module project dependencies
+
+`fvm pub global activaite melos`
+`fvm flutter pub global run melos bootstrap`
 
 ##### Copy default .env config
 
@@ -349,7 +362,7 @@ Run->Edit configurations
 
 #### Flavors
 
-There are two flavors. 
+There are two main flavors. 
 
 *Implementation details:* [Build flavors in Flutter (Android and iOS) with different Firebase projects per flavor](https://medium.com/@animeshjain/build-flavors-in-flutter-android-and-ios-with-different-firebase-projects-per-flavor-27c5c5dac10b)
 
@@ -378,12 +391,16 @@ You can find all possible config variables(with comments) at [env_example.env](h
 
 #### If you have strange errors or how to clean project
 
+`fvm flutter pub global run melos run clean`
+
 * `fvm flutter clean` or `flutter clean` if you don't use FVM
 * `./gradlew clean` in android folder
 * `Product->Clean` in XCode
 * `File(or Android Studio on Mac)->Invalidate caches & Restart` in Android Studio
 
 Sometimes it is also needed to clear iOS pods
+
+`fvm flutter pub global run melos run clean:ios`
 
 ```
 cd ios
