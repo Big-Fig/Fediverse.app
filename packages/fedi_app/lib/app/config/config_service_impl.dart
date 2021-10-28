@@ -319,6 +319,8 @@ class ConfigService extends AsyncInitLoadingBloc implements IConfigService {
     if (predefinedAccessListJsonString != null) {
       predefinedAccessListJson =
           jsonDecode(predefinedAccessListJsonString!) as Map<String, dynamic>;
+    } else {
+      predefinedAccessListJson = null;
     }
 
     displayInstanceUrl = _getString(
