@@ -2,7 +2,7 @@ import 'package:fedi_app/app/access/chooser/access_chooser_bloc.dart';
 import 'package:fedi_app/app/access/chooser/instance_list/access_chooser_instance_list_item_bloc.dart';
 import 'package:fedi_app/app/account/avatar/account_avatar_widget.dart';
 import 'package:fedi_app/app/account/display_name/account_display_name_widget.dart';
-import 'package:fedi_app/app/auth/host/auth_host_bloc_impl.dart';
+import 'package:fedi_app/app/auth/host/access_host_bloc_impl.dart';
 import 'package:fedi_app/app/ui/button/icon/fedi_icon_button.dart';
 import 'package:fedi_app/app/ui/button/icon/fedi_icon_in_circle_transparent_button.dart';
 import 'package:fedi_app/app/ui/dialog/alert/fedi_confirm_alert_dialog.dart';
@@ -162,12 +162,12 @@ class _UnifediApiAccessChooserInstanceListItemLogoutButtonWidget
             if (instanceListItemBloc.isSelected) {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
-              var authHostBloc = AuthHostBloc.createFromContext(
+              var accessHostBloc = AccessHostBloc.createFromContext(
                 context,
                 instanceBaseUri: instanceListItemBloc.instance.uri,
               );
-              await authHostBloc.performAsyncInit();
-              await authHostBloc.logout();
+              await accessHostBloc.performAsyncInit();
+              await accessHostBloc.logout();
             } else {
               Navigator.of(context).pop();
               Navigator.of(context).pop();

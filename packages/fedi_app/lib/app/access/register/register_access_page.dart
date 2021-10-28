@@ -5,7 +5,7 @@ import 'package:fedi_app/app/access/register/register_access_bloc_impl.dart';
 import 'package:fedi_app/app/access/register/register_access_page_keys.dart';
 import 'package:fedi_app/app/access/register/register_access_widget.dart';
 import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
-import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/access_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/localization/settings/local_preferences/localization_settings_local_preference_bloc.dart';
 import 'package:fedi_app/app/localization/settings/localization_settings_bloc.dart';
@@ -101,7 +101,7 @@ Future<RegisterAccessResponse?> goToRegisterUnifediApiAccessPage(
                 listen: false,
               ),
               unifediOAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-                  IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+                  IAccessApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
                 context,
                 listen: false,
               ),

@@ -8,8 +8,8 @@ import 'package:fedi_app/app/access/host/application/access_host_application_loc
 import 'package:fedi_app/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
-import 'package:fedi_app/app/auth/host/auth_host_bloc.dart';
-import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi_app/app/auth/host/access_host_bloc.dart';
+import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/access_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/async/loading/init/async_init_loading_bloc_impl.dart';
 import 'package:fedi_app/connection/connection_service.dart';
@@ -25,14 +25,9 @@ import 'package:unifedi_api/unifedi_api.dart';
 import 'package:unifedi_api/unifedi_api_pleroma_adapter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-var _logger = Logger('auth_host_bloc_impl.dart');
+var _logger = Logger('access_host_bloc_impl.dart');
 
-// todo: report to mastodon/pleroma.
-//  It's should be error code instead of string handling
-const emailConfirmationRequiredDescription =
-    'Your login is missing a confirmed e-mail address';
-
-class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
+class AccessHostBloc extends AsyncInitLoadingBloc implements IAccessHostBloc {
   final Uri instanceBaseUri;
 
   String get instanceBaseUriString => instanceBaseUri.toString();
@@ -63,7 +58,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
 
   // ignore: avoid-late-keyword
   late ICurrentAccessBloc currentInstanceBloc;
-  final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+  final IAccessApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       oAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final IConnectionService connectionService;
   final IConfigService configService;
@@ -71,7 +66,7 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
   // ignore: avoid-late-keyword
   late MemoryAccessBloc memoryUnifediApiAccessBloc;
 
-  AuthHostBloc({
+  AccessHostBloc({
     required this.instanceBaseUri,
     required this.oAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     required ILocalPreferencesService preferencesService,
@@ -402,18 +397,18 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     return registerResponse;
   }
 
-  static AuthHostBloc createFromContext(
+  static AccessHostBloc createFromContext(
     BuildContext context, {
     required Uri instanceBaseUri,
   }) =>
-      AuthHostBloc(
+      AccessHostBloc(
         instanceBaseUri: instanceBaseUri,
         preferencesService: ILocalPreferencesService.of(context, listen: false),
         connectionService:
             Provider.of<IConnectionService>(context, listen: false),
         currentInstanceBloc: ICurrentAccessBloc.of(context, listen: false),
         oAuthLastLaunchedHostToLoginLocalPreferenceBloc:
-            IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
+            IAccessApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc.of(
           context,
           listen: false,
         ),

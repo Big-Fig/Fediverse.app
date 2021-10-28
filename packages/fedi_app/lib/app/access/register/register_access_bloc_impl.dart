@@ -6,8 +6,8 @@ import 'package:fedi_app/app/access/memory_access_bloc_impl.dart';
 import 'package:fedi_app/app/access/register/form/register_access_form_bloc_impl.dart';
 import 'package:fedi_app/app/access/register/register_access_bloc.dart';
 import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
-import 'package:fedi_app/app/auth/host/auth_host_bloc_impl.dart';
-import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi_app/app/auth/host/access_host_bloc_impl.dart';
+import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/access_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/localization/settings/localization_settings_bloc.dart';
 import 'package:fedi_app/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -28,7 +28,7 @@ class RegisterAccessBloc extends AsyncInitLoadingBloc
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
   final ICurrentAccessBloc currentInstanceBloc;
-  final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+  final IAccessApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       unifediOAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalizationSettingsBloc localizationSettingsBloc;
   final IConfigService configService;
@@ -77,9 +77,9 @@ class RegisterAccessBloc extends AsyncInitLoadingBloc
     var unifediApiAccountRegisterRequest =
         registerUnifediApiAccessFormBloc.calculateRegisterFormData();
 
-    AuthHostBloc? authApplicationBloc;
+    AccessHostBloc? accessHostBloc;
     try {
-      authApplicationBloc = AuthHostBloc(
+      accessHostBloc = AccessHostBloc(
         instanceBaseUri: instanceBaseUri,
         preferencesService: localPreferencesService,
         connectionService: connectionService,
@@ -88,9 +88,9 @@ class RegisterAccessBloc extends AsyncInitLoadingBloc
         oAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             unifediOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
       );
-      await authApplicationBloc.performAsyncInit();
+      await accessHostBloc.performAsyncInit();
 
-      return await authApplicationBloc.registerAccount(
+      return await accessHostBloc.registerAccount(
         registerAccount: unifediApiAccountRegisterRequest,
       );
       // ignore: avoid_catches_without_on_clauses
@@ -100,7 +100,7 @@ class RegisterAccessBloc extends AsyncInitLoadingBloc
       registerUnifediApiAccessFormBloc.onRegisterFailed();
       rethrow;
     } finally {
-      await authApplicationBloc?.dispose();
+      await accessHostBloc?.dispose();
     }
   }
 

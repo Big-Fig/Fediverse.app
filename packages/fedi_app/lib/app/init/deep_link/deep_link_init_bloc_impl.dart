@@ -1,7 +1,7 @@
 import 'package:fedi_app/app/access/current/current_access_bloc.dart';
 import 'package:fedi_app/app/access/local_preferences/access_local_preference_bloc_impl.dart';
-import 'package:fedi_app/app/auth/host/auth_host_bloc_impl.dart';
-import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi_app/app/auth/host/access_host_bloc_impl.dart';
+import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/access_oauth_last_launched_host_to_login_local_preference_bloc.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/init/deep_link/deep_link_init_bloc.dart';
 import 'package:fedi_app/async/loading/init/async_init_loading_bloc_impl.dart';
@@ -15,7 +15,7 @@ var _logger = Logger('deep_link_init_bloc_impl.dart');
 
 class DeepLinkInitBloc extends AsyncInitLoadingBloc
     implements IDeepLinkInitBloc {
-  final IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
+  final IAccessApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc
       oAuthLastLaunchedHostToLoginLocalPreferenceBloc;
   final ILocalPreferencesService localPreferencesService;
   final IConnectionService connectionService;
@@ -48,7 +48,7 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
           'lastLaunchedHost = $lastLaunchedHost',
     );
     if (lastLaunchedHost != null) {
-      var authHostBloc = AuthHostBloc(
+      var accessHostBloc = AccessHostBloc(
         configService: configService,
         instanceBaseUri: Uri.parse(lastLaunchedHost),
         preferencesService: localPreferencesService,
@@ -57,16 +57,16 @@ class DeepLinkInitBloc extends AsyncInitLoadingBloc
         oAuthLastLaunchedHostToLoginLocalPreferenceBloc:
             oAuthLastLaunchedHostToLoginLocalPreferenceBloc,
       );
-      await authHostBloc.performAsyncInit();
+      await accessHostBloc.performAsyncInit();
 
       var instanceService =
-          authHostBloc.unifediApiManager.createInstanceService();
+          accessHostBloc.unifediApiManager.createInstanceService();
 
       var authCode =
           instanceService.extractAuthCodeFromCallbackUrl(initialUri.toString());
 
       try {
-        var authInstance = await authHostBloc.loginWithAuthCode(authCode);
+        var authInstance = await accessHostBloc.loginWithAuthCode(authCode);
 
         var apiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
           preferencesService: localPreferencesService,

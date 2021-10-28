@@ -4,7 +4,7 @@ import 'package:fedi_app/app/access/host/access_token/access_host_access_token_l
 import 'package:fedi_app/app/access/host/application/access_host_application_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/account/my/local_preferences/my_account_local_preference_bloc_impl.dart';
-import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
+import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/access_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/chat/settings/local_preferences/global/global_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/chat/settings/local_preferences/instance/instance_chat_settings_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/emoji/picker/category/custom_image_url/local_preferences/emoji_picker_custom_image_url_category_local_preference_bloc_impl.dart';
@@ -94,7 +94,7 @@ class FediLocalPreferencesServiceMigrationBloc
       (lps) => AccessListLocalPreferenceBloc(lps),
       (lps) => CurrentAccessLocalPreferenceBloc(lps),
       (lps) => NotificationsPushHandlerUnhandledLocalPreferenceBloc(lps),
-      (lps) => AuthOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
+      (lps) => AccessOAuthLastLaunchedHostToLoginLocalPreferenceBloc(lps),
       (lps) => GlobalChatSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalMediaSettingsLocalPreferenceBloc(lps),
       (lps) => GlobalToastSettingsLocalPreferenceBloc(lps),
