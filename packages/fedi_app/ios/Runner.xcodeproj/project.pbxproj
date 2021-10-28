@@ -18,9 +18,6 @@
 		FB0FF777266943B300B8314E /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0FF776266943B300B8314E /* ShareViewController.swift */; };
 		FB0FF77A266943B300B8314E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB0FF778266943B300B8314E /* MainInterface.storyboard */; };
 		FB0FF77E266943B300B8314E /* Share Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FB0FF774266943B300B8314E /* Share Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		FBF486062729932600A7F15C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBF486052729932600A7F15C /* GoogleService-Info.plist */; };
-		FBF486072729932600A7F15C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBF486052729932600A7F15C /* GoogleService-Info.plist */; };
-		FBF486202729CDFB00A7F15C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBF4861F2729CDFA00A7F15C /* GoogleService-Info.plist */; };
 		FBFAE4369B51538778DC0DA8 /* Pods_Share_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20C5C9EE34C63CDF4FADBFA /* Pods_Share_Extension.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,17 +61,28 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		1BA78C67F65DFE8899C63177 /* Pods-Share Extension.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.debug-prod.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		253F7650E52DCFE54BBB7F27 /* Pods-Share Extension.release-nightly.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.release-nightly.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.release-nightly.xcconfig"; sourceTree = "<group>"; };
+		2886A290590E8551DDE28AF1 /* Pods-Runner.debug-fluttertest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-fluttertest.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-fluttertest.xcconfig"; sourceTree = "<group>"; };
 		340C71508A9EAA305770D899 /* Pods-Runner.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-prod.xcconfig"; sourceTree = "<group>"; };
+		3A1CDA70AC2A7F5F5366957A /* Pods-Share Extension.profile-nightly.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.profile-nightly.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.profile-nightly.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		3EEBFC734D825EB432B152BA /* Pods-Share Extension.debug-fluttertest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.debug-fluttertest.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.debug-fluttertest.xcconfig"; sourceTree = "<group>"; };
+		3EFBC18A01AB057754EA0AD2 /* Pods-Runner.release-nightly.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-nightly.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-nightly.xcconfig"; sourceTree = "<group>"; };
 		40990FEC37ACA1949D4C8E09 /* Pods-Runner.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-prod.xcconfig"; sourceTree = "<group>"; };
+		4823688A76827CD0050D51FB /* Pods-Share Extension.release-fluttertest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.release-fluttertest.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.release-fluttertest.xcconfig"; sourceTree = "<group>"; };
+		4B32AC301833081944381969 /* Pods-Runner.profile-nightly.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-nightly.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-nightly.xcconfig"; sourceTree = "<group>"; };
+		4D2B0C55DCAF735163C6D2B4 /* Pods-Runner.release-fluttertest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-fluttertest.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-fluttertest.xcconfig"; sourceTree = "<group>"; };
+		57C2630E9FF32A25A56D9848 /* Pods-Share Extension.profile-fluttertest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.profile-fluttertest.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.profile-fluttertest.xcconfig"; sourceTree = "<group>"; };
 		64C0C3097E002760AAFF7D5A /* Pods-Share Extension.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.profile-prod.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.profile-prod.xcconfig"; sourceTree = "<group>"; };
 		6B0884AAB44781023E3DA1AA /* Pods-Share Extension.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.profile-dev.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.profile-dev.xcconfig"; sourceTree = "<group>"; };
+		6C14F733201F485F91DBCA6A /* Pods-Runner.profile-fluttertest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-fluttertest.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-fluttertest.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7507689AE1B8065C6449DB4D /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		7DA73E1921B0FF1CA593BF45 /* Pods-Share Extension.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.release-dev.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.release-dev.xcconfig"; sourceTree = "<group>"; };
 		841BF64424FEEED30027D328 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		89292482012690284F2976CE /* Pods-Runner.debug-nightly.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-nightly.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-nightly.xcconfig"; sourceTree = "<group>"; };
 		8C9E5092BD2E25824B19E0B0 /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
 		9090F2BC83F19AB0A687E00B /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
@@ -89,6 +97,7 @@
 		A9E9C1D4239DB1DB00E5EF2A /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		D20C5C9EE34C63CDF4FADBFA /* Pods_Share_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7C3B62CED392C6C287B2318 /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
+		FA7BEB379ADBAB58D0458F0C /* Pods-Share Extension.debug-nightly.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share Extension.debug-nightly.xcconfig"; path = "Target Support Files/Pods-Share Extension/Pods-Share Extension.debug-nightly.xcconfig"; sourceTree = "<group>"; };
 		FB0FF774266943B300B8314E /* Share Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Share Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB0FF776266943B300B8314E /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		FB0FF779266943B300B8314E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -100,8 +109,6 @@
 		FBA677DD266BC449005E1555 /* RunnerProfile-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerProfile-dev.entitlements"; sourceTree = "<group>"; };
 		FBA677DE266BC452005E1555 /* RunnerRelease-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerRelease-dev.entitlements"; sourceTree = "<group>"; };
 		FBA677DF266BC45A005E1555 /* RunnerDebug-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerDebug-dev.entitlements"; sourceTree = "<group>"; };
-		FBF486052729932600A7F15C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		FBF4861F2729CDFA00A7F15C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +146,18 @@
 				7DA73E1921B0FF1CA593BF45 /* Pods-Share Extension.release-dev.xcconfig */,
 				64C0C3097E002760AAFF7D5A /* Pods-Share Extension.profile-prod.xcconfig */,
 				6B0884AAB44781023E3DA1AA /* Pods-Share Extension.profile-dev.xcconfig */,
+				2886A290590E8551DDE28AF1 /* Pods-Runner.debug-fluttertest.xcconfig */,
+				89292482012690284F2976CE /* Pods-Runner.debug-nightly.xcconfig */,
+				4D2B0C55DCAF735163C6D2B4 /* Pods-Runner.release-fluttertest.xcconfig */,
+				3EFBC18A01AB057754EA0AD2 /* Pods-Runner.release-nightly.xcconfig */,
+				6C14F733201F485F91DBCA6A /* Pods-Runner.profile-fluttertest.xcconfig */,
+				4B32AC301833081944381969 /* Pods-Runner.profile-nightly.xcconfig */,
+				3EEBFC734D825EB432B152BA /* Pods-Share Extension.debug-fluttertest.xcconfig */,
+				FA7BEB379ADBAB58D0458F0C /* Pods-Share Extension.debug-nightly.xcconfig */,
+				4823688A76827CD0050D51FB /* Pods-Share Extension.release-fluttertest.xcconfig */,
+				253F7650E52DCFE54BBB7F27 /* Pods-Share Extension.release-nightly.xcconfig */,
+				57C2630E9FF32A25A56D9848 /* Pods-Share Extension.profile-fluttertest.xcconfig */,
+				3A1CDA70AC2A7F5F5366957A /* Pods-Share Extension.profile-nightly.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -146,8 +165,6 @@
 		841BF64124FEED730027D328 /* config */ = {
 			isa = PBXGroup;
 			children = (
-				FBF4861E2729CDFA00A7F15C /* fluttertest */,
-				FBF486002729921000A7F15C /* nightly */,
 				841BF64324FEEDD90027D328 /* prod */,
 				841BF64224FEED860027D328 /* dev */,
 			);
@@ -253,22 +270,6 @@
 			path = "Share Extension";
 			sourceTree = "<group>";
 		};
-		FBF486002729921000A7F15C /* nightly */ = {
-			isa = PBXGroup;
-			children = (
-				FBF486052729932600A7F15C /* GoogleService-Info.plist */,
-			);
-			path = nightly;
-			sourceTree = "<group>";
-		};
-		FBF4861E2729CDFA00A7F15C /* fluttertest */ = {
-			isa = PBXGroup;
-			children = (
-				FBF4861F2729CDFA00A7F15C /* GoogleService-Info.plist */,
-			);
-			path = fluttertest;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -367,8 +368,6 @@
 				9740EEB41CF90195004384FC /* Debug.xcconfig in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
-				FBF486062729932600A7F15C /* GoogleService-Info.plist in Resources */,
-				FBF486202729CDFB00A7F15C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,7 +376,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB0FF77A266943B300B8314E /* MainInterface.storyboard in Resources */,
-				FBF486072729932600A7F15C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,7 +513,6 @@
 				"${BUILT_PRODUCTS_DIR}/photo_manager/photo_manager.framework",
 				"${BUILT_PRODUCTS_DIR}/receive_sharing_intent/receive_sharing_intent.framework",
 				"${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework",
-				"${BUILT_PRODUCTS_DIR}/shared_preferences/shared_preferences.framework",
 				"${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework",
 				"${BUILT_PRODUCTS_DIR}/sqlite3/sqlite3.framework",
 				"${BUILT_PRODUCTS_DIR}/sqlite3_flutter_libs/sqlite3_flutter_libs.framework",
@@ -523,7 +520,7 @@
 				"${BUILT_PRODUCTS_DIR}/url_launcher/url_launcher.framework",
 				"${BUILT_PRODUCTS_DIR}/video_player/video_player.framework",
 				"${BUILT_PRODUCTS_DIR}/wakelock/wakelock.framework",
-				"${BUILT_PRODUCTS_DIR}/webview_flutter/webview_flutter.framework",
+				"${BUILT_PRODUCTS_DIR}/webview_flutter_wkwebview/webview_flutter_wkwebview.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -561,7 +558,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/photo_manager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/receive_sharing_intent.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/share_plus.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/shared_preferences.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/sqflite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/sqlite3.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/sqlite3_flutter_libs.framework",
@@ -569,7 +565,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/url_launcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/video_player.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wakelock.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/webview_flutter.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/webview_flutter_wkwebview.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -685,7 +681,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -696,7 +691,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -858,7 +852,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -869,7 +862,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -943,7 +935,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -954,7 +945,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1082,7 +1072,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1093,7 +1082,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1590,7 +1578,7 @@
 			};
 			name = "Profile-dev";
 		};
-		FBF48608272994DF00A7F15C /* Debug-nightly */ = {
+		FB8676E5272B2F4D00363EA2 /* Debug-nightly */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1645,12 +1633,12 @@
 			};
 			name = "Debug-nightly";
 		};
-		FBF48609272994DF00A7F15C /* Debug-nightly */ = {
+		FB8676E6272B2F4D00363EA2 /* Debug-nightly */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APP_DISPLAY_NAME = "Fedi(nightly)";
+				APP_DISPLAY_NAME = "Fedi(dev)";
 				APP_URL_SCHEME = com.fediverse.app2;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
@@ -1679,7 +1667,7 @@
 			};
 			name = "Debug-nightly";
 		};
-		FBF4860A272994DF00A7F15C /* Debug-nightly */ = {
+		FB8676E7272B2F4D00363EA2 /* Debug-nightly */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 135FB3032E3D96397A0ED5A8 /* Pods-Share Extension.debug-dev.xcconfig */;
 			buildSettings = {
@@ -1754,7 +1742,7 @@
 			};
 			name = "Debug-nightly";
 		};
-		FBF4860B272994E900A7F15C /* Debug-fluttertest */ = {
+		FB8676E8272B2F6600363EA2 /* Debug-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1809,12 +1797,12 @@
 			};
 			name = "Debug-fluttertest";
 		};
-		FBF4860C272994E900A7F15C /* Debug-fluttertest */ = {
+		FB8676E9272B2F6600363EA2 /* Debug-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APP_DISPLAY_NAME = "Fedi(test)";
+				APP_DISPLAY_NAME = "Fedi(dev)";
 				APP_URL_SCHEME = com.fediverse.app2;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
@@ -1843,7 +1831,7 @@
 			};
 			name = "Debug-fluttertest";
 		};
-		FBF4860D272994E900A7F15C /* Debug-fluttertest */ = {
+		FB8676EA272B2F6600363EA2 /* Debug-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 135FB3032E3D96397A0ED5A8 /* Pods-Share Extension.debug-dev.xcconfig */;
 			buildSettings = {
@@ -1918,7 +1906,7 @@
 			};
 			name = "Debug-fluttertest";
 		};
-		FBF4860E272994F100A7F15C /* Release-nightly */ = {
+		FB8676EB272B2F7200363EA2 /* Release-nightly */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1951,7 +1939,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1962,7 +1949,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1970,12 +1956,12 @@
 			};
 			name = "Release-nightly";
 		};
-		FBF4860F272994F100A7F15C /* Release-nightly */ = {
+		FB8676EC272B2F7200363EA2 /* Release-nightly */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APP_DISPLAY_NAME = "Fedi(nightly)";
+				APP_DISPLAY_NAME = "Fedi(dev)";
 				APP_URL_SCHEME = com.fediverse.app2;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
@@ -2003,7 +1989,7 @@
 			};
 			name = "Release-nightly";
 		};
-		FBF48610272994F100A7F15C /* Release-nightly */ = {
+		FB8676ED272B2F7200363EA2 /* Release-nightly */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7DA73E1921B0FF1CA593BF45 /* Pods-Share Extension.release-dev.xcconfig */;
 			buildSettings = {
@@ -2071,7 +2057,7 @@
 			};
 			name = "Release-nightly";
 		};
-		FBF48611272994FE00A7F15C /* Release-fluttertest */ = {
+		FB8676EE272B2F7D00363EA2 /* Release-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -2104,7 +2090,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2115,7 +2100,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2123,12 +2107,12 @@
 			};
 			name = "Release-fluttertest";
 		};
-		FBF48612272994FE00A7F15C /* Release-fluttertest */ = {
+		FB8676EF272B2F7D00363EA2 /* Release-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APP_DISPLAY_NAME = "Fedi(test)";
+				APP_DISPLAY_NAME = "Fedi(dev)";
 				APP_URL_SCHEME = com.fediverse.app2;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
@@ -2156,7 +2140,7 @@
 			};
 			name = "Release-fluttertest";
 		};
-		FBF48613272994FE00A7F15C /* Release-fluttertest */ = {
+		FB8676F0272B2F7D00363EA2 /* Release-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7DA73E1921B0FF1CA593BF45 /* Pods-Share Extension.release-dev.xcconfig */;
 			buildSettings = {
@@ -2224,7 +2208,7 @@
 			};
 			name = "Release-fluttertest";
 		};
-		FBF486142729950B00A7F15C /* Profile-nightly */ = {
+		FB8676F1272B2F8B00363EA2 /* Profile-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -2257,7 +2241,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2268,171 +2251,18 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Profile-nightly";
-		};
-		FBF486152729950B00A7F15C /* Profile-nightly */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APP_DISPLAY_NAME = "Fedi(nightly)";
-				APP_URL_SCHEME = com.fediverse.app2;
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerProfile-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 272;
-				CUSTOM_GROUP_ID = group.com.fediverse.app2;
-				DEVELOPMENT_TEAM = 5877VK992M;
-				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Flutter",
-				);
-				INFOPLIST_FILE = Runner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Flutter",
-				);
-				MARKETING_VERSION = 3.0.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = "Profile-nightly";
-		};
-		FBF486162729950B00A7F15C /* Profile-nightly */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B0884AAB44781023E3DA1AA /* Pods-Share Extension.profile-dev.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionProfile-dev.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 272;
-				CUSTOM_GROUP_ID = group.com.fediverse.app2;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 5877VK992M;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Share Extension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.0.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app2.Share-Extension";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Profile-nightly";
-		};
-		FBF486172729951400A7F15C /* Profile-fluttertest */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Profile-fluttertest";
 		};
-		FBF486182729951400A7F15C /* Profile-fluttertest */ = {
+		FB8676F2272B2F8B00363EA2 /* Profile-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				APP_DISPLAY_NAME = "Fedi(test)";
+				APP_DISPLAY_NAME = "Fedi(dev)";
 				APP_URL_SCHEME = com.fediverse.app2;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
@@ -2460,7 +2290,7 @@
 			};
 			name = "Profile-fluttertest";
 		};
-		FBF486192729951400A7F15C /* Profile-fluttertest */ = {
+		FB8676F3272B2F8B00363EA2 /* Profile-fluttertest */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6B0884AAB44781023E3DA1AA /* Pods-Share Extension.profile-dev.xcconfig */;
 			buildSettings = {
@@ -2527,6 +2357,156 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Profile-fluttertest";
+		};
+		FB8676F4272B2F9500363EA2 /* Profile-nightly */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Profile-nightly";
+		};
+		FB8676F5272B2F9500363EA2 /* Profile-nightly */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APP_DISPLAY_NAME = "Fedi(dev)";
+				APP_URL_SCHEME = com.fediverse.app2;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerProfile-dev.entitlements";
+				CURRENT_PROJECT_VERSION = 272;
+				CUSTOM_GROUP_ID = group.com.fediverse.app2;
+				DEVELOPMENT_TEAM = 5877VK992M;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Flutter",
+				);
+				INFOPLIST_FILE = Runner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Flutter",
+				);
+				MARKETING_VERSION = 3.0.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Profile-nightly";
+		};
+		FB8676F6272B2F9500363EA2 /* Profile-nightly */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B0884AAB44781023E3DA1AA /* Pods-Share Extension.profile-dev.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionProfile-dev.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 272;
+				CUSTOM_GROUP_ID = group.com.fediverse.app2;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 5877VK992M;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "Share Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 3.0.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app2.Share-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Profile-nightly";
 		};
 /* End XCBuildConfiguration section */
 
@@ -2536,16 +2516,16 @@
 			buildConfigurations = (
 				97C147031CF9000F007C117D /* Debug-prod */,
 				841BF64624FEEFB80027D328 /* Debug-dev */,
-				FBF4860B272994E900A7F15C /* Debug-fluttertest */,
-				FBF48608272994DF00A7F15C /* Debug-nightly */,
+				FB8676E8272B2F6600363EA2 /* Debug-fluttertest */,
+				FB8676E5272B2F4D00363EA2 /* Debug-nightly */,
 				97C147041CF9000F007C117D /* Release-prod */,
 				841BF64824FEEFC30027D328 /* Release-dev */,
-				FBF48611272994FE00A7F15C /* Release-fluttertest */,
-				FBF4860E272994F100A7F15C /* Release-nightly */,
+				FB8676EE272B2F7D00363EA2 /* Release-fluttertest */,
+				FB8676EB272B2F7200363EA2 /* Release-nightly */,
 				249021D3217E4FDB00AE95B9 /* Profile-prod */,
 				841BF64A24FEEFC90027D328 /* Profile-dev */,
-				FBF486172729951400A7F15C /* Profile-fluttertest */,
-				FBF486142729950B00A7F15C /* Profile-nightly */,
+				FB8676F4272B2F9500363EA2 /* Profile-nightly */,
+				FB8676F1272B2F8B00363EA2 /* Profile-fluttertest */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release-prod";
@@ -2555,16 +2535,16 @@
 			buildConfigurations = (
 				97C147061CF9000F007C117D /* Debug-prod */,
 				841BF64724FEEFB80027D328 /* Debug-dev */,
-				FBF4860C272994E900A7F15C /* Debug-fluttertest */,
-				FBF48609272994DF00A7F15C /* Debug-nightly */,
+				FB8676E9272B2F6600363EA2 /* Debug-fluttertest */,
+				FB8676E6272B2F4D00363EA2 /* Debug-nightly */,
 				97C147071CF9000F007C117D /* Release-prod */,
 				841BF64924FEEFC30027D328 /* Release-dev */,
-				FBF48612272994FE00A7F15C /* Release-fluttertest */,
-				FBF4860F272994F100A7F15C /* Release-nightly */,
+				FB8676EF272B2F7D00363EA2 /* Release-fluttertest */,
+				FB8676EC272B2F7200363EA2 /* Release-nightly */,
 				249021D4217E4FDB00AE95B9 /* Profile-prod */,
 				841BF64B24FEEFC90027D328 /* Profile-dev */,
-				FBF486182729951400A7F15C /* Profile-fluttertest */,
-				FBF486152729950B00A7F15C /* Profile-nightly */,
+				FB8676F5272B2F9500363EA2 /* Profile-nightly */,
+				FB8676F2272B2F8B00363EA2 /* Profile-fluttertest */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release-prod";
@@ -2574,16 +2554,16 @@
 			buildConfigurations = (
 				FB0FF780266943B300B8314E /* Debug-prod */,
 				FB0FF781266943B300B8314E /* Debug-dev */,
-				FBF4860D272994E900A7F15C /* Debug-fluttertest */,
-				FBF4860A272994DF00A7F15C /* Debug-nightly */,
+				FB8676EA272B2F6600363EA2 /* Debug-fluttertest */,
+				FB8676E7272B2F4D00363EA2 /* Debug-nightly */,
 				FB0FF782266943B300B8314E /* Release-prod */,
 				FB0FF783266943B300B8314E /* Release-dev */,
-				FBF48613272994FE00A7F15C /* Release-fluttertest */,
-				FBF48610272994F100A7F15C /* Release-nightly */,
+				FB8676F0272B2F7D00363EA2 /* Release-fluttertest */,
+				FB8676ED272B2F7200363EA2 /* Release-nightly */,
 				FB0FF784266943B300B8314E /* Profile-prod */,
 				FB0FF785266943B300B8314E /* Profile-dev */,
-				FBF486192729951400A7F15C /* Profile-fluttertest */,
-				FBF486162729950B00A7F15C /* Profile-nightly */,
+				FB8676F6272B2F9500363EA2 /* Profile-nightly */,
+				FB8676F3272B2F8B00363EA2 /* Profile-fluttertest */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release-prod";
