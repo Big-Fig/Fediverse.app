@@ -39,7 +39,7 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
         listen: false,
       ),
       unifediApiInstanceService: unifediApiInstanceService,
-      initialInstance: currentUnifediApiAccessBloc.currentInstance!.info,
+      initialInstance: currentUnifediApiAccessBloc.currentInstance!.instance,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

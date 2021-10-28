@@ -341,7 +341,7 @@ class CurrentAccessContextBloc extends ProviderContextBloc
         .asyncInitAndRegister<IWebSocketsSettingsBloc>(webSocketsSettingsBloc);
 
     var unifediApiManager =
-        currentInstance.info!.typeAsUnifediApi.createApiManager(
+        currentInstance.instance!.typeAsUnifediApi.createApiManager(
       apiAccessBloc: localPreferencesUnifediApiAccessBloc,
       computeImpl: null,
       webSocketsModeSettingsBloc: webSocketsSettingsBloc,

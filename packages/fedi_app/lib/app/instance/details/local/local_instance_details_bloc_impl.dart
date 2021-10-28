@@ -29,7 +29,7 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
 
     return LocalInstanceDetailsBloc(
       unifediApiInstanceService: unifediApiInstanceService,
-      initialInstance: currentUnifediApiAccessBloc.currentInstance!.info,
+      initialInstance: currentUnifediApiAccessBloc.currentInstance!.instance,
     );
   }
 

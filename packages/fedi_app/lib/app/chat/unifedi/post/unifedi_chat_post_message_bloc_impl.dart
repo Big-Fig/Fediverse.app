@@ -84,8 +84,9 @@ class UnifediChatPostMessageBloc extends PostMessageBloc
     BuildContext context, {
     required String? chatRemoteId,
   }) {
-    var info =
-        ICurrentAccessBloc.of(context, listen: false).currentInstance!.info!;
+    var info = ICurrentAccessBloc.of(context, listen: false)
+        .currentInstance!
+        .instance!;
 
     return UnifediChatPostMessageBloc(
       unifediChatBloc: IUnifediChatBloc.of(

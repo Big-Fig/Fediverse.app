@@ -59,9 +59,9 @@ void main() {
       () async {
         await screenshot(driver, config, '1_Login');
 
-        var hostTextField = find.byValueKey(
-          JoinAccessWidgetKeys.hostTextFieldKey,
-        );
+        // var hostTextField = find.byValueKey(
+        //   JoinAccessWidgetKeys.hostTextFieldKey,
+        // );
         // await driver.tap(hostTextField);
 
         // await driver.enterText(instanceHost);
@@ -113,9 +113,9 @@ void main() {
           ),
         );
 
-        hostTextField = find.byValueKey(
-          JoinAccessWidgetKeys.hostTextFieldKey,
-        );
+        // hostTextField = find.byValueKey(
+        //   JoinAccessWidgetKeys.hostTextFieldKey,
+        // );
         // await driver.tap(hostTextField);
 
         // await driver.enterText('fedi.app');

@@ -106,7 +106,7 @@ class CreateTimelineBloc extends FormBloc implements ICreateTimelineBloc {
       EditTimelineSettingsBloc(
         settingsBloc: timelineSettingsBloc,
         timelineType: startType,
-        unifediApiInstance: authInstance.info!,
+        unifediApiInstance: authInstance.instance!,
         isNullableValuesPossible: true,
         isEnabled: true,
         webSocketsSettingsBloc: webSocketsSettingsBloc,

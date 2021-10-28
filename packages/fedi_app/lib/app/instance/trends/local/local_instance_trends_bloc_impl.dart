@@ -41,7 +41,7 @@ class LocalInstanceTrendsBloc extends InstanceTrendsBloc
         listen: false,
       ),
       unifediApiInstanceService: unifediApiInstanceService,
-      initialInstance: currentUnifediApiAccessBloc.currentInstance!.info,
+      initialInstance: currentUnifediApiAccessBloc.currentInstance!.instance,
       paginationSettingsBloc: IPaginationSettingsBloc.of(
         context,
         listen: false,

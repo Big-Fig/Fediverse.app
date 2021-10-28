@@ -9,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 
 final Image defaultImage =
     Image.asset('assets/images/default_timeline_header.png');
@@ -41,7 +40,7 @@ class InstanceImageBackgroundWidget extends StatelessWidget {
         if (backgroundImage?.isNotEmpty != true) {
           backgroundImage =
               instanceFrontendConfigurationsBloc.backgroundImage ??
-                  currentInstance?.info?.backgroundImage;
+                  currentInstance?.instance?.backgroundImage;
         }
 
         String? backgroundImageAbsolutePath;

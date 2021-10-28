@@ -559,7 +559,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   // ignore: cascade_invocations
   webSocketsModeSettingsBloc.disposeWith(disposableOwner);
 
-  var apiManager = authInstance.info!.typeAsUnifediApi.createApiManager(
+  var apiManager = authInstance.instance!.typeAsUnifediApi.createApiManager(
     apiAccessBloc: localPreferencesUnifediApiAccessBloc,
     computeImpl: null,
     webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
