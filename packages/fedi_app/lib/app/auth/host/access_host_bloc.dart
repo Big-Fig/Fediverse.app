@@ -2,7 +2,7 @@ import 'package:easy_dispose/easy_dispose.dart';
 import 'package:fedi_app/app/access/register/response/register_access_response_model.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
-abstract class IAuthHostBloc extends IDisposable {
+abstract class IAccessHostBloc extends IDisposable {
   bool get isHostApplicationRegistered;
 
   UnifediApiClientApplication? get hostApplication;

@@ -4,7 +4,7 @@ import 'package:fedi_app/app/access/join/join_access_bloc.dart';
 import 'package:fedi_app/app/access/join/join_access_widget_keys.dart';
 import 'package:fedi_app/app/access/register/register_access_page.dart';
 import 'package:fedi_app/app/async/unifedi/unifedi_async_operation_helper.dart';
-import 'package:fedi_app/app/auth/host/auth_host_bloc_impl.dart';
+import 'package:fedi_app/app/auth/host/access_host_bloc_impl.dart';
 import 'package:fedi_app/app/config/config_service.dart';
 import 'package:fedi_app/app/instance/details/remote/remote_instance_details_page.dart';
 import 'package:fedi_app/app/server_list/server_list_auto_complete_widget.dart';
@@ -388,18 +388,18 @@ Future<void> signUpToInstance(BuildContext context) async {
     contentMessage:
         S.of(context).app_auth_instance_join_progress_dialog_content,
     asyncCode: () async {
-      AuthHostBloc authHostBloc;
-      authHostBloc = AuthHostBloc.createFromContext(
+      AccessHostBloc accessHostBloc;
+      accessHostBloc = AccessHostBloc.createFromContext(
         context,
         instanceBaseUri: hostUri,
       );
 
-      await authHostBloc.performAsyncInit();
-      await authHostBloc.registerApplication();
-      await authHostBloc.loadInstanceDetails(forceRefresh: true);
-      await authHostBloc.dispose();
+      await accessHostBloc.performAsyncInit();
+      await accessHostBloc.registerApplication();
+      await accessHostBloc.loadInstanceDetails(forceRefresh: true);
+      await accessHostBloc.dispose();
 
-      return authHostBloc.memoryUnifediApiAccessBloc.access.instance;
+      return accessHostBloc.memoryUnifediApiAccessBloc.access.instance;
     },
   );
   var unifediApiInstance = asyncDialogResult.result;
@@ -517,9 +517,9 @@ Future<void> logInToInstance(BuildContext context) async {
     cancelable: true,
     asyncCode: () async {
       if (preDefinedApiAccess == null) {
-        AuthHostBloc? bloc;
+        AccessHostBloc? bloc;
         try {
-          bloc = AuthHostBloc.createFromContext(
+          bloc = AccessHostBloc.createFromContext(
             context,
             instanceBaseUri: hostUri,
           );

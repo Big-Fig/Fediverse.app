@@ -14,8 +14,8 @@ import 'package:fedi_app/app/access/list/access_list_bloc_impl.dart';
 import 'package:fedi_app/app/access/list/local_preferences/access_list_local_preference_bloc.dart';
 import 'package:fedi_app/app/access/list/local_preferences/access_list_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/account/my/my_account_bloc.dart';
-import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc.dart';
-import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/auth_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
+import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/access_oauth_last_launched_host_to_login_local_preference_bloc.dart';
+import 'package:fedi_app/app/auth/oauth_last_launched/local_preferences/access_oauth_last_launched_host_to_login_local_preference_bloc_impl.dart';
 import 'package:fedi_app/app/cache/database/settings/database_cache_settings_bloc.dart';
 import 'package:fedi_app/app/cache/database/settings/database_cache_settings_bloc_impl.dart';
 import 'package:fedi_app/app/cache/database/settings/local_preferences/global/global_database_cache_settings_local_preference_bloc.dart';
@@ -265,11 +265,11 @@ class AppContextBloc extends ProviderContextBloc implements IAppContextBloc {
         .asyncInitAndRegister<IStoragePermissionBloc>(storagePermissionBloc);
 
     var authOAuthLastLaunchedHostToLoginLocalPreferenceBloc =
-        AuthOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
+        AccessOAuthLastLaunchedHostToLoginLocalPreferenceBloc(
       hiveLocalPreferencesService,
     )..disposeWith(this);
     await globalProviderService.asyncInitAndRegister<
-        IAuthApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
+        IAccessApiOAuthLastLaunchedHostToLoginLocalPreferenceBloc>(
       authOAuthLastLaunchedHostToLoginLocalPreferenceBloc,
     );
     var lastChosenInstanceIncomeIncomeShareHandlerLocalPreferenceBloc =

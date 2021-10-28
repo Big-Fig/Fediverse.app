@@ -17,15 +17,16 @@ dependencies:
   args: ^2.0.0
   logging: ^1.0.2
   fediverse_api:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/fediverse_api
+    path: ../../packages/fediverse_api
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/fediverse_api
   freezed_annotation: ^0.15.0
 
 
 dev_dependencies:
   # test utils
-  test: ^1.19.2
+  test: any
   # mock utils
   mockito: ^5.0.16
   # additional linters

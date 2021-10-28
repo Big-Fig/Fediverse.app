@@ -12,14 +12,16 @@ environment:
 
 dependencies:
   fediverse_api:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/fediverse_api
+    path: ../../packages/fediverse_api
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/fediverse_api
 
   mastodon_api:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/mastodon_api
+    path: ../../packages/mastodon_api
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/mastodon_api
 
   # Disposable logic
   easy_dispose: ^1.1.0
@@ -37,7 +39,7 @@ dependencies:
   collection: ^1.15.0
 
 dev_dependencies:
-  test: ^1.19.2
+  test: any
   mockito: ^5.0.16
   # additional linters
   dart_code_metrics: ^4.5.0
@@ -55,6 +57,7 @@ dev_dependencies:
   all_lint_rules_community: ^0.0.4
 
   fediverse_api_test_utils:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/fediverse_api_test_utils
+    path: ../../packages/fediverse_api_test_utils
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/fediverse_api_test_utils
