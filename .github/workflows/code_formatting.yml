@@ -37,9 +37,11 @@ jobs:
         run: |
           ./tools/install_tools.sh
 
-      - name: Bootstrap Workspace
-#        run: flutter pub global run melos bootstrap
+      - name: Pub get
         run: flutter pub global run melos run pub:get
+
+      - name: Bootstrap Workspace
+        run: flutter pub global run melos bootstrap
 
       - name: Ensure the Dart code is formatted correctly
         run: flutter pub global run melos run format:check
