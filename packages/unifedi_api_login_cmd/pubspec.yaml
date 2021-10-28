@@ -14,38 +14,45 @@ dependencies:
   logging: ^1.0.2
   easy_dispose: ^1.1.0
   fediverse_api:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/fediverse_api
+    path: ../../packages/fediverse_api
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/fediverse_api
   fediverse_api_login_cmd:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/fediverse_api_login_cmd
+    path: ../../packages/fediverse_api_login_cmd
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/fediverse_api_login_cmd
   mastodon_api:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/mastodon_api
+    path: ../../packages/mastodon_api
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/mastodon_api
   pleroma_api:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/pleroma_api
+    path: ../../packages/pleroma_api
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/pleroma_api
   unifedi_api:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/unifedi_api
+    path: ../../packages/unifedi_api
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/unifedi_api
   mastodon_api_login_cmd:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/mastodon_api_login_cmd
+    path: ../../packages/mastodon_api_login_cmd
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/mastodon_api_login_cmd
   pleroma_api_login_cmd:
-    git:
-      url: https://github.com/Big-Fig/Fediverse.app.git
-      path: packages/pleroma_api_login_cmd
+    path: ../../packages/pleroma_api_login_cmd
+#    git:
+#      url: https://github.com/Big-Fig/Fediverse.app.git
+#      path: packages/pleroma_api_login_cmd
 
 
 dev_dependencies:
   # test utils
-  test: ^1.19.2
+  test: any
   # mock utils
   mockito: ^5.0.16
   # additional linters
