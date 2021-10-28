@@ -232,21 +232,25 @@ dependencies:
   freezed_annotation: ^0.15.0
 
   fediverse_api:
+#    path: ../../packages/fediverse_api
     git:
       url: https://github.com/Big-Fig/Fediverse.app.git
       path: packages/fediverse_api
 
   pleroma_api:
+#    path: ../../packages/pleroma_api
     git:
       url: https://github.com/Big-Fig/Fediverse.app.git
       path: packages/pleroma_api
 
   mastodon_api:
+#    path: ../../packages/mastodon_api
     git:
       url: https://github.com/Big-Fig/Fediverse.app.git
       path: packages/mastodon_api
 
   unifedi_api:
+#    path: ../../packages/unifedi_api
     git:
       url: https://github.com/Big-Fig/Fediverse.app.git
       path: packages/unifedi_api
@@ -258,7 +262,6 @@ dev_dependencies:
     sdk: flutter
   flutter_driver:
     sdk: flutter
-  # fvm flutter driver --target=test_driver/main.dart --flavor dev
   test: any
 
   # easy mock for tests

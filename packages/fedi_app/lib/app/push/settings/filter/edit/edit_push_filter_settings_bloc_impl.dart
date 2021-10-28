@@ -33,15 +33,15 @@ class EditPushFilterSettingsBloc
           originValue: pushFilterSettingsBloc.blockFromStrangers,
           isEnabled: isEnabled &&
               unifediApiMyAccountService.isFeatureSupported(
-                  unifediApiMyAccountService
-                      .editNotificationsSettingsFeature), // only mastodon
+                unifediApiMyAccountService.editNotificationsSettingsFeature,
+              ), // only mastodon
         ),
         hideNotificationContentsFieldBloc = BoolValueFormFieldBloc(
           originValue: pushFilterSettingsBloc.hideNotificationContents,
           isEnabled: isEnabled &&
               unifediApiMyAccountService.isFeatureSupported(
-                  unifediApiMyAccountService
-                      .editNotificationsSettingsFeature), // only mastodon
+                unifediApiMyAccountService.editNotificationsSettingsFeature,
+              ), // only mastodon
         ),
         super(
           isEnabled: isEnabled,
