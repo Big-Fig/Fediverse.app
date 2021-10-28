@@ -594,7 +594,10 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   List<String>? calculateToField() {
-    if (unifediApiStatusService.isPleroma) {
+    // todo: rework
+    var isPleroma = unifediApiStatusService
+        .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
+    if (isPleroma) {
       return mentionedAccts;
     } else {
       return null;
@@ -602,7 +605,10 @@ abstract class PostStatusBloc extends PostMessageBloc
   }
 
   String? calculateStatusTextField() {
-    if (unifediApiStatusService.isPleroma) {
+    // todo: rework
+    var isPleroma = unifediApiStatusService
+        .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
+    if (isPleroma) {
       return inputText;
     } else {
       if (originInReplyToStatus != null) {

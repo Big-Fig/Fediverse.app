@@ -17,10 +17,11 @@ class PostStatusVisibilityActionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var postStatusBloc = IPostStatusBloc.of(context);
 
+    // todo: rework
     var isPleromaInstance = ICurrentAccessBloc.of(
       context,
       listen: false,
-    ).currentInstance!.isPleroma;
+    ).currentInstance!.instance!.typeAsUnifediApi.isPleroma;
 
     return StreamBuilder<UnifediApiVisibility>(
       stream: postStatusBloc.visibilityStream,

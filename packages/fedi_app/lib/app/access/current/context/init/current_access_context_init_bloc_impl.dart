@@ -165,9 +165,6 @@ class CurrentAccessContextInitBloc extends AsyncInitLoadingBloc
   }
 
   Future<void> refreshOptionalData() async {
-    var isPleroma = currentUnifediApiAccessBloc.currentInstance!.isPleroma;
-    var isMastodon = currentUnifediApiAccessBloc.currentInstance!.isMastodon;
-
     var actualNotificationUnreadCount =
         await notificationRepository.calculateCount(
       filters: NotificationRepositoryFilters.only(onlyUnread: true),
@@ -178,28 +175,41 @@ class CurrentAccessContextInitBloc extends AsyncInitLoadingBloc
         await unifediChatRepository.getTotalUnreadCount();
     var actualAnnouncementCount = await announcementRepository.countAll();
 
-    var myAccountUnreadNotificationsCount = 0;
-    var myAccountUnreadConversationCount = 0;
+    var myAccountUnreadNotificationsCount =
+        myAccountBloc.myAccount!.unreadNotificationsCount ?? 0;
+    var myAccountUnreadConversationCount =
+        myAccountBloc.myAccount!.unreadConversationCount ?? 0;
 
-    if (isPleroma) {
-      myAccountUnreadConversationCount =
-          myAccountBloc.myAccount!.unreadConversationCount ?? 0;
-      myAccountUnreadNotificationsCount =
-          myAccountBloc.myAccount!.unreadNotificationsCount ?? 0;
-    }
+    var isAnnouncementsSupported =
+        unifediApiAnnouncementService.isFeatureSupported(
+      unifediApiAnnouncementService.getAnnouncementsFeature,
+    );
+    var isChatSupported = unifediApiChatService.isFeatureSupported(
+      unifediApiChatService.getChatsFeature,
+    );
+    var markConversationAsReadSupported =
+        unifediConversationService.isFeatureSupported(
+      unifediConversationService.markConversationAsReadFeature,
+    );
+    var markNotificationAsReadSupported =
+        unifediNotificationService.isFeatureSupported(
+      unifediNotificationService.markAsReadSingleFeature,
+    );
 
-    var isNeedUpdateAnnouncement = isMastodon && actualAnnouncementCount == 0;
-    var isNeedUpdateChats = isPleroma && (actualUnifediChatUnreadCount == 0);
-    var isNeedUpdateConversations =
-        (isMastodon && actualConversationChatUnreadCount == 0) ||
-            (isPleroma &&
-                myAccountUnreadConversationCount > 0 &&
-                actualConversationChatUnreadCount == 0);
-    var isNeedUpdateNotifications =
-        (isMastodon && actualNotificationUnreadCount == 0) ||
-            (isPleroma &&
-                myAccountUnreadNotificationsCount > 0 &&
-                actualNotificationUnreadCount == 0);
+    var isNeedUpdateAnnouncement =
+        isAnnouncementsSupported && actualAnnouncementCount == 0;
+    var isNeedUpdateChats =
+        isChatSupported && (actualUnifediChatUnreadCount == 0);
+    var isNeedUpdateConversations = (!markConversationAsReadSupported &&
+            actualConversationChatUnreadCount == 0) ||
+        (markConversationAsReadSupported &&
+            myAccountUnreadConversationCount > 0 &&
+            actualConversationChatUnreadCount == 0);
+    var isNeedUpdateNotifications = (!markNotificationAsReadSupported &&
+            actualNotificationUnreadCount == 0) ||
+        (markNotificationAsReadSupported &&
+            myAccountUnreadNotificationsCount > 0 &&
+            actualNotificationUnreadCount == 0);
 
     if (isNeedUpdateAnnouncement) {
       await updateAnnouncements();

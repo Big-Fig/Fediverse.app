@@ -156,8 +156,6 @@ class CurrentAccessContextBloc extends ProviderContextBloc
   final UnifediApiAccess currentInstance;
   final IAppContextBloc appContextBloc;
 
-  bool get isPleromaInstance => currentInstance.isPleroma;
-
   CurrentAccessContextBloc({
     required this.currentInstance,
     required this.appContextBloc,

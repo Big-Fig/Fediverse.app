@@ -77,8 +77,10 @@ class CurrentAccessBloc extends DisposableOwner implements ICurrentAccessBloc {
   String createHashtagUrl({
     required String hashtag,
   }) {
-    var isMastodon = currentInstance!.isMastodon;
-    var isPleroma = currentInstance!.isPleroma;
+    // todo: rework
+    var isPleroma = currentInstance!.instance!.typeAsUnifediApi.isPleroma;
+    var isMastodon = currentInstance!.instance!.typeAsUnifediApi.isMastodon;
+
     var urlHost = currentInstance!.urlHost;
     var urlSchema = currentInstance!.urlSchema;
 
@@ -90,8 +92,4 @@ class CurrentAccessBloc extends DisposableOwner implements ICurrentAccessBloc {
       hashtag: hashtag,
     );
   }
-
-  @override
-  // todo: remove hack
-  bool get isSupportChats => currentInstance!.isPleroma;
 }

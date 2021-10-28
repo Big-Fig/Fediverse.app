@@ -12,6 +12,8 @@ import 'package:fedi_app/app/toast/settings/toast_settings_bloc_impl.dart';
 import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 void showEditGlobalToastSettingsDialog({
   required BuildContext context,
@@ -36,8 +38,15 @@ void showEditGlobalToastSettingsDialog({
           toastSettingsBloc: value,
           globalOrInstanceSettingsType: GlobalOrInstanceSettingsType.global,
           isEnabled: true,
-          currentInstance:
-              ICurrentAccessBloc.of(context, listen: false).currentInstance,
+          unifediApiPushSubscriptionService:
+              Provider.of<IUnifediApiPushSubscriptionService>(
+            context,
+            listen: false,
+          ),
+          currentInstance: ICurrentAccessBloc.of(
+            context,
+            listen: false,
+          ).currentInstance,
         ),
         child: const EditToastSettingsWidget(
           shrinkWrap: true,

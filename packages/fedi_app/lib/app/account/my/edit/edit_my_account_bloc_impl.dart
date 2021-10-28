@@ -264,8 +264,9 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
       );
     }
 
-    var isPleromaInstance =
-        currentUnifediApiAccessBloc.currentInstance!.isPleroma;
+    // todo: rework
+    var isPleromaInstance = currentUnifediApiAccessBloc
+        .currentInstance!.instance!.typeAsUnifediApi.isPleroma;
 
     var remoteMyAccount = await unifediApiMyAccountService.updateMyCredentials(
       editMyAccount: await _calculateUnifediApiEditMyAccount(

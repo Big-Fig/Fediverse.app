@@ -21,7 +21,12 @@ extension GoToNotificationExtension on INotification {
     notificationRepository.markAsRead(
       notification: this,
     );
-    if (unifediNotificationService.isPleroma) {
+
+    // todo: rework
+    var isPleroma = unifediNotificationService
+        .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
+
+    if (isPleroma) {
       // ignore: unawaited_futures, avoid-ignoring-return-values
       unifediNotificationService.markAsReadSingle(
         notificationId: remoteId,

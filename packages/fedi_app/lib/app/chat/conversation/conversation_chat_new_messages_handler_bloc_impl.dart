@@ -33,7 +33,11 @@ class ConversationChatNewMessagesHandlerBloc extends DisposableOwner
       // sometimes accounts is empty
       // but if we fetch conversation by ID it will have accounts
       // usually it happens when user just started new conversation
-      if (conversationChatService.isPleroma) {
+      // todo: rework
+      var isPleroma = conversationChatService
+          .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
+
+      if (isPleroma) {
         await _updateConversationById(conversationRemoteId);
       } else {
         if (conversation.lastStatus != null) {

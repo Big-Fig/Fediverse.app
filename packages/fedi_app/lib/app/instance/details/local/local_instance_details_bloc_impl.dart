@@ -17,7 +17,9 @@ class LocalInstanceDetailsBloc extends InstanceDetailsBloc
     required IUnifediApiInstance? initialInstance,
     required this.unifediApiInstanceService,
   }) : super(
-          instanceUri: unifediApiInstanceService.baseUri,
+          instanceUri: Uri.parse(
+            unifediApiInstanceService.restService.accessBloc.access.url,
+          ),
           initialInstance: initialInstance,
         );
 

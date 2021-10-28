@@ -1,5 +1,4 @@
 import 'package:easy_dispose_provider/easy_dispose_provider.dart';
-import 'package:fedi_app/app/access/current/current_access_bloc.dart';
 import 'package:fedi_app/app/chat/conversation/repository/conversation_chat_repository.dart';
 import 'package:fedi_app/app/chat/conversation/unread/conversation_chat_unread_badge_bloc_impl.dart';
 import 'package:fedi_app/app/chat/settings/chat_settings_bloc.dart';
@@ -131,13 +130,10 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
+    var unifediApiChatService = Provider.of<IUnifediApiChatService>(context);
 
-    var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
-    var isPleromaInstance = currentInstance.isPleroma;
-
-    // todo: remove hack
-    var isSupportChats = isPleromaInstance;
+    var isChatsSupported = unifediApiChatService
+        .isFeatureSupported(unifediApiChatService.getChatsFeature);
 
     var fediUiColorTheme = IFediUiColorTheme.of(context);
 
@@ -146,10 +142,10 @@ class _ChatMessagesHomeTabPageContentWidget extends StatelessWidget {
         borderRadius: FediBorderRadius.topOnlyBigBorderRadius,
         child: Container(
           color: fediUiColorTheme.white,
-          child: isPleromaInstance
-              ? isSupportChats
-                  ? const UnifediChatHomeTabPageUnifediBody()
-                  : const UnifediChatHomeTabPageUnifediNotSupportedBody()
+          child: isChatsSupported
+              // sometimes pleroma instances disable chat support in config
+              // todo: handle chat disabled case
+              ? const _UnifediChatHomeTabPagePleromaBody()
               : const _UnifediChatHomeTabPageMastodonBody(),
         ),
       ),
@@ -170,8 +166,8 @@ class UnifediChatHomeTabPageUnifediNotSupportedBody extends StatelessWidget {
       );
 }
 
-class UnifediChatHomeTabPageUnifediBody extends StatelessWidget {
-  const UnifediChatHomeTabPageUnifediBody({
+class _UnifediChatHomeTabPagePleromaBody extends StatelessWidget {
+  const _UnifediChatHomeTabPagePleromaBody({
     Key? key,
   }) : super(key: key);
 
@@ -204,13 +200,11 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
+    var unifediApiChatService = Provider.of<IUnifediApiChatService>(context);
 
-    var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
-    var isPleromaInstance = currentInstance.isPleroma;
-
-    // todo: remove hack
-    var isSupportChats = isPleromaInstance;
+    var isChatsSupported = unifediApiChatService.isFeatureSupported(
+      unifediApiChatService.getChatsFeature,
+    );
 
     return FediTabMainHeaderBarWidget(
       leadingWidgets: [
@@ -222,7 +216,7 @@ class _ChatMessagesHomeTabPageHeaderWidget extends StatelessWidget {
       endingWidgets: [
         const _ChatMessagesHomeTabPageHeaderSwitchToDmActionWidget(),
         const FediBigHorizontalSpacer(),
-        if (isPleromaInstance && isSupportChats)
+        if (isChatsSupported)
           const _ChatMessagesHomeTabPageHeaderAddActionWidget(),
       ],
     );

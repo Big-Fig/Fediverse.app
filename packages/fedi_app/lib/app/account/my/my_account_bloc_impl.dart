@@ -174,7 +174,4 @@ class MyAccountBloc extends IMyAccountBloc {
 
   @override
   bool get isSubscribeToAccountFeatureSupported => false;
-
-  @override
-  bool get isSupportChats => false;
 }

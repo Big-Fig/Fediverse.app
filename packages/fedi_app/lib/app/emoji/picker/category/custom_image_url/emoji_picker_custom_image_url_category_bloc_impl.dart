@@ -30,46 +30,11 @@ class EmojiPickerCustomImageUrlCategoryBloc extends AsyncInitLoadingBloc
   Future<void> internalAsyncInit() async {
     await preferenceBloc.performAsyncInit();
     var currentInstance = currentUnifediApiAccessBloc.currentInstance!;
-    if (currentInstance.isPleroma) {
-      // old instances may not have this API
-      // ignore: unawaited_futures
-      _loadUnifedi(currentInstance);
-    } else if (currentInstance.isMastodon) {
-      // ignore: unawaited_futures
-      _loadMastodon();
-    }
+    // ignore: unawaited_futures
+    _loadEmojis(currentInstance);
   }
 
-  Future<void> _loadMastodon() async {
-    await unifediApiInstanceService.getCustomEmojis().then(
-      (customEmojis) async {
-        var emojiItems = customEmojis
-            .map(
-              (customEmoji) => CustomEmojiPickerImageUrlItem(
-                imageUrl: customEmoji.staticUrl!,
-                name: customEmoji.name,
-              ),
-            )
-            .toList();
-        await preferenceBloc.setValue(
-          EmojiPickerCustomImageUrlCategoryItems(
-            items: emojiItems,
-          ),
-        );
-      },
-    ).catchError(
-      (Object? e, StackTrace? stackTrace) {
-        _logger.warning(
-          () => 'internalAsyncInit error: fetch remote emoji '
-              'list',
-          e,
-          stackTrace,
-        );
-      },
-    );
-  }
-
-  Future<void> _loadUnifedi(UnifediApiAccess currentInstance) async {
+  Future<void> _loadEmojis(UnifediApiAccess currentInstance) async {
     // old instances may not have this API
     var urlHost = currentInstance.urlHost;
     var urlSchema = currentInstance.urlSchema;

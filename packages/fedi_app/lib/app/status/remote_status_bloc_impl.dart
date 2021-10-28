@@ -248,9 +248,4 @@ class RemoteStatusBloc extends StatusBloc {
   }) {
     throw const UnsupportedOnRemoteInstanceLocationException();
   }
-
-  @override
-  // todo: should be implemented
-  bool get isPleroma =>
-      throw const UnsupportedOnRemoteInstanceLocationException();
 }

@@ -180,7 +180,8 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     _logger.finest(() => 'launchLoginToAccount');
     await registerApplication();
 
-    var baseUrl = unifediApiAccountService.baseUri;
+    var baseUrl =
+        Uri.parse(unifediApiInstanceService.restService.accessBloc.access.url);
 
     await oAuthLastLaunchedHostToLoginLocalPreferenceBloc
         .setValue(baseUrl.toString());

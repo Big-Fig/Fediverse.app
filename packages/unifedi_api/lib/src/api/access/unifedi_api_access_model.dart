@@ -1,6 +1,5 @@
 import 'package:fediverse_api/fediverse_api.dart';
 
-import '../instance/type/unifedi_api_instance_type_model.dart';
 import '../instance/unifedi_api_instance_model.dart';
 import '../unifedi_api_model.dart';
 import 'level/unifedi_api_access_level_model.dart';
@@ -20,15 +19,4 @@ abstract class IUnifediApiAccess
 
   @override
   IUnifediApiAccessUserToken? get userAccessToken;
-}
-
-extension IUnifediApiAccessExtension on IUnifediApiAccess {
-  // TODO(xal): remove during refactoring, was required during migration from old API, https://github.com/xal/dart_fediverse_api/issues/1
-  bool get isPleroma =>
-      // ignore: avoid-non-null-assertion
-      UnifediApiInstanceType.fromStringValue(instance!.type).isPleroma;
-
-  bool get isMastodon =>
-      // ignore: avoid-non-null-assertion
-      UnifediApiInstanceType.fromStringValue(instance!.type).isMastodon;
 }

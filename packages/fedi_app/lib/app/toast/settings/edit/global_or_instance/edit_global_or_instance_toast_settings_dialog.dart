@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('edit_global_or_instance_toast_settings_dialog.dart');
 
@@ -38,6 +39,11 @@ void showEditGlobalOrInstanceToastSettingsDialog({
         var isEnabled =
             globalOrInstanceType == GlobalOrInstanceSettingsType.instance;
         var editToastSettingsBloc = EditGlobalOrInstanceToastSettingsBloc(
+          unifediApiPushSubscriptionService:
+              Provider.of<IUnifediApiPushSubscriptionService>(
+            context,
+            listen: false,
+          ),
           isGlobalForced: false,
           toastSettingsBloc: IToastSettingsBloc.of(
             context,

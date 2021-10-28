@@ -10,6 +10,8 @@ import 'package:fedi_app/app/toast/toast_service.dart';
 import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 void showEditInstancePushFilterSettingsDialog({
   required BuildContext context,
@@ -22,6 +24,9 @@ void showEditInstancePushFilterSettingsDialog({
       subTitle: S.of(context).app_push_settings_title,
       child: DisposableProvider<IEditPushFilterSettingsBloc>(
         create: (context) => EditPushFilterSettingsBloc(
+          unifediApiMyAccountService: Provider.of<IUnifediApiMyAccountService>(
+            context,
+          ),
           pushFilterSettingsBloc: IPushFilterSettingsBloc.of(
             context,
             listen: false,

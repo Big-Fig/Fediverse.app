@@ -28,13 +28,20 @@ class EditPushFilterSettingsBloc
     required this.pushFilterSettingsBloc,
     required this.currentInstance,
     required bool isEnabled,
+    required IUnifediApiMyAccountService unifediApiMyAccountService,
   })  : blockFromStrangersFieldBloc = BoolValueFormFieldBloc(
           originValue: pushFilterSettingsBloc.blockFromStrangers,
-          isEnabled: isEnabled && currentInstance!.isPleroma, // only mastodon
+          isEnabled: isEnabled &&
+              unifediApiMyAccountService.isFeatureSupported(
+                  unifediApiMyAccountService
+                      .editNotificationsSettingsFeature), // only mastodon
         ),
         hideNotificationContentsFieldBloc = BoolValueFormFieldBloc(
           originValue: pushFilterSettingsBloc.hideNotificationContents,
-          isEnabled: isEnabled && currentInstance!.isPleroma, // only mastodon
+          isEnabled: isEnabled &&
+              unifediApiMyAccountService.isFeatureSupported(
+                  unifediApiMyAccountService
+                      .editNotificationsSettingsFeature), // only mastodon
         ),
         super(
           isEnabled: isEnabled,

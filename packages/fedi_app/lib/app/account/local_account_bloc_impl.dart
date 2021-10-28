@@ -536,8 +536,4 @@ class LocalAccountBloc extends AccountBloc {
       unifediAuthAccountService.isFeatureSupported(
         unifediAuthAccountService.subscribeAccountFeature,
       );
-
-  @override
-  // todo: remove hack
-  bool get isSupportChats => unifediAuthAccountService.isPleroma;
 }

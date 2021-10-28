@@ -80,7 +80,11 @@ class UnifediChatWithLastMessageListBloc extends DisposableOwner
       mergeNewItemsImmediately: true,
     )..disposeWith(this);
 
-    if (unifediApiChatService.isPleroma) {
+    // todo: rework
+    var isPleroma = unifediApiChatService
+        .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
+
+    if (isPleroma) {
       webSocketsHandlerManagerBloc
           .listenUnifediChatChannel(
             handlerType: handlerType,

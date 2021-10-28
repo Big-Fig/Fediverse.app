@@ -228,7 +228,11 @@ class ThreadPostStatusBloc extends PostStatusBloc
 
   @override
   List<String>? calculateToField() {
-    if (unifediApiStatusService.isPleroma) {
+    // todo: rework
+    var isPleroma = unifediApiStatusService
+        .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
+
+    if (isPleroma) {
       if (originInReplyToStatus != null && !originInReplyToStatusCanceled!) {
         var inReplyToStatusAcct = originInReplyToStatus!.account.acct;
 

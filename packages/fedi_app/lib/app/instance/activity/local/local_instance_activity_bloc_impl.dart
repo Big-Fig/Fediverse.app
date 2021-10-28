@@ -17,7 +17,8 @@ class LocalInstanceActivityBloc extends InstanceActivityBloc
     required IUnifediApiInstance instance,
     required this.unifediApiInstanceService,
   }) : super(
-          instanceUri: unifediApiInstanceService.baseUri,
+          instanceUri: Uri.parse(
+              unifediApiInstanceService.restService.accessBloc.access.url),
           instance: instance,
         );
 

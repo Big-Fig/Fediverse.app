@@ -92,9 +92,12 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(context);
 
+    var isPleroma = currentUnifediApiAccessBloc
+        .currentInstance!.instance!.typeAsUnifediApi.isPleroma;
+
     return Column(
       children: [
-        if (currentUnifediApiAccessBloc.currentInstance!.isPleroma)
+        if (isPleroma)
           const EditMyAccountBackgroundFieldWidget(
             backgroundHeight: _editAccountBackgroundHeight,
           ),
@@ -103,7 +106,7 @@ class _EditMyAccountBodyWidget extends StatelessWidget {
         const EditMyAccountLockedFieldWidget(),
         const EditMyAccountDiscoverableFieldWidget(),
         const EditMyAccountBotFieldWidget(),
-        if (currentUnifediApiAccessBloc.currentInstance!.isPleroma) ...[
+        if (isPleroma) ...[
           const EditMyAccountAcceptsChatMessagesFieldWidget(),
           const EditMyAccountAllowFollowingMoveFieldWidget(),
           const EditMyAccountHideFavouritesFieldWidget(),
