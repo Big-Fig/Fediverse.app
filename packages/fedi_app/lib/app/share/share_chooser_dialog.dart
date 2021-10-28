@@ -6,6 +6,8 @@ import 'package:fedi_app/app/ui/fedi_icons.dart';
 import 'package:fedi_app/dialog/dialog_model.dart';
 import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:unifedi_api/unifedi_api.dart';
 
 Future<void> showShareChooserDialog(
   BuildContext context, {
@@ -15,8 +17,19 @@ Future<void> showShareChooserDialog(
   required FutureOr<void> Function(BuildContext context) chatsShareAction,
   required FutureOr<void> Function(BuildContext context) newStatusShareAction,
 }) async {
-  var currentUnifediApiAccessBloc =
-      ICurrentAccessBloc.of(context, listen: false);
+  var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(
+    context,
+    listen: false,
+  );
+
+  var unifediApiChatService = Provider.of<IUnifediApiChatService>(
+    context,
+    listen: false,
+  );
+
+  var isChatsSupported = unifediApiChatService.isFeatureSupported(
+    unifediApiChatService.getChatsFeature,
+  );
 
   var currentInstance = currentUnifediApiAccessBloc.currentInstance;
   await showFediChooserDialog<void>(
@@ -38,7 +51,7 @@ Future<void> showShareChooserDialog(
             conversationsShareAction(context);
           },
         ),
-      if (currentInstance != null && currentUnifediApiAccessBloc.isSupportChats)
+      if (currentInstance != null && isChatsSupported)
         DialogAction(
           icon: FediIcons.chat,
           label: S.of(context).app_share_action_shareToChats,

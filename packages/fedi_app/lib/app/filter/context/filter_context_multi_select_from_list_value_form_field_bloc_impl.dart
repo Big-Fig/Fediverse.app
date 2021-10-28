@@ -10,7 +10,7 @@ class FilterContextMultiSelectFromListValueFormFieldBloc
 
   @override
   List<UnifediApiFilterContextType> get possibleValues {
-    if (currentInstance!.isMastodon) {
+    if (currentInstance!.instance!.typeAsUnifediApi.isMastodon) {
       return [
         UnifediApiFilterContextType.homeValue,
         UnifediApiFilterContextType.notificationsValue,

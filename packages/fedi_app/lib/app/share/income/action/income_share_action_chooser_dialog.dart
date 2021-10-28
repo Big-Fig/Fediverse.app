@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:fedi_app/app/access/current/current_access_bloc.dart';
 import 'package:fedi_app/app/async/unifedi/unifedi_async_operation_helper.dart';
 import 'package:fedi_app/app/chat/conversation/share/conversation_chat_share_entity_page.dart';
 import 'package:fedi_app/app/chat/unifedi/share/unifedi_chat_share_entity_page.dart';
@@ -31,13 +30,18 @@ Future<void> showIncomeShareActionChooserDialog(
 }) async {
   _logger.finest(() => 'showIncomeShareInstanceChooserDialog');
 
-  var currentUnifediApiAccessBloc =
-      ICurrentAccessBloc.of(context, listen: false);
   var types = IncomeShareActionType.values;
 
-  var isPleroma = currentUnifediApiAccessBloc.currentInstance!.isPleroma;
+  var unifediApiChatService = Provider.of<IUnifediApiChatService>(
+    context,
+    listen: false,
+  );
 
-  if (!isPleroma) {
+  var isChatSupported = unifediApiChatService.isFeatureSupported(
+    unifediApiChatService.getChatsFeature,
+  );
+
+  if (!isChatSupported) {
     types = types
         .where(
           (item) => item != IncomeShareActionType.chat,

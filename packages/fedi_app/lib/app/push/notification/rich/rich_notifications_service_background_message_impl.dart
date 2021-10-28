@@ -494,7 +494,7 @@ Future<IUnifediApiNotification?> _loadNotificationForInstance({
   var unifediApiNotification = await _loadLastNotificationForInstance(
     configService: configService,
     localPreferencesService: localPreferencesService,
-    authInstance: authInstance,
+    apiAccess: authInstance,
   );
 
   if (createPushNotification) {
@@ -517,11 +517,11 @@ Future<IUnifediApiNotification?> _loadNotificationForInstance({
 Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   required ILocalPreferencesService localPreferencesService,
   required IConfigService configService,
-  required UnifediApiAccess authInstance,
+  required UnifediApiAccess apiAccess,
 }) async {
   var disposableOwner = DisposableOwner();
 
-  var userAtHost = authInstance.userAtHost;
+  var userAtHost = apiAccess.userAtHost;
 
   var instancePushSettingsLocalPreferenceBloc =
       InstancePushSettingsLocalPreferenceBloc(
@@ -541,7 +541,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
 
   var unifediApiAccessLocalPreferenceBloc = AccessLocalPreferenceBloc(
     preferencesService: localPreferencesService,
-    userAtHost: authInstance.userAtHost,
+    userAtHost: apiAccess.userAtHost,
   );
   await unifediApiAccessLocalPreferenceBloc.performAsyncInit();
   disposableOwner.addDisposable(unifediApiAccessLocalPreferenceBloc);
@@ -559,7 +559,7 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
   // ignore: cascade_invocations
   webSocketsModeSettingsBloc.disposeWith(disposableOwner);
 
-  var apiManager = authInstance.instance!.typeAsUnifediApi.createApiManager(
+  var apiManager = apiAccess.instance!.typeAsUnifediApi.createApiManager(
     apiAccessBloc: localPreferencesUnifediApiAccessBloc,
     computeImpl: null,
     webSocketsModeSettingsBloc: webSocketsModeSettingsBloc,
@@ -569,6 +569,8 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
 
   var unifediApiNotificationService = apiManager.createNotificationService();
   disposableOwner.addDisposable(unifediApiNotificationService);
+
+  var isPleroma = apiAccess.instance!.typeAsUnifediApi.isPleroma;
 
   try {
     var unifediApiNotifications =
@@ -582,11 +584,11 @@ Future<IUnifediApiNotification?> _loadLastNotificationForInstance({
       ),
       excludeTypes: _calculateExcludePushNotificationTypesBaseOnPushSettings(
         pushSettings: pushSettings,
-        isPleroma: authInstance.isPleroma,
+        isPleroma: isPleroma,
       ),
       includeTypes: _calculateIncludePushNotificationTypesBaseOnPushSettings(
         pushSettings: pushSettings,
-        isPleroma: authInstance.isPleroma,
+        isPleroma: isPleroma,
       ),
     );
 

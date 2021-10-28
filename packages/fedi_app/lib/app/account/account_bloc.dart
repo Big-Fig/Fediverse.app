@@ -13,8 +13,6 @@ abstract class IAccountBloc extends DisposableOwner
 
   bool get isSubscribeToAccountFeatureSupported;
 
-  bool get isSupportChats;
-
   static IAccountBloc of(BuildContext context, {bool listen = true}) =>
       Provider.of<IAccountBloc>(context, listen: listen);
 

@@ -23,8 +23,8 @@ class StatusActionsListWidget extends StatelessWidget {
 
     bool isPleromaInstance;
     if (isLocal) {
-      isPleromaInstance =
-          currentUnifediApiAccessBloc.currentInstance!.isPleroma;
+      isPleromaInstance = currentUnifediApiAccessBloc
+          .currentInstance!.instance!.typeAsUnifediApi.isPleroma;
     } else {
       var remoteInstanceBloc = IRemoteInstanceBloc.of(context);
       // todo: refactor

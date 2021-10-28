@@ -13,19 +13,26 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
   final UnifediApiAccess? currentInstance;
 
   @override
-  final IBoolValueFormFieldBloc favouriteFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc favouriteFieldBloc;
   @override
-  final IBoolValueFormFieldBloc followFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc followFieldBloc;
   @override
-  final IBoolValueFormFieldBloc mentionFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc mentionFieldBloc;
   @override
-  final IBoolValueFormFieldBloc reblogFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc reblogFieldBloc;
   @override
-  final IBoolValueFormFieldBloc pollFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc pollFieldBloc;
   @override
-  final IBoolValueFormFieldBloc chatMentionFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc chatMentionFieldBloc;
   @override
-  final IBoolValueFormFieldBloc emojiReactionFieldBloc;
+  // ignore: avoid-late-keyword
+  late IBoolValueFormFieldBloc emojiReactionFieldBloc;
 
   @override
   List<IFormItemBloc> get currentItems => [
@@ -38,43 +45,60 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
         emojiReactionFieldBloc,
       ];
 
+  final IUnifediApiPushSubscriptionService unifediApiPushSubscriptionService;
+
+  bool get isPollSupported =>
+      currentInstance!.instance!.typeAsUnifediApi.isMastodon;
+
+  bool get isChatMentionSupported =>
+      unifediApiPushSubscriptionService.isFeatureSupported(
+        unifediApiPushSubscriptionService.subscribeChatMentionFeature,
+      );
+
+  bool get isEmojiReactionSupported =>
+      unifediApiPushSubscriptionService.isFeatureSupported(
+        unifediApiPushSubscriptionService.subscribeEmojiReactionFeature,
+      );
+
   EditPushSettingsBloc({
     required this.pushSettingsBloc,
     required this.currentInstance,
     required bool isEnabled,
-  })  : favouriteFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.favourite,
-          isEnabled: isEnabled,
-        ),
-        followFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.follow,
-          isEnabled: isEnabled,
-        ),
-        mentionFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.mention,
-          isEnabled: isEnabled,
-        ),
-        reblogFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.reblog,
-          isEnabled: isEnabled,
-        ),
-        pollFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.poll,
-          isEnabled: isEnabled && currentInstance!.isMastodon, // only mastodon
-        ),
-        chatMentionFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.chatMention,
-          isEnabled: isEnabled && currentInstance!.isPleroma,
-        ),
-        emojiReactionFieldBloc = BoolValueFormFieldBloc(
-          originValue: pushSettingsBloc.emojiReaction,
-          isEnabled: isEnabled && currentInstance!.isPleroma,
-        ),
-        super(
+    required this.unifediApiPushSubscriptionService,
+  }) : super(
           isEnabled: isEnabled,
           settingsBloc: pushSettingsBloc,
-          isAllItemsInitialized: true,
+          isAllItemsInitialized: false,
         ) {
+    favouriteFieldBloc = BoolValueFormFieldBloc(
+      originValue: pushSettingsBloc.favourite,
+      isEnabled: isEnabled,
+    );
+    followFieldBloc = BoolValueFormFieldBloc(
+      originValue: pushSettingsBloc.follow,
+      isEnabled: isEnabled,
+    );
+    mentionFieldBloc = BoolValueFormFieldBloc(
+      originValue: pushSettingsBloc.mention,
+      isEnabled: isEnabled,
+    );
+    reblogFieldBloc = BoolValueFormFieldBloc(
+      originValue: pushSettingsBloc.reblog,
+      isEnabled: isEnabled,
+    );
+    pollFieldBloc = BoolValueFormFieldBloc(
+      originValue: pushSettingsBloc.poll,
+      isEnabled: isEnabled && isPollSupported, // only mastodon
+    );
+    chatMentionFieldBloc = BoolValueFormFieldBloc(
+      originValue: pushSettingsBloc.chatMention,
+      isEnabled: isEnabled && isChatMentionSupported,
+    );
+    emojiReactionFieldBloc = BoolValueFormFieldBloc(
+      originValue: pushSettingsBloc.emojiReaction,
+      isEnabled: isEnabled && isEmojiReactionSupported,
+    );
+
     addDisposable(favouriteFieldBloc);
     addDisposable(followFieldBloc);
     addDisposable(mentionFieldBloc);
@@ -82,6 +106,8 @@ class EditPushSettingsBloc extends EditInstanceSettingsBloc<PushSettings?>
     addDisposable(pollFieldBloc);
     addDisposable(chatMentionFieldBloc);
     addDisposable(emojiReactionFieldBloc);
+
+    onFormItemsChanged();
   }
 
   @override

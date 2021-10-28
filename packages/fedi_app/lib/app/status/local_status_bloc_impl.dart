@@ -292,9 +292,12 @@ class LocalStatusBloc extends StatusBloc {
     required Duration? duration,
   }) async {
     if (duration != null) {
+      // todo: rework
+      var isPleroma = unifediApiStatusService
+          .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
       assert(
-        unifediApiStatusService.isPleroma,
-        'Muting with duration supported only on unifedi',
+        isPleroma,
+        'Muting with duration supported only on pleroma',
       );
     }
 
@@ -468,7 +471,4 @@ class LocalStatusBloc extends StatusBloc {
 
   @override
   Uri? get remoteInstanceUriOrNull => null;
-
-  @override
-  bool get isPleroma => unifediApiStatusService.isPleroma;
 }

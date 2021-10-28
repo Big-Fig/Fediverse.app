@@ -69,7 +69,7 @@ class LocalInstancePublicTimelinePageBloc extends InstancePublicTimelinePageBloc
     required this.connectionService,
     required IUnifediApiInstance unifediApiInstance,
   }) : super(
-          instanceUri: unifediApiTimelineService.baseUri,
+          instanceUri: Uri.parse(unifediApiInstance.uri),
           unifediApiInstance: unifediApiInstance,
         );
 

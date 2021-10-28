@@ -160,7 +160,4 @@ class RemoteAccountBloc extends AccountBloc {
 
   @override
   bool get isSubscribeToAccountFeatureSupported => false;
-
-  @override
-  bool get isSupportChats => false;
 }

@@ -22,7 +22,8 @@ class LocalInstanceDirectoryBloc extends InstanceDirectoryBloc
     required IConnectionService connectionService,
   }) : super(
           connectionService: connectionService,
-          instanceUri: unifediApiInstanceService.baseUri,
+          instanceUri: Uri.parse(
+              unifediApiInstanceService.restService.accessBloc.access.url),
           initialInstance: initialInstance,
           paginationSettingsBloc: paginationSettingsBloc,
         );

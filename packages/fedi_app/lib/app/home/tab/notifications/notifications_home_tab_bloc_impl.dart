@@ -23,7 +23,11 @@ class NotificationsHomeTabBloc extends HomeTabBloc
   Future<void> markAllAsRead() async {
     await notificationRepository.markAllAsRead();
 
-    if (unifediNotificationService.isPleroma) {
+    // todo: rework
+    var isPleroma = unifediNotificationService
+        .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
+
+    if (isPleroma) {
       var newestNotification =
           await notificationRepository.getNewestOrderByRemoteId();
       if (newestNotification != null) {

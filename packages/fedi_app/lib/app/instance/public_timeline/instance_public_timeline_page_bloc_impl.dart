@@ -36,14 +36,14 @@ abstract class InstancePublicTimelinePageBloc extends AsyncInitLoadingBloc
   }
 
   @override
-  IUnifediApiInstance? get instance => unifediApiInstance;
+  IUnifediApiInstance get instance => unifediApiInstance;
 
   @override
-  Stream<IUnifediApiInstance?> get instanceStream => Stream.value(instance);
+  Stream<IUnifediApiInstance> get instanceStream => Stream.value(instance);
 
   @override
-  bool get isPleroma => instance!.typeAsUnifediApi.isPleroma;
+  bool get isPleroma => instance.typeAsUnifediApi.isPleroma;
 
   @override
-  bool get isMastodon => instance!.typeAsUnifediApi.isMastodon;
+  bool get isMastodon => instance.typeAsUnifediApi.isMastodon;
 }

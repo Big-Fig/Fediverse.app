@@ -203,7 +203,15 @@ class StatusActionMoreDialogBody extends StatelessWidget {
 
   static DialogAction buildMuteConversationAction(BuildContext context) {
     var statusBloc = IStatusBloc.of(context, listen: false);
-    var isPleromaInstance = statusBloc.isPleroma;
+
+    var unifediApiStatusService = Provider.of<IUnifediApiStatusService>(
+      context,
+      listen: false,
+    );
+
+    var muteExpiresInSupported = unifediApiStatusService.isFeatureSupported(
+      unifediApiStatusService.muteStatusExpiresInFeature,
+    );
 
     return DialogAction(
       icon: statusBloc.muted ? FediIcons.unmute : FediIcons.mute,
@@ -211,7 +219,7 @@ class StatusActionMoreDialogBody extends StatelessWidget {
           ? S.of(context).app_status_action_unmute
           : S.of(context).app_status_action_mute,
       onAction: (context) async {
-        if (statusBloc.muted || !isPleromaInstance) {
+        if (statusBloc.muted || !muteExpiresInSupported) {
           // ignore: avoid-ignoring-return-values
           await UnifediAsyncOperationHelper.performUnifediAsyncOperation(
             context: context,

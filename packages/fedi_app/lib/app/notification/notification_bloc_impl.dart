@@ -213,7 +213,12 @@ class NotificationBloc extends DisposableOwner implements INotificationBloc {
     await notificationRepository.markAsRead(
       notification: notification,
     );
-    if (unifediNotificationService.isPleroma) {
+
+    // todo: rework
+    var isPleroma = unifediNotificationService
+        .restService.accessBloc.access.instance!.typeAsUnifediApi.isPleroma;
+
+    if (isPleroma) {
       // ignore: unawaited_futures, avoid-ignoring-return-values
       unifediNotificationService.markAsReadSingle(
         notificationId: notification.remoteId,

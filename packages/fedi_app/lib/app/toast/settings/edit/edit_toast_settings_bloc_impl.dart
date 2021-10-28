@@ -61,12 +61,29 @@ class EditToastSettingsBloc
 
   PushSettings? get currentPushSettings => currentSettings.pushSettings;
 
+  final IUnifediApiPushSubscriptionService unifediApiPushSubscriptionService;
+
+  bool get isPollSupported =>
+      currentInstance!.instance!.typeAsUnifediApi.isMastodon || isGlobal;
+
+  bool get isChatMentionSupported =>
+      unifediApiPushSubscriptionService.isFeatureSupported(
+        unifediApiPushSubscriptionService.subscribeChatMentionFeature,
+      ) ||
+      isGlobal;
+  bool get isEmojiReactionSupported =>
+      unifediApiPushSubscriptionService.isFeatureSupported(
+        unifediApiPushSubscriptionService.subscribeEmojiReactionFeature,
+      ) ||
+      isGlobal;
+
   EditToastSettingsBloc({
     required this.toastSettingsBloc,
     required this.currentInstance,
     required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     required bool isEnabled,
     required bool isGlobalForced,
+    required this.unifediApiPushSubscriptionService,
   }) : super(
           isEnabled: isEnabled,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
@@ -74,12 +91,6 @@ class EditToastSettingsBloc
           isAllItemsInitialized: false,
           isGlobalForced: isGlobalForced,
         ) {
-    var isGlobal =
-        globalOrInstanceSettingsType == GlobalOrInstanceSettingsType.global;
-    var isPleromaOrGlobal = (currentInstance!.isPleroma || isGlobal);
-
-    var isMastodonOrGlobal = currentInstance!.isMastodon || isGlobal;
-
     favouriteFieldBloc = BoolValueFormFieldBloc(
       originValue: currentPushSettings!.favourite,
       isEnabled: isEnabled,
@@ -98,16 +109,17 @@ class EditToastSettingsBloc
       isEnabled: isEnabled,
     );
     pollFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings!.poll! && isMastodonOrGlobal,
-      isEnabled: isEnabled && isMastodonOrGlobal,
+      originValue: currentPushSettings!.poll! && isPollSupported,
+      isEnabled: isEnabled && isPollSupported,
     );
     chatMentionFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings!.chatMention! && isPleromaOrGlobal,
-      isEnabled: isEnabled && isPleromaOrGlobal,
+      originValue: currentPushSettings!.chatMention! && isChatMentionSupported,
+      isEnabled: isEnabled && isChatMentionSupported,
     );
     emojiReactionFieldBloc = BoolValueFormFieldBloc(
-      originValue: currentPushSettings!.emojiReaction! && isPleromaOrGlobal,
-      isEnabled: isEnabled && isPleromaOrGlobal,
+      originValue:
+          currentPushSettings!.emojiReaction! && isEmojiReactionSupported,
+      isEnabled: isEnabled && isEmojiReactionSupported,
     );
 
     toastHandlingTypeSingleFromListValueFormFieldBloc =
@@ -148,8 +160,6 @@ class EditToastSettingsBloc
   @override
   Future<void> fillSettingsToFormFields(ToastSettings settings) async {
     var pushSettings = settings.pushSettings;
-    var isNotGlobal =
-        globalOrInstanceSettingsType != GlobalOrInstanceSettingsType.global;
 
     favouriteFieldBloc.changeCurrentValue(
       pushSettings.favourite,
@@ -164,14 +174,13 @@ class EditToastSettingsBloc
       pushSettings.reblog,
     );
     pollFieldBloc.changeCurrentValue(
-      pushSettings.poll! && (currentInstance!.isMastodon || isNotGlobal),
+      pushSettings.poll == true && isPollSupported,
     );
     chatMentionFieldBloc.changeCurrentValue(
-      pushSettings.chatMention! && (currentInstance!.isPleroma || isNotGlobal),
+      pushSettings.chatMention == true && isChatMentionSupported,
     );
     emojiReactionFieldBloc.changeCurrentValue(
-      pushSettings.emojiReaction! &&
-          (currentInstance!.isPleroma || isNotGlobal),
+      pushSettings.emojiReaction == true && isEmojiReactionSupported,
     );
 
     toastHandlingTypeSingleFromListValueFormFieldBloc.changeCurrentValue(

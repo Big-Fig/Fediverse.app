@@ -14,8 +14,11 @@ class EditGlobalOrInstanceToastSettingsBloc extends EditToastSettingsBloc {
     required GlobalOrInstanceSettingsType globalOrInstanceSettingsType,
     required bool isEnabled,
     required bool isGlobalForced,
+    required IUnifediApiPushSubscriptionService
+        unifediApiPushSubscriptionService,
     required this.switchEditGlobalOrInstanceSettingsBoolValueFormFieldBloc,
   }) : super(
+          unifediApiPushSubscriptionService: unifediApiPushSubscriptionService,
           globalOrInstanceSettingsType: globalOrInstanceSettingsType,
           toastSettingsBloc: toastSettingsBloc,
           currentInstance: currentInstance,

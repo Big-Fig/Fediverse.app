@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:unifedi_api/unifedi_api.dart';
 
 abstract class ICurrentAccessBloc implements IDisposable {
-  bool get isSupportChats;
-
   static ICurrentAccessBloc of(
     BuildContext context, {
     bool listen = true,
