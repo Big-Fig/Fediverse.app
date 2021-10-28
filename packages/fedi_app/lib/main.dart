@@ -491,7 +491,7 @@ class FediApp extends StatelessWidget {
             // ignore: avoid_catches_without_on_clauses
           } catch (e) {
             // todo: remove this hack. IInstanceFrontendConfigurationsBloc should init before this
-            _logger.warning(
+            _logger.fine(
               () =>
                   'failed to retrieve IInstanceFrontendConfigurationsBloc. Not initialized yet?',
               // e,
