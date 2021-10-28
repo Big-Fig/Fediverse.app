@@ -1,6 +1,5 @@
 import 'package:fediverse_api/fediverse_api.dart';
 
-import '../application/client/unifedi_api_client_application_model.dart';
 import '../instance/type/unifedi_api_instance_type_model.dart';
 import '../instance/unifedi_api_instance_model.dart';
 import '../unifedi_api_model.dart';
@@ -24,11 +23,6 @@ abstract class IUnifediApiAccess
 }
 
 extension IUnifediApiAccessExtension on IUnifediApiAccess {
-  IUnifediApiClientApplication? get application =>
-      applicationAccessToken?.clientApplication;
-
-  IUnifediApiInstance? get info => instance;
-
   // TODO(xal): remove during refactoring, was required during migration from old API, https://github.com/xal/dart_fediverse_api/issues/1
   bool get isPleroma =>
       // ignore: avoid-non-null-assertion

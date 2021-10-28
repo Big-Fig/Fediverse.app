@@ -44,7 +44,8 @@ MaterialPageRoute<void> createLocalInstancePublicTimelinePageRoute({
         context,
         unifediApiInstance: unifediApiInstance,
         child: ProxyProvider<ICurrentAccessBloc, IUnifediApiInstance>(
-          update: (context, value, previous) => value.currentInstance!.info!,
+          update: (context, value, previous) =>
+              value.currentInstance!.instance!,
           child: const LocalInstancePublicTimelinePage(),
         ),
       ),

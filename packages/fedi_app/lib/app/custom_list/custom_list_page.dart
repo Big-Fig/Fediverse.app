@@ -205,7 +205,7 @@ class _CustomListPageAppBarSettingsActionWidget extends StatelessWidget {
             unifediApiInstance: ICurrentAccessBloc.of(
               context,
               listen: false,
-            ).currentInstance!.info!,
+            ).currentInstance!.instance!,
             instanceLocation: InstanceLocation.local,
           );
         },

@@ -22,7 +22,6 @@ import 'package:flutter_reorderable_list/flutter_reorderable_list.dart'
     as flutter_reorderable_list;
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 
 var _logger = Logger('timelines_home_tab_storage_widget.dart');
 
@@ -207,7 +206,7 @@ class _TimelinesHomeTabStorageListItemWidget extends StatelessWidget {
             unifediApiInstance: ICurrentAccessBloc.of(
               context,
               listen: false,
-            ).currentInstance!.info!,
+            ).currentInstance!.instance!,
           );
         }
       },
@@ -244,7 +243,7 @@ class _TimelinesHomeTabStorageListItemTitleWidget extends StatelessWidget {
           unifediApiInstance: ICurrentAccessBloc.of(
             context,
             listen: false,
-          ).currentInstance!.info!,
+          ).currentInstance!.instance!,
         );
       },
       child: Row(
@@ -300,7 +299,7 @@ class _TimelinesHomeTabStorageListItemEndingWidget extends StatelessWidget {
                   unifediApiInstance: ICurrentAccessBloc.of(
                     context,
                     listen: false,
-                  ).currentInstance!.info!,
+                  ).currentInstance!.instance!,
                 );
               },
             );

@@ -29,7 +29,7 @@ class LocalInstanceActivityBloc extends InstanceActivityBloc
 
     return LocalInstanceActivityBloc(
       unifediApiInstanceService: unifediApiInstanceService,
-      instance: currentUnifediApiAccessBloc.currentInstance!.info!,
+      instance: currentUnifediApiAccessBloc.currentInstance!.instance!,
     );
   }
 

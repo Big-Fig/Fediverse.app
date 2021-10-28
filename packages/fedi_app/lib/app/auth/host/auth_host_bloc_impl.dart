@@ -429,8 +429,9 @@ class AuthHostBloc extends AsyncInitLoadingBloc implements IAuthHostBloc {
     var instance = currentInstance;
     try {
       await unifediApiInstanceService.revokeAccessToken(
-        clientId: instance.application!.clientId!,
-        clientSecret: instance.application!.clientSecret!,
+        clientId: instance.applicationAccessToken!.clientApplication.clientId!,
+        clientSecret:
+            instance.applicationAccessToken!.clientApplication.clientSecret!,
         token: instance.userAccessToken!.accessToken,
       );
     } finally {

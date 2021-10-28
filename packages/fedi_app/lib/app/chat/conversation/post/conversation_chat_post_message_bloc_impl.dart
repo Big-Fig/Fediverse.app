@@ -54,8 +54,9 @@ class ConversationChatPostMessageBloc extends PostStatusBloc {
     BuildContext context, {
     required IConversationChat? conversation,
   }) {
-    var info =
-        ICurrentAccessBloc.of(context, listen: false).currentInstance!.info!;
+    var info = ICurrentAccessBloc.of(context, listen: false)
+        .currentInstance!
+        .instance!;
 
     return ConversationChatPostMessageBloc(
       unifediApiStatusService: Provider.of<IUnifediApiStatusService>(

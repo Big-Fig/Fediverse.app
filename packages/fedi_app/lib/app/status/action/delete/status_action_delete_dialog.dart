@@ -10,7 +10,6 @@ import 'package:fedi_app/app/ui/dialog/alert/fedi_base_alert_dialog.dart';
 import 'package:fedi_app/dialog/dialog_model.dart';
 import 'package:fedi_app/generated/l10n.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:unifedi_api/unifedi_api.dart';
 
 Future<T?> showStatusActionDeleteDialog<T>({
   required BuildContext context,
@@ -36,7 +35,7 @@ DialogAction buildDeleteAndSaveToDrafts(
   var pollLimits = ICurrentAccessBloc.of(
     context,
     listen: false,
-  ).currentInstance?.info?.limits?.poll;
+  ).currentInstance?.instance?.limits?.poll;
 
   return DialogAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndSaveToDrafts,
@@ -89,7 +88,7 @@ DialogAction buildDeleteAndStartNewAction(
   var pollLimits = ICurrentAccessBloc.of(
     context,
     listen: false,
-  ).currentInstance?.info?.limits?.poll;
+  ).currentInstance?.instance?.limits?.poll;
 
   return DialogAction(
     label: S.of(context).app_status_delete_dialog_action_deleteAndStartNew,

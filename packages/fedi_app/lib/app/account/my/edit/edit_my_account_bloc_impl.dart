@@ -349,7 +349,7 @@ class EditMyAccountBloc extends FormBloc implements IEditMyAccountBloc {
 
   static EditMyAccountBloc createFromContext(BuildContext context) {
     var info =
-        ICurrentAccessBloc.of(context, listen: false).currentInstance!.info;
+        ICurrentAccessBloc.of(context, listen: false).currentInstance!.instance;
 
     return EditMyAccountBloc(
       currentUnifediApiAccessBloc: ICurrentAccessBloc.of(
