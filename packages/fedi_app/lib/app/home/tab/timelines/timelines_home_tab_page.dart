@@ -178,6 +178,7 @@ class _TimelinesHomeTabPageBodyState extends State<_TimelinesHomeTabPageBody>
               );
             },
             child: FediNestedScrollViewWithNestedScrollableTabsWidget(
+              isNeedAddStatusBarPaddingToTopSliverWidgets: true,
               tabsEmptyBuilder: (context) =>
                   const _TimelinesHomeTabPageTabLoadingWidget(),
               onLongScrollUpTopOverlayWidget:

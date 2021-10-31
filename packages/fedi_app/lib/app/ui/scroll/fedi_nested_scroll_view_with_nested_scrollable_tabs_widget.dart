@@ -53,9 +53,12 @@ class FediNestedScrollViewWithNestedScrollableTabsWidget
     required this.tabBodyProviderBuilder,
     required this.tabBodyContentBuilder,
     required this.tabBodyOverlayBuilder,
+    required bool isNeedAddStatusBarPaddingToTopSliverWidgets,
     this.tabsEmptyBuilder,
   }) : super(
           key: key,
+          isNeedAddStatusBarPaddingToTopSliverWidgets:
+              isNeedAddStatusBarPaddingToTopSliverWidgets,
           onLongScrollUpTopOverlayWidget: onLongScrollUpTopOverlayWidget,
           topSliverWidgets: topSliverWidgets,
           topSliverScrollOffsetToShowWhiteStatusBar:

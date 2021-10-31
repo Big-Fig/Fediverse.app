@@ -5,7 +5,6 @@ import 'package:fedi_app/app/account/account_widget.dart';
 import 'package:fedi_app/app/account/acct/account_acct_widget.dart';
 import 'package:fedi_app/app/account/details/account_details_bloc.dart';
 import 'package:fedi_app/app/account/display_name/account_display_name_widget.dart';
-import 'package:fedi_app/app/account/header/account_header_background_widget.dart';
 import 'package:fedi_app/app/account/my/my_account_bloc.dart';
 import 'package:fedi_app/app/account/my/my_account_widget.dart';
 import 'package:fedi_app/app/account/statuses/account_statuses_media_widget.dart';
@@ -55,8 +54,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-const _headerBackgroundHeight = 200.0;
-
 class AccountDetailsPage extends StatelessWidget {
   const AccountDetailsPage({Key? key}) : super(key: key);
 
@@ -105,15 +102,7 @@ class AccountDetailsPageBody extends StatelessWidget {
           ],
         ),
       ),
-      body: Stack(
-        children: const [
-          SizedBox(
-            height: _headerBackgroundHeight,
-            child: AccountHeaderBackgroundWidget(),
-          ),
-          _AccountDetailsPageBodyContent(),
-        ],
-      ),
+      body: const _AccountDetailsPageBodyContent(),
     );
   }
 }
@@ -166,19 +155,23 @@ class _AccountDetailsPageBodyContent extends StatelessWidget {
             IScrollControllerBloc>(
           update: (context, value, previous) =>
               value.nestedScrollControllerBloc,
-          child: const FediNestedScrollViewWithNestedScrollableTabsWidget(
-            onLongScrollUpTopOverlayWidget: null,
-            // todo: refactor
-            // ignore: no-magic-number
-            topSliverScrollOffsetToShowWhiteStatusBar: 100,
-            topSliverWidgets: [
-              _AccountDetailsNestedScrollViewHeader(),
-            ],
-            tabKeyPrefix: 'AccountDetailsPage',
-            tabBodyProviderBuilder: _buildBodyProvider,
-            tabBodyContentBuilder: _buildTabBodyContent,
-            tabBodyOverlayBuilder: _buildTabBodyOverlay,
-            tabBarViewContainerBuilder: null,
+          child: Container(
+            color: Colors.green,
+            child: const FediNestedScrollViewWithNestedScrollableTabsWidget(
+              isNeedAddStatusBarPaddingToTopSliverWidgets: false,
+              onLongScrollUpTopOverlayWidget: null,
+              // todo: refactor
+              // ignore: no-magic-number
+              topSliverScrollOffsetToShowWhiteStatusBar: 100,
+              topSliverWidgets: [
+                _AccountDetailsNestedScrollViewHeader(),
+              ],
+              tabKeyPrefix: 'AccountDetailsPage',
+              tabBodyProviderBuilder: _buildBodyProvider,
+              tabBodyContentBuilder: _buildTabBodyContent,
+              tabBodyOverlayBuilder: _buildTabBodyOverlay,
+              tabBarViewContainerBuilder: null,
+            ),
           ),
         ),
       ),

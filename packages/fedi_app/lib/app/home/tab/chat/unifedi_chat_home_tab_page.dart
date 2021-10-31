@@ -54,6 +54,7 @@ class UnifediChatHomeTabPage extends StatelessWidget {
       key: _drawerKey,
       backgroundColor: fediUiColorTheme.transparent,
       body: FediNestedScrollViewWithoutNestedScrollableTabsWidget(
+        isNeedAddStatusBarPaddingToTopSliverWidgets: true,
         onLongScrollUpTopOverlayWidget: null,
         topSliverScrollOffsetToShowWhiteStatusBar: null,
         topSliverWidgets: const [
