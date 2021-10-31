@@ -1669,7 +1669,7 @@
 		};
 		FB8676E7272B2F4D00363EA2 /* Debug-nightly */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 135FB3032E3D96397A0ED5A8 /* Pods-Share Extension.debug-dev.xcconfig */;
+			baseConfigurationReference = FA7BEB379ADBAB58D0458F0C /* Pods-Share Extension.debug-nightly.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1833,7 +1833,7 @@
 		};
 		FB8676EA272B2F6600363EA2 /* Debug-fluttertest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 135FB3032E3D96397A0ED5A8 /* Pods-Share Extension.debug-dev.xcconfig */;
+			baseConfigurationReference = 3EEBFC734D825EB432B152BA /* Pods-Share Extension.debug-fluttertest.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1991,7 +1991,7 @@
 		};
 		FB8676ED272B2F7200363EA2 /* Release-nightly */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7DA73E1921B0FF1CA593BF45 /* Pods-Share Extension.release-dev.xcconfig */;
+			baseConfigurationReference = 253F7650E52DCFE54BBB7F27 /* Pods-Share Extension.release-nightly.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2142,7 +2142,7 @@
 		};
 		FB8676F0272B2F7D00363EA2 /* Release-fluttertest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7DA73E1921B0FF1CA593BF45 /* Pods-Share Extension.release-dev.xcconfig */;
+			baseConfigurationReference = 4823688A76827CD0050D51FB /* Pods-Share Extension.release-fluttertest.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2292,7 +2292,7 @@
 		};
 		FB8676F3272B2F8B00363EA2 /* Profile-fluttertest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B0884AAB44781023E3DA1AA /* Pods-Share Extension.profile-dev.xcconfig */;
+			baseConfigurationReference = 57C2630E9FF32A25A56D9848 /* Pods-Share Extension.profile-fluttertest.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2442,7 +2442,7 @@
 		};
 		FB8676F6272B2F9500363EA2 /* Profile-nightly */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B0884AAB44781023E3DA1AA /* Pods-Share Extension.profile-dev.xcconfig */;
+			baseConfigurationReference = 3A1CDA70AC2A7F5F5366957A /* Pods-Share Extension.profile-nightly.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
