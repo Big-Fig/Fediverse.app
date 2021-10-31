@@ -2,6 +2,7 @@ import 'package:fediverse_api/fediverse_api_utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logging/logging.dart';
 
 import 'history/item/pleroma_api_tag_history_item_model_impl.dart';
 import 'pleroma_api_tag_model.dart';
@@ -9,6 +10,8 @@ import 'pleroma_api_tag_model.dart';
 part 'pleroma_api_tag_model_impl.freezed.dart';
 
 part 'pleroma_api_tag_model_impl.g.dart';
+
+final _logger = Logger('pleroma_api_tag_model_impl.dart');
 
 // ignore_for_file: no-magic-number
 
@@ -29,13 +32,27 @@ class PleromaApiTag with _$PleromaApiTag implements IPleromaApiTag {
         json,
         (dynamic json) {
           var iterable = json as Iterable;
+          try {
+            return iterable
+                .map(
+                  (dynamic item) => item is String
+                      ? PleromaApiTag(
+                          name: item,
+                          url: '/tag/$item',
+                          history: null,
+                        )
+                      : PleromaApiTag.fromJson(item as Map<String, dynamic>),
+                )
+                .toList();
+          } on Exception catch (e, stackTrace) {
+            _logger.warning(
+              'failed to fromJsonListOrNullOnError',
+              e,
+              stackTrace,
+            );
 
-          return iterable
-              .map(
-                (dynamic item) =>
-                    PleromaApiTag.fromJson(item as Map<String, dynamic>),
-              )
-              .toList();
+            return null;
+          }
         },
       );
 }
