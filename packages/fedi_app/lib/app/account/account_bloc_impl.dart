@@ -60,6 +60,6 @@ abstract class AccountBloc extends IAccountBloc {
   Future<IUnifediApiAccount> loadRemoteAccount() async =>
       unifediApiAccountService!.getAccount(
         accountId: account.remoteId,
-        withRelationship: false,
+        withRelationship: null,
       );
 }
