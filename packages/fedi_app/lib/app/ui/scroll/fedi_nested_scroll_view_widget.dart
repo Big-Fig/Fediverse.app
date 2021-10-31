@@ -16,12 +16,14 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
   final Widget? onLongScrollUpTopOverlayWidget;
   final List<Widget> topSliverWidgets;
   final double? topSliverScrollOffsetToShowWhiteStatusBar;
+  final bool isNeedAddStatusBarPaddingToTopSliverWidgets;
 
   const FediNestedScrollViewWidget({
     Key? key,
     required this.onLongScrollUpTopOverlayWidget,
     required this.topSliverWidgets,
     required this.topSliverScrollOffsetToShowWhiteStatusBar,
+    required this.isNeedAddStatusBarPaddingToTopSliverWidgets,
   }) : super(key: key);
 
   @override
@@ -71,22 +73,33 @@ abstract class FediNestedScrollViewWidget extends StatelessWidget {
     }
   }
 
-  List<Widget> buildTopSliverWidgets(BuildContext context) => [
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: kToolbarHeight * 0.8,
-                ),
-                child: Column(
-                  children: topSliverWidgets,
-                ),
-              ),
-            ],
-          ),
+  List<Widget> buildTopSliverWidgets(BuildContext context) {
+    Widget child;
+    if (isNeedAddStatusBarPaddingToTopSliverWidgets) {
+      child = Padding(
+        padding: const EdgeInsets.only(
+          top: kToolbarHeight * 0.8,
         ),
-      ];
+        child: Column(
+          children: topSliverWidgets,
+        ),
+      );
+    } else {
+      child = Column(
+        children: topSliverWidgets,
+      );
+    }
+
+    return [
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            child,
+          ],
+        ),
+      ),
+    ];
+  }
 
   // ignore: avoid-returning-widgets
   Widget buildNestedScrollView(BuildContext context);

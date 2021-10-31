@@ -15,8 +15,8 @@ part 'mastodon_api_media_attachment_focus_model_impl.g.dart';
 class MastodonApiMediaAttachmentFocus
     with _$MastodonApiMediaAttachmentFocus
     implements IMastodonApiMediaAttachmentFocus {
-  @Assert('x >= -1 && x <= -1,')
-  @Assert('y >= -1 && y <= -1,')
+  @Assert('x >= -1 && x <= 1,')
+  @Assert('y >= -1 && y <= 1,')
   const factory MastodonApiMediaAttachmentFocus({
     @HiveField(0) required double x,
     @HiveField(1) required double y,

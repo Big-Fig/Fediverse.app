@@ -99,8 +99,7 @@ Feel free to open issues if you have suggestions
 
 ## Known issues
 
-* Text is not selectable, but you can copy or share whole statuses
-* Instances with special chars like `ü` are not supported
+* See [Issues](https://github.com/Big-Fig/Fediverse.app/issues)
 
 ## Data gathering
 

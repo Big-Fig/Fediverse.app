@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
                 RepaintBoundary(
                   child: SizedBox(
                     // ignore: no-magic-number
-                    height: 180,
+                    height: 200,
                     child: _HomePageBackgroundWidget(),
                   ),
                 ),

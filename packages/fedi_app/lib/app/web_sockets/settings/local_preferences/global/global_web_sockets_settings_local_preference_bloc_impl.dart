@@ -12,7 +12,7 @@ class GlobalWebSocketsSettingsLocalPreferenceBloc
   ) : super(preferencesService, 'webSockets.settings.global');
 
   static final WebSocketsSettings defaultValue = WebSocketsSettings.fromEnum(
-    handlingType: WebSocketsMode.foregroundAndBackgroundValue,
+    handlingType: WebSocketsMode.onlyForegroundValue,
   );
 
   @override

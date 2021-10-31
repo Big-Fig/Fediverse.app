@@ -109,6 +109,7 @@ class _AccountHomeTabPageBody extends StatelessWidget {
         tabController: tabController,
       ),
       child: FediNestedScrollViewWithNestedScrollableTabsWidget(
+        isNeedAddStatusBarPaddingToTopSliverWidgets: true,
         onLongScrollUpTopOverlayWidget: null,
         // todo: refactor
         // ignore: no-magic-number

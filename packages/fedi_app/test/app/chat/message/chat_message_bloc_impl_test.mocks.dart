@@ -676,10 +676,6 @@ class MockIMyAccountBloc extends _i1.Mock implements _i20.IMyAccountBloc {
       Invocation.getter(#isSubscribeToAccountFeatureSupported),
       returnValue: false) as bool);
   @override
-  bool get isSupportChats => (super
-          .noSuchMethod(Invocation.getter(#isSupportChats), returnValue: false)
-      as bool);
-  @override
   _i11.IAccount get account => (super.noSuchMethod(Invocation.getter(#account),
       returnValue: _FakeIAccount_9()) as _i11.IAccount);
   @override

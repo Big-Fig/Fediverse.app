@@ -149,7 +149,7 @@ class TimelineStatusCachedListBloc extends AsyncInitLoadingBloc
     _logger.finest(
       () => 'resubscribeWebSocketsUpdates '
           'isWebSocketsUpdatesEnabled $isWebSocketsUpdatesEnabled '
-          'WebSocketsChannelHandlerType $WebSocketsChannelHandlerType '
+          'handlerType $handlerType '
           'timelineType $timelineType ',
     );
     if (isWebSocketsUpdatesEnabled) {

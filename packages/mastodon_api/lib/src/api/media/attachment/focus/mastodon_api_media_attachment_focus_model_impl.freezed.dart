@@ -137,10 +137,10 @@ class _$_MastodonApiMediaAttachmentFocus
   const _$_MastodonApiMediaAttachmentFocus(
       {@HiveField(0) required this.x, @HiveField(1) required this.y})
       : assert(
-          x >= -1 && x <= -1,
+          x >= -1 && x <= 1,
         ),
         assert(
-          y >= -1 && y <= -1,
+          y >= -1 && y <= 1,
         );
 
   factory _$_MastodonApiMediaAttachmentFocus.fromJson(

@@ -122,6 +122,7 @@ class _NotificationsHomeTabPageBodyState
           tabController: tabController,
         ),
         child: FediNestedScrollViewWithNestedScrollableTabsWidget(
+          isNeedAddStatusBarPaddingToTopSliverWidgets: true,
           onLongScrollUpTopOverlayWidget: null,
           topSliverWidgets: const [
             _NotificationsHomeTabPageBodyHeaderWidget(),
