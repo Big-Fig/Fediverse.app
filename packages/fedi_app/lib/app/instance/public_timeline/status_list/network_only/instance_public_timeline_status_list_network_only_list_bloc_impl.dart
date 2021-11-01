@@ -103,8 +103,10 @@ class InstancePublicTimelineStatusListNetworkOnlyListBloc
       unifediApiTimelineService.getPublicTimelineWithMutedFeature,
     );
 
+    var onlyLocal = timeline.onlyLocal;
+
     var unifediApiStatuses = await unifediApiTimelineService.getPublicTimeline(
-      onlyLocal: timeline.onlyLocal,
+      onlyLocal: onlyLocal,
       onlyRemote: onlyRemoteInstanceSupported ? timeline.onlyRemote : null,
       onlyWithMedia: onlyMediaSupported ? timeline.onlyWithMedia : null,
       withMuted: withMutedSupported ? timeline.withMuted : null,
