@@ -25,10 +25,10 @@ import 'package:unifedi_api/unifedi_api.dart';
 
 final _logger = Logger('remote_account_details_page.dart');
 
-void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
+Future<void> goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
   BuildContext context, {
   required IAccount remoteInstanceAccount,
-}) {
+}) async {
   var isAcctRemoteDomainExist = remoteInstanceAccount.isAcctRemoteDomainExist;
 
   _logger.finest(
@@ -45,15 +45,33 @@ void goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
 
   if (isAcctRemoteDomainExist && currentInstance != null) {
     // jumping from instance to instance
-    goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
+    await goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
       context,
       localInstanceRemoteAccount: remoteInstanceAccount,
     );
   } else {
-    Navigator.push(
+    var instanceUri = remoteInstanceAccount.urlRemoteHostUri;
+
+    var remoteInstanceBloc = RemoteInstanceBloc(
+      instanceUri: instanceUri,
+      configService: IConfigService.of(
+        context,
+        listen: false,
+      ),
+      connectionService: Provider.of<IConnectionService>(
+        context,
+        listen: false,
+      ),
+      unifediApiInstance: null,
+    );
+
+    await remoteInstanceBloc.performAsyncInit();
+
+    await Navigator.push(
       context,
       createRemoteAccountDetailsPageRoute(
         account: remoteInstanceAccount,
+        remoteInstanceBloc: remoteInstanceBloc,
       ),
     );
   }
@@ -133,7 +151,7 @@ Future<void> goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
 
   var remoteInstanceAccount = remoteInstanceAccountDialogResult.result;
   if (remoteInstanceAccount != null) {
-    goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
+    await goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
       context,
       remoteInstanceAccount: remoteInstanceAccount,
     );
@@ -196,25 +214,11 @@ Future<IStatus?> loadRemoteAccountAnyStatusOnLocalInstance(
 
 MaterialPageRoute<void> createRemoteAccountDetailsPageRoute({
   required IAccount account,
+  required IRemoteInstanceBloc remoteInstanceBloc,
 }) =>
     MaterialPageRoute<void>(
       builder: (context) => DisposableProvider<IRemoteInstanceBloc>(
-        create: (context) {
-          var instanceUri = account.urlRemoteHostUri;
-
-          return RemoteInstanceBloc(
-            instanceUri: instanceUri,
-            configService: IConfigService.of(
-              context,
-              listen: false,
-            ),
-            connectionService: Provider.of<IConnectionService>(
-              context,
-              listen: false,
-            ),
-            unifediApiInstance: null,
-          );
-        },
+        create: (context) => remoteInstanceBloc,
         child: Builder(
           builder: (context) => FediAsyncInitLoadingWidget(
             asyncInitLoadingBloc: IRemoteInstanceBloc.of(context),

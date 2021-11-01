@@ -31,7 +31,7 @@ Future<void> handleStatusBodyLinkClick({
         account: mentionedAccount,
       );
     } else {
-      goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
+      await goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
         context,
         remoteInstanceAccount: mentionedAccount,
       );
