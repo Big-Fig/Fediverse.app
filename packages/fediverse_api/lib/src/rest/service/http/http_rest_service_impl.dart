@@ -405,6 +405,7 @@ class HttpRestService extends DisposableOwner implements IRestService {
   }) async {
     // ignore: prefer_function_declarations_over_variables
     var log = () => 'processResponse \n'
+        '\t $baseUri \n'
         '\t $request \n'
         '\t response(${response.statusCode}): ${response.body}';
 
