@@ -27,7 +27,7 @@ class TimelineSettings
         onlyLocal: false,
         withMuted: false,
         excludeVisibilities: [],
-        websocketsUpdates: true,
+        webSocketsUpdates: true,
         onlyFromInstance: null,
       );
 
@@ -35,41 +35,41 @@ class TimelineSettings
         onlyLocal: false,
         withMuted: false,
         excludeVisibilities: [],
-        websocketsUpdates: true,
+        webSocketsUpdates: true,
       );
 
   static TimelineSettings createDefaultCustomListSettings({
     required IUnifediApiList? onlyInRemoteList,
   }) =>
       TimelineSettings.list(
-        withMuted: false,
-        excludeVisibilities: [],
+        withMuted: null,
+        excludeVisibilities: null,
         onlyInRemoteList: onlyInRemoteList,
-        websocketsUpdates: true,
+        webSocketsUpdates: true,
       );
 
   static TimelineSettings createDefaultHashtagSettings({
     required String? withRemoteHashtag,
   }) =>
       TimelineSettings.hashtag(
-        onlyWithMedia: false,
-        onlyLocal: false,
-        withMuted: false,
-        excludeVisibilities: [],
+        onlyWithMedia: null,
+        onlyLocal: null,
+        withMuted: null,
+        excludeVisibilities: null,
         withRemoteHashtag: withRemoteHashtag,
-        websocketsUpdates: true,
+        webSocketsUpdates: true,
       );
 
   static TimelineSettings createDefaultAccountSettings({
     required IUnifediApiAccount? onlyFromRemoteAccount,
   }) =>
       TimelineSettings.account(
-        onlyWithMedia: false,
-        excludeReblogs: false,
-        excludeReplies: false,
-        onlyPinned: false,
+        onlyWithMedia: null,
+        excludeReblogs: null,
+        excludeReplies: null,
+        onlyPinned: null,
         onlyFromRemoteAccount: onlyFromRemoteAccount,
-        websocketsUpdates: true,
+        webSocketsUpdates: true,
       );
 
   const TimelineSettings._();
@@ -116,7 +116,7 @@ class TimelineSettings
     required bool onlyLocal,
     required bool withMuted,
     required List<UnifediApiVisibility> excludeVisibilities,
-    required bool websocketsUpdates,
+    required bool webSocketsUpdates,
   }) =>
       TimelineSettings(
         onlyWithMedia: null,
@@ -134,7 +134,7 @@ class TimelineSettings
         onlyFromRemoteAccount: null,
         onlyPinned: null,
         excludeReblogs: null,
-        webSocketsUpdates: websocketsUpdates,
+        webSocketsUpdates: webSocketsUpdates,
         onlyFromInstance: null,
       );
 
@@ -145,7 +145,7 @@ class TimelineSettings
     required bool onlyLocal,
     required bool withMuted,
     required List<UnifediApiVisibility> excludeVisibilities,
-    required bool websocketsUpdates,
+    required bool webSocketsUpdates,
     required String? onlyFromInstance,
   }) =>
       TimelineSettings(
@@ -164,17 +164,17 @@ class TimelineSettings
         onlyFromRemoteAccount: null,
         onlyPinned: null,
         excludeReblogs: null,
-        webSocketsUpdates: websocketsUpdates,
+        webSocketsUpdates: webSocketsUpdates,
         onlyFromInstance: onlyFromInstance,
       );
 
   static TimelineSettings hashtag({
-    required bool onlyWithMedia,
-    required bool onlyLocal,
-    required bool withMuted,
-    required List<UnifediApiVisibility> excludeVisibilities,
+    required bool? onlyWithMedia,
+    required bool? onlyLocal,
+    required bool? withMuted,
+    required List<UnifediApiVisibility>? excludeVisibilities,
     required String? withRemoteHashtag,
-    required bool websocketsUpdates,
+    required bool webSocketsUpdates,
   }) =>
       TimelineSettings(
         onlyWithMedia: onlyWithMedia,
@@ -184,7 +184,7 @@ class TimelineSettings
         onlyLocal: onlyLocal,
         withMuted: withMuted,
         excludeVisibilitiesStrings: excludeVisibilities
-            .map((excludeVisibility) => excludeVisibility.stringValue)
+            ?.map((excludeVisibility) => excludeVisibility.stringValue)
             .toList(),
         onlyInRemoteList: null,
         withRemoteHashtag: withRemoteHashtag,
@@ -192,15 +192,15 @@ class TimelineSettings
         onlyFromRemoteAccount: null,
         onlyPinned: null,
         excludeReblogs: null,
-        webSocketsUpdates: websocketsUpdates,
+        webSocketsUpdates: webSocketsUpdates,
         onlyFromInstance: null,
       );
 
   static TimelineSettings list({
-    required bool withMuted,
-    required List<UnifediApiVisibility> excludeVisibilities,
+    required bool? withMuted,
+    required List<UnifediApiVisibility>? excludeVisibilities,
     required IUnifediApiList? onlyInRemoteList,
-    required bool websocketsUpdates,
+    required bool webSocketsUpdates,
   }) =>
       TimelineSettings(
         onlyWithMedia: null,
@@ -210,7 +210,7 @@ class TimelineSettings
         onlyLocal: null,
         withMuted: withMuted,
         excludeVisibilitiesStrings: excludeVisibilities
-            .map((excludeVisibility) => excludeVisibility.stringValue)
+            ?.map((excludeVisibility) => excludeVisibility.stringValue)
             .toList(),
         onlyInRemoteList: onlyInRemoteList?.toUnifediApiList(),
         withRemoteHashtag: null,
@@ -218,17 +218,17 @@ class TimelineSettings
         onlyFromRemoteAccount: null,
         onlyPinned: null,
         excludeReblogs: null,
-        webSocketsUpdates: websocketsUpdates,
+        webSocketsUpdates: webSocketsUpdates,
         onlyFromInstance: null,
       );
 
   static TimelineSettings account({
     required IUnifediApiAccount? onlyFromRemoteAccount,
-    required bool onlyWithMedia,
-    required bool excludeReplies,
-    required bool excludeReblogs,
-    required bool onlyPinned,
-    required bool websocketsUpdates,
+    required bool? onlyWithMedia,
+    required bool? excludeReplies,
+    required bool? excludeReblogs,
+    required bool? onlyPinned,
+    required bool webSocketsUpdates,
   }) =>
       TimelineSettings(
         onlyWithMedia: onlyWithMedia,
@@ -244,7 +244,7 @@ class TimelineSettings
         onlyFromRemoteAccount: onlyFromRemoteAccount?.toUnifediApiAccount(),
         onlyPinned: onlyPinned,
         excludeReblogs: excludeReblogs,
-        webSocketsUpdates: websocketsUpdates,
+        webSocketsUpdates: webSocketsUpdates,
         onlyFromInstance: null,
       );
 
