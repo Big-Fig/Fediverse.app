@@ -81,7 +81,7 @@ extension IUnifediScheduledStatusParamsExtension
         sensitive: sensitive,
         spoilerText: spoilerText,
         visibility: visibility,
-        scheduledAt: scheduledAt,
+        scheduledAt: scheduledAt!,
         poll: poll?.toUnifediApiPostStatusPoll(),
         inReplyToId: inReplyToId,
         language: language,

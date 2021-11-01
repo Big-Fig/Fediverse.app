@@ -22,16 +22,23 @@ class _$FediPushNotificationTearOff {
   const _$FediPushNotificationTearOff();
 
   _FediPushNotification call(
-      {required String account,
+      {@HiveField(0)
+          required String account,
+      @HiveField(1)
       @JsonKey(name: 'notification_action')
           required String? notificationAction,
+      @HiveField(2)
       @JsonKey(name: 'notification_action_input')
           required String? notificationActionInput,
+      @HiveField(3)
       @JsonKey(name: 'notification_id')
           required String notificationId,
+      @HiveField(4)
       @JsonKey(name: 'notification_type')
           required String notificationType,
-      required String server,
+      @HiveField(5)
+          required String server,
+      @HiveField(6)
       @JsonKey(name: 'notification')
           required UnifediApiNotification? unifediApiNotification}) {
     return _FediPushNotification(
@@ -55,16 +62,23 @@ const $FediPushNotification = _$FediPushNotificationTearOff();
 
 /// @nodoc
 mixin _$FediPushNotification {
+  @HiveField(0)
   String get account => throw _privateConstructorUsedError;
+  @HiveField(1)
   @JsonKey(name: 'notification_action')
   String? get notificationAction => throw _privateConstructorUsedError;
+  @HiveField(2)
   @JsonKey(name: 'notification_action_input')
   String? get notificationActionInput => throw _privateConstructorUsedError;
+  @HiveField(3)
   @JsonKey(name: 'notification_id')
   String get notificationId => throw _privateConstructorUsedError;
+  @HiveField(4)
   @JsonKey(name: 'notification_type')
   String get notificationType => throw _privateConstructorUsedError;
+  @HiveField(5)
   String get server => throw _privateConstructorUsedError;
+  @HiveField(6)
   @JsonKey(name: 'notification')
   UnifediApiNotification? get unifediApiNotification =>
       throw _privateConstructorUsedError;
@@ -81,16 +95,23 @@ abstract class $FediPushNotificationCopyWith<$Res> {
           $Res Function(FediPushNotification) then) =
       _$FediPushNotificationCopyWithImpl<$Res>;
   $Res call(
-      {String account,
+      {@HiveField(0)
+          String account,
+      @HiveField(1)
       @JsonKey(name: 'notification_action')
           String? notificationAction,
+      @HiveField(2)
       @JsonKey(name: 'notification_action_input')
           String? notificationActionInput,
+      @HiveField(3)
       @JsonKey(name: 'notification_id')
           String notificationId,
+      @HiveField(4)
       @JsonKey(name: 'notification_type')
           String notificationType,
-      String server,
+      @HiveField(5)
+          String server,
+      @HiveField(6)
       @JsonKey(name: 'notification')
           UnifediApiNotification? unifediApiNotification});
 
@@ -169,16 +190,23 @@ abstract class _$FediPushNotificationCopyWith<$Res>
       __$FediPushNotificationCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String account,
+      {@HiveField(0)
+          String account,
+      @HiveField(1)
       @JsonKey(name: 'notification_action')
           String? notificationAction,
+      @HiveField(2)
       @JsonKey(name: 'notification_action_input')
           String? notificationActionInput,
+      @HiveField(3)
       @JsonKey(name: 'notification_id')
           String notificationId,
+      @HiveField(4)
       @JsonKey(name: 'notification_type')
           String notificationType,
-      String server,
+      @HiveField(5)
+          String server,
+      @HiveField(6)
       @JsonKey(name: 'notification')
           UnifediApiNotification? unifediApiNotification});
 
@@ -244,16 +272,23 @@ class __$FediPushNotificationCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_FediPushNotification implements _FediPushNotification {
   const _$_FediPushNotification(
-      {required this.account,
+      {@HiveField(0)
+          required this.account,
+      @HiveField(1)
       @JsonKey(name: 'notification_action')
           required this.notificationAction,
+      @HiveField(2)
       @JsonKey(name: 'notification_action_input')
           required this.notificationActionInput,
+      @HiveField(3)
       @JsonKey(name: 'notification_id')
           required this.notificationId,
+      @HiveField(4)
       @JsonKey(name: 'notification_type')
           required this.notificationType,
-      required this.server,
+      @HiveField(5)
+          required this.server,
+      @HiveField(6)
       @JsonKey(name: 'notification')
           required this.unifediApiNotification});
 
@@ -261,22 +296,29 @@ class _$_FediPushNotification implements _FediPushNotification {
       _$$_FediPushNotificationFromJson(json);
 
   @override
+  @HiveField(0)
   final String account;
   @override
+  @HiveField(1)
   @JsonKey(name: 'notification_action')
   final String? notificationAction;
   @override
+  @HiveField(2)
   @JsonKey(name: 'notification_action_input')
   final String? notificationActionInput;
   @override
+  @HiveField(3)
   @JsonKey(name: 'notification_id')
   final String notificationId;
   @override
+  @HiveField(4)
   @JsonKey(name: 'notification_type')
   final String notificationType;
   @override
+  @HiveField(5)
   final String server;
   @override
+  @HiveField(6)
   @JsonKey(name: 'notification')
   final UnifediApiNotification? unifediApiNotification;
 
@@ -330,16 +372,23 @@ class _$_FediPushNotification implements _FediPushNotification {
 
 abstract class _FediPushNotification implements FediPushNotification {
   const factory _FediPushNotification(
-          {required String account,
+          {@HiveField(0)
+              required String account,
+          @HiveField(1)
           @JsonKey(name: 'notification_action')
               required String? notificationAction,
+          @HiveField(2)
           @JsonKey(name: 'notification_action_input')
               required String? notificationActionInput,
+          @HiveField(3)
           @JsonKey(name: 'notification_id')
               required String notificationId,
+          @HiveField(4)
           @JsonKey(name: 'notification_type')
               required String notificationType,
-          required String server,
+          @HiveField(5)
+              required String server,
+          @HiveField(6)
           @JsonKey(name: 'notification')
               required UnifediApiNotification? unifediApiNotification}) =
       _$_FediPushNotification;
@@ -348,22 +397,29 @@ abstract class _FediPushNotification implements FediPushNotification {
       _$_FediPushNotification.fromJson;
 
   @override
+  @HiveField(0)
   String get account;
   @override
+  @HiveField(1)
   @JsonKey(name: 'notification_action')
   String? get notificationAction;
   @override
+  @HiveField(2)
   @JsonKey(name: 'notification_action_input')
   String? get notificationActionInput;
   @override
+  @HiveField(3)
   @JsonKey(name: 'notification_id')
   String get notificationId;
   @override
+  @HiveField(4)
   @JsonKey(name: 'notification_type')
   String get notificationType;
   @override
+  @HiveField(5)
   String get server;
   @override
+  @HiveField(6)
   @JsonKey(name: 'notification')
   UnifediApiNotification? get unifediApiNotification;
   @override

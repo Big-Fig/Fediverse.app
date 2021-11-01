@@ -39,7 +39,7 @@ class _$MastodonApiScheduledStatusParamsTearOff {
           required String? language,
       @JsonKey(name: 'scheduled_at')
       @HiveField(7)
-          required DateTime scheduledAt,
+          required DateTime? scheduledAt,
       @HiveField(8)
           required MastodonApiPostStatusPoll? poll,
       @JsonKey(name: 'in_reply_to_id')
@@ -85,7 +85,7 @@ mixin _$MastodonApiScheduledStatusParams {
   String? get language => throw _privateConstructorUsedError;
   @JsonKey(name: 'scheduled_at')
   @HiveField(7)
-  DateTime get scheduledAt => throw _privateConstructorUsedError;
+  DateTime? get scheduledAt => throw _privateConstructorUsedError;
   @HiveField(8)
   MastodonApiPostStatusPoll? get poll => throw _privateConstructorUsedError;
   @JsonKey(name: 'in_reply_to_id')
@@ -111,7 +111,7 @@ abstract class $MastodonApiScheduledStatusParamsCopyWith<$Res> {
       @JsonKey(name: 'spoiler_text') @HiveField(4) String? spoilerText,
       @HiveField(5) String visibility,
       @HiveField(6) String? language,
-      @JsonKey(name: 'scheduled_at') @HiveField(7) DateTime scheduledAt,
+      @JsonKey(name: 'scheduled_at') @HiveField(7) DateTime? scheduledAt,
       @HiveField(8) MastodonApiPostStatusPoll? poll,
       @JsonKey(name: 'in_reply_to_id') @HiveField(10) String? inReplyToId});
 
@@ -167,7 +167,7 @@ class _$MastodonApiScheduledStatusParamsCopyWithImpl<$Res>
       scheduledAt: scheduledAt == freezed
           ? _value.scheduledAt
           : scheduledAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       poll: poll == freezed
           ? _value.poll
           : poll // ignore: cast_nullable_to_non_nullable
@@ -206,7 +206,7 @@ abstract class _$MastodonApiScheduledStatusParamsCopyWith<$Res>
       @JsonKey(name: 'spoiler_text') @HiveField(4) String? spoilerText,
       @HiveField(5) String visibility,
       @HiveField(6) String? language,
-      @JsonKey(name: 'scheduled_at') @HiveField(7) DateTime scheduledAt,
+      @JsonKey(name: 'scheduled_at') @HiveField(7) DateTime? scheduledAt,
       @HiveField(8) MastodonApiPostStatusPoll? poll,
       @JsonKey(name: 'in_reply_to_id') @HiveField(10) String? inReplyToId});
 
@@ -267,7 +267,7 @@ class __$MastodonApiScheduledStatusParamsCopyWithImpl<$Res>
       scheduledAt: scheduledAt == freezed
           ? _value.scheduledAt
           : scheduledAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       poll: poll == freezed
           ? _value.poll
           : poll // ignore: cast_nullable_to_non_nullable
@@ -335,7 +335,7 @@ class _$_MastodonApiScheduledStatusParams
   @override
   @JsonKey(name: 'scheduled_at')
   @HiveField(7)
-  final DateTime scheduledAt;
+  final DateTime? scheduledAt;
   @override
   @HiveField(8)
   final MastodonApiPostStatusPoll? poll;
@@ -415,7 +415,7 @@ abstract class _MastodonApiScheduledStatusParams
           required String? language,
       @JsonKey(name: 'scheduled_at')
       @HiveField(7)
-          required DateTime scheduledAt,
+          required DateTime? scheduledAt,
       @HiveField(8)
           required MastodonApiPostStatusPoll? poll,
       @JsonKey(name: 'in_reply_to_id')
@@ -448,7 +448,7 @@ abstract class _MastodonApiScheduledStatusParams
   @override
   @JsonKey(name: 'scheduled_at')
   @HiveField(7)
-  DateTime get scheduledAt;
+  DateTime? get scheduledAt;
   @override
   @HiveField(8)
   MastodonApiPostStatusPoll? get poll;

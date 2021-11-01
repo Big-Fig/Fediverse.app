@@ -24,7 +24,7 @@ class MastodonApiScheduledStatusParamsAdapter
       spoilerText: fields[4] as String?,
       visibility: fields[5] as String,
       language: fields[6] as String?,
-      scheduledAt: fields[7] as DateTime,
+      scheduledAt: fields[7] as DateTime?,
       poll: fields[8] as MastodonApiPostStatusPoll?,
       inReplyToId: fields[10] as String?,
     );
@@ -80,7 +80,9 @@ _$_MastodonApiScheduledStatusParams
           spoilerText: json['spoiler_text'] as String?,
           visibility: json['visibility'] as String,
           language: json['language'] as String?,
-          scheduledAt: DateTime.parse(json['scheduled_at'] as String),
+          scheduledAt: json['scheduled_at'] == null
+              ? null
+              : DateTime.parse(json['scheduled_at'] as String),
           poll: json['poll'] == null
               ? null
               : MastodonApiPostStatusPoll.fromJson(
@@ -104,7 +106,7 @@ Map<String, dynamic> _$$_MastodonApiScheduledStatusParamsToJson(
   writeNotNull('spoiler_text', instance.spoilerText);
   val['visibility'] = instance.visibility;
   writeNotNull('language', instance.language);
-  val['scheduled_at'] = instance.scheduledAt.toIso8601String();
+  writeNotNull('scheduled_at', instance.scheduledAt?.toIso8601String());
   writeNotNull('poll', instance.poll?.toJson());
   writeNotNull('in_reply_to_id', instance.inReplyToId);
   return val;

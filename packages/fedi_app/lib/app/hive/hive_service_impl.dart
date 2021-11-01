@@ -19,6 +19,7 @@ import 'package:fedi_app/app/instance/announcement/settings/instance_announcemen
 import 'package:fedi_app/app/localization/settings/localization_settings_model.dart';
 import 'package:fedi_app/app/media/settings/media_settings_model.dart';
 import 'package:fedi_app/app/pagination/settings/pagination_settings_model.dart';
+import 'package:fedi_app/app/push/fedi_push_notification_model_impl.dart';
 import 'package:fedi_app/app/push/notification/handler/notifications_push_handler_model.dart';
 import 'package:fedi_app/app/push/notification/handler/unhandled/notifications_push_handler_unhandled_model.dart';
 import 'package:fedi_app/app/push/settings/push_settings_model.dart';
@@ -100,6 +101,9 @@ class HiveService extends AsyncInitLoadingBloc implements IHiveService {
       ..registerAdapter(AccessListAdapter())
       ..registerAdapter(TimelineAdapter())
       ..registerAdapter(TimelineSettingsAdapter());
+
+    // ignore: cascade_invocations
+    Hive.registerAdapter(FediPushNotificationAdapter());
     // registered inside unifedi api package
     // ..registerAdapter(UnifediApiAccessAdapter())
 

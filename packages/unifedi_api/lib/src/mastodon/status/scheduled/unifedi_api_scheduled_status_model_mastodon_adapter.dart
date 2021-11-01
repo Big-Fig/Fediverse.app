@@ -29,8 +29,9 @@ class UnifediApiScheduledStatusMastodonAdapter
       value.mediaAttachments?.toUnifediApiMediaAttachmentMastodonAdapterList();
 
   @override
-  IUnifediApiScheduledStatusParams get params =>
-      value.params.toUnifediApiScheduledStatusParamsMastodonAdapter();
+  IUnifediApiScheduledStatusParams get params => value.params
+      .copyWith(scheduledAt: scheduledAt)
+      .toUnifediApiScheduledStatusParamsMastodonAdapter();
 
   @override
   DateTime get scheduledAt => value.scheduledAt;

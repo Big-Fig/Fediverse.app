@@ -58,7 +58,9 @@ extension IPleromaApiScheduledStatusParamsInterfaceExtension
           spoilerText: spoilerText,
           visibility: visibility,
           language: language,
-          scheduledAt: scheduledAt,
+          // todo: remove hack
+          // ignore: avoid-non-null-assertion
+          scheduledAt: scheduledAt!,
           poll: poll?.toPleromaApiPostStatusPoll(
             forceNewObject: forceNewObject,
           ),
