@@ -25,7 +25,7 @@ class MastodonApiScheduledStatusParams
     @JsonKey(name: 'spoiler_text') @HiveField(4) required String? spoilerText,
     @HiveField(5) required String visibility,
     @HiveField(6) required String? language,
-    @JsonKey(name: 'scheduled_at') @HiveField(7) required DateTime scheduledAt,
+    @JsonKey(name: 'scheduled_at') @HiveField(7) required DateTime? scheduledAt,
     @HiveField(8) required MastodonApiPostStatusPoll? poll,
     @JsonKey(name: 'in_reply_to_id')
     @HiveField(10)

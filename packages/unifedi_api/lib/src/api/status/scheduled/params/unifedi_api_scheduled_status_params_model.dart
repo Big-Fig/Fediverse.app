@@ -20,7 +20,7 @@ abstract class IUnifediApiScheduledStatusParams
 
   String get visibility;
 
-  DateTime get scheduledAt;
+  DateTime? get scheduledAt;
 
   String? get inReplyToId;
 

@@ -58,7 +58,9 @@ extension IUnifediApiScheduledStatusParamsInterfaceExtension
           spoilerText: spoilerText,
           visibility: visibility,
           language: language,
-          scheduledAt: scheduledAt,
+          // todo: remove hack
+          // ignore: avoid-non-null-assertion
+          scheduledAt: scheduledAt!,
           poll: poll?.toUnifediApiPostStatusPoll(
             forceNewObject: forceNewObject,
           ),

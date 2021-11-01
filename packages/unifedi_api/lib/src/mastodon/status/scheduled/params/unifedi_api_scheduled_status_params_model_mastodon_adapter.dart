@@ -41,7 +41,7 @@ class UnifediApiScheduledStatusParamsMastodonAdapter
       value.poll?.toUnifediApiPostStatusPollMastodonAdapter();
 
   @override
-  DateTime get scheduledAt => value.scheduledAt;
+  DateTime? get scheduledAt => value.scheduledAt;
 
   @override
   bool get sensitive => value.sensitive;

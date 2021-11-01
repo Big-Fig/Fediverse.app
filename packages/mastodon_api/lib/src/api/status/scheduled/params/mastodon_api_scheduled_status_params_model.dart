@@ -12,7 +12,7 @@ abstract class IMastodonApiScheduledStatusParams {
 
   String get visibility;
 
-  DateTime get scheduledAt;
+  DateTime? get scheduledAt;
 
   IMastodonApiPostStatusPoll? get poll;
 
