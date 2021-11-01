@@ -116,6 +116,54 @@ scripts:
     select-package:
       scope: "*_app"
 
+
+  build:android:appbundle:bundletool:init:
+    run: |
+      wget https://github.com/google/bundletool/releases/download/1.8.1/bundletool-all-1.8.1.jar && \
+      mv bundletool-all-1.8.1.jar bundletool-all.jar
+    description: |
+      Download bundletool
+
+  build:android:appbundle:prod:build_apks:
+    run: |
+      flutter pub global run melos exec -c 1 -- \
+      java -jar ../../bundletool-all.jar build-apks --overwrite --bundle=build/app/outputs/bundle/prodRelease/app-prod-release.aab --output=build/app/outputs/bundle/prodRelease/app-prod-release.apks
+    description: |
+      Build apks after appbundle:prod
+    select-package:
+      file-exists:
+        - build/app/outputs/bundle/prodRelease/app-prod-release.aab
+
+  build:android:appbundle:prod:install_apks:
+    run: |
+      flutter pub global run melos exec -c 1 -- \
+      java -jar ../../bundletool-all.jar install-apks --apks=build/app/outputs/bundle/prodRelease/app-prod-release.apks
+    description: |
+      Install apks after prod:build_apks to connected devices
+    select-package:
+      file-exists:
+        - build/app/outputs/bundle/prodRelease/app-prod-release.apks
+        -
+  build:android:appbundle:dev:build_apks:
+    run: |
+      flutter pub global run melos exec -c 1 -- \
+      java -jar ../../bundletool-all.jar build-apks --overwrite --bundle=build/app/outputs/bundle/devRelease/app-dev-release.aab --output=build/app/outputs/bundle/devRelease/app-dev-release.apks
+    description: |
+      Build apks after appbundle:dev
+    select-package:
+      file-exists:
+        - build/app/outputs/bundle/devRelease/app-dev-release.aab
+
+  build:android:appbundle:dev:install_apks:
+    run: |
+      flutter pub global run melos exec -c 1 -- \
+      java -jar ../../bundletool-all.jar install-apks --apks=build/app/outputs/bundle/devRelease/app-dev-release.apks
+    description: |
+      Install apks after dev:build_apks to connected devices
+    select-package:
+      file-exists:
+        - build/app/outputs/bundle/devRelease/app-dev-release.apks
+
   build:android:apk:dev:
     run: |
       flutter pub global run melos exec -c 1 -- \
