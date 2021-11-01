@@ -123,7 +123,7 @@ class RemoteStatusBloc extends StatusBloc {
     if (inReplyToAccountRemoteId != null) {
       var remoteAccount = await unifediApiAccountService.getAccount(
         accountId: inReplyToAccountRemoteId,
-        withRelationship: false,
+        withRelationship: null,
       );
 
       if (!inReplyToAccountSubject.isClosed) {
@@ -190,7 +190,7 @@ class RemoteStatusBloc extends StatusBloc {
       if (connectionService.isConnected) {
         var remoteAccount = await unifediApiAccountService.getAccount(
           accountId: accountRemoteId,
-          withRelationship: false,
+          withRelationship: null,
         );
 
         account = remoteAccount.toDbAccountWrapper();
