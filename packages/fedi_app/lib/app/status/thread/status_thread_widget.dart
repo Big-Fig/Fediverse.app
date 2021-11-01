@@ -329,7 +329,7 @@ class _StatusThreadStatusesListItemWidget extends StatelessWidget {
                         initialMediaAttachment: null,
                       );
                     } else {
-                      goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+                      goToRemoteStatusThreadPageBasedOnRemoteInstanceStatusWithoutRemoteInstanceBloc(
                         context,
                         remoteInstanceStatus: status,
                         remoteInstanceInitialMediaAttachment: null,
