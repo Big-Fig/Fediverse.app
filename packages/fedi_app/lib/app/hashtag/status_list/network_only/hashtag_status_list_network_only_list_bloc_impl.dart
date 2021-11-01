@@ -84,8 +84,8 @@ class HashtagStatusListNetworkOnlyListBloc extends IStatusNetworkOnlyListBloc {
     var timeline = timelineLocalPreferenceBloc.value!;
     var unifediApiStatuses = await unifediApiTimelineService.getHashtagTimeline(
       hashtag: timeline.withRemoteHashtag!,
-      onlyLocal: timeline.onlyLocal == true,
-      onlyWithMedia: timeline.onlyWithMedia == true,
+      onlyLocal: timeline.onlyLocal == true ? true : null,
+      onlyWithMedia: timeline.onlyWithMedia == true ? true : null,
       excludeVisibilities: timeline.excludeVisibilities,
       withMuted: timeline.withMuted,
       pagination: UnifediApiPagination(

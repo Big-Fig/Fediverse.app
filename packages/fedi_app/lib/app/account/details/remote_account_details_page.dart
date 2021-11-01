@@ -37,13 +37,19 @@ Future<void> goToRemoteAccountDetailsPageBasedOnRemoteInstanceAccount(
         'remoteInstanceAccount $remoteInstanceAccount',
   );
 
-  var currentUnifediApiAccessBloc = ICurrentAccessBloc.of(
-    context,
-    listen: false,
-  );
-  var currentInstance = currentUnifediApiAccessBloc.currentInstance;
+  var acctRemoteHost = remoteInstanceAccount.acctRemoteHost;
+  var onSameHost = false;
+  try {
+    var remoteInstanceBloc = IRemoteInstanceBloc.of(context, listen: false);
+    var host = remoteInstanceBloc.instanceUri.host;
 
-  if (isAcctRemoteDomainExist && currentInstance != null) {
+    onSameHost = acctRemoteHost == host;
+  } on Exception catch (_) {
+    // todo: remove hack
+    // _logger.finest(() => 'IRemoteInstanceBloc not exist');
+  }
+
+  if (isAcctRemoteDomainExist && !onSameHost) {
     // jumping from instance to instance
     await goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
       context,
@@ -129,7 +135,7 @@ Future<void> goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           );
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
-          // load in Unifedi way. Use username as id
+          // load in Pleroma way. Use username as id
           var unifediApiAccount = await unifediApiAccountService.getAccount(
             accountId: localInstanceRemoteAccount.username,
             withRelationship: null,

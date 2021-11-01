@@ -116,7 +116,7 @@ class PleromaApiAccountUserAccessService
           accountId: accountId,
           pagination: pagination,
         )
-            .copyWith(
+            .copyAndAppend(
           queryArgs: [
             if (withRelationship != null)
               UrlQueryArg(
@@ -149,7 +149,7 @@ class PleromaApiAccountUserAccessService
           accountId: accountId,
           pagination: pagination,
         )
-            .copyWith(
+            .copyAndAppend(
           queryArgs: [
             if (withRelationship != null)
               UrlQueryArg(
