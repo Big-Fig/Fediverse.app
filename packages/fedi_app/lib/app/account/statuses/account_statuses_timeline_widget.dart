@@ -77,7 +77,7 @@ Future<void> _onStatusClick(BuildContext context, IStatus status) async {
       initialMediaAttachment: null,
     );
   } else {
-    await goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+    await goToRemoteStatusThreadPageBasedOnRemoteInstanceStatusWithoutRemoteInstanceBloc(
       context,
       remoteInstanceStatus: status,
       remoteInstanceInitialMediaAttachment: null,

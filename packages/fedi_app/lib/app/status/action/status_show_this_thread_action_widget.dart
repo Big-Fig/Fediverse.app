@@ -27,7 +27,7 @@ class StatusShowThisThreadActionWidget extends StatelessWidget {
             initialMediaAttachment: null,
           );
         } else {
-          goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+          goToRemoteStatusThreadPageBasedOnRemoteInstanceStatusWithoutRemoteInstanceBloc(
             context,
             remoteInstanceStatus: statusBloc.status,
             remoteInstanceInitialMediaAttachment: null,

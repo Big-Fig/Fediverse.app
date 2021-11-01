@@ -234,7 +234,7 @@ class _StatusCachedPaginationListMediaItemBodyWidget extends StatelessWidget {
               initialMediaAttachment: statusWithMediaAttachment.mediaAttachment,
             );
           } else {
-            goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+            goToRemoteStatusThreadPageBasedOnRemoteInstanceStatusWithoutRemoteInstanceBloc(
               context,
               remoteInstanceStatus: statusWithMediaAttachment.status,
               remoteInstanceInitialMediaAttachment:

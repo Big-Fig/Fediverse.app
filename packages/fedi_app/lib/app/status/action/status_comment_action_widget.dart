@@ -67,7 +67,7 @@ Future<void> _onActionClick(BuildContext context) {
       initialMediaAttachment: null,
     );
   } else {
-    return goToRemoteStatusThreadPageBasedOnRemoteInstanceStatus(
+    return goToRemoteStatusThreadPageBasedOnRemoteInstanceStatusWithoutRemoteInstanceBloc(
       context,
       remoteInstanceStatus: statusBloc.status,
       remoteInstanceInitialMediaAttachment: null,
