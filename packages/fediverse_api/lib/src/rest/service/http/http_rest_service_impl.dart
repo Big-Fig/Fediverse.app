@@ -451,7 +451,7 @@ class HttpRestService extends DisposableOwner implements IRestService {
           sendHttpRequestAndParse(
             request: request,
             parser: (String content) {
-              var json = jsonDecode(content) as Map<String, dynamic>;
+              dynamic json = jsonDecode(content);
               var jsonList = json as List;
 
               return List<String>.generate(
