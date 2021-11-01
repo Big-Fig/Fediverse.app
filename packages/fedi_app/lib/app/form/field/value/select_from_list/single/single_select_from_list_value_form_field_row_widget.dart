@@ -280,7 +280,7 @@ void _showDialog<T>({
 // ignore: long-parameter-list
 SelectionDialogAction _buildDialogAction<T>({
   required BuildContext context,
-  required ISingleSelectFromListValueFormFieldBloc<T> fieldBloc,
+  required ISingleSelectFromListValueFormFieldBloc<T?> fieldBloc,
   required T? value,
   required T? selectedValue,
   required SingleSelectFromListValueIconMapper<T?>? valueIconMapper,
@@ -296,7 +296,7 @@ SelectionDialogAction _buildDialogAction<T>({
         // null cases dont execute onAction
         // todo: refactoring
         // ignore: null_check_on_nullable_type_parameter
-        fieldBloc.changeCurrentValue(value!);
+        fieldBloc.changeCurrentValue(value);
         Navigator.of(context).pop();
       },
       isSelected: value == selectedValue,
