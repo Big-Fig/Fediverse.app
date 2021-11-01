@@ -220,10 +220,10 @@ class S {
     );
   }
 
-  /// `This instance don't have custom emojis`
+  /// `This instance doesn't have custom emojis`
   String get app_emoji_custom_empty {
     return Intl.message(
-      'This instance don\'t have custom emojis',
+      'This instance doesn\'t have custom emojis',
       name: 'app_emoji_custom_empty',
       desc: '',
       args: [],
@@ -1934,10 +1934,10 @@ class S {
     );
   }
 
-  /// `This instance don't support chats`
+  /// `This instance doesn't support chats`
   String get app_home_tab_chat_unifedi_notSupported_pleroma {
     return Intl.message(
-      'This instance don\'t support chats',
+      'This instance doesn\'t support chats',
       name: 'app_home_tab_chat_unifedi_notSupported_pleroma',
       desc: '',
       args: [],
@@ -7423,10 +7423,10 @@ class S {
     );
   }
 
-  /// `Instance don't have active announcements.`
+  /// `Instance doesn't have active announcements.`
   String get app_instance_announcement_list_empty {
     return Intl.message(
-      'Instance don\'t have active announcements.',
+      'Instance doesn\'t have active announcements.',
       name: 'app_instance_announcement_list_empty',
       desc: '',
       args: [],

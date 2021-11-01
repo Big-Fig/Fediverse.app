@@ -907,7 +907,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_emoji_category_empty": MessageLookupByLibrary.simpleMessage(
             "This category don\'t have suitable emojis"),
         "app_emoji_custom_empty": MessageLookupByLibrary.simpleMessage(
-            "This instance don\'t have custom emojis"),
+            "This instance doesn\'t have custom emojis"),
         "app_emoji_recent_empty":
             MessageLookupByLibrary.simpleMessage("No recent emojis"),
         "app_emoji_search_hint":
@@ -990,7 +990,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Chats not supported on Mastodon instances"),
         "app_home_tab_chat_unifedi_notSupported_pleroma":
             MessageLookupByLibrary.simpleMessage(
-                "This instance don\'t support chats"),
+                "This instance doesn\'t support chats"),
         "app_home_tab_chat_unifedi_title":
             MessageLookupByLibrary.simpleMessage("Chats"),
         "app_init_fail": MessageLookupByLibrary.simpleMessage(
@@ -1003,7 +1003,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Statuses"),
         "app_instance_announcement_list_empty":
             MessageLookupByLibrary.simpleMessage(
-                "Instance don\'t have active announcements."),
+                "Instance doesn\'t have active announcements."),
         "app_instance_announcement_list_title":
             MessageLookupByLibrary.simpleMessage("Instance announcements"),
         "app_instance_announcement_settings_field_withDismissed_label":
