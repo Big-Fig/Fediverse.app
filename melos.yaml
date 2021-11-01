@@ -143,7 +143,7 @@ scripts:
     select-package:
       file-exists:
         - build/app/outputs/bundle/prodRelease/app-prod-release.apks
-        -
+
   build:android:appbundle:dev:build_apks:
     run: |
       flutter pub global run melos exec -c 1 -- \
