@@ -25,7 +25,10 @@ void showEditInstancePushSettingsDialog({
       child: DisposableProvider<IEditPushSettingsBloc>(
         create: (context) => EditPushSettingsBloc(
           unifediApiPushSubscriptionService:
-              Provider.of<IUnifediApiPushSubscriptionService>(context),
+              Provider.of<IUnifediApiPushSubscriptionService>(
+            context,
+            listen: false,
+          ),
           pushSettingsBloc: IPushSettingsBloc.of(
             context,
             listen: false,
