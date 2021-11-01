@@ -127,7 +127,7 @@ class LocalStatusBloc extends StatusBloc {
         if (connectionService.isConnected) {
           var remoteAccount = await unifediApiAccountService.getAccount(
             accountId: accountRemoteId,
-            withRelationship: false,
+            withRelationship: null,
           );
           // ignore: avoid-ignoring-return-values
           await accountRepository.upsertInRemoteType(

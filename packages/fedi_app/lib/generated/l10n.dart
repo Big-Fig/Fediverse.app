@@ -6675,13 +6675,13 @@ class S {
     );
   }
 
-  /// `Unifedi`
+  /// `Pleroma`
   String
-      get app_instance_details_field_metadata_fields_versionType_value_unifedi {
+      get app_instance_details_field_metadata_fields_versionType_value_pleroma {
     return Intl.message(
-      'Unifedi',
+      'Pleroma',
       name:
-          'app_instance_details_field_metadata_fields_versionType_value_unifedi',
+          'app_instance_details_field_metadata_fields_versionType_value_pleroma',
       desc: '',
       args: [],
     );

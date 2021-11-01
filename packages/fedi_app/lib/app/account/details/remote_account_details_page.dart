@@ -132,7 +132,7 @@ Future<void> goToRemoteAccountDetailsPageBasedOnLocalInstanceRemoteAccount(
           // load in Unifedi way. Use username as id
           var unifediApiAccount = await unifediApiAccountService.getAccount(
             accountId: localInstanceRemoteAccount.username,
-            withRelationship: false,
+            withRelationship: null,
           );
           result = unifediApiAccount.toDbAccountWrapper();
         }
