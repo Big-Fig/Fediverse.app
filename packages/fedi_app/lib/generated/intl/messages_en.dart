@@ -1069,8 +1069,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Max value length"),
         "app_instance_details_field_metadata_fields_versionType_value_mastodon":
             MessageLookupByLibrary.simpleMessage("Mastodon"),
-        "app_instance_details_field_metadata_fields_versionType_value_unifedi":
-            MessageLookupByLibrary.simpleMessage("Unifedi"),
+        "app_instance_details_field_metadata_fields_versionType_value_pleroma":
+            MessageLookupByLibrary.simpleMessage("Pleroma"),
         "app_instance_details_field_metadata_fields_versionType_value_unknown":
             MessageLookupByLibrary.simpleMessage("Unknown"),
         "app_instance_details_field_metadata_title":

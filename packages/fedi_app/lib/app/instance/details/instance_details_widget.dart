@@ -430,7 +430,7 @@ class _InstanceDetailsVersionTypeWidget extends StatelessWidget {
           instanceTypeString = instanceType.map(
             pleroma: (_) => S
                 .of(context)
-                .app_instance_details_field_metadata_fields_versionType_value_unifedi,
+                .app_instance_details_field_metadata_fields_versionType_value_pleroma,
             mastodon: (_) => S
                 .of(context)
                 .app_instance_details_field_metadata_fields_versionType_value_mastodon,
