@@ -58,7 +58,7 @@ class PleromaApiStatusUserAccessService
             .createMuteStatusRequest(
           statusId: statusId,
         )
-            .copyWith(
+            .copyAndAppend(
           bodyJson: <String, dynamic>{
             if (expiresIn != null)
               'expire_in':
@@ -122,7 +122,7 @@ class PleromaApiStatusUserAccessService
           statusId: statusId,
           visibility: null,
         )
-            .copyWith(
+            .copyAndAppend(
           bodyJson: <String, dynamic>{
             if (visibility != null) 'visibility': visibility.stringValue,
           },

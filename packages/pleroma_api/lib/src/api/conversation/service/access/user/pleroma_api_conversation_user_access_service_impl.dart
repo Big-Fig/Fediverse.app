@@ -88,7 +88,7 @@ class PleromaApiConversationUserAccessService extends PleromaApiService
             .createGetConversationsRequest(
           pagination: pagination,
         )
-            .copyWith(
+            .copyAndAppend(
           queryArgs: [
             if (recipientsIds != null && recipientsIds.isNotEmpty)
               ...recipientsIds.map(

@@ -111,7 +111,7 @@ class PleromaApiTimelinePublicAccessService extends PleromaApiService
           onlyLocal: onlyLocal,
           onlyRemote: onlyRemote,
         )
-            .copyWith(
+            .copyAndAppend(
           queryArgs: [
             if (withMuted != null)
               UrlQueryArg(
@@ -142,7 +142,7 @@ class PleromaApiTimelinePublicAccessService extends PleromaApiService
       );
 
   Future<List<IPleromaApiStatus>> sendAndProcessPleromaApiStatusResponse({
-    required RestRequest request,
+    required IRestRequest request,
     required IPleromaApiFeature requestFeature,
     required List<IPleromaApiFeature>? fieldFeatures,
   }) =>

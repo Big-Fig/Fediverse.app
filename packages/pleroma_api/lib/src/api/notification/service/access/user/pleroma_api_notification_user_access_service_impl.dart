@@ -117,7 +117,7 @@ class PleromaApiNotificationUserAccessService extends PleromaApiService
           excludeTypes: null,
           onlyFromAccountId: onlyFromAccountId,
         )
-            .copyWith(
+            .copyAndAppend(
           queryArgs: [
             if (excludeTypes != null && excludeTypes.isNotEmpty)
               ...excludeTypes.map(
