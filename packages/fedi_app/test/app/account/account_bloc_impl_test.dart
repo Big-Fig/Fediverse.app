@@ -485,7 +485,7 @@ void main() {
     when(
       unifediAuthAccountServiceMock.getAccount(
         accountId: account.remoteId,
-        withRelationship: false,
+        withRelationship: null,
       ),
     ).thenAnswer((_) async => newValue.toUnifediApiAccount());
 
