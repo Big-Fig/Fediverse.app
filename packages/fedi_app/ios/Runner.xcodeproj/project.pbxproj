@@ -707,7 +707,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.fediverse.app;
 				DEVELOPMENT_TEAM = 3NTC8QAP8B;
 				ENABLE_BITCODE = NO;
@@ -721,7 +721,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -795,7 +795,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerDebug-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -809,7 +809,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -879,7 +879,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerRelease-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -893,7 +893,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -961,7 +961,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerProfile-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -975,7 +975,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1099,7 +1099,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.fediverse.app;
 				DEVELOPMENT_TEAM = 3NTC8QAP8B;
 				ENABLE_BITCODE = NO;
@@ -1113,7 +1113,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1133,7 +1133,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-prod";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.fediverse.app;
 				DEVELOPMENT_TEAM = 3NTC8QAP8B;
 				ENABLE_BITCODE = NO;
@@ -1147,7 +1147,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1193,7 +1193,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.fediverse.app;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 3NTC8QAP8B;
@@ -1216,7 +1216,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1268,7 +1268,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionDebug-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -1291,7 +1291,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1343,7 +1343,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.fediverse.app;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3NTC8QAP8B;
@@ -1360,7 +1360,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app.Share-ExtensionNew";
@@ -1411,7 +1411,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionRelease-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -1428,7 +1428,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app2.Share-Extension";
@@ -1479,7 +1479,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.fediverse.app;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 3NTC8QAP8B;
@@ -1496,7 +1496,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app.Share-ExtensionNew";
@@ -1547,7 +1547,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionProfile-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -1564,7 +1564,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app2.Share-Extension";
@@ -1643,7 +1643,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerDebug-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -1657,7 +1657,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1704,7 +1704,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionDebug-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -1727,7 +1727,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1807,7 +1807,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerDebug-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -1821,7 +1821,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1868,7 +1868,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionDebug-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -1891,7 +1891,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1966,7 +1966,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerRelease-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -1980,7 +1980,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -2026,7 +2026,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionRelease-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -2043,7 +2043,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app2.Share-Extension";
@@ -2117,7 +2117,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerRelease-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -2131,7 +2131,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -2177,7 +2177,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionRelease-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -2194,7 +2194,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app2.Share-Extension";
@@ -2267,7 +2267,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerProfile-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -2281,7 +2281,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -2327,7 +2327,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionProfile-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -2344,7 +2344,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app2.Share-Extension";
@@ -2417,7 +2417,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerProfile-dev.entitlements";
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEVELOPMENT_TEAM = 5877VK992M;
 				ENABLE_BITCODE = NO;
@@ -2431,7 +2431,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fediverse.app2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -2477,7 +2477,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Share Extension/Share ExtensionProfile-dev.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 275;
+				CURRENT_PROJECT_VERSION = 276;
 				CUSTOM_GROUP_ID = group.com.fediverse.app2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5877VK992M;
@@ -2494,7 +2494,7 @@
 				INFOPLIST_FILE = "Share Extension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 3.1.0;
+				MARKETING_VERSION = 3.2.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fediverse.app2.Share-Extension";
