@@ -217,7 +217,7 @@ dependencies:
   package_info_plus: 1.3.0
 
   # rich notification with possible integration with FCM
-  awesome_notifications: 0.0.6+12
+  awesome_notifications: 0.0.6+9
 
   # Disposable logic
   easy_dispose: 1.1.0
