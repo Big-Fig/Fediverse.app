@@ -17,7 +17,7 @@ class EditCustomListAppBarSaveActionWidget extends StatelessWidget {
         var isReadyToSave = snapshot.data ?? false;
 
         return FediPageAppBarTextActionWidget(
-          text: S.of(context).app_acccount_my_customList_edit_action_save,
+          text: S.of(context).app_account_my_customList_edit_action_save,
           onPressed: isReadyToSave
               ? () async {
                   // ignore: avoid-ignoring-return-values

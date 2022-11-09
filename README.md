@@ -210,7 +210,7 @@ After you make changes in `.arb` files you should do additional actions to regen
 * Feature-based folder structure
 * Prefers composition over inheritance
 * Dependency Injection is implemented via `provider`
-* Prefers `StatelessWidget` and async UI update via `StreamBuidler` and `BehaviourSubject` & `StreamController` in controller classes
+* Prefers `StatelessWidget` and async UI update via `StreamBuilder` and `BehaviourSubject` & `StreamController` in controller classes
 * Prefers divide `Widgets` in small sub `Widgets` with `const` constructor(for better performance) if possible
 * Provides data to nested elements via `provider`
 * Prefers `Repository` pattern. Almost all network data is cached in local SQLite database. UI always displays data from single source. It may be network-only or from database(if data is cached). Doesn't cache and merge data in memory to achieve data consistency
@@ -219,7 +219,7 @@ After you make changes in `.arb` files you should do additional actions to regen
  * It is easy to understand what classes do
  * It is easy to navigate in IDE by typing start letters of name
 * One class = one file
-* Prefers `interfaces` for `Bussines Logic` and `Services` 
+* Prefers `interfaces` for `Business Logic` and `Services` 
  * Simple append `I` to implementation class name. `AccountFollowerAccountCachedListBloc` is implementation and `IAccountFollowerAccountCachedListBloc` is interface
  * Code readability: you can see small list of public methods/fields in interface file instead of exploring long file with implementations
  * It is useful to implement extensions for interfaces not for implementations
@@ -231,7 +231,7 @@ After you make changes in `.arb` files you should do additional actions to regen
 
 To build Fedi you need to specify Flutter version in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. 
 
-You can achieve this by specifing your system Flutter version by using `flutter version $version` or using FVM
+You can achieve this by specifying your system Flutter version by using `flutter version $version` or using FVM
 
 #### Flutter Version Management(FVM)
 
@@ -297,7 +297,7 @@ Install Flutter version used by this project
 
 Link multi-module project dependencies
 
-`fvm pub global activaite melos`
+`fvm pub global activate melos`
 `fvm flutter pub global run melos bootstrap`
 
 ##### Copy default .env config

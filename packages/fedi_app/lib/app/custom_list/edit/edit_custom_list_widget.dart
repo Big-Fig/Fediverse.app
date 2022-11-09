@@ -64,7 +64,7 @@ class _EditCustomListAccountDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediNoteDescriptionWidget(
-        S.of(context).app_acccount_my_customList_edit_description,
+        S.of(context).app_account_my_customList_edit_description,
       );
 }
 
@@ -83,7 +83,7 @@ class _EditCustomListDeleteButton extends StatelessWidget {
         Navigator.of(context).pop();
       },
       builder: (context, onPressed) => FediTransparentTextButtonWithBorder(
-        S.of(context).app_acccount_my_customList_edit_action_delete_list,
+        S.of(context).app_account_my_customList_edit_action_delete_list,
         expanded: false,
         onPressed: onPressed,
         color: IFediUiColorTheme.of(context).error,
@@ -197,7 +197,7 @@ class _EditCustomListBodyAddedHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediFormHeaderWidget(
-        text: S.of(context).app_acccount_my_customList_edit_added_header,
+        text: S.of(context).app_account_my_customList_edit_added_header,
         isNeedAddDivider: true,
       );
 }
@@ -291,7 +291,7 @@ class _EditCustomListBodySearchHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediFormHeaderWidget(
-        text: S.of(context).app_acccount_my_customList_edit_search_header,
+        text: S.of(context).app_account_my_customList_edit_search_header,
         isNeedAddDivider: false,
       );
 }

@@ -213,34 +213,34 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_about_learnMore":
             MessageLookupByLibrary.simpleMessage("Learn more"),
         "app_about_title": MessageLookupByLibrary.simpleMessage("About"),
-        "app_acccount_my_customList_edit_account_action_add":
+        "app_account_my_customList_edit_account_action_add":
             MessageLookupByLibrary.simpleMessage("Add"),
-        "app_acccount_my_customList_edit_account_action_remove":
+        "app_account_my_customList_edit_account_action_remove":
             MessageLookupByLibrary.simpleMessage("Remove"),
-        "app_acccount_my_customList_edit_action_delete_list":
+        "app_account_my_customList_edit_action_delete_list":
             MessageLookupByLibrary.simpleMessage("Delete list"),
-        "app_acccount_my_customList_edit_action_save":
+        "app_account_my_customList_edit_action_save":
             MessageLookupByLibrary.simpleMessage("Save"),
-        "app_acccount_my_customList_edit_added_header":
+        "app_account_my_customList_edit_added_header":
             MessageLookupByLibrary.simpleMessage("Added accounts"),
-        "app_acccount_my_customList_edit_description":
+        "app_account_my_customList_edit_description":
             MessageLookupByLibrary.simpleMessage(
                 "Statuses in the list are cached on the server.\nAdding or Removing accounts will affect only new posts.\n All old posts will remain on the list forever. It is only possible to add account which you follow."),
-        "app_acccount_my_customList_edit_search_header":
+        "app_account_my_customList_edit_search_header":
             MessageLookupByLibrary.simpleMessage("Add to your List"),
-        "app_acccount_my_customList_edit_search_hint":
+        "app_account_my_customList_edit_search_hint":
             MessageLookupByLibrary.simpleMessage(
                 "Search for people you follow"),
-        "app_acccount_my_customList_list_action_add":
+        "app_account_my_customList_list_action_add":
             MessageLookupByLibrary.simpleMessage("Create a list"),
-        "app_acccount_my_customList_list_action_edit":
+        "app_account_my_customList_list_action_edit":
             MessageLookupByLibrary.simpleMessage("Edit list"),
-        "app_acccount_my_customList_list_empty_subtitle":
+        "app_account_my_customList_list_empty_subtitle":
             MessageLookupByLibrary.simpleMessage("Create one now."),
-        "app_acccount_my_customList_list_empty_title":
+        "app_account_my_customList_list_empty_title":
             MessageLookupByLibrary.simpleMessage(
                 "You haven’t created any Lists yet."),
-        "app_acccount_select_suggestion_header":
+        "app_account_select_suggestion_header":
             MessageLookupByLibrary.simpleMessage("Suggestion"),
         "app_account_action_block":
             MessageLookupByLibrary.simpleMessage("Block"),

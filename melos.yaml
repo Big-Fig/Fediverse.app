@@ -23,7 +23,7 @@ scripts:
       flutter pub global run melos exec --ignore="*example*" -- \
       flutter pub global run tuneup stats
     description: |
-      Display packages code/fiels stats
+      Display packages code/file stats
 
   analyze:
     run: |
@@ -498,7 +498,7 @@ scripts:
   fastlane:frameit:metadata:
     run: |
       melos run fastlane:frameit:metadata:text --no-select && \
-      melos run fastlane:frameit:metadata:screenshtos --no-select
+      melos run fastlane:frameit:metadata:screenshots --no-select
     description: Upload all metadata to stores
 
   fastlane:frameit:metadata:text:

@@ -212,33 +212,33 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Веб-сайт"),
         "app_about_learnMore": MessageLookupByLibrary.simpleMessage("Детали"),
         "app_about_title": MessageLookupByLibrary.simpleMessage("О Fedi"),
-        "app_acccount_my_customList_edit_account_action_add":
+        "app_account_my_customList_edit_account_action_add":
             MessageLookupByLibrary.simpleMessage("Добавить"),
-        "app_acccount_my_customList_edit_account_action_remove":
+        "app_account_my_customList_edit_account_action_remove":
             MessageLookupByLibrary.simpleMessage("Удалить"),
-        "app_acccount_my_customList_edit_action_delete_list":
+        "app_account_my_customList_edit_action_delete_list":
             MessageLookupByLibrary.simpleMessage("Удалить список"),
-        "app_acccount_my_customList_edit_action_save":
+        "app_account_my_customList_edit_action_save":
             MessageLookupByLibrary.simpleMessage("Сохранить"),
-        "app_acccount_my_customList_edit_added_header":
+        "app_account_my_customList_edit_added_header":
             MessageLookupByLibrary.simpleMessage("Добавленные пользователи"),
-        "app_acccount_my_customList_edit_description":
+        "app_account_my_customList_edit_description":
             MessageLookupByLibrary.simpleMessage(
                 "Записи в списке кэшируются на сервере. Добавление/Удаление аккаунтов только на новые опубликованные записи.\nВсе старые записи останутся в списке навсегда.\nМожно добавить только те аккаунты на которые вы подписаны."),
-        "app_acccount_my_customList_edit_search_header":
+        "app_account_my_customList_edit_search_header":
             MessageLookupByLibrary.simpleMessage("Добавить в ваш список"),
-        "app_acccount_my_customList_edit_search_hint":
+        "app_account_my_customList_edit_search_hint":
             MessageLookupByLibrary.simpleMessage(
                 "Пользователи на которых вы подписаны"),
-        "app_acccount_my_customList_list_action_add":
+        "app_account_my_customList_list_action_add":
             MessageLookupByLibrary.simpleMessage("Создать список"),
-        "app_acccount_my_customList_list_action_edit":
+        "app_account_my_customList_list_action_edit":
             MessageLookupByLibrary.simpleMessage("Редактировать"),
-        "app_acccount_my_customList_list_empty_subtitle":
+        "app_account_my_customList_list_empty_subtitle":
             MessageLookupByLibrary.simpleMessage("Создайте новый сейчас."),
-        "app_acccount_my_customList_list_empty_title":
+        "app_account_my_customList_list_empty_title":
             MessageLookupByLibrary.simpleMessage("У вас нет списков."),
-        "app_acccount_select_suggestion_header":
+        "app_account_select_suggestion_header":
             MessageLookupByLibrary.simpleMessage("Быстрый доступ"),
         "app_account_action_block":
             MessageLookupByLibrary.simpleMessage("Блокировать"),
