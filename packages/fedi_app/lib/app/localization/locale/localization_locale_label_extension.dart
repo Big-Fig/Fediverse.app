@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 
 final _logger = Logger('localization_locale_label_extension.dart');
 
-extension LocalizaionLocaleLabelExtension on LocalizationLocale {
+extension LocalizationLocaleLabelExtension on LocalizationLocale {
   String toLabel(BuildContext context) {
     var s = S.of(context);
 
