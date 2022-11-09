@@ -62,7 +62,7 @@ dependencies:
 
   # minutes/hours picker
   # duration_picker: 1.0.1
-  # it is duration_picker 1.0.1 with naming & visibility enhancments
+  # it is duration_picker 1.0.1 with naming & visibility enhancements
   duration_picker:
     git:
       url: https://github.com/xal/duration_picker.git
