@@ -12,7 +12,7 @@ class CustomListListCreateButtonWidget extends StatelessWidget {
     var paginationListBloc = IPaginationListBloc.of(context);
 
     return FediPrimaryFilledTextButtonWithBorder(
-      S.of(context).app_acccount_my_customList_list_action_add,
+      S.of(context).app_account_my_customList_list_action_add,
       expanded: false,
       onPressed: () {
         goToCreateCustomListPage(

@@ -146,7 +146,7 @@ class _CustomListPageAppBarEditActionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediPageAppBarTextActionWidget(
-        text: S.of(context).app_acccount_my_customList_list_action_edit,
+        text: S.of(context).app_account_my_customList_list_action_edit,
         onPressed: () {
           goToEditCustomListPage(
             context: context,

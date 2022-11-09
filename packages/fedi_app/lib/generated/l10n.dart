@@ -4648,110 +4648,110 @@ class S {
   }
 
   /// `You haven’t created any Lists yet.`
-  String get app_acccount_my_customList_list_empty_title {
+  String get app_account_my_customList_list_empty_title {
     return Intl.message(
       'You haven’t created any Lists yet.',
-      name: 'app_acccount_my_customList_list_empty_title',
+      name: 'app_account_my_customList_list_empty_title',
       desc: '',
       args: [],
     );
   }
 
   /// `Create one now.`
-  String get app_acccount_my_customList_list_empty_subtitle {
+  String get app_account_my_customList_list_empty_subtitle {
     return Intl.message(
       'Create one now.',
-      name: 'app_acccount_my_customList_list_empty_subtitle',
+      name: 'app_account_my_customList_list_empty_subtitle',
       desc: '',
       args: [],
     );
   }
 
   /// `Create a list`
-  String get app_acccount_my_customList_list_action_add {
+  String get app_account_my_customList_list_action_add {
     return Intl.message(
       'Create a list',
-      name: 'app_acccount_my_customList_list_action_add',
+      name: 'app_account_my_customList_list_action_add',
       desc: '',
       args: [],
     );
   }
 
   /// `Edit list`
-  String get app_acccount_my_customList_list_action_edit {
+  String get app_account_my_customList_list_action_edit {
     return Intl.message(
       'Edit list',
-      name: 'app_acccount_my_customList_list_action_edit',
+      name: 'app_account_my_customList_list_action_edit',
       desc: '',
       args: [],
     );
   }
 
   /// `Add to your List`
-  String get app_acccount_my_customList_edit_search_header {
+  String get app_account_my_customList_edit_search_header {
     return Intl.message(
       'Add to your List',
-      name: 'app_acccount_my_customList_edit_search_header',
+      name: 'app_account_my_customList_edit_search_header',
       desc: '',
       args: [],
     );
   }
 
   /// `Add`
-  String get app_acccount_my_customList_edit_account_action_add {
+  String get app_account_my_customList_edit_account_action_add {
     return Intl.message(
       'Add',
-      name: 'app_acccount_my_customList_edit_account_action_add',
+      name: 'app_account_my_customList_edit_account_action_add',
       desc: '',
       args: [],
     );
   }
 
   /// `Remove`
-  String get app_acccount_my_customList_edit_account_action_remove {
+  String get app_account_my_customList_edit_account_action_remove {
     return Intl.message(
       'Remove',
-      name: 'app_acccount_my_customList_edit_account_action_remove',
+      name: 'app_account_my_customList_edit_account_action_remove',
       desc: '',
       args: [],
     );
   }
 
   /// `Search for people you follow`
-  String get app_acccount_my_customList_edit_search_hint {
+  String get app_account_my_customList_edit_search_hint {
     return Intl.message(
       'Search for people you follow',
-      name: 'app_acccount_my_customList_edit_search_hint',
+      name: 'app_account_my_customList_edit_search_hint',
       desc: '',
       args: [],
     );
   }
 
   /// `Suggestion`
-  String get app_acccount_select_suggestion_header {
+  String get app_account_select_suggestion_header {
     return Intl.message(
       'Suggestion',
-      name: 'app_acccount_select_suggestion_header',
+      name: 'app_account_select_suggestion_header',
       desc: '',
       args: [],
     );
   }
 
   /// `Added accounts`
-  String get app_acccount_my_customList_edit_added_header {
+  String get app_account_my_customList_edit_added_header {
     return Intl.message(
       'Added accounts',
-      name: 'app_acccount_my_customList_edit_added_header',
+      name: 'app_account_my_customList_edit_added_header',
       desc: '',
       args: [],
     );
   }
 
   /// `Save`
-  String get app_acccount_my_customList_edit_action_save {
+  String get app_account_my_customList_edit_action_save {
     return Intl.message(
       'Save',
-      name: 'app_acccount_my_customList_edit_action_save',
+      name: 'app_account_my_customList_edit_action_save',
       desc: '',
       args: [],
     );
@@ -4798,20 +4798,20 @@ class S {
   }
 
   /// `Delete list`
-  String get app_acccount_my_customList_edit_action_delete_list {
+  String get app_account_my_customList_edit_action_delete_list {
     return Intl.message(
       'Delete list',
-      name: 'app_acccount_my_customList_edit_action_delete_list',
+      name: 'app_account_my_customList_edit_action_delete_list',
       desc: '',
       args: [],
     );
   }
 
   /// `Statuses in the list are cached on the server.\nAdding or Removing accounts will affect only new posts.\n All old posts will remain on the list forever. It is only possible to add account which you follow.`
-  String get app_acccount_my_customList_edit_description {
+  String get app_account_my_customList_edit_description {
     return Intl.message(
       'Statuses in the list are cached on the server.\nAdding or Removing accounts will affect only new posts.\n All old posts will remain on the list forever. It is only possible to add account which you follow.',
-      name: 'app_acccount_my_customList_edit_description',
+      name: 'app_account_my_customList_edit_description',
       desc: '',
       args: [],
     );

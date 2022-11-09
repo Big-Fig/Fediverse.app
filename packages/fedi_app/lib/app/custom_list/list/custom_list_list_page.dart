@@ -49,8 +49,8 @@ class _CustomListListPageEmptyWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         FediEmptyWidget(
-          title: s.app_acccount_my_customList_list_empty_title,
-          subTitle: s.app_acccount_my_customList_list_empty_subtitle,
+          title: s.app_account_my_customList_list_empty_title,
+          subTitle: s.app_account_my_customList_list_empty_subtitle,
         ),
         const CustomListListCreateButtonWidget(),
       ],

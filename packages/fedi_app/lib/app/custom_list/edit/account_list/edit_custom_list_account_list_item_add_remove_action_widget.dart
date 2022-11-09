@@ -46,10 +46,10 @@ class CustomListAccountListItemAddRemoveActionWidget extends StatelessWidget {
             isItemAddedStream
                 ? S
                     .of(context)
-                    .app_acccount_my_customList_edit_account_action_remove
+                    .app_account_my_customList_edit_account_action_remove
                 : S
                     .of(context)
-                    .app_acccount_my_customList_edit_account_action_add,
+                    .app_account_my_customList_edit_account_action_add,
             onPressed: onPressed,
             color: isItemAddedStream
                 ? fediUiColorTheme.error

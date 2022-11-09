@@ -65,7 +65,7 @@ class SuggestionSelectAccountHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => FediFormHeaderWidget(
-        text: S.of(context).app_acccount_select_suggestion_header,
+        text: S.of(context).app_account_select_suggestion_header,
         isNeedAddDivider: true,
       );
 }
