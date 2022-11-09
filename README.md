@@ -219,7 +219,7 @@ After you make changes in `.arb` files you should do additional actions to regen
  * It is easy to understand what classes do
  * It is easy to navigate in IDE by typing start letters of name
 * One class = one file
-* Prefers `interfaces` for `Bussines Logic` and `Services` 
+* Prefers `interfaces` for `Business Logic` and `Services` 
  * Simple append `I` to implementation class name. `AccountFollowerAccountCachedListBloc` is implementation and `IAccountFollowerAccountCachedListBloc` is interface
  * Code readability: you can see small list of public methods/fields in interface file instead of exploring long file with implementations
  * It is useful to implement extensions for interfaces not for implementations
