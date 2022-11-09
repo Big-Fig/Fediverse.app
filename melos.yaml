@@ -23,7 +23,7 @@ scripts:
       flutter pub global run melos exec --ignore="*example*" -- \
       flutter pub global run tuneup stats
     description: |
-      Display packages code/fiels stats
+      Display packages code/file stats
 
   analyze:
     run: |
