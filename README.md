@@ -210,7 +210,7 @@ After you make changes in `.arb` files you should do additional actions to regen
 * Feature-based folder structure
 * Prefers composition over inheritance
 * Dependency Injection is implemented via `provider`
-* Prefers `StatelessWidget` and async UI update via `StreamBuidler` and `BehaviourSubject` & `StreamController` in controller classes
+* Prefers `StatelessWidget` and async UI update via `StreamBuilder` and `BehaviourSubject` & `StreamController` in controller classes
 * Prefers divide `Widgets` in small sub `Widgets` with `const` constructor(for better performance) if possible
 * Provides data to nested elements via `provider`
 * Prefers `Repository` pattern. Almost all network data is cached in local SQLite database. UI always displays data from single source. It may be network-only or from database(if data is cached). Doesn't cache and merge data in memory to achieve data consistency
