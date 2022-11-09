@@ -231,7 +231,7 @@ After you make changes in `.arb` files you should do additional actions to regen
 
 To build Fedi you need to specify Flutter version in [`.fvm/fvm_config.json`](.fvm/fvm_config.json) field `flutterSdkVersion`. 
 
-You can achieve this by specifing your system Flutter version by using `flutter version $version` or using FVM
+You can achieve this by specifying your system Flutter version by using `flutter version $version` or using FVM
 
 #### Flutter Version Management(FVM)
 
