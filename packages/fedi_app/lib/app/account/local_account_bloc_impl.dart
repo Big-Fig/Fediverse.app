@@ -357,7 +357,7 @@ class LocalAccountBloc extends AccountBloc {
     );
     assert(
       relationship!.subscribing == true,
-      'cant unsubscribe when not subcribed',
+      'cant unsubscribe when not subscribed',
     );
 
     var newRelationship = await unifediAuthAccountService.unSubscribeAccount(
