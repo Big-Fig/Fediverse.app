@@ -297,7 +297,7 @@ Install Flutter version used by this project
 
 Link multi-module project dependencies
 
-`fvm pub global activaite melos`
+`fvm flutter pub global activate melos`
 `fvm flutter pub global run melos bootstrap`
 
 ##### Copy default .env config
